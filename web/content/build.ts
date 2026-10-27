@@ -19,7 +19,6 @@ export const build = {
     { name: "Supabase", body: "Hosted Postgres database and its REST API. Row-level security keeps the raw and core layers private." },
     { name: "Vercel", body: "Builds and hosts this site, and redeploys on every push to the main branch." },
     { name: "Tableau Public", body: "Hosts the interactive dashboard embedded in the story." },
-    { name: "Google Sheets (planned)", body: "Will feed Tableau Public with current data pulled from this site, so the dashboard refreshes without being republished. Until then, the dashboard is republished by hand after each quarterly update." },
     { name: "Python, pandas, uv, pytest", body: "Data pipeline, analysis and tests." },
     { name: "Next.js, React, TypeScript", body: "The story site. Charts are hand-drawn SVG." },
   ],
@@ -29,7 +28,6 @@ export const build = {
   connectors: [
     { name: "GitHub", body: "Attached the repository to the session, pushed every commit and triggered the data-refresh workflow." },
     { name: "Supabase", body: "Created the database project, applied the schema migrations, ran Supabase's security checks and read the public API key for the site." },
-    { name: "Google Drive and Google Sheets", body: "Created the spreadsheet that will relay data to Tableau Public." },
     { name: "Vercel", body: "Looked up the account. The connector had no access to the personal account, so the Vercel project itself was created in the dashboard by hand." },
     { name: "Web search and fetch", body: "Background research on household debt, and downloads of the Fed, FRED and NY Fed data." },
   ],
