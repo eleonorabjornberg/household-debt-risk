@@ -11,13 +11,13 @@ A first look at the Z.1 data from 1952 to 2026 shows the public share of househo
 
 | Crisis | Public share at peak | Public share 16 quarters later |
 |---|---|---|
-| 1973 | 6.8% | 10.7% |
-| 1981 | 14.5% | 22.5% |
-| 1990 | 32.8% | 40.2% |
-| 2001 | 39.6% | 36.0% |
-| 2007 | 35.5% | 48.3% |
+| 1973 | 7.2% | 11.3% |
+| 1981 | 16.3% | 24.6% |
+| 1990 | 34.5% | 41.6% |
+| 2001 | 40.6% | 36.8% |
+| 2007 | 36.1% | 49.2% |
 
-By 2026 the share is about 56%. The 2001 recession is the one exception, and it coincides with the private-label securitization boom.
+By 2026Q2 the share is 56.4%. "Public" means the federal government, GSEs and agency pools, and state & local governments. The 2001 recession is the one exception, and it coincides with the private-label securitization boom.
 
 ## Stack
 | Layer | Tech | Folder |
@@ -37,8 +37,26 @@ By 2026 the share is about 56%. The 2001 recession is the one exception, and it 
 
 ## Quickstart
 ```bash
-cp .env.example .env               # fill DATABASE_URL etc.
+cp .env.example .env               # fill DATABASE_URL (and optionally FRED_API_KEY)
 cd pipeline && uv sync
-uv run python -m pipeline.run      # extract → transform → load
+uv run hhdebt run --export         # extract -> transform -> load (if DATABASE_URL) -> web/public/data/*.json
 uv run pytest
 ```
+
+Steps can also be run one at a time:
+
+| Command | Does |
+|---|---|
+| `uv run hhdebt extract` | Downloads Z.1 (`FRB_Z1_csv.zip` into `data/z1/`, streamed and filtered without unzipping), FRED and the latest NY Fed HHDC workbook into `data/staging/<source>.csv`. Dev shortcuts: `--z1-zip PATH`, `--z1-csv PATH` (or `HHDEBT_Z1_CSV`), `--nyfed-xlsx PATH`, `--sources z1 fred`. |
+| `uv run hhdebt transform` | Builds `core.*` and `mart.*` into `data/out/*.csv` (method notes are in `pipeline/src/hhdebt/transform.py`). |
+| `uv run hhdebt load` | One transaction: upserts `raw.observations` and replaces the contents of `core` and `mart`. |
+| `uv run hhdebt export-snapshot` | Writes each mart table plus `dim_crisis` and `dim_risk_bucket` to `web/public/data/<table>.json` (from the DB if `DATABASE_URL` is set, else from `data/out`). |
+
+Local database:
+```bash
+service postgresql start
+sudo -u postgres createdb hhdebt
+sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/hhdebt
+```
+`.github/workflows/refresh.yml` runs the pipeline and tests quarterly (the 20th of Mar/Jun/Sep/Dec, after each Z.1 release) and on demand, and uploads the snapshots as a build artifact. It needs the `DATABASE_URL` secret (and optionally `FRED_API_KEY`).

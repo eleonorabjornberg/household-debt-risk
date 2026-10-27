@@ -1,0 +1,61 @@
+name: refresh-data
+
+# Z.1 is released in the second week of Mar/Jun/Sep/Dec; run on the 20th of those months
+# (11:17 UTC) so the new release is always out. NY Fed HHDC (Feb/May/Aug/Nov) is picked up on the
+# next run. Manual runs: Actions -> refresh-data -> Run workflow.
+on:
+  schedule:
+    - cron: "17 11 20 3,6,9,12 *"
+  workflow_dispatch:
+    inputs:
+      load:
+        description: "Load into the database (DATABASE_URL secret)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: pipeline
+    env:
+      DATABASE_URL: ${{ (github.event_name == 'schedule' || inputs.load) && secrets.DATABASE_URL || '' }}
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      HHDEBT_REQUIRE_DATA: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: pipeline/uv.lock
+
+      - name: Install
+        run: uv sync --locked
+
+      - name: Run pipeline (extract -> transform -> load -> export-snapshot)
+        run: uv run hhdebt run --export
+
+      - name: Tests
+        run: uv run pytest -ra
+
+      - name: Upload snapshots + transform output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-snapshots-${{ github.run_id }}
+          path: |
+            web/public/data/*.json
+            data/out/
+          if-no-files-found: warn
+          retention-days: 90
