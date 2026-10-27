@@ -52,6 +52,7 @@ Steps can also be run one at a time:
 | `uv run hhdebt extract` | Downloads Z.1 (`FRB_Z1_csv.zip` into `data/z1/`, streamed and filtered without unzipping), FRED and the latest NY Fed HHDC workbook into `data/staging/<source>.csv`. Dev shortcuts: `--z1-zip PATH`, `--z1-csv PATH` (or `HHDEBT_Z1_CSV`), `--nyfed-xlsx PATH`, `--sources z1 fred`. |
 | `uv run hhdebt transform` | Builds `core.*` and `mart.*` into `data/out/*.csv` (method notes are in `pipeline/src/hhdebt/transform.py`). |
 | `uv run hhdebt load` | One transaction: upserts `raw.observations` and replaces the contents of `core` and `mart`. |
+| `uv run hhdebt export-tableau` | Writes flat, pre-joined CSVs for Tableau Public to `tableau/data/` (one per dashboard). Also run by `run --export`. |
 | `uv run hhdebt export-snapshot` | Writes each mart table plus `dim_crisis` and `dim_risk_bucket` to `web/public/data/<table>.json` (from the DB if `DATABASE_URL` is set, else from `data/out`). |
 
 Local database:

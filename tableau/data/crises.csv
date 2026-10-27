@@ -1,0 +1,15 @@
+crisis_id,name,kind,start_q,end_q,notes
+recession_1953,1953-54 recession,nber_recession,1953-06-30,1954-06-30,Post-Korean War recession
+recession_1957,1957-58 recession,nber_recession,1957-09-30,1958-06-30,Eisenhower recession
+recession_1960,1960-61 recession,nber_recession,1960-06-30,1961-03-31,
+recession_1969,1969-70 recession,nber_recession,1969-12-31,1970-12-31,
+oil_shock_1973,1973-75 recession (oil shock),nber_recession,1973-12-31,1975-03-31,"OPEC oil embargo, stagflation"
+recession_1980,1980 recession,nber_recession,1980-03-31,1980-09-30,"Volcker tightening, credit controls"
+volcker_1981,1981-82 recession,nber_recession,1981-09-30,1982-12-31,Volcker double-dip
+sl_1990,1990-91 recession (S&L crisis),nber_recession,1990-09-30,1991-03-31,"Savings & loan crisis, Gulf War oil shock"
+dotcom_2001,2001 recession (dot-com),nber_recession,2001-03-31,2001-12-31,"Dot-com bust, 9/11"
+gfc_2007,Great Recession (GFC),nber_recession,2007-12-31,2009-06-30,Subprime / global financial crisis; GSE conservatorship Sep 2008
+covid_2020,COVID-19 recession,nber_recession,2019-12-31,2020-06-30,"NBER peak Feb 2020 (2019Q4 quarterly peak), trough Apr 2020"
+cares_forbearance_2020,CARES Act forbearance & student-loan pause,policy_shock,2020-03-31,,Mortgage forbearance and federal student-loan payment pause (March 2020)
+student_repayment_2023,Student-loan repayment restart,policy_shock,2023-12-31,,Federal student-loan payments resumed Oct 2023 (on-ramp period through Sep 2024)
+student_collections_2025,Student-loan collections & credit re-reporting restart,policy_shock,2025-06-30,,Collections on defaulted federal student loans and credit re-reporting resumed May 2025
