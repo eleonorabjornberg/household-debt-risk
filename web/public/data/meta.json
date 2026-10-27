@@ -1,0 +1,13 @@
+{
+  "mart_start": "1951-12-31",
+  "mart_end": "2026-06-30",
+  "cpi_base_quarter": "2026Q3",
+  "student_loans_reported_from": "2006Q1",
+  "vintages": {
+    "fred": "2026-10-27",
+    "nyfed": "2026-10-27",
+    "z1": "2026-09-11"
+  },
+  "snapshot_source": "database",
+  "generated_at": "2026-10-27T22:13:44+00:00"
+}

@@ -1,5 +1,7 @@
 # data & caches
 data/
+# web/public/data holds the committed JSON snapshots (hhdebt export-snapshot)
+!web/public/data/
 *.pkl
 *.parquet
 __pycache__/
