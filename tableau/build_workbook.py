@@ -256,11 +256,9 @@ def build_main_sheet(parent, labels):
         ("share_of_total", "Sum", I_SHARE, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
     ])
-    # Stack/legend order = sort_order (federal_direct first), as in workbook_specs.md §0.2.
-    ms = sub(view, "manual-sort", {"column": q(I_BUCKET), "direction": "ASC"})
-    d = sub(ms, "dictionary")
-    for _, bucket, _ in BUCKET_COLORS:
-        sub(d, "bucket", text=f'"{labels[bucket]}"')
+    # No sort element: Tableau Public rejected <manual-sort> here (error D2E8DA72, "element
+    # 'manual-sort' is not allowed"). Stack order is set by hand (GETTING_STARTED.md: sort
+    # Bucket label by Sort order); the legend falls back to alphabetical until then.
     sub(view, "aggregation", {"value": "true"})
     style = sub(table, "style")
     fixed_axis(style, I_SHARE, "0.0", "1.0")

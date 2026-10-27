@@ -256,16 +256,6 @@
             <column-instance column='[share_of_total]' derivation='Sum' name='[sum:share_of_total:qk]' pivot='key' type='quantitative' />
             <column-instance column='[date]' derivation='Quarter-Trunc' name='[tqr:date:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
-          <manual-sort column='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[none:bucket_label:nk]' direction='ASC'>
-            <dictionary>
-              <bucket>&quot;Federal government (direct)&quot;</bucket>
-              <bucket>&quot;GSEs &amp; agency pools&quot;</bucket>
-              <bucket>&quot;State &amp; local governments&quot;</bucket>
-              <bucket>&quot;Banks &amp; credit unions&quot;</bucket>
-              <bucket>&quot;Private securitization &amp; mortgage REITs&quot;</bucket>
-              <bucket>&quot;Finance companies &amp; other private&quot;</bucket>
-            </dictionary>
-          </manual-sort>
           <aggregation value='true' />
         </view>
         <style>
