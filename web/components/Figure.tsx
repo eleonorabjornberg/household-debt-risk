@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { tableauNote } from "@/content/story";
-import { tableauConfig, tableauViewUrl } from "@/lib/tableau";
+import { tableauEmbedFor } from "@/lib/tableau";
 import { TableauViz } from "./TableauViz";
 
 interface Props {
@@ -14,9 +14,9 @@ interface Props {
   children: ReactNode;
 }
 
-/** A numbered figure: native chart, swapped for the Tableau view when Tableau is configured. */
+/** A numbered figure: native chart, swapped for the Tableau view when that view is configured. */
 export function Figure({ id, label, title, caption, source, tableauView, children }: Props) {
-  const cfg = tableauView ? tableauConfig() : null;
+  const embed = tableauView ? tableauEmbedFor(tableauView) : null;
   return (
     <figure className="figure" id={id} aria-labelledby={`${id}-title`}>
       <header className="figure__head">
@@ -24,8 +24,8 @@ export function Figure({ id, label, title, caption, source, tableauView, childre
         <h3 className="figure__title" id={`${id}-title`}>{title}</h3>
         <p className="figure__caption">{caption}</p>
       </header>
-      {cfg && tableauView ? (
-        <TableauViz serverUrl={cfg.serverUrl} src={tableauViewUrl(cfg, tableauView)} title={title} fallback={children} />
+      {embed ? (
+        <TableauViz scriptUrl={embed.scriptUrl} src={embed.src} needsToken={embed.needsToken} title={title} fallback={children} />
       ) : (
         <>
           {children}
@@ -34,6 +34,14 @@ export function Figure({ id, label, title, caption, source, tableauView, childre
       )}
       <p className="figure__source">
         <span>Source</span> {source}
+        {embed?.openUrl && (
+          <>
+            {" · "}
+            <a href={embed.openUrl} target="_blank" rel="noopener noreferrer" aria-label="Open on Tableau Public (opens in a new tab)">
+              Open on Tableau Public
+            </a>
+          </>
+        )}
       </p>
     </figure>
   );
