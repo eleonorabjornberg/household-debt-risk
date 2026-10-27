@@ -124,7 +124,7 @@ export const ratchet: Chapter = {
   figure: {
     title: "Who bears the credit risk on household debt",
     caption:
-      "Share of household 1–4 family mortgages and consumer credit by the type of institution that holds it (agency and GSE mortgage pools count as holders). Shaded bands are NBER recessions; thin vertical rules mark policy shocks (CARES Act forbearance, the student-loan restarts).",
+      "Share of household 1–4 family mortgages and consumer credit by the type of institution that holds it (agency and GSE mortgage pools count as holders). Public holders (federal government, GSEs and agency pools, state and local governments) are stacked at the bottom; the top edge of that block is the public share.",
     source: "Fed Z.1 Financial Accounts, tables L.218 and L.222 (holders apportioned to the household liability). NBER recession dates.",
   },
   aside: {
