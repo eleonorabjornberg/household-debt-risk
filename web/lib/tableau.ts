@@ -18,11 +18,14 @@ export const TABLEAU_REQUIRED_ENV = [
 ] as const;
 
 /** "<Workbook>/<Sheet>" as it appears in a views URL. */
+// Two published workbooks: "WhoHoldsTheDebt" (v2, fixed size, stack order set by hand) and
+// "WhoHoldsTheDebt-extracts" (v3.2: all four dashboards, automatic sizing).
 export const TABLEAU_VIEWS = {
   ratchet: "WhoHoldsTheDebt/Ratchet",
-  crises: "WhoHoldsTheDebt/CrisisSmallMultiples",
-  collateral: "WhoHoldsTheDebt/Collateral",
-  priority: "WhoHoldsTheDebt/PaymentPriority",
+  scrolly: "WhoHoldsTheDebt-extracts/Ratchet",
+  crises: "WhoHoldsTheDebt-extracts/CrisisSmallMultiples",
+  collateral: "WhoHoldsTheDebt-extracts/Collateral",
+  priority: "WhoHoldsTheDebt-extracts/PaymentPriority",
 } as const;
 
 export function missingTableauEnv(): string[] {

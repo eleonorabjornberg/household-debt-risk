@@ -20,7 +20,7 @@ export default async function Home() {
   const h = headline(data);
   const crisisList = crises(data);
   const ratchetRows = ratchetData(data);
-  const scrollyEmbed = scrollyTableauEnabled() ? tableauEmbedFor(TABLEAU_VIEWS.ratchet) : null;
+  const scrollyEmbed = scrollyTableauEnabled() ? tableauEmbedFor(TABLEAU_VIEWS.scrolly) : null;
 
   const tokens: Record<string, string> = {
     latestQuarter: quarterLabel(h.latestDate),
