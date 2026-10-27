@@ -6,35 +6,7 @@
 // interactive), so the page never
 // depends on Tableau being reachable.
 import { useEffect, useRef, useState, type ReactNode } from "react";
-
-const scriptPromises = new Map<string, Promise<void>>();
-
-function loadEmbeddingApi(scriptUrl: string): Promise<void> {
-  if (typeof window !== "undefined" && window.customElements?.get("tableau-viz")) return Promise.resolve();
-  let p = scriptPromises.get(scriptUrl);
-  if (!p) {
-    p = new Promise<void>((resolve, reject) => {
-      const s = document.createElement("script");
-      s.type = "module";
-      s.src = scriptUrl;
-      s.onload = () => resolve();
-      s.onerror = () => {
-        scriptPromises.delete(scriptUrl);
-        s.remove();
-        reject(new Error("Could not load the Tableau Embedding API"));
-      };
-      document.head.appendChild(s);
-    });
-    scriptPromises.set(scriptUrl, p);
-  }
-  // A loaded module that never defines the element is a failure too.
-  return p.then(() =>
-    Promise.race([
-      window.customElements.whenDefined("tableau-viz").then(() => undefined),
-      new Promise<void>((_, reject) => setTimeout(() => reject(new Error("Tableau Embedding API did not initialise")), 10000)),
-    ]),
-  );
-}
+import { loadEmbeddingApi } from "@/lib/tableauControl";
 
 interface Props {
   /** Embedding API v3 module URL. */

@@ -47,6 +47,7 @@ See `.env.example`. All are optional.
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Live reads of the `mart` schema. The key starts `sb_publishable_`; `NEXT_PUBLIC_SUPABASE_ANON_KEY` is accepted as a fallback |
 | `NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE` | Your Tableau Public profile name. Turns on **Public mode** (takes precedence over Cloud) |
 | `NEXT_PUBLIC_TABLEAU_VIEWS` | Public mode: comma-separated sheet names that are published, e.g. `Ratchet` |
+| `NEXT_PUBLIC_TABLEAU_SCROLLY` | `1` lets the chapter 2 scroll-through drive the Ratchet view (needs automatic dashboard sizing). Anything else: native chart |
 | `TABLEAU_SERVER_URL` | Cloud: e.g. `https://10ax.online.tableau.com`; also where the Embedding API script loads from |
 | `TABLEAU_SITE` | Cloud: site content URL (the `/t/<site>/` part); blank for the default site |
 | `TABLEAU_CONNECTED_APP_CLIENT_ID`, `..._SECRET_ID`, `..._SECRET_VALUE` | Cloud: Connected App (direct trust) credentials, server-only |
@@ -83,6 +84,24 @@ of missing variables. With them set, the route returns `{ token, expiresIn }`: a
 `scp` = `["tableau:views:embed"]`, a random `jti`, and a 5-minute expiry. The token route is public by
 design (anyone viewing the story needs a token), so give `TABLEAU_EMBED_USER` a Viewer-role account
 that can see only this workbook.
+
+### Crisis scroll-through (chapter 2) and two-way linking
+
+`components/scrolly/CrisisScrolly.tsx` puts a sticky Ratchet chart beside one step card per crisis
+(NBER recessions plus policy shocks). When a step reaches the middle of the viewport, the chart zooms
+to t0 − 2y … t0 + 4y and the crisis is highlighted; leaving the section resets it. A holder legend
+next to the chart highlights a holder, and a side card shows that holder's share, from the site's own
+data. Figure 2's panel titles jump to the matching step. On phones (≤ 768px) the chart sticks to the
+top and the steps scroll underneath.
+
+By default the scroll-through uses the native `RatchetChart`. With `NEXT_PUBLIC_TABLEAU_SCROLLY=1`
+(and the Ratchet view configured) on wide screens it lazy-loads its own Ratchet embed and drives it
+through `lib/tableauControl.ts`, following `tableau/INTEGRATION_CONTRACT.md`: Date range filter on
+both worksheets, the `Active crisis` parameter (skipped if the published workbook lacks it), and
+`selectMarksByValueAsync` on `Ratchet – main`. It also listens for `markselectionchanged` to update the
+side card. Turn the flag on only once the published dashboard uses automatic sizing; a fixed
+1000×700 dashboard is clipped in the column. Figure 1's embed does not depend on this flag. Every
+API failure is logged once and ignored.
 
 ### Fallbacks
 

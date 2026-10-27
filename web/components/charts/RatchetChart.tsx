@@ -8,13 +8,30 @@ import { crisisBands, DataTable, Legend, Segmented } from "./parts";
 type DebtView = "all" | "mortgage" | "consumer_credit";
 type Measure = "share" | "real";
 
-export function RatchetChart({ data, crises, title }: { data: RatchetData; crises: Crisis[]; title: string }) {
+interface Props {
+  data: RatchetData;
+  crises: Crisis[];
+  title: string;
+  /** Zoom the time axis to [from, to] in decimal years (e.g. the scrolly's t0 − 2y … t0 + 4y). */
+  xDomain?: [number, number];
+  /** crisis_id whose band is drawn emphasised. */
+  activeCrisis?: string | null;
+  /** Risk bucket kept at full strength while the others fade (linked legend). */
+  focusBucket?: string | null;
+  /** Controls, legend and data table. Off in the scrolly, which brings its own legend. */
+  chrome?: boolean;
+}
+
+export function RatchetChart({ data, crises, title, xDomain, activeCrisis = null, focusBucket = null, chrome = true }: Props) {
   const [debt, setDebt] = useState<DebtView>("all");
   const [measure, setMeasure] = useState<Measure>("share");
 
   const x = useMemo(() => data.dates.map(quarterToYear), [data.dates]);
   const xLabels = useMemo(() => data.dates.map(quarterLabel), [data.dates]);
-  const bands = useMemo(() => crisisBands(crises), [crises]);
+  const bands = useMemo(
+    () => crisisBands(crises).map((b, i) => (crises[i].id === activeCrisis ? { ...b, active: true } : b)),
+    [crises, activeCrisis],
+  );
   const nPublic = data.buckets.filter((b) => b.isPublic).length;
 
   const series = useMemo(() => {
@@ -51,6 +68,7 @@ export function RatchetChart({ data, crises, title }: { data: RatchetData; crise
 
   return (
     <div className="chart">
+      {chrome && (
       <div className="chart__controls">
         <Segmented
           id="ratchet-debt"
@@ -74,10 +92,13 @@ export function RatchetChart({ data, crises, title }: { data: RatchetData; crise
           ]}
         />
       </div>
+      )}
+      {chrome && (
       <div className="legend-groups">
         <Legend label="Public" items={series.slice(0, nPublic).map((s) => ({ key: s.key, label: s.label, color: s.color }))} />
         <Legend label="Private" items={series.slice(nPublic).map((s) => ({ key: s.key, label: s.label, color: s.color }))} />
       </div>
+      )}
       <TimeSeriesChart
         x={x}
         xLabels={xLabels}
@@ -92,12 +113,16 @@ export function RatchetChart({ data, crises, title }: { data: RatchetData; crise
         boundaryAfter={nPublic}
         boundaryLabel={(v) => (measure === "share" ? `Public ${pct(v, 0)}` : usdFromMillions(v, 1))}
         totalLabel="Public total"
+        xDomain={xDomain}
+        focusKey={focusBucket}
       />
+      {chrome && (
       <DataTable
         caption={`Holders of ${debtName}, fourth quarter of each year (${measure === "share" ? "share of total" : "real USD"})`}
         columns={["Quarter", "Public total", ...series.map((s) => s.label)]}
         rows={tableRows}
       />
+      )}
     </div>
   );
 }

@@ -203,3 +203,48 @@ export function headline(d: StoryData) {
   };
 }
 export type Headline = ReturnType<typeof headline>;
+
+/** One step of the "Crisis by crisis" scroll-through: dates for the zoom and the public-share move. */
+export interface CrisisStep {
+  id: string;
+  name: string;
+  kind: Crisis["kind"];
+  start: string;
+  end: string | null;
+  /** Short label and note from content/story.ts (keyed by start year). */
+  label: string;
+  note: string | null;
+  /** Window for the zoom: t0 − 2 years to t0 + 4 years (quarter-end ISO dates). */
+  min: string;
+  max: string;
+  /** Public share at t0 and at the end of the window (or the latest quarter, if sooner). */
+  shareStart: number | null;
+  shareEnd: number | null;
+  endDate: string | null;
+}
+
+const shiftYearsIso = (iso: string, years: number) => `${Number(iso.slice(0, 4)) + years}${iso.slice(4)}`;
+
+export function crisisSteps(d: StoryData, notes: Record<string, { label: string; text: string }>): CrisisStep[] {
+  const ps = publicSeries(d);
+  const latest = ps.dates[ps.dates.length - 1];
+  return crises(d).map((c) => {
+    const note = notes[c.start.slice(0, 4)];
+    const max = shiftYearsIso(c.start, 4);
+    const endDate = latest && latest < max ? latest : max;
+    return {
+      id: c.id,
+      name: c.name,
+      kind: c.kind,
+      start: c.start,
+      end: c.end,
+      label: note?.label ?? c.start.slice(0, 4),
+      note: note?.text ?? null,
+      min: shiftYearsIso(c.start, -2),
+      max,
+      shareStart: at(ps.dates, ps.share, c.start) ?? null,
+      shareEnd: at(ps.dates, ps.share, endDate) ?? null,
+      endDate: endDate > c.start ? endDate : null,
+    };
+  });
+}
