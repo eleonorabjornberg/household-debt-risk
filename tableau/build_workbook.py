@@ -20,6 +20,10 @@ v3 adds (names fixed by INTEGRATION_CONTRACT.md):
     (darker for the active crisis) drawn BEHIND the coloured areas, axes synchronised at 0-1, the second
     axis hidden;
   * still NO sort element: the Descending stack order stays a manual step (GETTING_STARTED.md).
+  * figures 2-4 as dashboards CrisisSmallMultiples / Collateral / PaymentPriority (exact names: the site embeds
+    views/WhoHoldsTheDebt/<name>), each on its own packaged text source, built only from single-measure
+    line/area panes, discrete dimensions crossed with the measure on Rows, and single-member categorical filters;
+  * every dashboard uses <size sizing-mode='automatic' /> (was fixed 1000x700).
   Provenance of each v3 element is in the comment next to the code that writes it (V3 SOURCES below).
 Tableau requires unique names across worksheets and dashboards, so the area sheet cannot also be
 called "Ratchet"; the dashboard owns that name because the site embeds views/WhoHoldsTheDebt/Ratchet.
@@ -160,6 +164,68 @@ DS = "federated." + tableau_id("hhdebt-ratchet-datasource")
 CONN = "textscan." + tableau_id("hhdebt-ratchet-textscan")
 DS_CAPTION = "ratchet"
 
+
+# ---- v3: figures 2-4 (CrisisSmallMultiples, Collateral, PaymentPriority); names fixed by the site's embed paths
+DASH_CRISIS, DASH_COLLATERAL, DASH_PAYMENT = "CrisisSmallMultiples", "Collateral", "PaymentPriority"
+SHEET_CRISIS = "Crisis SM – main"
+SHEET_COLL_SHARE = "Collateral – share"
+SHEET_COLL_COVER = "Collateral – coverage"
+SHEET_PAYMENT = "Payment priority – main"
+SHEETS = [SHEET_MAIN, SHEET_PUBLIC, SHEET_CRISIS, SHEET_COLL_SHARE, SHEET_COLL_COVER, SHEET_PAYMENT]
+CRISIS_FIELDS = {  # == tableau_export.COLUMNS["crisis_windows"]
+    "crisis_id": ("string", "dimension", "nominal", "Crisis id", None),
+    "crisis_name": ("string", "dimension", "nominal", "Crisis name", None),
+    "kind": ("string", "dimension", "nominal", "Kind", None),
+    "start_q": ("date", "dimension", "ordinal", "Start quarter", None),
+    "metric": ("string", "dimension", "nominal", "Metric", None),
+    # integer dimension used continuously: ordinal column + [none:...:qk] instance, like TSI's
+    # '[none:Calculation_7300619133441268:qk]' on cols (ts_background_tasks_04.02.twb)
+    "q_offset": ("integer", "dimension", "ordinal", "Quarters from t0", None),
+    "date": ("date", "dimension", "ordinal", "Date", None),
+    "value": ("real", "measure", "quantitative", "Value", None),
+    "value_at_t0": ("real", "measure", "quantitative", "Value at t0", None),
+    "delta_from_t0": ("real", "measure", "quantitative", "Change since t0", None),
+}
+COLLATERAL_FIELDS = {  # == tableau_export.COLUMNS["collateral"]
+    "date": ("date", "dimension", "ordinal", "Date", None),
+    "collateral_class": ("string", "dimension", "nominal", "Collateral class", None),
+    "class_label": ("string", "dimension", "nominal", "Class label", None),
+    "debt_musd": ("real", "measure", "quantitative", "Debt $M", None),
+    "collateral_value_musd": ("real", "measure", "quantitative", "Collateral value $M", None),
+    "coverage_ratio": ("real", "measure", "quantitative", "Coverage ratio", None),
+    "share_of_debt": ("real", "measure", "quantitative", "Share of debt", "p0%"),
+    "is_estimated": ("boolean", "dimension", "nominal", "Is estimated", None),
+}
+PCT = 'n#,##0.0"%";-#,##0.0"%"'  # values already in percent; format string as geocoding.twbx 'Commission Rate'
+PAYMENT_FIELDS = {  # == tableau_export.COLUMNS["payment_priority"]
+    "date": ("date", "dimension", "ordinal", "Date", None),
+    "loan_type": ("string", "dimension", "nominal", "Loan type", None),
+    "loan_label": ("string", "dimension", "nominal", "Loan label", None),
+    "collateral_class": ("string", "dimension", "nominal", "Collateral class", None),
+    "balance_busd": ("real", "measure", "quantitative", "Balance $B", None),
+    "transition_serious_pct": ("real", "measure", "quantitative", "Into serious delinquency (%)", PCT),
+    "baseline_2003_06_pct": ("real", "measure", "quantitative", "Baseline 2003-06 (%)", PCT),
+    "stress_index": ("real", "measure", "quantitative", "Stress index", None),
+}
+COLLATERAL_LABELS = {"home_backed": "Home-backed", "vehicle_backed": "Vehicle-backed",
+                     "uncollateralized": "No collateral", "other_nonrevolving": "Other non-revolving"}
+COLLATERAL_COLORS = {"home_backed": "#6250d6", "vehicle_backed": "#eda100", "uncollateralized": "#e34948",
+                     "other_nonrevolving": "#898781"}
+
+
+def _src(key, fields):
+    return {"key": key, "csv": f"{key}.csv", "caption": key, "fields": fields,
+            "ds": "federated." + tableau_id(f"hhdebt-{key}-datasource"),
+            "conn": "textscan." + tableau_id(f"hhdebt-{key}-textscan")}
+
+
+SRC = {"ratchet": {"key": "ratchet", "csv": "ratchet.csv", "caption": DS_CAPTION, "fields": RATCHET_FIELDS,
+                   "ds": DS, "conn": CONN},
+       "crisis_windows": _src("crisis_windows", CRISIS_FIELDS),
+       "collateral": _src("collateral", COLLATERAL_FIELDS),
+       "payment_priority": _src("payment_priority", PAYMENT_FIELDS)}
+
+
 # ---- v3: parameter + calculated fields (see V3 SOURCES [P] and [C] in the module docstring)
 PARAMS = "Parameters"
 PARAM_NAME = "[Active crisis]"  # caption == name, as geocoding.twbx's '[Base Salary]'; the site calls it by caption
@@ -172,6 +238,10 @@ CALCS = {  # name -> (caption, datatype, role, type, default-format, formula)
     CALC_ACTIVE: ("Is active crisis", "boolean", "dimension", "nominal", None,
                   f"[crisis_id] = [{PARAMS}].{PARAM_NAME}"),
 }
+CALC_PTS = "[Calculation_" + str(int(hashlib.sha1(b"hhdebt-delta-pts").hexdigest(), 16))[:19] + "]"
+CALCS[CALC_PTS] = ("Change since t0 (pts)", "real", "measure", "quantitative", 'n#,##0.0" pts";-#,##0.0" pts"',
+                   "[delta_from_t0] * 100")  # shares -> percentage points; format pattern as geocoding.twbx
+RATCHET_CALCS = [CALC_BAND, CALC_ACTIVE]
 BAND_COLORS = {"false": "#d9d9d9", "true": "#9a9a9a"}  # lowercase hex, as Tableau writes palette colours
 BAND_TRANSPARENCY = "102"  # 0-255 alpha; 102/255 = 40% opacity (ServerTelemetry pane writes 126)
 
@@ -187,6 +257,22 @@ I_SHARE = "[sum:share_of_total:qk]"
 I_PUBLIC = "[avg:public_share:qk]"
 I_BAND = "[avg:" + CALC_BAND[1:-1] + ":qk]"
 I_ACTIVE = "[none:" + CALC_ACTIVE[1:-1] + ":nk]"
+I_CLASS_LABEL = "[none:class_label:nk]"
+I_CCLASS = "[none:collateral_class:nk]"
+I_COLL_SHARE = "[sum:share_of_debt:qk]"
+I_COVER = "[avg:coverage_ratio:qk]"
+I_CRISIS = "[none:crisis_name:nk]"
+I_METRIC = "[none:metric:nk]"
+I_QOFF = "[none:q_offset:qk]"
+I_PTS = "[avg:" + CALC_PTS[1:-1] + ":qk]"
+I_LOAN = "[none:loan_label:nk]"
+I_TRANS = "[avg:transition_serious_pct:qk]"
+
+
+def qs(key: str, inst: str) -> str:
+    return f"[{SRC[key]['ds']}].{inst}"
+
+
 PANE_BAND, PANE_SHARE = "1", "2"  # pane ids of the dual axis; the colour legend points at the share pane
 
 
@@ -211,6 +297,14 @@ def read_ratchet_meta() -> dict[str, str]:
     if missing:
         sys.exit(f"ratchet.csv has no rows for buckets {missing}")
     return labels
+
+
+def check_fig_headers() -> None:
+    for key in ("crisis_windows", "collateral", "payment_priority"):
+        with (DATA_DIR / f"{key}.csv").open(newline="", encoding="utf-8") as f:
+            header = next(csv.reader(f))
+        if header != list(SRC[key]["fields"]):
+            sys.exit(f"{key}.csv header {header} != {list(SRC[key]['fields'])} (update the *_FIELDS dict)")
 
 
 def read_crisis_ids() -> list[str]:
@@ -265,8 +359,8 @@ def calc_decl(parent, name):
     sub(col, "calculation", {"class": "tableau", "formula": formula})
     return col
 
-def column_decl(parent, name, with_format=True):
-    dtype, role, typ, caption, fmt = RATCHET_FIELDS[name]
+def column_decl(parent, name, with_format=True, fields=None):
+    dtype, role, typ, caption, fmt = (fields or RATCHET_FIELDS)[name]
     attrib = {"caption": caption, "datatype": dtype}
     if fmt and with_format:
         attrib["default-format"] = fmt
@@ -274,27 +368,32 @@ def column_decl(parent, name, with_format=True):
     return sub(parent, "column", attrib)
 
 
-def build_datasource(parent, labels):
-    ds = sub(parent, "datasource", {"caption": DS_CAPTION, "inline": "true", "name": DS, "version": VERSION})
+def build_text_datasource(parent, src, calcs=(), instances=(), palettes=(), semantic=False):
+    """Packaged text-file data source (same shape for every CSV; see the geocoding.twbx provenance above).
+    instances: [(column, derivation, instance, type)] declared at datasource level (as Tableau does for
+    palette fields); palettes: [(instance, [(bucket text, colour)])] in one mark style-rule."""
+    fields, csvname, conn = src["fields"], src["csv"], src["conn"]
+    stem = csvname[:-4]
+    ds = sub(parent, "datasource", {"caption": src["caption"], "inline": "true", "name": src["ds"], "version": VERSION})
     fed = sub(ds, "connection", {"class": "federated"})
     ncs = sub(fed, "named-connections")
-    nc = sub(ncs, "named-connection", {"caption": "ratchet", "name": CONN})
-    sub(nc, "connection", {"class": "textscan", "directory": PACKAGED_DIR, "filename": "ratchet.csv",
+    nc = sub(ncs, "named-connection", {"caption": stem, "name": conn})
+    sub(nc, "connection", {"class": "textscan", "directory": PACKAGED_DIR, "filename": csvname,
                            "password": "", "server": ""})
-    rel = sub(fed, "relation", {"connection": CONN, "name": "ratchet.csv", "table": "[ratchet#csv]",
+    rel = sub(fed, "relation", {"connection": conn, "name": csvname, "table": f"[{stem}#csv]",
                                 "type": "table"})
     cols = sub(rel, "columns", {"character-set": "UTF-8", "header": "yes", "locale": "en_US", "separator": ","})
-    for i, (name, spec) in enumerate(RATCHET_FIELDS.items()):
+    for i, (name, spec) in enumerate(fields.items()):
         sub(cols, "column", {"datatype": spec[0], "name": name, "ordinal": i})
     cmap = sub(fed, "cols")
-    for name in RATCHET_FIELDS:
-        sub(cmap, "map", {"key": f"[{name}]", "value": f"[ratchet.csv].[{name}]"})
+    for name in fields:
+        sub(cmap, "map", {"key": f"[{name}]", "value": f"[{csvname}].[{name}]"})
 
     mrs = sub(fed, "metadata-records")
     cap = sub(mrs, "metadata-record", {"class": "capability"})
     sub(cap, "remote-name")
     sub(cap, "remote-type", text="0")
-    sub(cap, "parent-name", text="[ratchet.csv]")
+    sub(cap, "parent-name", text=f"[{csvname}]")
     sub(cap, "remote-alias")
     sub(cap, "aggregation", text="Count")
     sub(cap, "contains-null", text="true")
@@ -302,13 +401,13 @@ def build_datasource(parent, labels):
     for k, v in [("character-set", "UTF-8"), ("collation", "en_US"), ("field-delimiter", ","),
                  ("header-row", "true"), ("locale", "en_US"), ("single-char", "")]:
         sub(attrs, "attribute", {"datatype": "string", "name": k}, f'"{v}"')
-    for i, (name, spec) in enumerate(RATCHET_FIELDS.items()):
+    for i, (name, spec) in enumerate(fields.items()):
         dtype = spec[0]
         mr = sub(mrs, "metadata-record", {"class": "column"})
         sub(mr, "remote-name", text=name)
         sub(mr, "remote-type", text=str(REMOTE_TYPE[dtype]))
         sub(mr, "local-name", text=f"[{name}]")
-        sub(mr, "parent-name", text="[ratchet.csv]")
+        sub(mr, "parent-name", text=f"[{csvname}]")
         sub(mr, "remote-alias", text=name)
         sub(mr, "ordinal", text=str(i))
         sub(mr, "local-type", text=dtype)
@@ -321,41 +420,62 @@ def build_datasource(parent, labels):
             sub(mr, "collation", {"flag": "0", "name": "LEN_RUS"})
 
     sub(ds, "aliases", {"enabled": "yes"})
-    for name in RATCHET_FIELDS:
-        column_decl(ds, name)
-    for name in CALCS:
+    for name in fields:
+        column_decl(ds, name, fields=fields)
+    for name in calcs:
         calc_decl(ds, name)
-    sub(ds, "column-instance", {"column": "[bucket_label]", "derivation": "None", "name": I_BUCKET,
-                                "pivot": "key", "type": "nominal"})
+    for column, derivation, inst, typ in instances:
+        sub(ds, "column-instance", {"column": f"[{column}]", "derivation": derivation, "name": inst,
+                                    "pivot": "key", "type": typ})
     sub(ds, "layout", {"dim-ordering": "alphabetic", "dim-percentage": "0.5", "measure-ordering": "alphabetic",
                        "measure-percentage": "0.4", "show-structure": "true"})
-    style = sub(ds, "style")
-    rule = sub(style, "style-rule", {"element": "mark"})
-    enc = sub(rule, "encoding", {"attr": "color", "field": I_BUCKET, "type": "palette"})
-    for _, bucket, color in BUCKET_COLORS:
-        m = sub(enc, "map", {"to": color})
-        sub(m, "bucket", text=f'"{labels[bucket]}"')
-    # v3 band colours: palette on the boolean calc, buckets unquoted true/false (V3 SOURCES [C]).
-    enc = sub(rule, "encoding", {"attr": "color", "field": I_ACTIVE, "type": "palette"})
-    for bucket, color in BAND_COLORS.items():
-        sub(sub(enc, "map", {"to": color}), "bucket", text=bucket)
-    sv = sub(ds, "semantic-values")
-    sub(sv, "semantic-value", {"key": "[Country].[Name]", "value": '"United States"'})
+    if palettes:
+        rule = sub(sub(ds, "style"), "style-rule", {"element": "mark"})
+        for inst, maps in palettes:
+            enc = sub(rule, "encoding", {"attr": "color", "field": inst, "type": "palette"})
+            for bucket, color in maps:
+                sub(sub(enc, "map", {"to": color}), "bucket", text=bucket)
+    if semantic:
+        sv = sub(ds, "semantic-values")
+        sub(sv, "semantic-value", {"key": "[Country].[Name]", "value": '"United States"'})
     return ds
+
+
+def build_datasource(parent, labels):
+    return build_text_datasource(
+        parent, SRC["ratchet"], calcs=RATCHET_CALCS,
+        instances=[("bucket_label", "None", I_BUCKET, "nominal")],
+        palettes=[(I_BUCKET, [(f'"{labels[b]}"', c) for _, b, c in BUCKET_COLORS]),
+                  # v3 band colours: palette on the boolean calc, buckets unquoted true/false (V3 SOURCES [C]).
+                  (I_ACTIVE, list(BAND_COLORS.items()))],
+        semantic=True)
+
+
+def build_fig_datasources(parent):
+    """Figures 2-4: one packaged text source each, no joins."""
+    cl = [(f'"{COLLATERAL_LABELS[k]}"', c) for k, c in COLLATERAL_COLORS.items()]
+    ck = [(f'"{k}"', c) for k, c in COLLATERAL_COLORS.items()]
+    build_text_datasource(parent, SRC["crisis_windows"], calcs=[CALC_PTS])
+    build_text_datasource(parent, SRC["collateral"], instances=[("class_label", "None", I_CLASS_LABEL, "nominal")],
+                          palettes=[(I_CLASS_LABEL, cl)])
+    build_text_datasource(parent, SRC["payment_priority"],
+                          instances=[("collateral_class", "None", I_CCLASS, "nominal")],
+                          palettes=[(I_CCLASS, ck)])
 
 
 # ---------------------------------------------------------------- worksheets
 
-def view_header(table, fields, instances, calcs=(), params=False):
+def view_header(table, fields, instances, calcs=(), params=False, key="ratchet"):
+    src = SRC[key]
     view = sub(table, "view")
     dss = sub(view, "datasources")
-    sub(dss, "datasource", {"caption": DS_CAPTION, "name": DS})
+    sub(dss, "datasource", {"caption": src["caption"], "name": src["ds"]})
     if params:  # data source first, then Parameters; dependencies: Parameters first (V3 SOURCES [P])
         sub(dss, "datasource", {"name": PARAMS})
         param_decl(sub(view, "datasource-dependencies", {"datasource": PARAMS}))
-    dep = sub(view, "datasource-dependencies", {"datasource": DS})
+    dep = sub(view, "datasource-dependencies", {"datasource": src["ds"]})
     for name in fields:
-        column_decl(dep, name)
+        column_decl(dep, name, fields=src["fields"])
     for name in calcs:
         calc_decl(dep, name)
     for column, derivation, inst, typ in instances:
@@ -381,7 +501,7 @@ def build_main_sheet(parent, labels):
         (CALC_ACTIVE[1:-1], "None", I_ACTIVE, "nominal"),
         ("share_of_total", "Sum", I_SHARE, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
-    ], calcs=list(CALCS), params=True)
+    ], calcs=RATCHET_CALCS, params=True)
     # No sort element (deliberately, v3): the stack order stays a hand step (GETTING_STARTED.md "Updating to
     # v3": Bucket label -> Sort by Field Sort order, Minimum, Descending). V3 SOURCES [S] records the
     # <sort class='computed'> form that would fit here, but it was left out to keep the risk minimal.
@@ -447,10 +567,115 @@ def build_public_sheet(parent):
     sub(table, "cols", text=q(I_QUARTER))
 
 
+def member_filter(view, key, inst, value):
+    """Single-value categorical filter + its <slices> entry, copied from TSI ts_content_04.02.twb (18.1, 2025.1):
+    <filter class='categorical' column=...><groupfilter function='member' level=... member='"View"'
+    user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'/></filter> ... <slices>."""
+    f = sub(view, "filter", {"class": "categorical", "column": qs(key, inst)})
+    sub(f, "groupfilter", {"function": "member", "level": inst, "member": tq(value), "user:ui-domain": "relevant",
+                           "user:ui-enumeration": "inclusive", "user:ui-marker": "enumerate"})
+    sub(sub(view, "slices"), "column", text=qs(key, inst))
+
+
+def simple_pane(table, mark, color=None):
+    pane = sub(sub(table, "panes"), "pane", {"selection-relaxation-option": "selection-relaxation-allow"})
+    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
+    sub(pane, "mark", {"class": mark})  # 'Line' as in Logshark ResourceManager.twbx; 'Area' as v2
+    if color:
+        sub(sub(pane, "encodings"), "color", {"column": color})
+
+
+def build_crisis_sheet(parent):
+    k = "crisis_windows"
+    ws = sub(parent, "worksheet", {"name": SHEET_CRISIS})
+    title(ws, "Public share around each crisis: change since the start quarter (t0), percentage points")
+    table = sub(ws, "table")
+    view = view_header(table, ["crisis_name", "delta_from_t0", "metric", "q_offset"], [
+        ("crisis_name", "None", I_CRISIS, "nominal"),
+        ("metric", "None", I_METRIC, "nominal"),
+        ("q_offset", "None", I_QOFF, "quantitative"),
+        (CALC_PTS[1:-1], "Avg", I_PTS, "quantitative"),
+    ], calcs=[CALC_PTS], key=k)
+    member_filter(view, k, I_METRIC, "public_share")
+    sub(view, "aggregation", {"value": "true"})
+    sub(table, "style")
+    simple_pane(table, "Line")
+    # one panel per row: discrete dimension crossed with the measure, '([dim:nk] * [measure:qk])' as in
+    # Logshark Bridge.twbx (18.1) / TSI ts_web_requests_03.01.twb
+    sub(table, "rows", text=f"({qs(k, I_CRISIS)} * {qs(k, I_PTS)})")
+    sub(table, "cols", text=qs(k, I_QOFF))
+
+
+def build_collateral_sheets(parent):
+    k = "collateral"
+    ws = sub(parent, "worksheet", {"name": SHEET_COLL_SHARE})
+    title(ws, "Share of household debt by collateral behind it")
+    table = sub(ws, "table")
+    view = view_header(table, ["class_label", "date", "share_of_debt"], [
+        ("class_label", "None", I_CLASS_LABEL, "nominal"),
+        ("share_of_debt", "Sum", I_COLL_SHARE, "quantitative"),
+        ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
+    ], key=k)
+    sub(view, "aggregation", {"value": "true"})
+    rule = sub(sub(table, "style"), "style-rule", {"element": "axis"})
+    sub(rule, "encoding", {"attr": "space", "class": "0", "field": qs(k, I_COLL_SHARE), "field-type": "quantitative",
+                           "max": "1.0", "min": "0.0", "range-type": "fixed", "scope": "rows", "type": "space"})
+    simple_pane(table, "Area", qs(k, I_CLASS_LABEL))
+    sub(table, "rows", text=qs(k, I_COLL_SHARE))
+    sub(table, "cols", text=qs(k, I_QUARTER))
+
+    ws = sub(parent, "worksheet", {"name": SHEET_COLL_COVER})
+    title(ws, "Home-backed debt: collateral value ÷ debt (coverage ratio)")
+    table = sub(ws, "table")
+    view = view_header(table, ["collateral_class", "coverage_ratio", "date"], [
+        ("collateral_class", "None", I_CCLASS, "nominal"),
+        ("coverage_ratio", "Avg", I_COVER, "quantitative"),
+        ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
+    ], key=k)
+    member_filter(view, k, I_CCLASS, "home_backed")
+    sub(view, "aggregation", {"value": "true"})
+    sub(table, "style")
+    simple_pane(table, "Line")
+    sub(table, "rows", text=qs(k, I_COVER))
+    sub(table, "cols", text=qs(k, I_QUARTER))
+
+
+def build_payment_sheet(parent):
+    k = "payment_priority"
+    ws = sub(parent, "worksheet", {"name": SHEET_PAYMENT})
+    title(ws, "Share of balances moving into serious delinquency (90+ days), by loan type")
+    table = sub(ws, "table")
+    view = view_header(table, ["collateral_class", "date", "loan_label", "transition_serious_pct"], [
+        ("collateral_class", "None", I_CCLASS, "nominal"),
+        ("loan_label", "None", I_LOAN, "nominal"),
+        ("transition_serious_pct", "Avg", I_TRANS, "quantitative"),
+        ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
+    ], key=k)
+    sub(view, "aggregation", {"value": "true"})
+    sub(table, "style")
+    simple_pane(table, "Line", qs(k, I_CCLASS))
+    sub(table, "rows", text=f"({qs(k, I_LOAN)} * {qs(k, I_TRANS)})")
+    sub(table, "cols", text=qs(k, I_QUARTER))
+
+
 # ---------------------------------------------------------------- dashboard + windows
 
-W, H = 1000, 700
-ROWS = [("title", 50), ("main", 430), ("legend", 50), ("public", 170)]  # px, sums to H
+W, H = 1000, 700  # design size used to split zone heights; the dashboards themselves size automatically
+DASHBOARDS = {  # name -> zones top to bottom: (kind, px or None = takes the rest, sheet/text, legend param, pane)
+    DASHBOARD: [("title", 50, TITLE, None, None), ("sheet", None, SHEET_MAIN, None, None),
+                ("legend", 50, SHEET_MAIN, q(I_BUCKET), PANE_SHARE), ("sheet", 170, SHEET_PUBLIC, None, None)],
+    DASH_CRISIS: [("title", 50, "Did crises move debt onto the public balance sheet?", None, None),
+                  ("sheet", None, SHEET_CRISIS, None, None)],
+    DASH_COLLATERAL: [("title", 50, "What stands behind US household debt?", None, None),
+                      ("sheet", None, SHEET_COLL_SHARE, None, None),
+                      ("legend", 50, SHEET_COLL_SHARE, qs("collateral", I_CLASS_LABEL), "0"),
+                      ("sheet", 220, SHEET_COLL_COVER, None, None)],
+    DASH_PAYMENT: [("title", 50, "Which debts do households stop paying first?", None, None),
+                   ("sheet", None, SHEET_PAYMENT, None, None),
+                   ("legend", 50, SHEET_PAYMENT, qs("payment_priority", I_CCLASS), "0")],
+}
+SHEET_LEGENDS = {SHEET_MAIN: (q(I_BUCKET), PANE_SHARE), SHEET_COLL_SHARE: (qs("collateral", I_CLASS_LABEL), "0"),
+                 SHEET_PAYMENT: (qs("payment_priority", I_CCLASS), "0")}
 
 
 def zone_style(parent, margin):
@@ -460,32 +685,34 @@ def zone_style(parent, margin):
         sub(zs, "format", {"attr": attr, "value": val})
 
 
-def build_dashboard(parent):
-    db = sub(parent, "dashboard", {"name": DASHBOARD})
+def build_dashboard(parent, name, rows):
+    db = sub(parent, "dashboard", {"name": name})
     sub(db, "style")
-    sub(db, "size", {"maxheight": H, "maxwidth": W, "minheight": H, "minwidth": W})
+    # Automatic sizing so the views fit the site's column width: <size sizing-mode='automatic' />, as in
+    # Logshark Bridge.twbx / TabadminController.twbx / Config.twbx (18.1, builds 2022.3.22 and 2023.3.12).
+    sub(db, "size", {"sizing-mode": "automatic"})
     zones = sub(db, "zones")
     root = sub(zones, "zone", {"h": 100000, "id": 1, "type": "layout-basic", "w": 100000, "x": 0, "y": 0})
     flow = sub(root, "zone", {"h": 100000, "id": 2, "param": "vert", "type": "layout-flow", "w": 100000,
                               "x": 0, "y": 0})
+    rest = H - sum(px for _, px, *_ in rows if px)
     y = 0
-    for zid, (kind, px) in enumerate(ROWS, start=3):
-        h = round(px * 100000 / H)
+    for zid, (kind, px, what, param, pane) in enumerate(rows, start=3):
+        h = round((px or rest) * 100000 / H)
         if kind == "title":
             z = sub(flow, "zone", {"fixed-size": px, "h": h, "id": zid, "is-fixed": "true", "type": "text",
                                    "w": 100000, "x": 0, "y": y})
             ft = sub(z, "formatted-text")
-            sub(ft, "run", {"bold": "true", "fontcolor": "#0b0b0b", "fontsize": "18"}, TITLE)
+            sub(ft, "run", {"bold": "true", "fontcolor": "#0b0b0b", "fontsize": "18"}, what)
             zone_style(z, "8")
         elif kind == "legend":
             z = sub(flow, "zone", {"fixed-size": px, "h": h, "id": zid, "is-fixed": "true",
-                                   "leg-item-layout": "horz", "name": SHEET_MAIN, "pane-specification-id": PANE_SHARE,
-                                   "param": q(I_BUCKET), "type": "color", "w": 100000, "x": 0, "y": y})
+                                   "leg-item-layout": "horz", "name": what, "pane-specification-id": pane,
+                                   "param": param, "type": "color", "w": 100000, "x": 0, "y": y})
             zone_style(z, "4")
         else:
-            name = SHEET_MAIN if kind == "main" else SHEET_PUBLIC
-            attrib = {"h": h, "id": zid, "name": name, "w": 100000, "x": 0, "y": y}
-            if kind == "public":
+            attrib = {"h": h, "id": zid, "name": what, "w": 100000, "x": 0, "y": y}
+            if px:
                 attrib = {"fixed-size": px, **attrib, "is-fixed": "true"}
             z = sub(flow, "zone", attrib)
             zone_style(z, "4")
@@ -513,13 +740,17 @@ def worksheet_window(parent, name, legend_param=None, legend_pane="0"):
 
 def build_windows(parent):
     wins = sub(parent, "windows", {"source-height": "30"})
-    worksheet_window(wins, SHEET_MAIN, q(I_BUCKET), PANE_SHARE)
-    worksheet_window(wins, SHEET_PUBLIC)
-    dw = sub(wins, "window", {"class": "dashboard", "maximized": "true", "name": DASHBOARD})
-    vps = sub(dw, "viewpoints")
-    for name in (SHEET_MAIN, SHEET_PUBLIC):
-        sub(sub(vps, "viewpoint", {"name": name}), "zoom", {"type": "entire-view"})
-    sub(dw, "active", {"id": "-1"})
+    for name in SHEETS:
+        worksheet_window(wins, name, *SHEET_LEGENDS.get(name, (None, "0")))
+    for name, rows in DASHBOARDS.items():
+        attrib = {"class": "dashboard", "maximized": "true", "name": name} if name == DASHBOARD \
+            else {"class": "dashboard", "name": name}
+        dw = sub(wins, "window", attrib)
+        vps = sub(dw, "viewpoints")
+        for kind, _, what, *_ in rows:
+            if kind == "sheet":
+                sub(sub(vps, "viewpoint", {"name": what}), "zoom", {"type": "entire-view"})
+        sub(dw, "active", {"id": "-1"})
 
 
 # ---------------------------------------------------------------- assemble
@@ -527,6 +758,7 @@ def build_windows(parent):
 def build_tree() -> ET.ElementTree:
     labels = read_ratchet_meta()
     crisis_ids = read_crisis_ids()
+    check_fig_headers()
     wb = ET.Element("workbook", {"original-version": VERSION, "source-build": SOURCE_BUILD,
                                  "source-platform": "win", "version": VERSION})
     prefs = sub(wb, "preferences")
@@ -535,11 +767,16 @@ def build_tree() -> ET.ElementTree:
     dss = sub(wb, "datasources")
     build_parameters(dss, crisis_ids)  # 'Parameters' is always the first datasource (V3 SOURCES [P])
     build_datasource(dss, labels)
+    build_fig_datasources(dss)
     wss = sub(wb, "worksheets")
     build_main_sheet(wss, labels)
     build_public_sheet(wss)
+    build_crisis_sheet(wss)
+    build_collateral_sheets(wss)
+    build_payment_sheet(wss)
     dbs = sub(wb, "dashboards")
-    build_dashboard(dbs)
+    for name, rows in DASHBOARDS.items():
+        build_dashboard(dbs, name, rows)
     build_windows(wb)
     return ET.ElementTree(wb)
 
@@ -615,8 +852,13 @@ def self_check() -> None:
     root = ET.parse(TWB).getroot()
     assert root.tag == "workbook" and root.get("version") == VERSION
     top = root.findall("datasources/datasource")
-    assert [d.get("name") for d in top] == [PARAMS, DS], [d.get("name") for d in top]
-    params, ds = top
+    ds_names = [PARAMS] + [SRC[k]["ds"] for k in SRC]
+    assert [d.get("name") for d in top] == ds_names, [d.get("name") for d in top]
+    params, ds = top[:2]
+    for d, k in zip(top[1:], SRC):
+        tc = d.find("connection/named-connections/named-connection/connection")
+        assert (d.get("caption"), tc.get("filename"), tc.get("directory")) == (SRC[k]["caption"], f"{k}.csv",
+                                                                              PACKAGED_DIR), k
     assert params.get("hasconnection") == "false" and params.find("connection") is None
     pcol = params.find("column")
     members = [m.get("value") for m in pcol.iterfind("members/member")]
@@ -632,12 +874,26 @@ def self_check() -> None:
                      "Is active crisis": "[crisis_id] = [Parameters].[Active crisis]"}, calcs
     sheets = [w.get("name") for w in root.iterfind("worksheets/worksheet")]
     dashes = [d.get("name") for d in root.iterfind("dashboards/dashboard")]
-    assert sheets == [SHEET_MAIN, SHEET_PUBLIC] and dashes == [DASHBOARD]
-    assert len(set(sheets + dashes)) == 3, "sheet and dashboard names must be unique"
+    assert sheets == SHEETS and dashes == list(DASHBOARDS), (sheets, dashes)
+    assert dashes == [DASHBOARD, "CrisisSmallMultiples", "Collateral", "PaymentPriority"]
+    assert len(set(sheets + dashes)) == len(sheets) + len(dashes), "sheet and dashboard names must be unique"
+    sizes = [d.find("size").attrib for d in root.iterfind("dashboards/dashboard")]
+    assert all(sz == {"sizing-mode": "automatic"} for sz in sizes), sizes
     zone_names = {z.get("name") for z in root.iter("zone") if z.get("name")}
     assert zone_names <= set(sheets), zone_names
     marks = [m.get("class") for m in root.iter("mark")]
-    assert marks == ["Automatic", "Bar", "Area", "Automatic"], marks
+    assert marks == ["Automatic", "Bar", "Area", "Automatic", "Line", "Area", "Line", "Line"], marks
+    # every [ds].[instance] on any sheet is declared in that sheet's datasource-dependencies
+    for w in root.iterfind("worksheets/worksheet"):
+        t = w.find("table")
+        decl = {f"[{d.get('datasource')}].{ci.get('name')}" for d in t.iterfind("view/datasource-dependencies")
+                for ci in d.iterfind("column-instance")}
+        import re as _re
+        used = set(_re.findall(r"\[federated\.[a-z0-9]+\]\.\[[^\]]+\]", (t.findtext("rows") or "") + (t.findtext("cols") or "")))
+        used |= {e.get(k) for e in t.iter() for k in ("column", "field", "y-axis-name")
+                 if e.get(k, "").startswith("[federated.")}
+        used |= {e.text for e in t.iterfind("view/slices/column")}
+        assert used <= decl, (w.get("name"), used - decl)
     seqs = check_view_order(root)
     # main sheet: every [ds].[instance] it references is declared in its datasource-dependencies
     main = root.find(f"worksheets/worksheet[@name='{SHEET_MAIN}']/table")
@@ -660,7 +916,8 @@ def self_check() -> None:
         assert z.read(TWB.name) == TWB.read_bytes()
     expected = [TWB.name] + [f"{PACKAGED_DIR}/{n}" for n in CSV_FILES]
     assert names == expected, names
-    print("self-check OK: XML parses;", f"datasources {[PARAMS, DS_CAPTION]};",
+    print("self-check OK: XML parses;", f"datasources {[PARAMS] + [SRC[k]['caption'] for k in SRC]};",
+          f"all dashboards sizing-mode=automatic;",
           f"parameter {PARAM_CAPTION!r} default {PARAM_DEFAULT!r} + {len(members) - 1} crisis ids;",
           f"worksheets {sheets}; dashboard {dashes}; zip entries {names}")
     print("  <view> child order fits the D2E8DA72 content model:", *seqs, sep="\n    ")
@@ -719,29 +976,36 @@ def docapi_check() -> None:
     for path in (TWB, TWBX):
         wb = Workbook(str(path))
         names = [d.name for d in wb.datasources]
-        assert names == [PARAMS, DS], names
+        assert names == [PARAMS] + [SRC[k]["ds"] for k in SRC], names
+        for d2, k in zip(wb.datasources[1:], SRC):
+            f2 = {f.id for f in d2.fields.values()}
+            miss = [n for n in SRC[k]["fields"] if f"[{n}]" not in f2]
+            assert d2.caption == SRC[k]["caption"] and d2.connections[0].dbclass == "textscan" and not miss, (k, miss)
+        assert CALC_PTS in {f.id for f in wb.datasources[2].fields.values()}
+        assert wb.dashboards == list(DASHBOARDS), wb.dashboards
         d = wb.datasources[1]
         assert d.caption == DS_CAPTION
         c = d.connections[0]
         assert c.dbclass == "textscan", c.dbclass
         fields = {f.id: f for f in d.fields.values()}
-        missing = [n for n in RATCHET_FIELDS if f"[{n}]" not in fields] + [n for n in CALCS if n not in fields]
+        missing = [n for n in RATCHET_FIELDS if f"[{n}]" not in fields] + [n for n in RATCHET_CALCS if n not in fields]
         assert not missing, missing
         for n, spec in RATCHET_FIELDS.items():
             f = fields[f"[{n}]"]
             assert f.datatype == spec[0], (n, f.datatype)
-        for n, spec in CALCS.items():
-            f = fields[n]
+        for n in RATCHET_CALCS:
+            spec, f = CALCS[n], fields[n]
             assert (f.caption, f.datatype, f.calculation) == (spec[0], spec[1], spec[5]), (n, f.caption)
         pfields = {f.caption: f for f in wb.datasources[0].fields.values()}
         assert PARAM_CAPTION in pfields, list(pfields)
-        assert set(wb.worksheets) == {SHEET_MAIN, SHEET_PUBLIC}, wb.worksheets
+        assert wb.worksheets == SHEETS, wb.worksheets
         main_uses = {f.caption for f in fields.values() if SHEET_MAIN in f.worksheets}
-        print(f"tableaudocumentapi OK: {path.name}: worksheets={wb.worksheets} datasources={names} "
+        print(f"tableaudocumentapi OK: {path.name}: worksheets={wb.worksheets} dashboards={wb.dashboards} "
+              f"datasources={[x.caption or x.name for x in wb.datasources]} "
               f"caption={d.caption!r} connection class={c.dbclass} fields={len(fields)} "
               f"parameter={pfields[PARAM_CAPTION].caption!r} (worksheets {pfields[PARAM_CAPTION].worksheets})")
         print(f"    fields used on {SHEET_MAIN!r}: {sorted(main_uses)}")
-        for n in list(RATCHET_FIELDS) + list(CALCS):
+        for n in ["recession", "crisis_id"] + RATCHET_CALCS:
             f = fields[n if n in CALCS else f"[{n}]"]
             extra = f" formula={f.calculation!r}" if f.calculation else ""
             print(f"    {f.id:<34} caption={f.caption!r:<26} datatype={f.datatype:<8} role={f.role}{extra}")
