@@ -7,29 +7,6 @@
     <preference name='ui.shelf.height' value='26' />
   </preferences>
   <datasources>
-    <datasource hasconnection='false' inline='true' name='Parameters' version='18.1'>
-      <aliases enabled='yes' />
-      <column caption='Active crisis' datatype='string' name='[Active crisis]' param-domain-type='list' role='measure' type='nominal' value='&quot;none&quot;'>
-        <calculation class='tableau' formula='&quot;none&quot;' />
-        <members>
-          <member value='&quot;none&quot;' />
-          <member value='&quot;recession_1953&quot;' />
-          <member value='&quot;recession_1957&quot;' />
-          <member value='&quot;recession_1960&quot;' />
-          <member value='&quot;recession_1969&quot;' />
-          <member value='&quot;oil_shock_1973&quot;' />
-          <member value='&quot;recession_1980&quot;' />
-          <member value='&quot;volcker_1981&quot;' />
-          <member value='&quot;sl_1990&quot;' />
-          <member value='&quot;dotcom_2001&quot;' />
-          <member value='&quot;gfc_2007&quot;' />
-          <member value='&quot;covid_2020&quot;' />
-          <member value='&quot;cares_forbearance_2020&quot;' />
-          <member value='&quot;student_repayment_2023&quot;' />
-          <member value='&quot;student_collections_2025&quot;' />
-        </members>
-      </column>
-    </datasource>
     <datasource caption='ratchet' inline='true' name='federated.fuastzwmj3dygtt66pqgja3dp4fw' version='18.1'>
       <connection class='federated'>
         <named-connections>
@@ -257,12 +234,6 @@
       <column caption='Fed MBS share of scope' datatype='real' default-format='p0.0%' name='[fed_mbs_share_of_scope]' role='measure' type='quantitative' />
       <column caption='Recession' datatype='integer' name='[recession]' role='measure' type='quantitative' />
       <column caption='Crisis id' datatype='string' name='[crisis_id]' role='dimension' type='nominal' />
-      <column caption='Band' datatype='integer' default-format='p0%' name='[Calculation_3083759604030155231]' role='measure' type='quantitative'>
-        <calculation class='tableau' formula='IF [recession] = 1 THEN 1 END' />
-      </column>
-      <column caption='Is active crisis' datatype='boolean' name='[Calculation_8922703703112499887]' role='dimension' type='nominal'>
-        <calculation class='tableau' formula='[crisis_id] = [Parameters].[Active crisis]' />
-      </column>
       <column-instance column='[bucket_label]' derivation='None' name='[none:bucket_label:nk]' pivot='key' type='nominal' />
       <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
       <style>
@@ -285,14 +256,6 @@
             </map>
             <map to='#e87ba4'>
               <bucket>&quot;Finance companies &amp; other private&quot;</bucket>
-            </map>
-          </encoding>
-          <encoding attr='color' field='[none:Calculation_8922703703112499887:nk]' type='palette'>
-            <map to='#d9d9d9'>
-              <bucket>false</bucket>
-            </map>
-            <map to='#9a9a9a'>
-              <bucket>true</bucket>
             </map>
           </encoding>
         </style-rule>
@@ -852,28 +815,12 @@
         <view>
           <datasources>
             <datasource caption='ratchet' name='federated.fuastzwmj3dygtt66pqgja3dp4fw' />
-            <datasource name='Parameters' />
           </datasources>
-          <datasource-dependencies datasource='Parameters'>
-            <column caption='Active crisis' datatype='string' name='[Active crisis]' param-domain-type='list' role='measure' type='nominal' value='&quot;none&quot;'>
-              <calculation class='tableau' formula='&quot;none&quot;' />
-            </column>
-          </datasource-dependencies>
           <datasource-dependencies datasource='federated.fuastzwmj3dygtt66pqgja3dp4fw'>
             <column caption='Bucket label' datatype='string' name='[bucket_label]' role='dimension' type='nominal' />
-            <column caption='Crisis id' datatype='string' name='[crisis_id]' role='dimension' type='nominal' />
             <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
-            <column caption='Recession' datatype='integer' name='[recession]' role='measure' type='quantitative' />
             <column caption='Share of total' datatype='real' default-format='p0%' name='[share_of_total]' role='measure' type='quantitative' />
-            <column caption='Band' datatype='integer' default-format='p0%' name='[Calculation_3083759604030155231]' role='measure' type='quantitative'>
-              <calculation class='tableau' formula='IF [recession] = 1 THEN 1 END' />
-            </column>
-            <column caption='Is active crisis' datatype='boolean' name='[Calculation_8922703703112499887]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='[crisis_id] = [Parameters].[Active crisis]' />
-            </column>
             <column-instance column='[bucket_label]' derivation='None' name='[none:bucket_label:nk]' pivot='key' type='nominal' />
-            <column-instance column='[Calculation_3083759604030155231]' derivation='Avg' name='[avg:Calculation_3083759604030155231:qk]' pivot='key' type='quantitative' />
-            <column-instance column='[Calculation_8922703703112499887]' derivation='None' name='[none:Calculation_8922703703112499887:nk]' pivot='key' type='nominal' />
             <column-instance column='[share_of_total]' derivation='Sum' name='[sum:share_of_total:qk]' pivot='key' type='quantitative' />
             <column-instance column='[date]' derivation='Quarter-Trunc' name='[tqr:date:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
@@ -881,35 +828,11 @@
         </view>
         <style>
           <style-rule element='axis'>
-            <encoding attr='space' class='0' field='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[avg:Calculation_3083759604030155231:qk]' field-type='quantitative' max='1.0' min='0.0' range-type='fixed' scope='rows' type='space' />
-            <encoding attr='space' class='0' field='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[sum:share_of_total:qk]' field-type='quantitative' fold='true' scope='rows' synchronized='true' type='space' />
-            <format attr='title' class='0' field='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[avg:Calculation_3083759604030155231:qk]' scope='rows' value='Share of total' />
-            <format attr='display' class='0' field='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[sum:share_of_total:qk]' scope='rows' value='false' />
+            <encoding attr='space' class='0' field='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[sum:share_of_total:qk]' field-type='quantitative' max='1.0' min='0.0' range-type='fixed' scope='rows' type='space' />
           </style-rule>
         </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-          </pane>
-          <pane id='1' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[avg:Calculation_3083759604030155231:qk]'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Bar' />
-            <mark-sizing custom-mark-size-in-axis-units='1.0' mark-alignment='mark-alignment-left' mark-sizing-setting='marks-scaling-on' use-custom-mark-size='false' />
-            <encodings>
-              <color column='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[none:Calculation_8922703703112499887:nk]' />
-            </encodings>
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-transparency' value='102' />
-              </style-rule>
-            </style>
-          </pane>
-          <pane id='2' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[sum:share_of_total:qk]'>
             <view>
               <breakdown value='auto' />
             </view>
@@ -919,7 +842,7 @@
             </encodings>
           </pane>
         </panes>
-        <rows>([federated.fuastzwmj3dygtt66pqgja3dp4fw].[avg:Calculation_3083759604030155231:qk] + [federated.fuastzwmj3dygtt66pqgja3dp4fw].[sum:share_of_total:qk])</rows>
+        <rows>[federated.fuastzwmj3dygtt66pqgja3dp4fw].[sum:share_of_total:qk]</rows>
         <cols>[federated.fuastzwmj3dygtt66pqgja3dp4fw].[tqr:date:qk]</cols>
       </table>
     </worksheet>
@@ -1157,7 +1080,7 @@
                 <format attr='margin' value='4' />
               </zone-style>
             </zone>
-            <zone fixed-size='50' h='7143' id='5' is-fixed='true' leg-item-layout='horz' name='Ratchet – main' pane-specification-id='2' param='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[none:bucket_label:nk]' type='color' w='100000' x='0' y='68572'>
+            <zone fixed-size='50' h='7143' id='5' is-fixed='true' leg-item-layout='horz' name='Ratchet – main' pane-specification-id='0' param='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[none:bucket_label:nk]' type='color' w='100000' x='0' y='68572'>
               <zone-style>
                 <format attr='border-color' value='#000000' />
                 <format attr='border-style' value='none' />
@@ -1336,7 +1259,7 @@
         </edge>
         <edge name='right'>
           <strip size='220'>
-            <card pane-specification-id='2' param='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[none:bucket_label:nk]' type='color' />
+            <card pane-specification-id='0' param='[federated.fuastzwmj3dygtt66pqgja3dp4fw].[none:bucket_label:nk]' type='color' />
           </strip>
         </edge>
       </cards>
@@ -1344,7 +1267,7 @@
         <zoom type='entire-view' />
       </viewpoint>
     </window>
-    <window class='worksheet' name='Public share'>
+    <window class='worksheet' maximized='true' name='Public share'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -1479,7 +1402,7 @@
         <zoom type='entire-view' />
       </viewpoint>
     </window>
-    <window class='dashboard' maximized='true' name='Ratchet'>
+    <window class='dashboard' name='Ratchet'>
       <viewpoints>
         <viewpoint name='Ratchet – main'>
           <zoom type='entire-view' />

@@ -171,6 +171,7 @@ SHEET_CRISIS = "Crisis SM – main"
 SHEET_COLL_SHARE = "Collateral – share"
 SHEET_COLL_COVER = "Collateral – coverage"
 SHEET_PAYMENT = "Payment priority – main"
+OPEN_SHEET = "Public share"
 SHEETS = [SHEET_MAIN, SHEET_PUBLIC, SHEET_CRISIS, SHEET_COLL_SHARE, SHEET_COLL_COVER, SHEET_PAYMENT]
 CRISIS_FIELDS = {  # == tableau_export.COLUMNS["crisis_windows"]
     "crisis_id": ("string", "dimension", "nominal", "Crisis id", None),
@@ -443,12 +444,8 @@ def build_text_datasource(parent, src, calcs=(), instances=(), palettes=(), sema
 
 def build_datasource(parent, labels):
     return build_text_datasource(
-        parent, SRC["ratchet"], calcs=RATCHET_CALCS,
-        instances=[("bucket_label", "None", I_BUCKET, "nominal")],
-        palettes=[(I_BUCKET, [(f'"{labels[b]}"', c) for _, b, c in BUCKET_COLORS]),
-                  # v3 band colours: palette on the boolean calc, buckets unquoted true/false (V3 SOURCES [C]).
-                  (I_ACTIVE, list(BAND_COLORS.items()))],
-        semantic=True)
+        parent, SRC["ratchet"], instances=[("bucket_label", "None", I_BUCKET, "nominal")],
+        palettes=[(I_BUCKET, [(f'"{labels[b]}"', c) for _, b, c in BUCKET_COLORS])], semantic=True)
 
 
 def build_fig_datasources(parent):
@@ -492,56 +489,32 @@ def title(parent, text):
 
 
 def build_main_sheet(parent, labels):
+    """v2 design, restored in v3.1: the v3 dual-axis bands rendered the Ratchet dashboard blank in the Tableau
+    Public app 2026.3, so the bands, the Band/Is active crisis calcs and the Parameters datasource are gone."""
     ws = sub(parent, "worksheet", {"name": SHEET_MAIN})
     title(ws, "Share of US household mortgages + consumer credit, by who holds the risk")
     table = sub(ws, "table")
-    view = view_header(table, ["bucket_label", "crisis_id", "date", "recession", "share_of_total"], [
+    view = view_header(table, ["bucket_label", "date", "share_of_total"], [
         ("bucket_label", "None", I_BUCKET, "nominal"),
-        (CALC_BAND[1:-1], "Avg", I_BAND, "quantitative"),
-        (CALC_ACTIVE[1:-1], "None", I_ACTIVE, "nominal"),
         ("share_of_total", "Sum", I_SHARE, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
-    ], calcs=RATCHET_CALCS, params=True)
-    # No sort element (deliberately, v3): the stack order stays a hand step (GETTING_STARTED.md "Updating to
-    # v3": Bucket label -> Sort by Field Sort order, Minimum, Descending). V3 SOURCES [S] records the
-    # <sort class='computed'> form that would fit here, but it was left out to keep the risk minimal.
+    ])
+    # No sort element: Tableau Public rejected <manual-sort> here (error D2E8DA72, "element
+    # 'manual-sort' is not allowed"). Stack order is set by hand (GETTING_STARTED.md: sort
+    # Bucket label by Sort order); the legend falls back to alphabetical until then.
     sub(view, "aggregation", {"value": "true"})
-
-    # Dual axis (V3 SOURCES [D]). Band is the FIRST measure so its bars are drawn underneath; its (left) axis
-    # stays visible, fixed 0-1, formatted as a percentage and titled like the v2 axis. Share of total is the
-    # second measure: synchronised to the first and its (right) axis hidden.
     style = sub(table, "style")
     rule = sub(style, "style-rule", {"element": "axis"})
-    sub(rule, "encoding", {"attr": "space", "class": "0", "field": q(I_BAND), "field-type": "quantitative",
-                           "max": "1.0", "min": "0.0", "range-type": "fixed", "scope": "rows", "type": "space"})
     sub(rule, "encoding", {"attr": "space", "class": "0", "field": q(I_SHARE), "field-type": "quantitative",
-                           "fold": "true", "scope": "rows", "synchronized": "true", "type": "space"})
-    sub(rule, "format", {"attr": "title", "class": "0", "field": q(I_BAND), "scope": "rows",
-                         "value": "Share of total"})
-    sub(rule, "format", {"attr": "display", "class": "0", "field": q(I_SHARE), "scope": "rows", "value": "false"})
-
+                           "max": "1.0", "min": "0.0", "range-type": "fixed", "scope": "rows", "type": "space"})
     panes = sub(table, "panes")
-    # "All" pane (no id), as ClusterController/Hyper write it; per-measure panes override its mark.
     pane = sub(panes, "pane", {"selection-relaxation-option": "selection-relaxation-allow"})
-    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
-    sub(pane, "mark", {"class": "Automatic"})
-    # Band pane: grey bars, one quarter wide (V3 SOURCES [B]), 40% opacity, darker when Is active crisis.
-    pane = sub(panes, "pane", {"id": PANE_BAND, "selection-relaxation-option": "selection-relaxation-allow",
-                               "y-axis-name": q(I_BAND)})
-    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
-    sub(pane, "mark", {"class": "Bar"})
-    sub(pane, "mark-sizing", {"custom-mark-size-in-axis-units": "1.0", "mark-alignment": "mark-alignment-left",
-                              "mark-sizing-setting": "marks-scaling-on", "use-custom-mark-size": "false"})
-    sub(sub(pane, "encodings"), "color", {"column": q(I_ACTIVE)})
-    mrule = sub(sub(pane, "style"), "style-rule", {"element": "mark"})
-    sub(mrule, "format", {"attr": "mark-transparency", "value": BAND_TRANSPARENCY})
-    # Share pane: the v2 stacked area, unchanged.
-    pane = sub(panes, "pane", {"id": PANE_SHARE, "selection-relaxation-option": "selection-relaxation-allow",
-                               "y-axis-name": q(I_SHARE)})
-    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
+    pv = sub(pane, "view")
+    sub(pv, "breakdown", {"value": "auto"})
     sub(pane, "mark", {"class": "Area"})
-    sub(sub(pane, "encodings"), "color", {"column": q(I_BUCKET)})
-    sub(table, "rows", text=f"({q(I_BAND)} + {q(I_SHARE)})")
+    encs = sub(pane, "encodings")
+    sub(encs, "color", {"column": q(I_BUCKET)})
+    sub(table, "rows", text=q(I_SHARE))
     sub(table, "cols", text=q(I_QUARTER))
 
 
@@ -663,7 +636,7 @@ def build_payment_sheet(parent):
 W, H = 1000, 700  # design size used to split zone heights; the dashboards themselves size automatically
 DASHBOARDS = {  # name -> zones top to bottom: (kind, px or None = takes the rest, sheet/text, legend param, pane)
     DASHBOARD: [("title", 50, TITLE, None, None), ("sheet", None, SHEET_MAIN, None, None),
-                ("legend", 50, SHEET_MAIN, q(I_BUCKET), PANE_SHARE), ("sheet", 170, SHEET_PUBLIC, None, None)],
+                ("legend", 50, SHEET_MAIN, q(I_BUCKET), "0"), ("sheet", 170, SHEET_PUBLIC, None, None)],
     DASH_CRISIS: [("title", 50, "Did crises move debt onto the public balance sheet?", None, None),
                   ("sheet", None, SHEET_CRISIS, None, None)],
     DASH_COLLATERAL: [("title", 50, "What stands behind US household debt?", None, None),
@@ -674,7 +647,7 @@ DASHBOARDS = {  # name -> zones top to bottom: (kind, px or None = takes the res
                    ("sheet", None, SHEET_PAYMENT, None, None),
                    ("legend", 50, SHEET_PAYMENT, qs("payment_priority", I_CCLASS), "0")],
 }
-SHEET_LEGENDS = {SHEET_MAIN: (q(I_BUCKET), PANE_SHARE), SHEET_COLL_SHARE: (qs("collateral", I_CLASS_LABEL), "0"),
+SHEET_LEGENDS = {SHEET_MAIN: (q(I_BUCKET), "0"), SHEET_COLL_SHARE: (qs("collateral", I_CLASS_LABEL), "0"),
                  SHEET_PAYMENT: (qs("payment_priority", I_CCLASS), "0")}
 
 
@@ -721,7 +694,11 @@ def build_dashboard(parent, name, rows):
 
 
 def worksheet_window(parent, name, legend_param=None, legend_pane="0"):
-    win = sub(parent, "window", {"class": "worksheet", "name": name})
+    # The one window with maximized='true' is the sheet Tableau opens on (exactly one per corpus workbook;
+    # 9 of the 18.1 ones open on a worksheet). v3.1 opens on the simple 'Public share' line.
+    attrib = {"class": "worksheet", "maximized": "true", "name": name} if name == OPEN_SHEET \
+        else {"class": "worksheet", "name": name}
+    win = sub(parent, "window", attrib)
     cards = sub(win, "cards")
     left = sub(cards, "edge", {"name": "left"})
     strip = sub(left, "strip", {"size": "160"})
@@ -743,9 +720,7 @@ def build_windows(parent):
     for name in SHEETS:
         worksheet_window(wins, name, *SHEET_LEGENDS.get(name, (None, "0")))
     for name, rows in DASHBOARDS.items():
-        attrib = {"class": "dashboard", "maximized": "true", "name": name} if name == DASHBOARD \
-            else {"class": "dashboard", "name": name}
-        dw = sub(wins, "window", attrib)
+        dw = sub(wins, "window", {"class": "dashboard", "name": name})
         vps = sub(dw, "viewpoints")
         for kind, _, what, *_ in rows:
             if kind == "sheet":
@@ -757,7 +732,6 @@ def build_windows(parent):
 
 def build_tree() -> ET.ElementTree:
     labels = read_ratchet_meta()
-    crisis_ids = read_crisis_ids()
     check_fig_headers()
     wb = ET.Element("workbook", {"original-version": VERSION, "source-build": SOURCE_BUILD,
                                  "source-platform": "win", "version": VERSION})
@@ -765,7 +739,6 @@ def build_tree() -> ET.ElementTree:
     sub(prefs, "preference", {"name": "ui.encoding.shelf.height", "value": "24"})
     sub(prefs, "preference", {"name": "ui.shelf.height", "value": "26"})
     dss = sub(wb, "datasources")
-    build_parameters(dss, crisis_ids)  # 'Parameters' is always the first datasource (V3 SOURCES [P])
     build_datasource(dss, labels)
     build_fig_datasources(dss)
     wss = sub(wb, "worksheets")
@@ -852,26 +825,22 @@ def self_check() -> None:
     root = ET.parse(TWB).getroot()
     assert root.tag == "workbook" and root.get("version") == VERSION
     top = root.findall("datasources/datasource")
-    ds_names = [PARAMS] + [SRC[k]["ds"] for k in SRC]
+    ds_names = [SRC[k]["ds"] for k in SRC]
     assert [d.get("name") for d in top] == ds_names, [d.get("name") for d in top]
-    params, ds = top[:2]
-    for d, k in zip(top[1:], SRC):
+    ds = top[0]
+    for d, k in zip(top, SRC):
         tc = d.find("connection/named-connections/named-connection/connection")
         assert (d.get("caption"), tc.get("filename"), tc.get("directory")) == (SRC[k]["caption"], f"{k}.csv",
                                                                               PACKAGED_DIR), k
-    assert params.get("hasconnection") == "false" and params.find("connection") is None
-    pcol = params.find("column")
-    members = [m.get("value") for m in pcol.iterfind("members/member")]
-    assert (pcol.get("caption"), pcol.get("value")) == (PARAM_CAPTION, tq(PARAM_DEFAULT))
-    assert members == [tq(x) for x in [PARAM_DEFAULT] + read_crisis_ids()], members
+    assert not list(root.iter("members")), "no Parameters datasource in v3.1"
     assert ds.get("name") == DS and ds.get("caption") == DS_CAPTION
     tc = ds.find("connection/named-connections/named-connection/connection")
     assert (tc.get("class"), tc.get("directory"), tc.get("filename")) == ("textscan", PACKAGED_DIR, "ratchet.csv")
     meta = [m.findtext("remote-name") for m in ds.iterfind("connection/metadata-records/metadata-record[@class='column']")]
     assert meta == list(RATCHET_FIELDS), meta
-    calcs = {c.get("caption"): c.find("calculation").get("formula") for c in ds.iterfind("column[calculation]")}
-    assert calcs == {"Band": "IF [recession] = 1 THEN 1 END",
-                     "Is active crisis": "[crisis_id] = [Parameters].[Active crisis]"}, calcs
+    assert ds.find("column[calculation]") is None, "ratchet has no calcs in v3.1"
+    maxed = [w.get("name") for w in root.iterfind("windows/window") if w.get("maximized") == "true"]
+    assert maxed == [OPEN_SHEET], maxed
     sheets = [w.get("name") for w in root.iterfind("worksheets/worksheet")]
     dashes = [d.get("name") for d in root.iterfind("dashboards/dashboard")]
     assert sheets == SHEETS and dashes == list(DASHBOARDS), (sheets, dashes)
@@ -882,7 +851,7 @@ def self_check() -> None:
     zone_names = {z.get("name") for z in root.iter("zone") if z.get("name")}
     assert zone_names <= set(sheets), zone_names
     marks = [m.get("class") for m in root.iter("mark")]
-    assert marks == ["Automatic", "Bar", "Area", "Automatic", "Line", "Area", "Line", "Line"], marks
+    assert marks == ["Area", "Automatic", "Line", "Area", "Line", "Line"], marks
     # every [ds].[instance] on any sheet is declared in that sheet's datasource-dependencies
     for w in root.iterfind("worksheets/worksheet"):
         t = w.find("table")
@@ -895,30 +864,19 @@ def self_check() -> None:
         used |= {e.text for e in t.iterfind("view/slices/column")}
         assert used <= decl, (w.get("name"), used - decl)
     seqs = check_view_order(root)
-    # main sheet: every [ds].[instance] it references is declared in its datasource-dependencies
     main = root.find(f"worksheets/worksheet[@name='{SHEET_MAIN}']/table")
-    declared = {f"[{d.get('datasource')}].{ci.get('name')}" for d in main.iterfind("view/datasource-dependencies")
-                for ci in d.iterfind("column-instance")}
-    refs = {main.findtext("rows")[1:-1].split(" + ")[0], main.findtext("rows")[1:-1].split(" + ")[1],
-            main.findtext("cols")}
-    refs |= {e.get(k) for e in main.iter() for k in ("column", "field", "y-axis-name")
-             if e.get(k, "").startswith(f"[{DS}].")}
-    assert refs <= declared, refs - declared
-    assert main.find("view/sort") is None and not list(root.iter("manual-sort"))
-    pane_ids = [p.get("id") for p in main.iterfind("panes/pane")]
+    assert main.findtext("rows") == q(I_SHARE) and main.find("view/sort") is None
+    assert [p.get("id") for p in main.iterfind("panes/pane")] == [None]
     legend = [z for z in root.iter("zone") if z.get("type") == "color"][0]
-    assert pane_ids == [None, PANE_BAND, PANE_SHARE] and legend.get("pane-specification-id") == PANE_SHARE
-    share_pane = main.find(f"panes/pane[@id='{PANE_SHARE}']")
-    assert share_pane.find("encodings/color").get("column") == legend.get("param") == q(I_BUCKET)
+    assert legend.get("pane-specification-id") == "0" and legend.get("param") == q(I_BUCKET)
     with zipfile.ZipFile(TWBX) as z:
         names = z.namelist()
         assert z.testzip() is None
         assert z.read(TWB.name) == TWB.read_bytes()
     expected = [TWB.name] + [f"{PACKAGED_DIR}/{n}" for n in CSV_FILES]
     assert names == expected, names
-    print("self-check OK: XML parses;", f"datasources {[PARAMS] + [SRC[k]['caption'] for k in SRC]};",
-          f"all dashboards sizing-mode=automatic;",
-          f"parameter {PARAM_CAPTION!r} default {PARAM_DEFAULT!r} + {len(members) - 1} crisis ids;",
+    print("self-check OK: XML parses;", f"datasources {[SRC[k]['caption'] for k in SRC]};",
+          f"all dashboards sizing-mode=automatic; opens on {OPEN_SHEET!r}; Ratchet – main = v2 single-axis area;",
           f"worksheets {sheets}; dashboard {dashes}; zip entries {names}")
     print("  <view> child order fits the D2E8DA72 content model:", *seqs, sep="\n    ")
 
@@ -976,37 +934,31 @@ def docapi_check() -> None:
     for path in (TWB, TWBX):
         wb = Workbook(str(path))
         names = [d.name for d in wb.datasources]
-        assert names == [PARAMS] + [SRC[k]["ds"] for k in SRC], names
-        for d2, k in zip(wb.datasources[1:], SRC):
+        assert names == [SRC[k]["ds"] for k in SRC], names
+        for d2, k in zip(wb.datasources, SRC):
             f2 = {f.id for f in d2.fields.values()}
             miss = [n for n in SRC[k]["fields"] if f"[{n}]" not in f2]
             assert d2.caption == SRC[k]["caption"] and d2.connections[0].dbclass == "textscan" and not miss, (k, miss)
-        assert CALC_PTS in {f.id for f in wb.datasources[2].fields.values()}
+        assert CALC_PTS in {f.id for f in wb.datasources[1].fields.values()}
         assert wb.dashboards == list(DASHBOARDS), wb.dashboards
-        d = wb.datasources[1]
+        d = wb.datasources[0]
         assert d.caption == DS_CAPTION
         c = d.connections[0]
         assert c.dbclass == "textscan", c.dbclass
         fields = {f.id: f for f in d.fields.values()}
-        missing = [n for n in RATCHET_FIELDS if f"[{n}]" not in fields] + [n for n in RATCHET_CALCS if n not in fields]
+        missing = [n for n in RATCHET_FIELDS if f"[{n}]" not in fields] 
         assert not missing, missing
         for n, spec in RATCHET_FIELDS.items():
             f = fields[f"[{n}]"]
             assert f.datatype == spec[0], (n, f.datatype)
-        for n in RATCHET_CALCS:
-            spec, f = CALCS[n], fields[n]
-            assert (f.caption, f.datatype, f.calculation) == (spec[0], spec[1], spec[5]), (n, f.caption)
-        pfields = {f.caption: f for f in wb.datasources[0].fields.values()}
-        assert PARAM_CAPTION in pfields, list(pfields)
         assert wb.worksheets == SHEETS, wb.worksheets
         main_uses = {f.caption for f in fields.values() if SHEET_MAIN in f.worksheets}
         print(f"tableaudocumentapi OK: {path.name}: worksheets={wb.worksheets} dashboards={wb.dashboards} "
               f"datasources={[x.caption or x.name for x in wb.datasources]} "
-              f"caption={d.caption!r} connection class={c.dbclass} fields={len(fields)} "
-              f"parameter={pfields[PARAM_CAPTION].caption!r} (worksheets {pfields[PARAM_CAPTION].worksheets})")
+              f"caption={d.caption!r} connection class={c.dbclass} fields={len(fields)}")
         print(f"    fields used on {SHEET_MAIN!r}: {sorted(main_uses)}")
-        for n in ["recession", "crisis_id"] + RATCHET_CALCS:
-            f = fields[n if n in CALCS else f"[{n}]"]
+        for n in ["recession", "crisis_id"]:
+            f = fields[f"[{n}]"]
             extra = f" formula={f.calculation!r}" if f.calculation else ""
             print(f"    {f.id:<34} caption={f.caption!r:<26} datatype={f.datatype:<8} role={f.role}{extra}")
 
