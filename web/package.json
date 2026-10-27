@@ -1,0 +1,33 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/sync-catalog.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "fixtures": "node scripts/make-fixtures.mjs",
+    "sync-catalog": "node scripts/sync-catalog.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "jose": "^6.2.13",
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "typescript": "^5",
+    "yaml": "^2.9.1"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}
