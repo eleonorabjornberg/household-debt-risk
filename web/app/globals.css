@@ -45,7 +45,7 @@
   --serif: var(--font-newsreader), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --sans: var(--font-public-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --measure: 40rem;
+  --measure: var(--wide); /* text runs the full width of the figures */
   --wide: 72rem;
   --gutter: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
@@ -448,7 +448,7 @@ p {
   font-family: var(--sans);
 }
 .figure__head {
-  max-width: 46rem;
+  max-width: 100%;
   margin-bottom: 1rem;
 }
 .figure__label {
@@ -1049,7 +1049,7 @@ p {
 .hook__body {
   display: grid;
   gap: 0.6rem;
-  max-width: 46rem;
+  max-width: 100%;
   font-size: 0.9375rem;
   line-height: 1.55;
   color: var(--ink-2);
