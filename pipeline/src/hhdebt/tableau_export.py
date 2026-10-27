@@ -1,7 +1,8 @@
 """Write flat, pre-joined CSVs to tableau/data/ for Tableau Public (which cannot connect to Postgres).
 
 One file per dashboard, so the workbook needs no joins or relationships:
-  ratchet.csv           debt_by_risk_holder + dim_risk_bucket + public_share (date x bucket x debt_type)
+  ratchet.csv           debt_by_risk_holder + dim_risk_bucket + public_share (date x bucket x debt_type),
+                        plus recession (0/1) and crisis_id from the NBER recessions in dim_crisis
   crisis_windows.csv    crisis_event_window + dim_crisis
   collateral.csv        collateral_coverage + a readable class label
   payment_priority.csv  nyfed_by_type + labels + stress index vs each type's 2003-06 average
@@ -30,7 +31,8 @@ LOAN_TYPES = {  # loan_type -> (label, collateral class)
 # Column order of each output file; tests and tableau/build_workbook.py rely on these names.
 COLUMNS = {
     "ratchet": ["date", "risk_bucket", "bucket_label", "is_public", "sort_order", "debt_type",
-                "nominal_musd", "real_musd", "share_of_total", "public_share", "fed_mbs_share_of_scope"],
+                "nominal_musd", "real_musd", "share_of_total", "public_share", "fed_mbs_share_of_scope",
+                "recession", "crisis_id"],
     "crisis_windows": ["crisis_id", "crisis_name", "kind", "start_q", "metric", "q_offset", "date",
                        "value", "value_at_t0", "delta_from_t0"],
     "collateral": ["date", "collateral_class", "class_label", "debt_musd", "collateral_value_musd",
@@ -55,6 +57,17 @@ def _tables(source: str) -> dict[str, pd.DataFrame]:
     return out
 
 
+def _recession_flags(dates: pd.Series, crises: pd.DataFrame) -> pd.DataFrame:
+    """recession (int 0/1) and crisis_id ('' outside) per date: NBER recessions, start_q <= date <= end_q."""
+    dates = pd.to_datetime(dates)
+    nber = crises[crises.kind == "nber_recession"]
+    crisis_id = pd.Series("", index=dates.index, dtype=object)
+    for c in nber.itertuples():
+        inside = (dates >= pd.Timestamp(c.start_q)) & (dates <= pd.Timestamp(c.end_q))
+        crisis_id[inside] = c.crisis_id
+    return pd.DataFrame({"recession": (crisis_id != "").astype(int), "crisis_id": crisis_id})
+
+
 def build(t: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     buckets = t["core.dim_risk_bucket"].rename(columns={"label": "bucket_label"})
     share = t["mart.public_share"][["date", "public_share", "fed_mbs_share_of_scope"]]
@@ -63,6 +76,7 @@ def build(t: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
                .sort_values(["date", "sort_order", "debt_type"]))
 
     crises = t["core.dim_crisis"].sort_values("start_q")
+    ratchet[["recession", "crisis_id"]] = _recession_flags(ratchet.date, crises)
     windows = (t["mart.crisis_event_window"]
                .merge(crises[["crisis_id", "name", "kind", "start_q"]].rename(columns={"name": "crisis_name"}),
                       on="crisis_id", how="left")
