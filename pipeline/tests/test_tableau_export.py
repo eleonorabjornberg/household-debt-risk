@@ -35,3 +35,20 @@ def test_joins_fill_labels(built):
     # stress index averages ~1 over the 2003-06 baseline by construction
     base = pp[pd.to_datetime(pp.date).dt.year <= 2006].groupby("loan_type").stress_index.mean()
     assert base.between(0.999, 1.001).all()
+
+
+def test_ratchet_recession_flags(built):
+    tables, out = built
+    r = out["ratchet"]
+    assert r.recession.dtype.kind == "i" and set(r.recession.unique()) <= {0, 1}
+    assert ((r.recession == 1) == (r.crisis_id != "")).all()
+    dates = pd.to_datetime(r.date)
+    nber = tables["core.dim_crisis"].query("kind == 'nber_recession'")
+    for c in nber.itertuples():
+        inside = (dates >= pd.Timestamp(c.start_q)) & (dates <= pd.Timestamp(c.end_q))
+        assert (r.crisis_id[inside] == c.crisis_id).all(), c.crisis_id
+    # every recession row is inside some NBER window; policy shocks never set the flag
+    assert set(r.crisis_id[r.recession == 1]) <= set(nber.crisis_id)
+    gfc = r[(dates == "2008-12-31")]
+    assert (gfc.recession == 1).all() and (gfc.crisis_id == "gfc_2007").all()
+    assert (r[dates == "2006-12-31"].recession == 0).all()

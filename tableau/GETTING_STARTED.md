@@ -118,6 +118,31 @@ The GitHub Action (`.github/workflows/refresh.yml`) re-runs the pipeline after e
 
 > If you edited the workbook by hand in Tableau, rebuilding with the script in step 3 replaces your edits. In that case use the *Edit Connection* route instead.
 
+## Updating to v3 (recession bands + `Active crisis` parameter)
+
+v3 adds grey NBER recession bands behind the stacked areas. The band for the crisis the website is showing turns darker. It also adds the fields `Recession`, `Crisis id`, `Band` and `Is active crisis`, and the parameter `Active crisis`.
+
+1. In the **Tableau Public app** choose **File → Open…** and pick the new `tableau/WhoHoldsTheDebt.twbx`. If it asks to upgrade the file, click **OK**.
+2. **Re-apply the stack order** (the file still doesn't include it). Open the **Ratchet – main** tab. On the Marks card click the **Area** tab (`SUM(Share of total)`), then click the `Bucket label` pill on Color and choose **Sort… → Sort by: Field → `Sort order`, Aggregation: Minimum, Sort order: Descending**. The public holders should end up at the bottom, as in v2.
+3. **Check the bands.** Light grey vertical bars should cover every NBER recession (1953–54, …, 2008–09, 2020) and sit **behind** the coloured areas. If they cover the areas instead, right-click the right-hand axis → **Move marks to back** on the Band pane (or swap the two pills on Rows). The axis on the left should read 0%–100%, with no second axis visible.
+4. Optional: to test the highlight, right-click `Active crisis` in the Data pane (under Parameters) → **Show Parameter**, pick `gfc_2007`, and the 2008–09 band should darken. Then set it back to `none` and close the control. **The control doesn't need to be on the dashboard**, because the website sets the parameter itself.
+5. **File → Save to Tableau Public As…** with the same name **`WhoHoldsTheDebt`** and confirm the overwrite. This replaces the published version at the same URL, so nothing changes in Vercel and no redeploy is needed.
+
+If the file doesn't open or the dual axis looks wrong, copy the exact error text (see §5) and use the hand-build below.
+
+### Fallback: add the bands by hand (about 8 steps)
+
+Start from your published v2 workbook, opened from Tableau Public, or a v3 file that opened without the bands. The data source needs the new `ratchet.csv` (**Data Source** tab → **Edit Connection…** → `tableau/data/ratchet.csv` if the `recession` and `crisis_id` columns are missing).
+
+1. **Parameter:** Data pane ▸ the small arrow at the top → **Create Parameter…** Name it `Active crisis`, Data type **String**, Allowable values **List**. Add `none` plus every `crisis_id` from `tableau/data/crises.csv` (you can use **Add values from → Crisis id**, then add `none`). Set the current value to `none`.
+2. **Calc `Band`:** **Analysis → Create Calculated Field…**, name `Band`, formula `IF [Recession] = 1 THEN 1 END`.
+3. **Calc `Is active crisis`:** name `Is active crisis`, formula `[Crisis id] = [Active crisis]`.
+4. On **Ratchet – main**, drag `Band` onto **Rows** to the **left** of `SUM(Share of total)`. Right-click it → **Measure → Average**.
+5. Right-click the `SUM(Share of total)` pill → **Dual Axis**. Then right-click the right-hand axis → **Synchronize Axis** and untick **Show Header** to hide it.
+6. On the Marks card, in the **AVG(Band)** tab, set the mark type to **Bar** and drag `Is active crisis` onto **Color**. Click **Color → Edit Colors…** and set False to `#D9D9D9` and True to `#9A9A9A`. Set Opacity to about 40%. If the bars are thin, click **Size** and drag it to the right until neighbouring quarters touch.
+7. In the **SUM(Share of total)** tab check that the mark type is still **Area** with `Bucket label` on Color. Re-apply the Descending sort from step 2 above. Make sure the bars are behind the areas: `AVG(Band)` must be the **first** pill on Rows.
+8. Right-click the left axis → **Edit Axis… → Fixed, 0 to 1**, title `Share of total`. On the dashboard, check that the colour legend still shows the six holders. Then save to Tableau Public as `WhoHoldsTheDebt`.
+
 ## 10. What's next
 
 This is **v1**: one dashboard, kept deliberately simple so it's most likely to open cleanly. Later versions of the file will add, following `workbook_specs.md`:

@@ -3,14 +3,24 @@
 
     python3 -I tableau/build_workbook.py            # writes WhoHoldsTheDebt.twb and .twbx
     python3 -I tableau/build_workbook.py --check    # also re-reads both with tableaudocumentapi, if installed
+    python3 -I tableau/build_workbook.py --corpus DIR   # also checks sibling order against real .twb files in DIR
 
 Stdlib only. Outputs (next to this file):
   WhoHoldsTheDebt.twb    the XML workbook; its text-file connection points at the relative folder Data/data
   WhoHoldsTheDebt.twbx   zip: WhoHoldsTheDebt.twb at the root + Data/data/*.csv (self-contained; open this one)
 
-v1 contents: data source `ratchet` (ratchet.csv), worksheets "Ratchet – main" (stacked area of
+v1/v2 contents: data source `ratchet` (ratchet.csv), worksheets "Ratchet – main" (stacked area of
 SUM(share_of_total) by bucket_label over the continuous quarter) and "Public share" (line of
 AVG(public_share)), and dashboard "Ratchet" (1000x700, title, both sheets, colour legend).
+v3 adds (names fixed by INTEGRATION_CONTRACT.md):
+  * ratchet.csv columns `recession` (0/1) and `crisis_id`;
+  * a string list parameter `Active crisis` (default "none") in a Parameters datasource;
+  * calcs `Band` = IF [recession] = 1 THEN 1 END and `Is active crisis` = [crisis_id] = [Parameters].[Active crisis];
+  * on "Ratchet – main", a dual axis (AVG(Band) + SUM(Share of total)): grey full-width recession bars
+    (darker for the active crisis) drawn BEHIND the coloured areas, axes synchronised at 0-1, the second
+    axis hidden;
+  * still NO sort element: the Descending stack order stays a manual step (GETTING_STARTED.md).
+  Provenance of each v3 element is in the comment next to the code that writes it (V3 SOURCES below).
 Tableau requires unique names across worksheets and dashboards, so the area sheet cannot also be
 called "Ratchet"; the dashboard owns that name because the site embeds views/WhoHoldsTheDebt/Ratchet.
 
@@ -32,6 +42,45 @@ Those 18.1 files also carry a <document-format-change-manifest> and doubled "_.f
 The one name not seen verbatim in the examples is the quarter truncation derivation
 'Quarter-Trunc' / instance prefix 'tqr', inferred from the examples' 'Month-Trunc'/'tmn',
 'Week-Trunc'/'twk' and 'Year-Trunc'/'tyr'.
+
+V3 SOURCES (all real Tableau-written files; "LS" = https://github.com/tableau/Logshark/blob/main/LogShark/Workbooks/,
+"TSI" = https://github.com/tableau/community-tableau-server-insights/blob/master/datasources/):
+  [P] Parameters datasource + string list parameter + its copy in a view's datasource-dependencies, and
+      calc formulas reading [Parameters].[...]: geocoding.twbx above ("Sort by", param-domain-type='list',
+      <members>), and TSI ts_events/ts_events_04.02.twb (18.1, build 2025.1.0: "Tableau Server Protocol").
+      In every one of 88 18.1 views that use a parameter, <datasources> lists the data source then
+      'Parameters', and datasource-dependencies list 'Parameters' first; at workbook level 'Parameters' is
+      the first <datasource> (31 of 31 18.1 files that have one).
+  [S] (researched, NOT written in v3) <sort class='computed' column=... direction=... using='[ds].[min:...:qk]'/> directly after
+      datasource-dependencies and before <aggregation>: document-api-python
+      samples/replicate-workbook/sample-superstore.twb (exact placement), LS DataServer.twbx (build 2020.2.2,
+      using a [min:...] instance), and RESTAPISample.twb in tableau/server-client-python test/assets (sort on a
+      field that is only on Color). 18.1 files written with the 'SortTagCleanup' entry in a
+      <document-format-change-manifest> spell it <computed-sort>/<manual-sort>; we write no manifest, and the
+      D2E8DA72 error Tableau gave for v1 lists exactly this content model:
+      (datasources?,mapsources?,datasource-dependencies*,filter,sort,perspectives,slices?,aggregation).
+      All 102 computed sorts in the corpus declare their 'using' instance in datasource-dependencies.
+  [D] dual axis: rows '(A + B)', panes id='1'/'2' with y-axis-name, and in the axis style-rule
+      <encoding ... fold='true' scope='rows' synchronized='true' type='space'/> on the second measure:
+      LS ClusterController.twbx "Disk Space Used" (18.1, build 2022.3.22, continuous time on cols).
+      Fixed range on the first measure next to the synchronised second one: LS ServerTelemetry.twbx
+      "Session Comparison" (range-type='fixedmin' + fold/synchronized in one style-rule).
+      Hidden axis <format attr='display' class=... field=... scope='rows' value='false'/>:
+      LS Hyper.twbx "Total Queries Donut Chart" (18.1, build 2023.3.12). Axis title
+      <format attr='title' class='0' field=... scope=... value=.../>: ServerTelemetry as above.
+      Different mark class per pane with a pane-level <style><style-rule element='mark'> holding
+      'mark-transparency': ServerTelemetry "Session Comparison" (Bar + Circle, transparency 126).
+      Dashboard colour-legend zone of a dual-axis sheet: pane-specification-id = the id of the pane that
+      carries the colour encoding (LS ResourceManager.twbx, legend -> pane 8 of panes 7/8/9).
+  [B] Bar on a continuous truncated date sized to the date interval:
+      <mark-sizing custom-mark-size-in-axis-units='1.0' mark-alignment='mark-alignment-left'
+      mark-sizing-setting='marks-scaling-on' use-custom-mark-size='false'/>: LS Apache.twbx
+      "Count of Viz Loads Per Day" (18.1, 2022.3.22) and TSI ts_background_tasks_04.02.twb (18.1, 2025.1.0).
+  [C] Calculated fields '[Calculation_<digits>]' with caption + <calculation class='tableau' formula=.../>,
+      boolean dimension calcs (datatype='boolean' role='dimension' type='nominal'), and palettes for a
+      boolean field written as <bucket>true</bucket>/<bucket>false</bucket> (unquoted): TSI
+      ts_content_04.02.twb and VizAlerts config/VizAlertsConfig.twb.
+  Draw order: the measure listed second in a dual axis is drawn on top, so Band comes first in rows.
 
 Column names come from pipeline/src/hhdebt/tableau_export.py COLUMNS["ratchet"]; the script checks the
 CSV header against them and fails loudly if they drift.
@@ -76,6 +125,8 @@ RATCHET_FIELDS = {
     "share_of_total": ("real", "measure", "quantitative", "Share of total", "p0%"),
     "public_share": ("real", "measure", "quantitative", "Public share", "p0.0%"),
     "fed_mbs_share_of_scope": ("real", "measure", "quantitative", "Fed MBS share of scope", "p0.0%"),
+    "recession": ("integer", "measure", "quantitative", "Recession", None),
+    "crisis_id": ("string", "dimension", "nominal", "Crisis id", None),
 }
 # OLE DB type codes Tableau writes in <remote-type> (129/20 from geocoding.twbx's textscan source,
 # 5 = R8 from its excel source; 133 = DBDATE -> local-type date as in samples/show_workbook_info/world.tds;
@@ -109,6 +160,21 @@ DS = "federated." + tableau_id("hhdebt-ratchet-datasource")
 CONN = "textscan." + tableau_id("hhdebt-ratchet-textscan")
 DS_CAPTION = "ratchet"
 
+# ---- v3: parameter + calculated fields (see V3 SOURCES [P] and [C] in the module docstring)
+PARAMS = "Parameters"
+PARAM_NAME = "[Active crisis]"  # caption == name, as geocoding.twbx's '[Base Salary]'; the site calls it by caption
+PARAM_CAPTION = "Active crisis"
+PARAM_DEFAULT = "none"
+CALC_BAND = "[Calculation_" + str(int(hashlib.sha1(b"hhdebt-band").hexdigest(), 16))[:19] + "]"
+CALC_ACTIVE = "[Calculation_" + str(int(hashlib.sha1(b"hhdebt-active-crisis").hexdigest(), 16))[:19] + "]"
+CALCS = {  # name -> (caption, datatype, role, type, default-format, formula)
+    CALC_BAND: ("Band", "integer", "measure", "quantitative", "p0%", "IF [recession] = 1 THEN 1 END"),
+    CALC_ACTIVE: ("Is active crisis", "boolean", "dimension", "nominal", None,
+                  f"[crisis_id] = [{PARAMS}].{PARAM_NAME}"),
+}
+BAND_COLORS = {"false": "#d9d9d9", "true": "#9a9a9a"}  # lowercase hex, as Tableau writes palette colours
+BAND_TRANSPARENCY = "102"  # 0-255 alpha; 102/255 = 40% opacity (ServerTelemetry pane writes 126)
+
 
 def q(field_instance: str) -> str:
     """Fully-qualified column reference, e.g. [federated.x].[sum:share_of_total:qk]."""
@@ -119,6 +185,9 @@ I_BUCKET = "[none:bucket_label:nk]"
 I_QUARTER = "[tqr:date:qk]"
 I_SHARE = "[sum:share_of_total:qk]"
 I_PUBLIC = "[avg:public_share:qk]"
+I_BAND = "[avg:" + CALC_BAND[1:-1] + ":qk]"
+I_ACTIVE = "[none:" + CALC_ACTIVE[1:-1] + ":nk]"
+PANE_BAND, PANE_SHARE = "1", "2"  # pane ids of the dual axis; the colour legend points at the share pane
 
 
 def sub(parent, tag, attrib=None, text=None):
@@ -144,7 +213,57 @@ def read_ratchet_meta() -> dict[str, str]:
     return labels
 
 
+def read_crisis_ids() -> list[str]:
+    """Parameter members: every crisis_id in crises.csv, in file order."""
+    with (DATA_DIR / "crises.csv").open(newline="", encoding="utf-8") as f:
+        ids = [row["crisis_id"] for row in csv.DictReader(f)]
+    if not ids or PARAM_DEFAULT in ids:
+        sys.exit(f"crises.csv crisis_ids unusable for the parameter: {ids}")
+    return ids
+
+
 # ---------------------------------------------------------------- data source
+
+def tq(value: str) -> str:
+    """Tableau string literal as stored in XML values/formulas: "none" (the &quot; comes from escaping)."""
+    return f'"{value}"'
+
+
+def param_decl(parent, members=None):
+    """String list parameter, modelled on geocoding.twbx 'Sort by' / ts_events_04.02.twb 'Tableau Server
+    Protocol': attribute order caption, datatype, name, param-domain-type, role, type, value; children
+    <calculation> then <members>. The copy inside a view's datasource-dependencies omits <members>
+    (as geocoding.twbx does)."""
+    col = sub(parent, "column", {"caption": PARAM_CAPTION, "datatype": "string", "name": PARAM_NAME,
+                                 "param-domain-type": "list", "role": "measure", "type": "nominal",
+                                 "value": tq(PARAM_DEFAULT)})
+    sub(col, "calculation", {"class": "tableau", "formula": tq(PARAM_DEFAULT)})
+    if members is not None:
+        ms = sub(col, "members")
+        for m in members:
+            sub(ms, "member", {"value": tq(m)})
+    return col
+
+
+def build_parameters(parent, crisis_ids):
+    """<datasource hasconnection='false' inline='true' name='Parameters' version='18.1'> + <aliases>, exactly
+    the shape of geocoding.twbx line 36."""
+    ds = sub(parent, "datasource", {"hasconnection": "false", "inline": "true", "name": PARAMS, "version": VERSION})
+    sub(ds, "aliases", {"enabled": "yes"})
+    param_decl(ds, [PARAM_DEFAULT] + crisis_ids)
+    return ds
+
+
+def calc_decl(parent, name):
+    """Calculated field: caption, datatype, [default-format], name, role, type + <calculation> (ts_content_04.02.twb)."""
+    caption, dtype, role, typ, fmt, formula = CALCS[name]
+    attrib = {"caption": caption, "datatype": dtype}
+    if fmt:
+        attrib["default-format"] = fmt
+    attrib.update({"name": name, "role": role, "type": typ})
+    col = sub(parent, "column", attrib)
+    sub(col, "calculation", {"class": "tableau", "formula": formula})
+    return col
 
 def column_decl(parent, name, with_format=True):
     dtype, role, typ, caption, fmt = RATCHET_FIELDS[name]
@@ -204,6 +323,8 @@ def build_datasource(parent, labels):
     sub(ds, "aliases", {"enabled": "yes"})
     for name in RATCHET_FIELDS:
         column_decl(ds, name)
+    for name in CALCS:
+        calc_decl(ds, name)
     sub(ds, "column-instance", {"column": "[bucket_label]", "derivation": "None", "name": I_BUCKET,
                                 "pivot": "key", "type": "nominal"})
     sub(ds, "layout", {"dim-ordering": "alphabetic", "dim-percentage": "0.5", "measure-ordering": "alphabetic",
@@ -214,6 +335,10 @@ def build_datasource(parent, labels):
     for _, bucket, color in BUCKET_COLORS:
         m = sub(enc, "map", {"to": color})
         sub(m, "bucket", text=f'"{labels[bucket]}"')
+    # v3 band colours: palette on the boolean calc, buckets unquoted true/false (V3 SOURCES [C]).
+    enc = sub(rule, "encoding", {"attr": "color", "field": I_ACTIVE, "type": "palette"})
+    for bucket, color in BAND_COLORS.items():
+        sub(sub(enc, "map", {"to": color}), "bucket", text=bucket)
     sv = sub(ds, "semantic-values")
     sub(sv, "semantic-value", {"key": "[Country].[Name]", "value": '"United States"'})
     return ds
@@ -221,13 +346,18 @@ def build_datasource(parent, labels):
 
 # ---------------------------------------------------------------- worksheets
 
-def view_header(table, fields, instances):
+def view_header(table, fields, instances, calcs=(), params=False):
     view = sub(table, "view")
     dss = sub(view, "datasources")
     sub(dss, "datasource", {"caption": DS_CAPTION, "name": DS})
+    if params:  # data source first, then Parameters; dependencies: Parameters first (V3 SOURCES [P])
+        sub(dss, "datasource", {"name": PARAMS})
+        param_decl(sub(view, "datasource-dependencies", {"datasource": PARAMS}))
     dep = sub(view, "datasource-dependencies", {"datasource": DS})
     for name in fields:
         column_decl(dep, name)
+    for name in calcs:
+        calc_decl(dep, name)
     for column, derivation, inst, typ in instances:
         sub(dep, "column-instance", {"column": f"[{column}]", "derivation": derivation, "name": inst,
                                      "pivot": "key", "type": typ})
@@ -241,35 +371,57 @@ def title(parent, text):
     sub(ft, "run", text=text)
 
 
-def fixed_axis(style, inst, lo, hi):
-    rule = sub(style, "style-rule", {"element": "axis"})
-    sub(rule, "encoding", {"attr": "space", "class": "0", "field": q(inst), "field-type": "quantitative",
-                           "max": hi, "min": lo, "range-type": "fixed", "scope": "rows", "type": "space"})
-
-
 def build_main_sheet(parent, labels):
     ws = sub(parent, "worksheet", {"name": SHEET_MAIN})
     title(ws, "Share of US household mortgages + consumer credit, by who holds the risk")
     table = sub(ws, "table")
-    view = view_header(table, ["bucket_label", "date", "share_of_total"], [
+    view = view_header(table, ["bucket_label", "crisis_id", "date", "recession", "share_of_total"], [
         ("bucket_label", "None", I_BUCKET, "nominal"),
+        (CALC_BAND[1:-1], "Avg", I_BAND, "quantitative"),
+        (CALC_ACTIVE[1:-1], "None", I_ACTIVE, "nominal"),
         ("share_of_total", "Sum", I_SHARE, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
-    ])
-    # No sort element: Tableau Public rejected <manual-sort> here (error D2E8DA72, "element
-    # 'manual-sort' is not allowed"). Stack order is set by hand (GETTING_STARTED.md: sort
-    # Bucket label by Sort order); the legend falls back to alphabetical until then.
+    ], calcs=list(CALCS), params=True)
+    # No sort element (deliberately, v3): the stack order stays a hand step (GETTING_STARTED.md "Updating to
+    # v3": Bucket label -> Sort by Field Sort order, Minimum, Descending). V3 SOURCES [S] records the
+    # <sort class='computed'> form that would fit here, but it was left out to keep the risk minimal.
     sub(view, "aggregation", {"value": "true"})
+
+    # Dual axis (V3 SOURCES [D]). Band is the FIRST measure so its bars are drawn underneath; its (left) axis
+    # stays visible, fixed 0-1, formatted as a percentage and titled like the v2 axis. Share of total is the
+    # second measure: synchronised to the first and its (right) axis hidden.
     style = sub(table, "style")
-    fixed_axis(style, I_SHARE, "0.0", "1.0")
+    rule = sub(style, "style-rule", {"element": "axis"})
+    sub(rule, "encoding", {"attr": "space", "class": "0", "field": q(I_BAND), "field-type": "quantitative",
+                           "max": "1.0", "min": "0.0", "range-type": "fixed", "scope": "rows", "type": "space"})
+    sub(rule, "encoding", {"attr": "space", "class": "0", "field": q(I_SHARE), "field-type": "quantitative",
+                           "fold": "true", "scope": "rows", "synchronized": "true", "type": "space"})
+    sub(rule, "format", {"attr": "title", "class": "0", "field": q(I_BAND), "scope": "rows",
+                         "value": "Share of total"})
+    sub(rule, "format", {"attr": "display", "class": "0", "field": q(I_SHARE), "scope": "rows", "value": "false"})
+
     panes = sub(table, "panes")
+    # "All" pane (no id), as ClusterController/Hyper write it; per-measure panes override its mark.
     pane = sub(panes, "pane", {"selection-relaxation-option": "selection-relaxation-allow"})
-    pv = sub(pane, "view")
-    sub(pv, "breakdown", {"value": "auto"})
+    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
+    sub(pane, "mark", {"class": "Automatic"})
+    # Band pane: grey bars, one quarter wide (V3 SOURCES [B]), 40% opacity, darker when Is active crisis.
+    pane = sub(panes, "pane", {"id": PANE_BAND, "selection-relaxation-option": "selection-relaxation-allow",
+                               "y-axis-name": q(I_BAND)})
+    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
+    sub(pane, "mark", {"class": "Bar"})
+    sub(pane, "mark-sizing", {"custom-mark-size-in-axis-units": "1.0", "mark-alignment": "mark-alignment-left",
+                              "mark-sizing-setting": "marks-scaling-on", "use-custom-mark-size": "false"})
+    sub(sub(pane, "encodings"), "color", {"column": q(I_ACTIVE)})
+    mrule = sub(sub(pane, "style"), "style-rule", {"element": "mark"})
+    sub(mrule, "format", {"attr": "mark-transparency", "value": BAND_TRANSPARENCY})
+    # Share pane: the v2 stacked area, unchanged.
+    pane = sub(panes, "pane", {"id": PANE_SHARE, "selection-relaxation-option": "selection-relaxation-allow",
+                               "y-axis-name": q(I_SHARE)})
+    sub(sub(pane, "view"), "breakdown", {"value": "auto"})
     sub(pane, "mark", {"class": "Area"})
-    encs = sub(pane, "encodings")
-    sub(encs, "color", {"column": q(I_BUCKET)})
-    sub(table, "rows", text=q(I_SHARE))
+    sub(sub(pane, "encodings"), "color", {"column": q(I_BUCKET)})
+    sub(table, "rows", text=f"({q(I_BAND)} + {q(I_SHARE)})")
     sub(table, "cols", text=q(I_QUARTER))
 
 
@@ -327,7 +479,7 @@ def build_dashboard(parent):
             zone_style(z, "8")
         elif kind == "legend":
             z = sub(flow, "zone", {"fixed-size": px, "h": h, "id": zid, "is-fixed": "true",
-                                   "leg-item-layout": "horz", "name": SHEET_MAIN, "pane-specification-id": "0",
+                                   "leg-item-layout": "horz", "name": SHEET_MAIN, "pane-specification-id": PANE_SHARE,
                                    "param": q(I_BUCKET), "type": "color", "w": 100000, "x": 0, "y": y})
             zone_style(z, "4")
         else:
@@ -341,7 +493,7 @@ def build_dashboard(parent):
     zone_style(root, "8")
 
 
-def worksheet_window(parent, name, legend_param=None):
+def worksheet_window(parent, name, legend_param=None, legend_pane="0"):
     win = sub(parent, "window", {"class": "worksheet", "name": name})
     cards = sub(win, "cards")
     left = sub(cards, "edge", {"name": "left"})
@@ -354,14 +506,14 @@ def worksheet_window(parent, name, legend_param=None):
     if legend_param:
         right = sub(cards, "edge", {"name": "right"})
         sub(sub(right, "strip", {"size": "220"}), "card",
-            {"pane-specification-id": "0", "param": legend_param, "type": "color"})
+            {"pane-specification-id": legend_pane, "param": legend_param, "type": "color"})
     vp = sub(win, "viewpoint")
     sub(vp, "zoom", {"type": "entire-view"})
 
 
 def build_windows(parent):
     wins = sub(parent, "windows", {"source-height": "30"})
-    worksheet_window(wins, SHEET_MAIN, q(I_BUCKET))
+    worksheet_window(wins, SHEET_MAIN, q(I_BUCKET), PANE_SHARE)
     worksheet_window(wins, SHEET_PUBLIC)
     dw = sub(wins, "window", {"class": "dashboard", "maximized": "true", "name": DASHBOARD})
     vps = sub(dw, "viewpoints")
@@ -374,12 +526,14 @@ def build_windows(parent):
 
 def build_tree() -> ET.ElementTree:
     labels = read_ratchet_meta()
+    crisis_ids = read_crisis_ids()
     wb = ET.Element("workbook", {"original-version": VERSION, "source-build": SOURCE_BUILD,
                                  "source-platform": "win", "version": VERSION})
     prefs = sub(wb, "preferences")
     sub(prefs, "preference", {"name": "ui.encoding.shelf.height", "value": "24"})
     sub(prefs, "preference", {"name": "ui.shelf.height", "value": "26"})
     dss = sub(wb, "datasources")
+    build_parameters(dss, crisis_ids)  # 'Parameters' is always the first datasource (V3 SOURCES [P])
     build_datasource(dss, labels)
     wss = sub(wb, "worksheets")
     build_main_sheet(wss, labels)
@@ -439,16 +593,43 @@ def write_outputs() -> None:
     print(f"wrote {TWBX.relative_to(HERE.parent)} ({TWBX.stat().st_size:,} bytes)")
 
 
+# Content model Tableau reported for <view> in error D2E8DA72 (v1). Tableau's message lists the members in
+# order; real files show filter/sort interleaving ("filter sort filter"), so those two form one repeated group.
+VIEW_MODEL = r"(datasources )?(mapsources )?(datasource-dependencies )*((filter|sort) )*(perspectives )?(slices )?(aggregation )?"
+
+
+def check_view_order(root) -> list[str]:
+    import re
+    seqs = []
+    for v in root.iter("view"):
+        if v.find("datasources") is None:  # pane-level <view><breakdown/></view>
+            continue
+        seq = "".join(c.tag + " " for c in v)
+        assert re.fullmatch(VIEW_MODEL, seq), f"<view> children out of content model: {seq}"
+        seqs.append(seq.strip())
+    return seqs
+
+
 def self_check() -> None:
-    """Stdlib checks: XML parses, names are consistent, zip has the expected entries."""
+    """Stdlib checks: XML parses, names are consistent, element order, zip has the expected entries."""
     root = ET.parse(TWB).getroot()
     assert root.tag == "workbook" and root.get("version") == VERSION
-    ds = root.find("datasources/datasource")
+    top = root.findall("datasources/datasource")
+    assert [d.get("name") for d in top] == [PARAMS, DS], [d.get("name") for d in top]
+    params, ds = top
+    assert params.get("hasconnection") == "false" and params.find("connection") is None
+    pcol = params.find("column")
+    members = [m.get("value") for m in pcol.iterfind("members/member")]
+    assert (pcol.get("caption"), pcol.get("value")) == (PARAM_CAPTION, tq(PARAM_DEFAULT))
+    assert members == [tq(x) for x in [PARAM_DEFAULT] + read_crisis_ids()], members
     assert ds.get("name") == DS and ds.get("caption") == DS_CAPTION
     tc = ds.find("connection/named-connections/named-connection/connection")
     assert (tc.get("class"), tc.get("directory"), tc.get("filename")) == ("textscan", PACKAGED_DIR, "ratchet.csv")
     meta = [m.findtext("remote-name") for m in ds.iterfind("connection/metadata-records/metadata-record[@class='column']")]
     assert meta == list(RATCHET_FIELDS), meta
+    calcs = {c.get("caption"): c.find("calculation").get("formula") for c in ds.iterfind("column[calculation]")}
+    assert calcs == {"Band": "IF [recession] = 1 THEN 1 END",
+                     "Is active crisis": "[crisis_id] = [Parameters].[Active crisis]"}, calcs
     sheets = [w.get("name") for w in root.iterfind("worksheets/worksheet")]
     dashes = [d.get("name") for d in root.iterfind("dashboards/dashboard")]
     assert sheets == [SHEET_MAIN, SHEET_PUBLIC] and dashes == [DASHBOARD]
@@ -456,15 +637,76 @@ def self_check() -> None:
     zone_names = {z.get("name") for z in root.iter("zone") if z.get("name")}
     assert zone_names <= set(sheets), zone_names
     marks = [m.get("class") for m in root.iter("mark")]
-    assert marks == ["Area", "Automatic"], marks
+    assert marks == ["Automatic", "Bar", "Area", "Automatic"], marks
+    seqs = check_view_order(root)
+    # main sheet: every [ds].[instance] it references is declared in its datasource-dependencies
+    main = root.find(f"worksheets/worksheet[@name='{SHEET_MAIN}']/table")
+    declared = {f"[{d.get('datasource')}].{ci.get('name')}" for d in main.iterfind("view/datasource-dependencies")
+                for ci in d.iterfind("column-instance")}
+    refs = {main.findtext("rows")[1:-1].split(" + ")[0], main.findtext("rows")[1:-1].split(" + ")[1],
+            main.findtext("cols")}
+    refs |= {e.get(k) for e in main.iter() for k in ("column", "field", "y-axis-name")
+             if e.get(k, "").startswith(f"[{DS}].")}
+    assert refs <= declared, refs - declared
+    assert main.find("view/sort") is None and not list(root.iter("manual-sort"))
+    pane_ids = [p.get("id") for p in main.iterfind("panes/pane")]
+    legend = [z for z in root.iter("zone") if z.get("type") == "color"][0]
+    assert pane_ids == [None, PANE_BAND, PANE_SHARE] and legend.get("pane-specification-id") == PANE_SHARE
+    share_pane = main.find(f"panes/pane[@id='{PANE_SHARE}']")
+    assert share_pane.find("encodings/color").get("column") == legend.get("param") == q(I_BUCKET)
     with zipfile.ZipFile(TWBX) as z:
         names = z.namelist()
         assert z.testzip() is None
         assert z.read(TWB.name) == TWB.read_bytes()
     expected = [TWB.name] + [f"{PACKAGED_DIR}/{n}" for n in CSV_FILES]
     assert names == expected, names
-    print("self-check OK: XML parses;", f"datasource {DS_CAPTION!r} ({DS});",
+    print("self-check OK: XML parses;", f"datasources {[PARAMS, DS_CAPTION]};",
+          f"parameter {PARAM_CAPTION!r} default {PARAM_DEFAULT!r} + {len(members) - 1} crisis ids;",
           f"worksheets {sheets}; dashboard {dashes}; zip entries {names}")
+    print("  <view> child order fits the D2E8DA72 content model:", *seqs, sep="\n    ")
+
+
+def corpus_order_check(corpus: Path) -> None:
+    """Compare sibling ORDER in our .twb with real Tableau files (every *.twb under `corpus`): for each parent
+    tag, every pair of child tags we write in order a, b must never appear as b-before-a in a real file under
+    the same parent, and every (parent, child) we write must occur in some real file."""
+    seen, before, attrs = set(), set(), set()
+    files = sorted(corpus.rglob("*.twb"))
+    for f in files:
+        try:
+            r = ET.parse(f).getroot()
+        except ET.ParseError:
+            continue
+        for parent in r.iter():
+            attrs.update((parent.tag, k) for k in parent.attrib)
+            tags = [c.tag for c in parent]
+            for i, a in enumerate(tags):
+                seen.add((parent.tag, a))
+                for b in tags[i + 1:]:
+                    if a != b:
+                        before.add((parent.tag, a, b))
+    ours = ET.parse(TWB).getroot()
+    unseen, conflicts, checked = set(), set(), 0
+    new_attrs = {(e.tag, k) for e in ours.iter() for k in e.attrib if k != "xmlns:user"} - attrs
+    for parent in ours.iter():
+        tags = [c.tag for c in parent]
+        for i, a in enumerate(tags):
+            if (parent.tag, a) not in seen:
+                unseen.add((parent.tag, a))
+            for b in tags[i + 1:]:
+                if a != b:
+                    checked += 1
+                    if (parent.tag, b, a) in before and (parent.tag, a, b) not in before:
+                        conflicts.add((parent.tag, a, b))
+    print(f"corpus order check: {len(files)} real .twb files; {checked} sibling pairs checked; "
+          f"{len(conflicts)} order conflicts; {len(unseen)} parent/child pairs never seen; "
+          f"{len(new_attrs)} element/attribute pairs never seen")
+    for t in sorted(new_attrs):
+        print("    UNSEEN ATTRIBUTE", t)
+    for c in sorted(conflicts):
+        print("    CONFLICT", c)
+    for u in sorted(unseen):
+        print("    UNSEEN", u)
 
 
 def docapi_check() -> None:
@@ -477,23 +719,32 @@ def docapi_check() -> None:
     for path in (TWB, TWBX):
         wb = Workbook(str(path))
         names = [d.name for d in wb.datasources]
-        assert names == [DS], names
-        d = wb.datasources[0]
+        assert names == [PARAMS, DS], names
+        d = wb.datasources[1]
         assert d.caption == DS_CAPTION
         c = d.connections[0]
         assert c.dbclass == "textscan", c.dbclass
         fields = {f.id: f for f in d.fields.values()}
-        missing = [n for n in RATCHET_FIELDS if f"[{n}]" not in fields]
+        missing = [n for n in RATCHET_FIELDS if f"[{n}]" not in fields] + [n for n in CALCS if n not in fields]
         assert not missing, missing
         for n, spec in RATCHET_FIELDS.items():
             f = fields[f"[{n}]"]
             assert f.datatype == spec[0], (n, f.datatype)
-        print(f"tableaudocumentapi OK: {path.name}: worksheets={wb.worksheets} "
-              f"datasource={d.name} caption={d.caption!r} connection class={c.dbclass} "
-              f"fields={len(fields)}")
-        for n in RATCHET_FIELDS:
-            f = fields[f"[{n}]"]
-            print(f"    {f.id:<26} caption={f.caption!r:<28} datatype={f.datatype:<8} role={f.role}")
+        for n, spec in CALCS.items():
+            f = fields[n]
+            assert (f.caption, f.datatype, f.calculation) == (spec[0], spec[1], spec[5]), (n, f.caption)
+        pfields = {f.caption: f for f in wb.datasources[0].fields.values()}
+        assert PARAM_CAPTION in pfields, list(pfields)
+        assert set(wb.worksheets) == {SHEET_MAIN, SHEET_PUBLIC}, wb.worksheets
+        main_uses = {f.caption for f in fields.values() if SHEET_MAIN in f.worksheets}
+        print(f"tableaudocumentapi OK: {path.name}: worksheets={wb.worksheets} datasources={names} "
+              f"caption={d.caption!r} connection class={c.dbclass} fields={len(fields)} "
+              f"parameter={pfields[PARAM_CAPTION].caption!r} (worksheets {pfields[PARAM_CAPTION].worksheets})")
+        print(f"    fields used on {SHEET_MAIN!r}: {sorted(main_uses)}")
+        for n in list(RATCHET_FIELDS) + list(CALCS):
+            f = fields[n if n in CALCS else f"[{n}]"]
+            extra = f" formula={f.calculation!r}" if f.calculation else ""
+            print(f"    {f.id:<34} caption={f.caption!r:<26} datatype={f.datatype:<8} role={f.role}{extra}")
 
 
 if __name__ == "__main__":
@@ -501,3 +752,5 @@ if __name__ == "__main__":
     self_check()
     if "--check" in sys.argv[1:]:
         docapi_check()
+    if "--corpus" in sys.argv[1:]:  # --corpus DIR: folder of real Tableau .twb files (see V3 SOURCES)
+        corpus_order_check(Path(sys.argv[sys.argv.index("--corpus") + 1]))
