@@ -20,3 +20,4 @@ node_modules/
 *.twbx
 *.hyper
 *.tde
+hyperd*.log
