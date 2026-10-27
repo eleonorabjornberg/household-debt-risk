@@ -2,7 +2,7 @@
 
 <!--
   Who Holds the Debt? - Tableau data source (starter).
-  Before opening: replace REGION and PROJECT_REF below (Supabase -> Project Settings -> Database -> Session pooler).
+  Connection is preset to the household-debt-risk Supabase project (session pooler, us-east-1).
   Tableau asks for the tableau_reader password on first connect; store it as "Embedded password" when publishing.
 
   Contents: mart.public_share LEFT JOIN mart.debt_by_risk_holder ON date, INNER JOIN core.dim_risk_bucket ON risk_bucket.
@@ -16,7 +16,7 @@
   <connection class='federated'>
     <named-connections>
       <named-connection caption='Supabase session pooler' name='postgres.hhdebt'>
-        <connection authentication='username-password' class='postgres' dbname='postgres' odbc-native-protocol='yes' one-time-sql='' port='5432' server='aws-0-REGION.pooler.supabase.com' sslmode='require' username='tableau_reader.PROJECT_REF' />
+        <connection authentication='username-password' class='postgres' dbname='postgres' odbc-native-protocol='yes' one-time-sql='' port='5432' server='aws-0-us-east-1.pooler.supabase.com' sslmode='require' username='tableau_reader.ldckwcqucdnwarysqmgj' />
       </named-connection>
     </named-connections>
     <relation join='inner' type='join'>

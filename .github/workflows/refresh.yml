@@ -43,7 +43,7 @@ jobs:
       - name: Install
         run: uv sync --locked
 
-      - name: Run pipeline (extract -> transform -> load -> export-snapshot)
+      - name: Run pipeline (extract -> transform -> load -> export-snapshot + export-tableau)
         run: uv run hhdebt run --export
 
       - name: Tests
@@ -56,6 +56,7 @@ jobs:
           name: data-snapshots-${{ github.run_id }}
           path: |
             web/public/data/*.json
+            tableau/data/*.csv
             data/out/
           if-no-files-found: warn
           retention-days: 90
