@@ -85,7 +85,7 @@ This doesn't use the generated workbook at all.
 8. **Percent axis:** right-click `share_of_total` in the Data pane → **Default Properties → Number Format… → Percentage**, 0 decimals.
 9. **Order and colours:** click the `bucket_label` pill on Color → **Sort… → Sort by Field → `sort_order`, Minimum, Ascending**. Then click **Color → Edit Colors…**, select each bucket, and set the colour from `workbook_specs.md` §0.2 by double-clicking the bucket to open the colour picker and typing the hex code (Federal `#1C5CAB`, GSEs `#1BAF7A`, State & local `#3987E5`, Banks `#E34948`, Private securitization `#EDA100`, Finance cos. `#E87BA4`).
 10. **Public share sheet:** click the new-worksheet icon at the bottom and rename it `Public share`. Put green `QUARTER(date)` on Columns as in step 4, then drag `public_share` to Rows. Right-click its pill → **Measure → Average**, and set Marks to **Line**.
-11. **Dashboard:** click the new-dashboard icon (bottom bar) and rename the tab `Ratchet`. On the left, set **Size → Fixed size → 1000 × 700**. Drag `Ratchet – main` onto the canvas, then drag `Public share` below it. Drag a **Text** object (bottom left, under *Objects*) to the very top and type `Who holds US household debt? 1952–2026`.
+11. **Dashboard:** click the new-dashboard icon (bottom bar) and rename the tab `Ratchet`. On the left, set **Size → Automatic** so the view fits whatever width the website gives it (the site's column is about 667 px wide; a fixed size would get clipped). Drag `Ratchet – main` onto the canvas, then drag `Public share` below it. Drag a **Text** object (bottom left, under *Objects*) to the very top and type `Who holds US household debt? 1952–2026`.
 
 ## 7. Save to Tableau Public
 
@@ -118,15 +118,21 @@ The GitHub Action (`.github/workflows/refresh.yml`) re-runs the pipeline after e
 
 > If you edited the workbook by hand in Tableau, rebuilding with the script in step 3 replaces your edits. In that case use the *Edit Connection* route instead.
 
-## Updating to v3 (recession bands + `Active crisis` parameter)
+## Updating to v3 (recession bands, `Active crisis` parameter, three new dashboards)
 
-v3 adds grey NBER recession bands behind the stacked areas. The band for the crisis the website is showing turns darker. It also adds the fields `Recession`, `Crisis id`, `Band` and `Is active crisis`, and the parameter `Active crisis`.
+v3 is still **one file**. Besides the Ratchet it now holds three more dashboards for figures 2–4: **`CrisisSmallMultiples`** (public share around each crisis, one panel per crisis), **`Collateral`** (debt mix by collateral, plus the home coverage ratio) and **`PaymentPriority`** (serious-delinquency transitions, one row per loan type). All four dashboards use **automatic sizing**, so they fit the site's column instead of being cut off at 1000 px. One open-and-save publishes all of them.
+
+v3 also adds grey NBER recession bands behind the stacked areas. The band for the crisis the website is showing turns darker. It also adds the fields `Recession`, `Crisis id`, `Band` and `Is active crisis`, and the parameter `Active crisis`.
 
 1. In the **Tableau Public app** choose **File → Open…** and pick the new `tableau/WhoHoldsTheDebt.twbx`. If it asks to upgrade the file, click **OK**.
 2. **Re-apply the stack order** (the file still doesn't include it). Open the **Ratchet – main** tab. On the Marks card click the **Area** tab (`SUM(Share of total)`), then click the `Bucket label` pill on Color and choose **Sort… → Sort by: Field → `Sort order`, Aggregation: Minimum, Sort order: Descending**. The public holders should end up at the bottom, as in v2.
 3. **Check the bands.** Light grey vertical bars should cover every NBER recession (1953–54, …, 2008–09, 2020) and sit **behind** the coloured areas. If they cover the areas instead, right-click the right-hand axis → **Move marks to back** on the Band pane (or swap the two pills on Rows). The axis on the left should read 0%–100%, with no second axis visible.
 4. Optional: to test the highlight, right-click `Active crisis` in the Data pane (under Parameters) → **Show Parameter**, pick `gfc_2007`, and the 2008–09 band should darken. Then set it back to `none` and close the control. **The control doesn't need to be on the dashboard**, because the website sets the parameter itself.
-5. **File → Save to Tableau Public As…** with the same name **`WhoHoldsTheDebt`** and confirm the overwrite. This replaces the published version at the same URL, so nothing changes in Vercel and no redeploy is needed.
+5. Click through the three new dashboard tabs (`CrisisSmallMultiples`, `Collateral`, `PaymentPriority`) and check each one shows lines or areas, not an error or an empty sheet. The worksheets behind them are `Crisis SM – main`, `Collateral – share`, `Collateral – coverage` and `Payment priority – main`. Don't rename the dashboard tabs, because the website uses those exact names.
+6. **File → Save to Tableau Public As…** with the same name **`WhoHoldsTheDebt`** and confirm the overwrite. This replaces the published version at the same URL. The Ratchet needs no Vercel change.
+7. **Turn on the three new views on the website.** In Vercel go to **Project → Settings → Environment Variables** and edit `NEXT_PUBLIC_TABLEAU_VIEWS`, appending `CrisisSmallMultiples,Collateral,PaymentPriority`. The full value becomes:
+   `Ratchet,CrisisSmallMultiples,Collateral,PaymentPriority`
+   Then **Deployments → latest → ⋯ → Redeploy**. `NEXT_PUBLIC_*` variables are read at build time, so the redeploy is required. Check each one at `https://public.tableau.com/views/WhoHoldsTheDebt/<name>` first.
 
 If the file doesn't open or the dual axis looks wrong, copy the exact error text (see §5) and use the hand-build below.
 
@@ -148,5 +154,5 @@ Start from your published v2 workbook, opened from Tableau Public, or a v3 file 
 This is **v1**: one dashboard, kept deliberately simple so it's most likely to open cleanly. Later versions of the file will add, following `workbook_specs.md`:
 
 - **The full Ratchet**: NBER crisis bands (reference bands driven by `crises.csv`) and policy-shock lines, the public-share and Fed MBS lines overlaid on the area as a synchronized **dual axis**, KPI tiles (public share now, change since 2007Q4) using **LOD calcs**, a "share vs $ trillions" switch, rich tooltips, direct labels, a source line, a phone **device layout**, and a hidden "Data" crosstab sheet for accessibility.
-- **The other three dashboards**: `CrisisSmallMultiples` (`crisis_windows.csv`), `Collateral` (`collateral.csv`) and `PaymentPriority` (`payment_priority.csv`). Their CSVs are already packaged inside the `.twbx` under `Data/data/`. When each one is published, add its name to `NEXT_PUBLIC_TABLEAU_VIEWS` (e.g. `Ratchet,CrisisSmallMultiples`) and redeploy.
+- **Richer versions of the other three dashboards** (v3 has simple first versions; see "Updating to v3" for publishing them): the parameters, reference lines and wrapped grids described in `workbook_specs.md`.
 - Moving to **Tableau Desktop / Cloud** with a live database connection later is covered in `README.md` (*Upgrade later*).

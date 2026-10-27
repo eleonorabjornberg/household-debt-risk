@@ -301,6 +301,543 @@
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
     </datasource>
+    <datasource caption='crisis_windows' inline='true' name='federated.taw9s2bqk7jtweh0n7w8tsodk11c' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='crisis_windows' name='textscan.2xz6tik5xxs8ct8tzocp2alhj8ts'>
+            <connection class='textscan' directory='Data/data' filename='crisis_windows.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.2xz6tik5xxs8ct8tzocp2alhj8ts' name='crisis_windows.csv' table='[crisis_windows#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='string' name='crisis_id' ordinal='0' />
+            <column datatype='string' name='crisis_name' ordinal='1' />
+            <column datatype='string' name='kind' ordinal='2' />
+            <column datatype='date' name='start_q' ordinal='3' />
+            <column datatype='string' name='metric' ordinal='4' />
+            <column datatype='integer' name='q_offset' ordinal='5' />
+            <column datatype='date' name='date' ordinal='6' />
+            <column datatype='real' name='value' ordinal='7' />
+            <column datatype='real' name='value_at_t0' ordinal='8' />
+            <column datatype='real' name='delta_from_t0' ordinal='9' />
+          </columns>
+        </relation>
+        <cols>
+          <map key='[crisis_id]' value='[crisis_windows.csv].[crisis_id]' />
+          <map key='[crisis_name]' value='[crisis_windows.csv].[crisis_name]' />
+          <map key='[kind]' value='[crisis_windows.csv].[kind]' />
+          <map key='[start_q]' value='[crisis_windows.csv].[start_q]' />
+          <map key='[metric]' value='[crisis_windows.csv].[metric]' />
+          <map key='[q_offset]' value='[crisis_windows.csv].[q_offset]' />
+          <map key='[date]' value='[crisis_windows.csv].[date]' />
+          <map key='[value]' value='[crisis_windows.csv].[value]' />
+          <map key='[value_at_t0]' value='[crisis_windows.csv].[value_at_t0]' />
+          <map key='[delta_from_t0]' value='[crisis_windows.csv].[delta_from_t0]' />
+        </cols>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>crisis_id</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[crisis_id]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>crisis_id</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>crisis_name</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[crisis_name]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>crisis_name</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>kind</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[kind]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>kind</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>start_q</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[start_q]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>start_q</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>metric</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[metric]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>metric</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>q_offset</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[q_offset]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>q_offset</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[date]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>date</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[value]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>value</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>value_at_t0</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[value_at_t0]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>value_at_t0</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>delta_from_t0</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[delta_from_t0]</local-name>
+            <parent-name>[crisis_windows.csv]</parent-name>
+            <remote-alias>delta_from_t0</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Crisis id' datatype='string' name='[crisis_id]' role='dimension' type='nominal' />
+      <column caption='Crisis name' datatype='string' name='[crisis_name]' role='dimension' type='nominal' />
+      <column caption='Kind' datatype='string' name='[kind]' role='dimension' type='nominal' />
+      <column caption='Start quarter' datatype='date' name='[start_q]' role='dimension' type='ordinal' />
+      <column caption='Metric' datatype='string' name='[metric]' role='dimension' type='nominal' />
+      <column caption='Quarters from t0' datatype='integer' name='[q_offset]' role='dimension' type='ordinal' />
+      <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+      <column caption='Value' datatype='real' name='[value]' role='measure' type='quantitative' />
+      <column caption='Value at t0' datatype='real' name='[value_at_t0]' role='measure' type='quantitative' />
+      <column caption='Change since t0' datatype='real' name='[delta_from_t0]' role='measure' type='quantitative' />
+      <column caption='Change since t0 (pts)' datatype='real' default-format='n#,##0.0&quot; pts&quot;;-#,##0.0&quot; pts&quot;' name='[Calculation_2243339151551470372]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='[delta_from_t0] * 100' />
+      </column>
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
+    </datasource>
+    <datasource caption='collateral' inline='true' name='federated.s37qe7p3ekygrba8la5dhv986i3c' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='collateral' name='textscan.jkfocbg1eyr0933op1eca4hgbxgg'>
+            <connection class='textscan' directory='Data/data' filename='collateral.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.jkfocbg1eyr0933op1eca4hgbxgg' name='collateral.csv' table='[collateral#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='date' name='date' ordinal='0' />
+            <column datatype='string' name='collateral_class' ordinal='1' />
+            <column datatype='string' name='class_label' ordinal='2' />
+            <column datatype='real' name='debt_musd' ordinal='3' />
+            <column datatype='real' name='collateral_value_musd' ordinal='4' />
+            <column datatype='real' name='coverage_ratio' ordinal='5' />
+            <column datatype='real' name='share_of_debt' ordinal='6' />
+            <column datatype='boolean' name='is_estimated' ordinal='7' />
+          </columns>
+        </relation>
+        <cols>
+          <map key='[date]' value='[collateral.csv].[date]' />
+          <map key='[collateral_class]' value='[collateral.csv].[collateral_class]' />
+          <map key='[class_label]' value='[collateral.csv].[class_label]' />
+          <map key='[debt_musd]' value='[collateral.csv].[debt_musd]' />
+          <map key='[collateral_value_musd]' value='[collateral.csv].[collateral_value_musd]' />
+          <map key='[coverage_ratio]' value='[collateral.csv].[coverage_ratio]' />
+          <map key='[share_of_debt]' value='[collateral.csv].[share_of_debt]' />
+          <map key='[is_estimated]' value='[collateral.csv].[is_estimated]' />
+        </cols>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[date]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>date</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>collateral_class</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[collateral_class]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>collateral_class</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>class_label</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[class_label]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>class_label</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>debt_musd</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[debt_musd]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>debt_musd</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>collateral_value_musd</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[collateral_value_musd]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>collateral_value_musd</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>coverage_ratio</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[coverage_ratio]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>coverage_ratio</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>share_of_debt</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[share_of_debt]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>share_of_debt</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>is_estimated</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[is_estimated]</local-name>
+            <parent-name>[collateral.csv]</parent-name>
+            <remote-alias>is_estimated</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+      <column caption='Collateral class' datatype='string' name='[collateral_class]' role='dimension' type='nominal' />
+      <column caption='Class label' datatype='string' name='[class_label]' role='dimension' type='nominal' />
+      <column caption='Debt $M' datatype='real' name='[debt_musd]' role='measure' type='quantitative' />
+      <column caption='Collateral value $M' datatype='real' name='[collateral_value_musd]' role='measure' type='quantitative' />
+      <column caption='Coverage ratio' datatype='real' name='[coverage_ratio]' role='measure' type='quantitative' />
+      <column caption='Share of debt' datatype='real' default-format='p0%' name='[share_of_debt]' role='measure' type='quantitative' />
+      <column caption='Is estimated' datatype='boolean' name='[is_estimated]' role='dimension' type='nominal' />
+      <column-instance column='[class_label]' derivation='None' name='[none:class_label:nk]' pivot='key' type='nominal' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[none:class_label:nk]' type='palette'>
+            <map to='#6250d6'>
+              <bucket>&quot;Home-backed&quot;</bucket>
+            </map>
+            <map to='#eda100'>
+              <bucket>&quot;Vehicle-backed&quot;</bucket>
+            </map>
+            <map to='#e34948'>
+              <bucket>&quot;No collateral&quot;</bucket>
+            </map>
+            <map to='#898781'>
+              <bucket>&quot;Other non-revolving&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
+    </datasource>
+    <datasource caption='payment_priority' inline='true' name='federated.1leinprf08x2fa22fmxcgv9ttf9g' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='payment_priority' name='textscan.liftfsc7u248sg3mefqihasmaili'>
+            <connection class='textscan' directory='Data/data' filename='payment_priority.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.liftfsc7u248sg3mefqihasmaili' name='payment_priority.csv' table='[payment_priority#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='date' name='date' ordinal='0' />
+            <column datatype='string' name='loan_type' ordinal='1' />
+            <column datatype='string' name='loan_label' ordinal='2' />
+            <column datatype='string' name='collateral_class' ordinal='3' />
+            <column datatype='real' name='balance_busd' ordinal='4' />
+            <column datatype='real' name='transition_serious_pct' ordinal='5' />
+            <column datatype='real' name='baseline_2003_06_pct' ordinal='6' />
+            <column datatype='real' name='stress_index' ordinal='7' />
+          </columns>
+        </relation>
+        <cols>
+          <map key='[date]' value='[payment_priority.csv].[date]' />
+          <map key='[loan_type]' value='[payment_priority.csv].[loan_type]' />
+          <map key='[loan_label]' value='[payment_priority.csv].[loan_label]' />
+          <map key='[collateral_class]' value='[payment_priority.csv].[collateral_class]' />
+          <map key='[balance_busd]' value='[payment_priority.csv].[balance_busd]' />
+          <map key='[transition_serious_pct]' value='[payment_priority.csv].[transition_serious_pct]' />
+          <map key='[baseline_2003_06_pct]' value='[payment_priority.csv].[baseline_2003_06_pct]' />
+          <map key='[stress_index]' value='[payment_priority.csv].[stress_index]' />
+        </cols>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[date]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>date</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>loan_type</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[loan_type]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>loan_type</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>loan_label</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[loan_label]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>loan_label</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>collateral_class</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[collateral_class]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>collateral_class</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>balance_busd</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[balance_busd]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>balance_busd</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>transition_serious_pct</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[transition_serious_pct]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>transition_serious_pct</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>baseline_2003_06_pct</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[baseline_2003_06_pct]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>baseline_2003_06_pct</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>stress_index</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[stress_index]</local-name>
+            <parent-name>[payment_priority.csv]</parent-name>
+            <remote-alias>stress_index</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+      <column caption='Loan type' datatype='string' name='[loan_type]' role='dimension' type='nominal' />
+      <column caption='Loan label' datatype='string' name='[loan_label]' role='dimension' type='nominal' />
+      <column caption='Collateral class' datatype='string' name='[collateral_class]' role='dimension' type='nominal' />
+      <column caption='Balance $B' datatype='real' name='[balance_busd]' role='measure' type='quantitative' />
+      <column caption='Into serious delinquency (%)' datatype='real' default-format='n#,##0.0&quot;%&quot;;-#,##0.0&quot;%&quot;' name='[transition_serious_pct]' role='measure' type='quantitative' />
+      <column caption='Baseline 2003-06 (%)' datatype='real' default-format='n#,##0.0&quot;%&quot;;-#,##0.0&quot;%&quot;' name='[baseline_2003_06_pct]' role='measure' type='quantitative' />
+      <column caption='Stress index' datatype='real' name='[stress_index]' role='measure' type='quantitative' />
+      <column-instance column='[collateral_class]' derivation='None' name='[none:collateral_class:nk]' pivot='key' type='nominal' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[none:collateral_class:nk]' type='palette'>
+            <map to='#6250d6'>
+              <bucket>&quot;home_backed&quot;</bucket>
+            </map>
+            <map to='#eda100'>
+              <bucket>&quot;vehicle_backed&quot;</bucket>
+            </map>
+            <map to='#e34948'>
+              <bucket>&quot;uncollateralized&quot;</bucket>
+            </map>
+            <map to='#898781'>
+              <bucket>&quot;other_nonrevolving&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
+    </datasource>
   </datasources>
   <worksheets>
     <worksheet name='Ratchet – main'>
@@ -420,11 +957,184 @@
         <cols>[federated.fuastzwmj3dygtt66pqgja3dp4fw].[tqr:date:qk]</cols>
       </table>
     </worksheet>
+    <worksheet name='Crisis SM – main'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Public share around each crisis: change since the start quarter (t0), percentage points</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='crisis_windows' name='federated.taw9s2bqk7jtweh0n7w8tsodk11c' />
+          </datasources>
+          <datasource-dependencies datasource='federated.taw9s2bqk7jtweh0n7w8tsodk11c'>
+            <column caption='Crisis name' datatype='string' name='[crisis_name]' role='dimension' type='nominal' />
+            <column caption='Change since t0' datatype='real' name='[delta_from_t0]' role='measure' type='quantitative' />
+            <column caption='Metric' datatype='string' name='[metric]' role='dimension' type='nominal' />
+            <column caption='Quarters from t0' datatype='integer' name='[q_offset]' role='dimension' type='ordinal' />
+            <column caption='Change since t0 (pts)' datatype='real' default-format='n#,##0.0&quot; pts&quot;;-#,##0.0&quot; pts&quot;' name='[Calculation_2243339151551470372]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='[delta_from_t0] * 100' />
+            </column>
+            <column-instance column='[crisis_name]' derivation='None' name='[none:crisis_name:nk]' pivot='key' type='nominal' />
+            <column-instance column='[metric]' derivation='None' name='[none:metric:nk]' pivot='key' type='nominal' />
+            <column-instance column='[q_offset]' derivation='None' name='[none:q_offset:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_2243339151551470372]' derivation='Avg' name='[avg:Calculation_2243339151551470372:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.taw9s2bqk7jtweh0n7w8tsodk11c].[none:metric:nk]'>
+            <groupfilter function='member' level='[none:metric:nk]' member='&quot;public_share&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.taw9s2bqk7jtweh0n7w8tsodk11c].[none:metric:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+          </pane>
+        </panes>
+        <rows>([federated.taw9s2bqk7jtweh0n7w8tsodk11c].[none:crisis_name:nk] * [federated.taw9s2bqk7jtweh0n7w8tsodk11c].[avg:Calculation_2243339151551470372:qk])</rows>
+        <cols>[federated.taw9s2bqk7jtweh0n7w8tsodk11c].[none:q_offset:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Collateral – share'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Share of household debt by collateral behind it</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='collateral' name='federated.s37qe7p3ekygrba8la5dhv986i3c' />
+          </datasources>
+          <datasource-dependencies datasource='federated.s37qe7p3ekygrba8la5dhv986i3c'>
+            <column caption='Class label' datatype='string' name='[class_label]' role='dimension' type='nominal' />
+            <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+            <column caption='Share of debt' datatype='real' default-format='p0%' name='[share_of_debt]' role='measure' type='quantitative' />
+            <column-instance column='[class_label]' derivation='None' name='[none:class_label:nk]' pivot='key' type='nominal' />
+            <column-instance column='[share_of_debt]' derivation='Sum' name='[sum:share_of_debt:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[date]' derivation='Quarter-Trunc' name='[tqr:date:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.s37qe7p3ekygrba8la5dhv986i3c].[sum:share_of_debt:qk]' field-type='quantitative' max='1.0' min='0.0' range-type='fixed' scope='rows' type='space' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Area' />
+            <encodings>
+              <color column='[federated.s37qe7p3ekygrba8la5dhv986i3c].[none:class_label:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.s37qe7p3ekygrba8la5dhv986i3c].[sum:share_of_debt:qk]</rows>
+        <cols>[federated.s37qe7p3ekygrba8la5dhv986i3c].[tqr:date:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Collateral – coverage'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Home-backed debt: collateral value ÷ debt (coverage ratio)</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='collateral' name='federated.s37qe7p3ekygrba8la5dhv986i3c' />
+          </datasources>
+          <datasource-dependencies datasource='federated.s37qe7p3ekygrba8la5dhv986i3c'>
+            <column caption='Collateral class' datatype='string' name='[collateral_class]' role='dimension' type='nominal' />
+            <column caption='Coverage ratio' datatype='real' name='[coverage_ratio]' role='measure' type='quantitative' />
+            <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+            <column-instance column='[collateral_class]' derivation='None' name='[none:collateral_class:nk]' pivot='key' type='nominal' />
+            <column-instance column='[coverage_ratio]' derivation='Avg' name='[avg:coverage_ratio:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[date]' derivation='Quarter-Trunc' name='[tqr:date:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.s37qe7p3ekygrba8la5dhv986i3c].[none:collateral_class:nk]'>
+            <groupfilter function='member' level='[none:collateral_class:nk]' member='&quot;home_backed&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.s37qe7p3ekygrba8la5dhv986i3c].[none:collateral_class:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+          </pane>
+        </panes>
+        <rows>[federated.s37qe7p3ekygrba8la5dhv986i3c].[avg:coverage_ratio:qk]</rows>
+        <cols>[federated.s37qe7p3ekygrba8la5dhv986i3c].[tqr:date:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Payment priority – main'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Share of balances moving into serious delinquency (90+ days), by loan type</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='payment_priority' name='federated.1leinprf08x2fa22fmxcgv9ttf9g' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1leinprf08x2fa22fmxcgv9ttf9g'>
+            <column caption='Collateral class' datatype='string' name='[collateral_class]' role='dimension' type='nominal' />
+            <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+            <column caption='Loan label' datatype='string' name='[loan_label]' role='dimension' type='nominal' />
+            <column caption='Into serious delinquency (%)' datatype='real' default-format='n#,##0.0&quot;%&quot;;-#,##0.0&quot;%&quot;' name='[transition_serious_pct]' role='measure' type='quantitative' />
+            <column-instance column='[collateral_class]' derivation='None' name='[none:collateral_class:nk]' pivot='key' type='nominal' />
+            <column-instance column='[loan_label]' derivation='None' name='[none:loan_label:nk]' pivot='key' type='nominal' />
+            <column-instance column='[transition_serious_pct]' derivation='Avg' name='[avg:transition_serious_pct:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[date]' derivation='Quarter-Trunc' name='[tqr:date:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.1leinprf08x2fa22fmxcgv9ttf9g].[none:collateral_class:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>([federated.1leinprf08x2fa22fmxcgv9ttf9g].[none:loan_label:nk] * [federated.1leinprf08x2fa22fmxcgv9ttf9g].[avg:transition_serious_pct:qk])</rows>
+        <cols>[federated.1leinprf08x2fa22fmxcgv9ttf9g].[tqr:date:qk]</cols>
+      </table>
+    </worksheet>
   </worksheets>
   <dashboards>
     <dashboard name='Ratchet'>
       <style />
-      <size maxheight='700' maxwidth='1000' minheight='700' minwidth='1000' />
+      <size sizing-mode='automatic' />
       <zones>
         <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
           <zone h='100000' id='2' param='vert' type='layout-flow' w='100000' x='0' y='0'>
@@ -456,6 +1166,135 @@
               </zone-style>
             </zone>
             <zone fixed-size='170' h='24286' id='6' name='Public share' w='100000' x='0' y='75715' is-fixed='true'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+      </zones>
+    </dashboard>
+    <dashboard name='CrisisSmallMultiples'>
+      <style />
+      <size sizing-mode='automatic' />
+      <zones>
+        <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='100000' id='2' param='vert' type='layout-flow' w='100000' x='0' y='0'>
+            <zone fixed-size='50' h='7143' id='3' is-fixed='true' type='text' w='100000' x='0' y='0'>
+              <formatted-text>
+                <run bold='true' fontcolor='#0b0b0b' fontsize='18'>Did crises move debt onto the public balance sheet?</run>
+              </formatted-text>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+            <zone h='92857' id='4' name='Crisis SM – main' w='100000' x='0' y='7143'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+      </zones>
+    </dashboard>
+    <dashboard name='Collateral'>
+      <style />
+      <size sizing-mode='automatic' />
+      <zones>
+        <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='100000' id='2' param='vert' type='layout-flow' w='100000' x='0' y='0'>
+            <zone fixed-size='50' h='7143' id='3' is-fixed='true' type='text' w='100000' x='0' y='0'>
+              <formatted-text>
+                <run bold='true' fontcolor='#0b0b0b' fontsize='18'>What stands behind US household debt?</run>
+              </formatted-text>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+            <zone h='54286' id='4' name='Collateral – share' w='100000' x='0' y='7143'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+            <zone fixed-size='50' h='7143' id='5' is-fixed='true' leg-item-layout='horz' name='Collateral – share' pane-specification-id='0' param='[federated.s37qe7p3ekygrba8la5dhv986i3c].[none:class_label:nk]' type='color' w='100000' x='0' y='61429'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+            <zone fixed-size='220' h='31429' id='6' name='Collateral – coverage' w='100000' x='0' y='68572' is-fixed='true'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+      </zones>
+    </dashboard>
+    <dashboard name='PaymentPriority'>
+      <style />
+      <size sizing-mode='automatic' />
+      <zones>
+        <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='100000' id='2' param='vert' type='layout-flow' w='100000' x='0' y='0'>
+            <zone fixed-size='50' h='7143' id='3' is-fixed='true' type='text' w='100000' x='0' y='0'>
+              <formatted-text>
+                <run bold='true' fontcolor='#0b0b0b' fontsize='18'>Which debts do households stop paying first?</run>
+              </formatted-text>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+            <zone h='85714' id='4' name='Payment priority – main' w='100000' x='0' y='7143'>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='4' />
+              </zone-style>
+            </zone>
+            <zone fixed-size='50' h='7143' id='5' is-fixed='true' leg-item-layout='horz' name='Payment priority – main' pane-specification-id='0' param='[federated.1leinprf08x2fa22fmxcgv9ttf9g].[none:collateral_class:nk]' type='color' w='100000' x='0' y='92857'>
               <zone-style>
                 <format attr='border-color' value='#000000' />
                 <format attr='border-style' value='none' />
@@ -530,12 +1369,149 @@
         <zoom type='entire-view' />
       </viewpoint>
     </window>
+    <window class='worksheet' name='Crisis SM – main'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+    </window>
+    <window class='worksheet' name='Collateral – share'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='220'>
+            <card pane-specification-id='0' param='[federated.s37qe7p3ekygrba8la5dhv986i3c].[none:class_label:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+    </window>
+    <window class='worksheet' name='Collateral – coverage'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+    </window>
+    <window class='worksheet' name='Payment priority – main'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='220'>
+            <card pane-specification-id='0' param='[federated.1leinprf08x2fa22fmxcgv9ttf9g].[none:collateral_class:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+    </window>
     <window class='dashboard' maximized='true' name='Ratchet'>
       <viewpoints>
         <viewpoint name='Ratchet – main'>
           <zoom type='entire-view' />
         </viewpoint>
         <viewpoint name='Public share'>
+          <zoom type='entire-view' />
+        </viewpoint>
+      </viewpoints>
+      <active id='-1' />
+    </window>
+    <window class='dashboard' name='CrisisSmallMultiples'>
+      <viewpoints>
+        <viewpoint name='Crisis SM – main'>
+          <zoom type='entire-view' />
+        </viewpoint>
+      </viewpoints>
+      <active id='-1' />
+    </window>
+    <window class='dashboard' name='Collateral'>
+      <viewpoints>
+        <viewpoint name='Collateral – share'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Collateral – coverage'>
+          <zoom type='entire-view' />
+        </viewpoint>
+      </viewpoints>
+      <active id='-1' />
+    </window>
+    <window class='dashboard' name='PaymentPriority'>
+      <viewpoints>
+        <viewpoint name='Payment priority – main'>
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
