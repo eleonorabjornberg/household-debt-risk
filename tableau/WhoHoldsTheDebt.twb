@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 
 <!-- build 20211.21.0511.0935                               -->
-<workbook xmlns:user='http://www.tableausoftware.com/xml/user' original-version='18.1' source-build='2021.1.2 (20211.21.0511.0935)' source-platform='win' version='18.1'>
+<workbook xmlns:user='http://www.tableausoftware.com/xml/user' original-version='18.1' source-build='2021.1.2 (20211.21.0511.0935)' source-platform='win' upgrade-extracts='false' version='18.1'>
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
@@ -46,6 +46,7 @@
           <map key='[recession]' value='[ratchet.csv].[recession]' />
           <map key='[crisis_id]' value='[ratchet.csv].[crisis_id]' />
         </cols>
+        <refresh increment-key='' incremental-updates='false' />
         <metadata-records>
           <metadata-record class='capability'>
             <remote-name />
@@ -235,6 +236,189 @@
       <column caption='Recession' datatype='integer' name='[recession]' role='measure' type='quantitative' />
       <column caption='Crisis id' datatype='string' name='[crisis_id]' role='dimension' type='nominal' />
       <column-instance column='[bucket_label]' derivation='None' name='[none:bucket_label:nk]' pivot='key' type='nominal' />
+      <extract count='-1' enabled='true' units='records'>
+        <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/Extracts/ratchet.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/27/2026 12:00:00 PM' username=''>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh increment-key='' incremental-updates='false'>
+            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='3588' timestamp-start='2026-10-27 12:00:00.000' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>date</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[date]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>date</remote-alias>
+              <ordinal>0</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>299</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>risk_bucket</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[risk_bucket]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>risk_bucket</remote-alias>
+              <ordinal>1</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>bucket_label</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[bucket_label]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>bucket_label</remote-alias>
+              <ordinal>2</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>is_public</remote-name>
+              <remote-type>11</remote-type>
+              <local-name>[is_public]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>is_public</remote-alias>
+              <ordinal>3</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>boolean</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>sort_order</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[sort_order]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>sort_order</remote-alias>
+              <ordinal>4</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>debt_type</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[debt_type]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>debt_type</remote-alias>
+              <ordinal>5</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>nominal_musd</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[nominal_musd]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>nominal_musd</remote-alias>
+              <ordinal>6</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2695</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>real_musd</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[real_musd]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>real_musd</remote-alias>
+              <ordinal>7</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2704</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>share_of_total</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[share_of_total]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>share_of_total</remote-alias>
+              <ordinal>8</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2704</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>public_share</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[public_share]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>public_share</remote-alias>
+              <ordinal>9</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>299</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>fed_mbs_share_of_scope</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[fed_mbs_share_of_scope]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>fed_mbs_share_of_scope</remote-alias>
+              <ordinal>10</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>71</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>recession</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[recession]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>recession</remote-alias>
+              <ordinal>11</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>crisis_id</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[crisis_id]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>crisis_id</remote-alias>
+              <ordinal>12</ordinal>
+              <family>ratchet.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>12</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
       <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
       <style>
         <style-rule element='mark'>
@@ -297,6 +481,7 @@
           <map key='[value_at_t0]' value='[crisis_windows.csv].[value_at_t0]' />
           <map key='[delta_from_t0]' value='[crisis_windows.csv].[delta_from_t0]' />
         </cols>
+        <refresh increment-key='' incremental-updates='false' />
         <metadata-records>
           <metadata-record class='capability'>
             <remote-name />
@@ -452,6 +637,150 @@
       <column caption='Change since t0 (pts)' datatype='real' default-format='n#,##0.0&quot; pts&quot;;-#,##0.0&quot; pts&quot;' name='[Calculation_2243339151551470372]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='[delta_from_t0] * 100' />
       </column>
+      <extract count='-1' enabled='true' units='records'>
+        <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/Extracts/crisis_windows.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/27/2026 12:00:00 PM' username=''>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh increment-key='' incremental-updates='false'>
+            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='4290' timestamp-start='2026-10-27 12:00:00.000' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>crisis_id</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[crisis_id]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>crisis_id</remote-alias>
+              <ordinal>0</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>14</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>crisis_name</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[crisis_name]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>crisis_name</remote-alias>
+              <ordinal>1</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>14</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>kind</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[kind]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>kind</remote-alias>
+              <ordinal>2</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>start_q</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[start_q]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>start_q</remote-alias>
+              <ordinal>3</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>14</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>metric</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[metric]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>metric</remote-alias>
+              <ordinal>4</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>13</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>q_offset</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[q_offset]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>q_offset</remote-alias>
+              <ordinal>5</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>25</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>date</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[date]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>date</remote-alias>
+              <ordinal>6</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>233</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>value</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[value]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>value</remote-alias>
+              <ordinal>7</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2912</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>value_at_t0</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[value_at_t0]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>value_at_t0</remote-alias>
+              <ordinal>8</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>176</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>delta_from_t0</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[delta_from_t0]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>delta_from_t0</remote-alias>
+              <ordinal>9</ordinal>
+              <family>crisis_windows.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>3955</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
       <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
     </datasource>
     <datasource caption='collateral' inline='true' name='federated.s37qe7p3ekygrba8la5dhv986i3c' version='18.1'>
@@ -483,6 +812,7 @@
           <map key='[share_of_debt]' value='[collateral.csv].[share_of_debt]' />
           <map key='[is_estimated]' value='[collateral.csv].[is_estimated]' />
         </cols>
+        <refresh increment-key='' incremental-updates='false' />
         <metadata-records>
           <metadata-record class='capability'>
             <remote-name />
@@ -606,6 +936,122 @@
       <column caption='Share of debt' datatype='real' default-format='p0%' name='[share_of_debt]' role='measure' type='quantitative' />
       <column caption='Is estimated' datatype='boolean' name='[is_estimated]' role='dimension' type='nominal' />
       <column-instance column='[class_label]' derivation='None' name='[none:class_label:nk]' pivot='key' type='nominal' />
+      <extract count='-1' enabled='true' units='records'>
+        <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/Extracts/collateral.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/27/2026 12:00:00 PM' username=''>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh increment-key='' incremental-updates='false'>
+            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='1196' timestamp-start='2026-10-27 12:00:00.000' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>date</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[date]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>date</remote-alias>
+              <ordinal>0</ordinal>
+              <family>collateral.csv</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>299</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>collateral_class</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[collateral_class]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>collateral_class</remote-alias>
+              <ordinal>1</ordinal>
+              <family>collateral.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>class_label</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[class_label]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>class_label</remote-alias>
+              <ordinal>2</ordinal>
+              <family>collateral.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>debt_musd</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[debt_musd]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>debt_musd</remote-alias>
+              <ordinal>3</ordinal>
+              <family>collateral.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1140</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>collateral_value_musd</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[collateral_value_musd]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>collateral_value_musd</remote-alias>
+              <ordinal>4</ordinal>
+              <family>collateral.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>599</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>coverage_ratio</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[coverage_ratio]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>coverage_ratio</remote-alias>
+              <ordinal>5</ordinal>
+              <family>collateral.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>599</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>share_of_debt</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[share_of_debt]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>share_of_debt</remote-alias>
+              <ordinal>6</ordinal>
+              <family>collateral.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1140</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>is_estimated</remote-name>
+              <remote-type>11</remote-type>
+              <local-name>[is_estimated]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>is_estimated</remote-alias>
+              <ordinal>7</ordinal>
+              <family>collateral.csv</family>
+              <local-type>boolean</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
       <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
       <style>
         <style-rule element='mark'>
@@ -655,6 +1101,7 @@
           <map key='[baseline_2003_06_pct]' value='[payment_priority.csv].[baseline_2003_06_pct]' />
           <map key='[stress_index]' value='[payment_priority.csv].[stress_index]' />
         </cols>
+        <refresh increment-key='' incremental-updates='false' />
         <metadata-records>
           <metadata-record class='capability'>
             <remote-name />
@@ -781,6 +1228,123 @@
       <column caption='Baseline 2003-06 (%)' datatype='real' default-format='n#,##0.0&quot;%&quot;;-#,##0.0&quot;%&quot;' name='[baseline_2003_06_pct]' role='measure' type='quantitative' />
       <column caption='Stress index' datatype='real' name='[stress_index]' role='measure' type='quantitative' />
       <column-instance column='[collateral_class]' derivation='None' name='[none:collateral_class:nk]' pivot='key' type='nominal' />
+      <extract count='-1' enabled='true' units='records'>
+        <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/Extracts/payment_priority.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/27/2026 12:00:00 PM' username=''>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh increment-key='' incremental-updates='false'>
+            <refresh-event add-from-file-path='' increment-value='%null%' refresh-type='create' rows-inserted='564' timestamp-start='2026-10-27 12:00:00.000' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>date</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[date]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>date</remote-alias>
+              <ordinal>0</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>94</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>loan_type</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[loan_type]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>loan_type</remote-alias>
+              <ordinal>1</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>loan_label</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[loan_label]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>loan_label</remote-alias>
+              <ordinal>2</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>collateral_class</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[collateral_class]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>collateral_class</remote-alias>
+              <ordinal>3</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>balance_busd</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[balance_busd]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>balance_busd</remote-alias>
+              <ordinal>4</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>511</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>transition_serious_pct</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[transition_serious_pct]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>transition_serious_pct</remote-alias>
+              <ordinal>5</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>521</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>baseline_2003_06_pct</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[baseline_2003_06_pct]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>baseline_2003_06_pct</remote-alias>
+              <ordinal>6</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>stress_index</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[stress_index]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>stress_index</remote-alias>
+              <ordinal>7</ordinal>
+              <family>payment_priority.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>535</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
       <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.4' show-structure='true' />
       <style>
         <style-rule element='mark'>

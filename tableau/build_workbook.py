@@ -228,23 +228,11 @@ SRC = {"ratchet": {"key": "ratchet", "csv": "ratchet.csv", "caption": DS_CAPTION
 
 
 # ---- v3: parameter + calculated fields (see V3 SOURCES [P] and [C] in the module docstring)
-PARAMS = "Parameters"
-PARAM_NAME = "[Active crisis]"  # caption == name, as geocoding.twbx's '[Base Salary]'; the site calls it by caption
-PARAM_CAPTION = "Active crisis"
-PARAM_DEFAULT = "none"
-CALC_BAND = "[Calculation_" + str(int(hashlib.sha1(b"hhdebt-band").hexdigest(), 16))[:19] + "]"
-CALC_ACTIVE = "[Calculation_" + str(int(hashlib.sha1(b"hhdebt-active-crisis").hexdigest(), 16))[:19] + "]"
-CALCS = {  # name -> (caption, datatype, role, type, default-format, formula)
-    CALC_BAND: ("Band", "integer", "measure", "quantitative", "p0%", "IF [recession] = 1 THEN 1 END"),
-    CALC_ACTIVE: ("Is active crisis", "boolean", "dimension", "nominal", None,
-                  f"[crisis_id] = [{PARAMS}].{PARAM_NAME}"),
-}
 CALC_PTS = "[Calculation_" + str(int(hashlib.sha1(b"hhdebt-delta-pts").hexdigest(), 16))[:19] + "]"
+CALCS = {}  # name -> (caption, datatype, role, type, default-format, formula)
 CALCS[CALC_PTS] = ("Change since t0 (pts)", "real", "measure", "quantitative", 'n#,##0.0" pts";-#,##0.0" pts"',
                    "[delta_from_t0] * 100")  # shares -> percentage points; format pattern as geocoding.twbx
-RATCHET_CALCS = [CALC_BAND, CALC_ACTIVE]
-BAND_COLORS = {"false": "#d9d9d9", "true": "#9a9a9a"}  # lowercase hex, as Tableau writes palette colours
-BAND_TRANSPARENCY = "102"  # 0-255 alpha; 102/255 = 40% opacity (ServerTelemetry pane writes 126)
+
 
 
 def q(field_instance: str) -> str:
@@ -256,8 +244,6 @@ I_BUCKET = "[none:bucket_label:nk]"
 I_QUARTER = "[tqr:date:qk]"
 I_SHARE = "[sum:share_of_total:qk]"
 I_PUBLIC = "[avg:public_share:qk]"
-I_BAND = "[avg:" + CALC_BAND[1:-1] + ":qk]"
-I_ACTIVE = "[none:" + CALC_ACTIVE[1:-1] + ":nk]"
 I_CLASS_LABEL = "[none:class_label:nk]"
 I_CCLASS = "[none:collateral_class:nk]"
 I_COLL_SHARE = "[sum:share_of_debt:qk]"
@@ -274,7 +260,7 @@ def qs(key: str, inst: str) -> str:
     return f"[{SRC[key]['ds']}].{inst}"
 
 
-PANE_BAND, PANE_SHARE = "1", "2"  # pane ids of the dual axis; the colour legend points at the share pane
+
 
 
 def sub(parent, tag, attrib=None, text=None):
@@ -308,45 +294,11 @@ def check_fig_headers() -> None:
             sys.exit(f"{key}.csv header {header} != {list(SRC[key]['fields'])} (update the *_FIELDS dict)")
 
 
-def read_crisis_ids() -> list[str]:
-    """Parameter members: every crisis_id in crises.csv, in file order."""
-    with (DATA_DIR / "crises.csv").open(newline="", encoding="utf-8") as f:
-        ids = [row["crisis_id"] for row in csv.DictReader(f)]
-    if not ids or PARAM_DEFAULT in ids:
-        sys.exit(f"crises.csv crisis_ids unusable for the parameter: {ids}")
-    return ids
-
-
 # ---------------------------------------------------------------- data source
 
 def tq(value: str) -> str:
     """Tableau string literal as stored in XML values/formulas: "none" (the &quot; comes from escaping)."""
     return f'"{value}"'
-
-
-def param_decl(parent, members=None):
-    """String list parameter, modelled on geocoding.twbx 'Sort by' / ts_events_04.02.twb 'Tableau Server
-    Protocol': attribute order caption, datatype, name, param-domain-type, role, type, value; children
-    <calculation> then <members>. The copy inside a view's datasource-dependencies omits <members>
-    (as geocoding.twbx does)."""
-    col = sub(parent, "column", {"caption": PARAM_CAPTION, "datatype": "string", "name": PARAM_NAME,
-                                 "param-domain-type": "list", "role": "measure", "type": "nominal",
-                                 "value": tq(PARAM_DEFAULT)})
-    sub(col, "calculation", {"class": "tableau", "formula": tq(PARAM_DEFAULT)})
-    if members is not None:
-        ms = sub(col, "members")
-        for m in members:
-            sub(ms, "member", {"value": tq(m)})
-    return col
-
-
-def build_parameters(parent, crisis_ids):
-    """<datasource hasconnection='false' inline='true' name='Parameters' version='18.1'> + <aliases>, exactly
-    the shape of geocoding.twbx line 36."""
-    ds = sub(parent, "datasource", {"hasconnection": "false", "inline": "true", "name": PARAMS, "version": VERSION})
-    sub(ds, "aliases", {"enabled": "yes"})
-    param_decl(ds, [PARAM_DEFAULT] + crisis_ids)
-    return ds
 
 
 def calc_decl(parent, name):
@@ -389,6 +341,7 @@ def build_text_datasource(parent, src, calcs=(), instances=(), palettes=(), sema
     cmap = sub(fed, "cols")
     for name in fields:
         sub(cmap, "map", {"key": f"[{name}]", "value": f"[{csvname}].[{name}]"})
+    sub(fed, "refresh", {"increment-key": "", "incremental-updates": "false"})  # [E]: after <cols>
 
     mrs = sub(fed, "metadata-records")
     cap = sub(mrs, "metadata-record", {"class": "capability"})
@@ -428,6 +381,7 @@ def build_text_datasource(parent, src, calcs=(), instances=(), palettes=(), sema
     for column, derivation, inst, typ in instances:
         sub(ds, "column-instance", {"column": f"[{column}]", "derivation": derivation, "name": inst,
                                     "pivot": "key", "type": typ})
+    extract_decl(ds, src)
     sub(ds, "layout", {"dim-ordering": "alphabetic", "dim-percentage": "0.5", "measure-ordering": "alphabetic",
                        "measure-percentage": "0.4", "show-structure": "true"})
     if palettes:
@@ -440,6 +394,119 @@ def build_text_datasource(parent, src, calcs=(), instances=(), palettes=(), sema
         sv = sub(ds, "semantic-values")
         sub(sv, "semantic-value", {"key": "[Country].[Name]", "value": '"United States"'})
     return ds
+
+
+# ---- v3.1 extracts. [E] = tabcmd tests/assets/WorkbookWithExtract.twbx (WorkbookWithExtract.twb, 18.1,
+# build 2021.1.2 (20211.21.0511.0935), the same build string as this file):
+#   https://github.com/tableau/tabcmd/blob/main/tests/assets/WorkbookWithExtract.twbx
+# Tableau Public only saves extract-backed sources (error 3C242D89), so each source keeps its textscan
+# connection (the "original" source, as [E] keeps its msaccess one) and gains, after its column declarations and
+# before <layout>:
+#   <extract count='-1' enabled='true' units='records'>
+#     <connection authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/Extracts/x.hyper'
+#                 default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time=... username=''>
+#       <relation name='Extract' table='[Extract].[Extract]' type='table' />
+#       <refresh increment-key='' incremental-updates='false'><refresh-event .../></refresh>
+#       <metadata-records> one column record per field, parent-name [Extract] </metadata-records>
+# plus <refresh increment-key='' incremental-updates='false' /> after the federated <cols>, and
+# upgrade-extracts='false' on <workbook>. As everywhere else in this file, only the feature-off spelling is
+# written: [E]'s '_.fcp.ObjectModelEncapsulateLegacy.false...relation' becomes a plain <relation> (exactly as
+# in document-api-python test/assets/TABLEAU_10_TWBX.twbx's manifest-free <extract>), and the feature-on
+# twins ('...true...relation', '...true...object-id') are dropped because there is no manifest.
+EXTRACT_DIR = "Data/Extracts"
+EXTRACT_TIME = ("10/27/2026 12:00:00 PM", "2026-10-27 12:00:00.000")  # fixed -> reproducible XML
+HYPER_COLLATION = {"flag": "1", "name": "LEN_RUS_S2"}  # [E]'s string columns in the hyper extract
+
+
+def read_rows(key):
+    with (DATA_DIR / f"{key}.csv").open(newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def extract_decl(ds, src):
+    key, fields = src["key"], src["fields"]
+    rows = read_rows(key)
+    ex = sub(ds, "extract", {"count": "-1", "enabled": "true", "units": "records"})
+    c = sub(ex, "connection", {"authentication": "auth-none", "author-locale": "en_US", "class": "hyper",
+                               "dbname": f"{EXTRACT_DIR}/{key}.hyper", "default-settings": "yes",
+                               "schema": "Extract", "sslmode": "", "tablename": "Extract",
+                               "update-time": EXTRACT_TIME[0], "username": ""})
+    sub(c, "relation", {"name": "Extract", "table": "[Extract].[Extract]", "type": "table"})
+    r = sub(c, "refresh", {"increment-key": "", "incremental-updates": "false"})
+    sub(r, "refresh-event", {"add-from-file-path": "", "increment-value": "%null%", "refresh-type": "create",
+                             "rows-inserted": len(rows), "timestamp-start": EXTRACT_TIME[1]})
+    mrs = sub(c, "metadata-records")
+    for i, (name, spec) in enumerate(fields.items()):
+        dtype = spec[0]
+        mr = sub(mrs, "metadata-record", {"class": "column"})
+        sub(mr, "remote-name", text=name)
+        sub(mr, "remote-type", text=str(REMOTE_TYPE[dtype]))
+        sub(mr, "local-name", text=f"[{name}]")
+        sub(mr, "parent-name", text="[Extract]")
+        sub(mr, "remote-alias", text=name)
+        sub(mr, "ordinal", text=str(i))
+        sub(mr, "family", text=src["csv"])  # [E]: the federated relation the column came from
+        sub(mr, "local-type", text=dtype)
+        sub(mr, "aggregation", text=DEFAULT_AGG[dtype])
+        sub(mr, "approx-count", text=str(len({row[name] for row in rows})))
+        sub(mr, "contains-null", text="true")
+        if dtype == "string":
+            sub(mr, "collation", HYPER_COLLATION)
+
+
+HYPER_TYPES = {"date": "date", "string": "text", "real": "double", "integer": "big_int", "boolean": "bool"}
+
+
+def _parse(dtype, v):
+    import datetime
+    if v == "":
+        return None
+    return {"date": lambda x: datetime.date.fromisoformat(x), "string": str, "real": float, "integer": int,
+            "boolean": lambda x: {"True": True, "False": False}[x]}[dtype](v)
+
+
+def write_hypers(out_dir: Path) -> dict[str, Path]:
+    """One .hyper per data source: table "Extract"."Extract", columns named and typed as the CSV."""
+    try:
+        from tableauhyperapi import (Connection, CreateMode, HyperProcess, Inserter, NOT_NULLABLE, NULLABLE,
+                                     SqlType, TableDefinition, TableName, Telemetry)
+    except ImportError:
+        sys.exit("tableauhyperapi is needed to build the extracts: "
+                 "uv run --with tableauhyperapi python tableau/build_workbook.py")
+    paths = {}
+    with HyperProcess(telemetry=Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
+        for key, src in SRC.items():
+            path = out_dir / f"{key}.hyper"
+            table = TableName("Extract", "Extract")
+            cols = [TableDefinition.Column(n, getattr(SqlType, HYPER_TYPES[spec[0]])(), NULLABLE)
+                    for n, spec in src["fields"].items()]
+            with Connection(hyper.endpoint, path, CreateMode.CREATE_AND_REPLACE) as con:
+                con.catalog.create_schema("Extract")
+                con.catalog.create_table(TableDefinition(table, cols))
+                with Inserter(con, table) as ins:
+                    for row in read_rows(key):
+                        ins.add_row([_parse(spec[0], row[n]) for n, spec in src["fields"].items()])
+                    ins.execute()
+            paths[key] = path
+    return paths
+
+
+def hyper_check() -> None:
+    """Reopen every packaged .hyper and compare its row count and columns with the CSV."""
+    import tempfile
+    from tableauhyperapi import Connection, HyperProcess, TableName, Telemetry
+    with tempfile.TemporaryDirectory() as tmp, zipfile.ZipFile(TWBX) as z, \
+            HyperProcess(telemetry=Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
+        for key, src in SRC.items():
+            path = Path(z.extract(f"{EXTRACT_DIR}/{key}.hyper", tmp))
+            with Connection(hyper.endpoint, path) as con:
+                table = TableName("Extract", "Extract")
+                n = con.execute_scalar_query(f"SELECT COUNT(*) FROM {table}")
+                cols = [str(c.name).strip('"') for c in con.catalog.get_table_definition(table).columns]
+                types = [str(c.type) for c in con.catalog.get_table_definition(table).columns]
+            expected = len(read_rows(key))
+            assert n == expected and cols == list(src["fields"]), (key, n, expected, cols)
+            print(f"hyper OK: {key}.hyper rows={n} (csv {expected}) columns={len(cols)} types={sorted(set(types))}")
 
 
 def build_datasource(parent, labels):
@@ -462,14 +529,11 @@ def build_fig_datasources(parent):
 
 # ---------------------------------------------------------------- worksheets
 
-def view_header(table, fields, instances, calcs=(), params=False, key="ratchet"):
+def view_header(table, fields, instances, calcs=(), key="ratchet"):
     src = SRC[key]
     view = sub(table, "view")
     dss = sub(view, "datasources")
     sub(dss, "datasource", {"caption": src["caption"], "name": src["ds"]})
-    if params:  # data source first, then Parameters; dependencies: Parameters first (V3 SOURCES [P])
-        sub(dss, "datasource", {"name": PARAMS})
-        param_decl(sub(view, "datasource-dependencies", {"datasource": PARAMS}))
     dep = sub(view, "datasource-dependencies", {"datasource": src["ds"]})
     for name in fields:
         column_decl(dep, name, fields=src["fields"])
@@ -734,7 +798,7 @@ def build_tree() -> ET.ElementTree:
     labels = read_ratchet_meta()
     check_fig_headers()
     wb = ET.Element("workbook", {"original-version": VERSION, "source-build": SOURCE_BUILD,
-                                 "source-platform": "win", "version": VERSION})
+                                 "source-platform": "win", "upgrade-extracts": "false", "version": VERSION})
     prefs = sub(wb, "preferences")
     sub(prefs, "preference", {"name": "ui.encoding.shelf.height", "value": "24"})
     sub(prefs, "preference", {"name": "ui.shelf.height", "value": "26"})
@@ -786,17 +850,22 @@ def serialize(tree: ET.ElementTree) -> bytes:
 
 
 def write_outputs() -> None:
+    import tempfile
     xml_bytes = serialize(build_tree())
     TWB.write_bytes(xml_bytes)
     stamp = (2026, 1, 1, 0, 0, 0)  # fixed timestamps -> reproducible zip
     tmp = TWBX.with_suffix(".twbx.tmp")
-    with zipfile.ZipFile(tmp, "w", compression=zipfile.ZIP_DEFLATED) as z:
+    with tempfile.TemporaryDirectory() as hdir, zipfile.ZipFile(tmp, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        hypers = write_hypers(Path(hdir))
         z.writestr(zipfile.ZipInfo(TWB.name, stamp), xml_bytes, compress_type=zipfile.ZIP_DEFLATED)
         for name in CSV_FILES:
             src = DATA_DIR / name
             if not src.exists():
                 sys.exit(f"missing {src}; run `uv run hhdebt export-tableau` first")
             z.writestr(zipfile.ZipInfo(f"{PACKAGED_DIR}/{name}", stamp), src.read_bytes(),
+                       compress_type=zipfile.ZIP_DEFLATED)
+        for key, path in hypers.items():
+            z.writestr(zipfile.ZipInfo(f"{EXTRACT_DIR}/{key}.hyper", stamp), path.read_bytes(),
                        compress_type=zipfile.ZIP_DEFLATED)
     tmp.replace(TWBX)
     print(f"wrote {TWB.relative_to(HERE.parent)} ({len(xml_bytes):,} bytes)")
@@ -873,7 +942,15 @@ def self_check() -> None:
         names = z.namelist()
         assert z.testzip() is None
         assert z.read(TWB.name) == TWB.read_bytes()
-    expected = [TWB.name] + [f"{PACKAGED_DIR}/{n}" for n in CSV_FILES]
+    expected = [TWB.name] + [f"{PACKAGED_DIR}/{n}" for n in CSV_FILES] + [f"{EXTRACT_DIR}/{k}.hyper" for k in SRC]
+    for d, k in zip(top, SRC):  # every source extract-backed, as [E]
+        ex = d.find("extract")
+        assert ex is not None and ex.get("enabled") == "true", k
+        hc = ex.find("connection")
+        assert (hc.get("class"), hc.get("dbname"), hc.find("relation").get("table")) == \
+            ("hyper", f"{EXTRACT_DIR}/{k}.hyper", "[Extract].[Extract]"), k
+        assert [m.findtext("remote-name") for m in hc.iterfind("metadata-records/metadata-record")] == \
+            list(SRC[k]["fields"]), k
     assert names == expected, names
     print("self-check OK: XML parses;", f"datasources {[SRC[k]['caption'] for k in SRC]};",
           f"all dashboards sizing-mode=automatic; opens on {OPEN_SHEET!r}; Ratchet – main = v2 single-axis area;",
@@ -966,6 +1043,7 @@ def docapi_check() -> None:
 if __name__ == "__main__":
     write_outputs()
     self_check()
+    hyper_check()
     if "--check" in sys.argv[1:]:
         docapi_check()
     if "--corpus" in sys.argv[1:]:  # --corpus DIR: folder of real Tableau .twb files (see V3 SOURCES)
