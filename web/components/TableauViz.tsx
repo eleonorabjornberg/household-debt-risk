@@ -1,52 +1,79 @@
 "use client";
-// Tableau Embedding API v3 (<tableau-viz>) with Connected Apps auth.
-// Renders `fallback` (the native chart) on the server, while loading, and if anything fails,
-// so the page never depends on Tableau being reachable.
-import { useEffect, useState, type ReactNode } from "react";
+// Tableau Embedding API v3 (<tableau-viz>), for Tableau Public (no token) or Tableau Cloud
+// (Connected Apps JWT from /api/tableau-token).
+// Renders `fallback` (the native chart) on the server, while loading, and if anything fails
+// (script won't load, token request fails, the viz fires a load error, or it never becomes
+// interactive), so the page never
+// depends on Tableau being reachable.
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-let scriptPromise: Promise<void> | null = null;
+const scriptPromises = new Map<string, Promise<void>>();
 
-function loadEmbeddingApi(serverUrl: string): Promise<void> {
+function loadEmbeddingApi(scriptUrl: string): Promise<void> {
   if (typeof window !== "undefined" && window.customElements?.get("tableau-viz")) return Promise.resolve();
-  if (!scriptPromise) {
-    scriptPromise = new Promise<void>((resolve, reject) => {
+  let p = scriptPromises.get(scriptUrl);
+  if (!p) {
+    p = new Promise<void>((resolve, reject) => {
       const s = document.createElement("script");
       s.type = "module";
-      s.src = `${serverUrl}/javascripts/api/tableau.embedding.3.latest.min.js`;
+      s.src = scriptUrl;
       s.onload = () => resolve();
       s.onerror = () => {
-        scriptPromise = null;
+        scriptPromises.delete(scriptUrl);
         s.remove();
         reject(new Error("Could not load the Tableau Embedding API"));
       };
       document.head.appendChild(s);
     });
+    scriptPromises.set(scriptUrl, p);
   }
-  return scriptPromise;
+  // A loaded module that never defines the element is a failure too.
+  return p.then(() =>
+    Promise.race([
+      window.customElements.whenDefined("tableau-viz").then(() => undefined),
+      new Promise<void>((_, reject) => setTimeout(() => reject(new Error("Tableau Embedding API did not initialise")), 10000)),
+    ]),
+  );
 }
 
 interface Props {
-  serverUrl: string;
-  /** Full view URL, e.g. https://pod.online.tableau.com/t/site/views/WhoHoldsTheDebt/Ratchet */
+  /** Embedding API v3 module URL. */
+  scriptUrl: string;
+  /** Full view URL, e.g. https://public.tableau.com/views/WhoHoldsTheDebt/Ratchet */
   src: string;
+  /** Cloud: fetch a Connected Apps token first. Public: no token. */
+  needsToken: boolean;
   title: string;
   height?: number;
   fallback: ReactNode;
 }
 
-type State = { status: "loading" } | { status: "ready"; token: string } | { status: "error"; message: string };
+type State = { status: "loading" } | { status: "ready"; token?: string } | { status: "error"; message: string };
 
-export function TableauViz({ serverUrl, src, title, height = 680, fallback }: Props) {
+// Embedding API v3 event names (TableauEventType).
+const VIZ_LOAD_ERROR = "vizloaderror";
+const FIRST_INTERACTIVE = "firstinteractive";
+// A missing Tableau Public view loads a "Where's the viz?" page without firing vizloaderror,
+// so a view that isn't interactive within this time is treated as failed.
+const INTERACTIVE_TIMEOUT_MS = 30000;
+
+export function TableauViz({ scriptUrl, src, needsToken, title, height = 680, fallback }: Props) {
   const [state, setState] = useState<State>({ status: "loading" });
+  const vizRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const [res] = await Promise.all([fetch("/api/tableau-token", { cache: "no-store" }), loadEmbeddingApi(serverUrl)]);
-        if (!res.ok) throw new Error(`Token request failed (${res.status})`);
-        const { token } = (await res.json()) as { token: string };
-        if (!cancelled) setState({ status: "ready", token });
+        if (needsToken) {
+          const [res] = await Promise.all([fetch("/api/tableau-token", { cache: "no-store" }), loadEmbeddingApi(scriptUrl)]);
+          if (!res.ok) throw new Error(`Token request failed (${res.status})`);
+          const { token } = (await res.json()) as { token: string };
+          if (!cancelled) setState({ status: "ready", token });
+        } else {
+          await loadEmbeddingApi(scriptUrl);
+          if (!cancelled) setState({ status: "ready" });
+        }
       } catch (err) {
         if (!cancelled) setState({ status: "error", message: (err as Error).message });
       }
@@ -54,12 +81,37 @@ export function TableauViz({ serverUrl, src, title, height = 680, fallback }: Pr
     return () => {
       cancelled = true;
     };
-  }, [serverUrl]);
+  }, [scriptUrl, needsToken]);
+
+  const ready = state.status === "ready";
+  useEffect(() => {
+    const el = vizRef.current;
+    if (!ready || !el) return;
+    const onError = () => setState({ status: "error", message: "The Tableau view failed to load" });
+    const timer = setTimeout(onError, INTERACTIVE_TIMEOUT_MS);
+    const onInteractive = () => clearTimeout(timer);
+    el.addEventListener(VIZ_LOAD_ERROR, onError);
+    el.addEventListener(FIRST_INTERACTIVE, onInteractive);
+    return () => {
+      clearTimeout(timer);
+      el.removeEventListener(VIZ_LOAD_ERROR, onError);
+      el.removeEventListener(FIRST_INTERACTIVE, onInteractive);
+    };
+  }, [ready]);
 
   if (state.status === "ready") {
     return (
       <div className="tableau" style={{ minHeight: height }}>
-        <tableau-viz src={src} token={state.token} toolbar="bottom" hide-tabs width="100%" height={`${height}px`} aria-label={title} />
+        <tableau-viz
+          ref={vizRef}
+          src={src}
+          {...(state.token ? { token: state.token } : {})}
+          toolbar="bottom"
+          hide-tabs
+          width="100%"
+          height={`${height}px`}
+          aria-label={title}
+        />
       </div>
     );
   }

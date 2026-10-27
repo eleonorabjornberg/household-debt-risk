@@ -24,7 +24,7 @@ npm run lint
 | Row types (mirror the `mart` tables) | `lib/types.ts` |
 | Rows → chart-ready arrays, headline numbers | `lib/shape.ts` |
 | Native SVG charts | `components/charts/*` (one shared `TimeSeriesChart`) |
-| Tableau embed + token route | `components/TableauViz.tsx`, `app/api/tableau-token/route.ts`, `lib/tableau.ts` |
+| Tableau embed (Public or Cloud) + Cloud token route | `components/TableauViz.tsx`, `lib/tableau.ts`, `app/api/tableau-token/route.ts` |
 | Synthetic dev data | `fixtures/*.json` (fake; `npm run fixtures` regenerates) |
 
 ## Data sources, in order
@@ -45,23 +45,55 @@ See `.env.example`. All are optional.
 | Variable | Used for |
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Live reads of the `mart` schema. The key starts `sb_publishable_`; `NEXT_PUBLIC_SUPABASE_ANON_KEY` is accepted as a fallback |
-| `TABLEAU_SERVER_URL` | e.g. `https://10ax.online.tableau.com`; also where the Embedding API script loads from |
-| `TABLEAU_SITE` | Site content URL (the `/t/<site>/` part); blank for the default site |
-| `TABLEAU_CONNECTED_APP_CLIENT_ID`, `..._SECRET_ID`, `..._SECRET_VALUE` | Connected App (direct trust) credentials, server-only |
-| `TABLEAU_EMBED_USER` | Tableau username the embed token acts as (JWT `sub`) |
+| `NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE` | Your Tableau Public profile name. Turns on **Public mode** (takes precedence over Cloud) |
+| `NEXT_PUBLIC_TABLEAU_VIEWS` | Public mode: comma-separated sheet names that are published, e.g. `Ratchet` |
+| `TABLEAU_SERVER_URL` | Cloud: e.g. `https://10ax.online.tableau.com`; also where the Embedding API script loads from |
+| `TABLEAU_SITE` | Cloud: site content URL (the `/t/<site>/` part); blank for the default site |
+| `TABLEAU_CONNECTED_APP_CLIENT_ID`, `..._SECRET_ID`, `..._SECRET_VALUE` | Cloud: Connected App (direct trust) credentials, server-only |
+| `TABLEAU_EMBED_USER` | Cloud: Tableau username the embed token acts as (JWT `sub`) |
 
-If any required Tableau variable is missing, every figure shows its native chart with a short
-"interactive version coming" note, and `GET /api/tableau-token` returns **503** with the list of
-missing variables. With them set, the route returns `{ token, expiresIn }`: an HS256 JWT with
+**`NEXT_PUBLIC_*` values are inlined at build time.** After adding or changing any of them in Vercel
+(or `.env.local`), redeploy (or rebuild); a running deployment won't pick the change up.
+
+Views embedded: `WhoHoldsTheDebt/Ratchet`, `/CrisisSmallMultiples`, `/Collateral`, `/PaymentPriority`
+(`TABLEAU_VIEWS` in `lib/tableau.ts`). `/methods` shows which mode the build is using.
+
+### Tableau Public (start here)
+
+1. Publish the workbook to Tableau Public as `WhoHoldsTheDebt` (so the views URL is
+   `https://public.tableau.com/views/WhoHoldsTheDebt/Ratchet`). Check the URL on Tableau Public; if the
+   workbook or sheet name differs, update `TABLEAU_VIEWS` in `lib/tableau.ts`.
+2. Set `NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE` to your profile name and `NEXT_PUBLIC_TABLEAU_VIEWS` to the
+   sheets that exist (start with `Ratchet`), then redeploy. Add more sheet names as you publish them.
+
+In Public mode the Embedding API v3 loads from
+`https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js` and each listed figure
+renders `<tableau-viz src="https://public.tableau.com/views/WhoHoldsTheDebt/<Sheet>" toolbar="bottom" hide-tabs>`
+with **no token** (`/api/tableau-token` is never called). Its source line gets an "Open on Tableau
+Public" link to `https://public.tableau.com/app/profile/<profile>/viz/WhoHoldsTheDebt/<Sheet>`. Figures
+whose sheet isn't listed keep the native chart and the "interactive version coming" note; with
+`NEXT_PUBLIC_TABLEAU_VIEWS` unset, no figure embeds.
+
+### Tableau Cloud (upgrade later)
+
+Used only when `NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE` is blank and all five required Cloud variables are
+set; then every figure embeds. If any is missing, `GET /api/tableau-token` returns **503** with the list
+of missing variables. With them set, the route returns `{ token, expiresIn }`: an HS256 JWT with
 `iss` = client id, header `kid` = secret id, `aud` = `tableau`, `sub` = embed user,
-`scp` = `["tableau:views:embed"]`, a random `jti`, and a 5-minute expiry. Views embedded:
-`WhoHoldsTheDebt/Ratchet`, `/CrisisSmallMultiples`, `/Collateral`, `/PaymentPriority`.
+`scp` = `["tableau:views:embed"]`, a random `jti`, and a 5-minute expiry. The token route is public by
+design (anyone viewing the story needs a token), so give `TABLEAU_EMBED_USER` a Viewer-role account
+that can see only this workbook.
+
+### Fallbacks
+
+With no Tableau configuration every figure shows its native chart with a short "interactive version
+coming" note. In either mode the native chart is shown while the embed loads, and stays (with a short
+note) if the Embedding API script fails to load, the token request fails, the viz fires a
+`vizloaderror` event, or it doesn't fire `firstinteractive` within 30 seconds (a missing Tableau Public
+view shows a "Where's the viz?" page without a load error, so this catches sheets listed before they're published).
 
 Chart colors match the Tableau workbook (`tableau/workbook_specs.md` §0.2): CSS variables
 `--b-<risk_bucket>` and `--c-<collateral_class>` in `app/globals.css`, with validated dark-mode steps.
-
-The token route is public by design (anyone viewing the story needs a token), so give
-`TABLEAU_EMBED_USER` a Viewer-role account that can see only this workbook.
 
 ## Deploying on Vercel
 
@@ -71,6 +103,8 @@ The token route is public by design (anyone viewing the story needs a token), so
    so the build can refresh the catalog from `pipeline/series_catalog.yaml`. If it's disabled the
    committed `content/series_catalog.json` is used.
 3. Add the environment variables above for Production (and Preview if wanted), then redeploy.
+   For Tableau Public that's just `NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE` and `NEXT_PUBLIC_TABLEAU_VIEWS`;
+   because they're inlined at build time, each change needs a new deployment.
 
 ## Exposing the `mart` schema in Supabase
 

@@ -78,14 +78,14 @@ export const hero = {
   kicker: "US household debt, 1952–2026",
   headline: "Most US household debt now sits on public balance sheets. Crises didn't put it there. One did.",
   dek: `In 1952 the federal government, the housing agencies and state and local governments held ${facts.publicShareFirst} of what American households owed on their homes and consumer loans. By ${facts.latestQuarter} they held ${facts.publicShareLatest}: ${facts.publicLatest} of ${facts.scopeLatest}. The obvious story is that every crisis pushed more risk onto taxpayers. The data mostly say otherwise. The climb was a slow build-out of Fannie Mae, Freddie Mac and the agency pools. The one real exception is 2007.`,
-  statLabel: "of US household mortgage and consumer debt is held or guaranteed by public balance sheets",
+  statLabel: "of US household mortgage and consumer debt is held on public balance sheets",
   statNote: "Public share of household 1–4 family mortgages and consumer credit, {firstQuarter} to {latestQuarter}. Fed Z.1 Financial Accounts.",
   sparkTitle: "Public share of household debt, {firstYear}–{latestYear}",
   facts: [
     { label: "Public share, 1952 Q1", value: facts.publicShareFirst },
     { label: `All-time high, ${facts.publicSharePeakQ}`, value: facts.publicSharePeak },
     { label: "Change over 2007–11, the one real ratchet", value: facts.gfcDelta },
-    { label: `Publicly held or guaranteed, ${facts.latestQuarter}`, value: `${facts.publicLatest} of ${facts.scopeLatest}` },
+    { label: `Publicly held, ${facts.latestQuarter}`, value: `${facts.publicLatest} of ${facts.scopeLatest}` },
   ],
   factsSource: "Fed Z.1 Financial Accounts, household mortgages and consumer credit.",
 };
@@ -124,13 +124,13 @@ export const ratchet: Chapter = {
   figure: {
     title: "Who bears the credit risk on household debt",
     caption:
-      "Share of household 1–4 family mortgages and consumer credit by the type of institution that holds it or guarantees the pool. Shaded bands are NBER recessions; thin vertical rules mark policy shocks (CARES Act forbearance, the student-loan restarts).",
+      "Share of household 1–4 family mortgages and consumer credit by the type of institution that holds it (agency and GSE mortgage pools count as holders). Shaded bands are NBER recessions; thin vertical rules mark policy shocks (CARES Act forbearance, the student-loan restarts).",
     source: "Fed Z.1 Financial Accounts, tables L.218 and L.222 (holders apportioned to the household liability). NBER recession dates.",
   },
   aside: {
     title: "What counts as public",
     body:
-      "A loan is public here when a government entity owns it or a government-sponsored enterprise holds or guarantees the pool it sits in. Fannie Mae and Freddie Mac have been in federal conservatorship since September 2008, so their credit risk is, in practice, the taxpayer's. Holding a loan is not always the same as bearing its risk; the Methods page explains where the two differ.",
+      "A loan is public here when a government entity or a government-sponsored enterprise holds it, directly or through an agency or GSE mortgage pool. Fannie Mae and Freddie Mac have been in federal conservatorship since September 2008, so their credit risk is, in practice, the taxpayer's. Holding a loan is not always the same as bearing its risk; the Methods page explains where the two differ.",
   },
 };
 

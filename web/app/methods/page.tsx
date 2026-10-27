@@ -3,7 +3,7 @@ import catalog from "@/content/series_catalog.json";
 import { methods } from "@/content/story";
 import { getSnapshotMeta, getStoryData, supabaseConfigured } from "@/lib/data";
 import { quarterLabel } from "@/lib/format";
-import { tableauConfig } from "@/lib/tableau";
+import { tableauStatus } from "@/lib/tableau";
 import type { DataSource, TableName } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -181,7 +181,7 @@ export default async function MethodsPage() {
             {meta?.vintages?.nyfed && <div><dt>NY Fed data retrieved</dt><dd>{meta.vintages.nyfed}</dd></div>}
             {meta?.cpi_base_quarter && <div><dt>Real dollars in prices of</dt><dd>{meta.cpi_base_quarter}</dd></div>}
             <div><dt>Supabase</dt><dd>{supabaseConfigured() ? "Configured" : "Not configured"}</dd></div>
-            <div><dt>Tableau embeds</dt><dd>{tableauConfig() ? "Configured" : "Not configured (native charts)"}</dd></div>
+            <div><dt>Tableau embeds</dt><dd>{tableauStatus()}</dd></div>
           </dl>
           <p className="figure__caption" style={{ marginTop: "1rem" }}>
             Tables: {(Object.keys(data.sources) as TableName[]).map((t) => `${t} (${data.sources[t]})`).join(", ")}.
