@@ -2,22 +2,24 @@
 
 How US household debt has been reshaped by economic crises since the 1950s. The project looks at two things most analyses skip:
 
-1. **Who bears the credit risk.** Household debt is split by *holder*, not just by loan type: the federal government, the GSEs and agency pools, banks, private securitization, and others. Does each crisis ratchet more of it onto public balance sheets?
+1. **Who bears the credit risk.** Household debt is split by *holder*, not just by loan type: the federal government, the GSEs and agency pools, banks, private securitization, and others. Did crises ratchet it onto public balance sheets?
 2. **What the debt is backed by.** Debt is split into home-backed (an appreciating asset), vehicle-backed (a depreciating asset), and debt with no collateral at all, such as cards and student loans. For each class we track how well its collateral covers it through each crisis.
 
-**Working thesis (to be tested):** each crisis since 1970 moved a larger share of household credit risk onto public or quasi-public balance sheets, and away from debt backed by appreciating collateral.
+**What we found** (full write-up in [`analysis/findings.md`](analysis/findings.md)):
 
-A first look at the Z.1 data from 1952 to 2026 shows the public share of household mortgages and consumer credit:
+- **Most US household debt now sits on public balance sheets.** The public share of household mortgages and consumer credit rose from 3.2% in 1952 to **56.4% in 2026Q2** ($10.77T of $19.10T). "Public" means the federal government, GSEs and agency pools, and state & local governments.
+- **But crises mostly didn't put it there.** We started from the thesis that each crisis ratchets the share up. The data rejects that as a general pattern: shifts after crises are indistinguishable from ordinary periods (placebo p ≈ 0.30). The long climb is a slow structural build-out of the GSEs, +18.8 pp in the 1980s alone.
+- **One crisis did.** From 2007Q4 to 2011Q4 the share jumped from 36.1% to 49.2% (+13.1 pp, 98th percentile of all 16-quarter windows), and half of that was private lenders retreating. It never reversed. In 2001, by contrast, the share fell 3.8 pp during the private-label boom.
+- **The public book has tilted toward unsecured debt.** The public sector now holds 86% of student loans and 51% of all uncollateralized household debt, up from 7% in 2007. Household debt overall has *not* drifted away from home collateral: home coverage is 3.56×, its highest outside 2022–26 since 1960.
 
-| Crisis | Public share at peak | Public share 16 quarters later |
+| NBER peak | Public share at peak | 16 quarters later |
 |---|---|---|
-| 1973 | 7.2% | 11.3% |
-| 1981 | 16.3% | 24.6% |
-| 1990 | 34.5% | 41.6% |
-| 2001 | 40.6% | 36.8% |
-| 2007 | 36.1% | 49.2% |
-
-By 2026Q2 the share is 56.4%. "Public" means the federal government, GSEs and agency pools, and state & local governments. The 2001 recession is the one exception, and it coincides with the private-label securitization boom.
+| 1973Q4 | 7.2% | 11.3% |
+| 1981Q3 | 16.3% | 24.6% |
+| 1990Q3 | 34.5% | 41.6% |
+| 2001Q1 | 40.6% | 36.8% |
+| 2007Q4 | 36.1% | 49.2% |
+| 2019Q4 | 55.2% | 56.3% |
 
 ## Stack
 | Layer | Tech | Folder |
