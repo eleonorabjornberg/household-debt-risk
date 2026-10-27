@@ -187,6 +187,33 @@ export const crisisByCrisis: Chapter & {
   },
 };
 
+/** One-line descriptions of each holder type, for the linked side card in "Crisis by crisis".
+ *  Keyed by risk_bucket; mirrors the series mapping in pipeline/series_catalog.yaml. */
+export const holderNotes: Record<string, string> = {
+  federal_direct: "Loans the federal government holds itself: mostly direct student loans, plus a few mortgages.",
+  gse_agency: "Fannie Mae, Freddie Mac and the agency and GSE mortgage pools (Ginnie Mae included), plus Sallie Mae until 2004.",
+  state_local: "State and local governments, mainly their housing finance agencies.",
+  banks_credit_unions: "Commercial banks, savings institutions and credit unions, lending from their own balance sheets.",
+  private_securitization: "Private-label asset-backed securities and mortgage REITs: the risk sold on to investors without a public guarantee.",
+  nonbank_other: "Finance companies, life insurers, pension funds, retailers and households who sell homes on credit.",
+};
+
+/** Copy for the scroll-driven walk through each crisis (chapter 2). */
+export const crisisScrolly = {
+  label: "Crisis walk-through",
+  title: "Who held household debt around each crisis",
+  intro: "Scroll through each crisis. The chart zooms to two years before and four years after it began.",
+  legendLabel: "Highlight a holder",
+  legendHint: "Select a holder to highlight it in the chart and see its share.",
+  reset: "Show all years",
+  caption: "Public share",
+  cardSince: "since",
+  cardBegan: "began",
+  cardClose: "Clear",
+  nativeNote: "Built-in chart. The interactive Tableau version loads on wider screens.",
+  stepCta: "Show in the chart",
+};
+
 export const collateral: Chapter & { classLabels: Record<string, string> } = {
   id: "collateral",
   number: "3",

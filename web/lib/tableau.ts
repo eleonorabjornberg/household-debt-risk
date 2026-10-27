@@ -44,6 +44,15 @@ export function publishedPublicSheets(): Set<string> {
   );
 }
 
+/**
+ * The "Crisis by crisis" scroll-through drives the Ratchet view only when NEXT_PUBLIC_TABLEAU_SCROLLY=1.
+ * Otherwise it uses the native chart, even when the views are configured (the published dashboard
+ * must use automatic sizing to fit the scroll-through column). Figure 1's embed is unaffected.
+ */
+export function scrollyTableauEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_TABLEAU_SCROLLY?.trim() === "1";
+}
+
 /** Cloud (Connected Apps) settings, or null when Cloud isn't configured. */
 export function tableauConfig(): { serverUrl: string; site: string } | null {
   if (missingTableauEnv().length > 0) return null;

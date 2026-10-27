@@ -2,6 +2,7 @@
 import { useId, useMemo, useState } from "react";
 import type { CrisisWindows } from "@/lib/shape";
 import { pts, quarterLabel } from "@/lib/format";
+import { crisisStepId, requestCrisisFocus } from "@/lib/crisisFocus";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 import { DataTable, SLOT } from "./parts";
 
@@ -65,12 +66,20 @@ export function CrisisMultiples({ data, metricLabels, notes, title }: Props) {
           const startLabel = quarterLabel(crisis.start);
           return (
             <li key={crisis.id} className="multiples__panel">
-              <div className="multiples__head">
+              {/* Links to the matching step of the scroll-through above; plain #anchor without JS. */}
+              <a
+                className="multiples__head multiples__link"
+                href={`#${crisisStepId(crisis.id)}`}
+                aria-label={`${crisis.name}, ${end === null ? "no data" : fmtLong(end)}. Show this crisis in the scroll-through chart.`}
+                onClick={(e) => {
+                  if (requestCrisisFocus(crisis.id)) e.preventDefault();
+                }}
+              >
                 <span className="multiples__name">{crisis.name}</span>
                 <span className={`multiples__delta${end !== null && end < 0 ? " is-down" : ""}`}>
                   {end === null ? "–" : fmtLong(end)}
                 </span>
-              </div>
+              </a>
               <div className="multiples__sub">
                 {startLabel}
                 {crisis.kind === "policy_shock" ? " · policy shock" : ""}

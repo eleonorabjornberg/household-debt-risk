@@ -6,16 +6,21 @@ import { CrisisMultiples } from "@/components/charts/CrisisMultiples";
 import { PaymentPriority } from "@/components/charts/PaymentPriority";
 import { PublicShareSpark } from "@/components/charts/PublicShareSpark";
 import { RatchetChart } from "@/components/charts/RatchetChart";
-import { collateral, crisisByCrisis, hero, now, nyFedVsZ1, paymentPriority, ratchet, type Chapter } from "@/content/story";
+import { CrisisScrolly } from "@/components/scrolly/CrisisScrolly";
+import {
+  collateral, crisisByCrisis, crisisScrolly, hero, holderNotes, now, nyFedVsZ1, paymentPriority, ratchet, type Chapter,
+} from "@/content/story";
 import { getStoryData, overallSource } from "@/lib/data";
 import { fill, pct, quarterLabel, usdFromBillions } from "@/lib/format";
-import { collateralData, crises, crisisWindows, headline, nyfedData, publicSeries, ratchetData } from "@/lib/shape";
-import { TABLEAU_VIEWS } from "@/lib/tableau";
+import { collateralData, crises, crisisSteps, crisisWindows, headline, nyfedData, publicSeries, ratchetData } from "@/lib/shape";
+import { scrollyTableauEnabled, TABLEAU_VIEWS, tableauEmbedFor } from "@/lib/tableau";
 
 export default async function Home() {
   const data = await getStoryData();
   const h = headline(data);
   const crisisList = crises(data);
+  const ratchetRows = ratchetData(data);
+  const scrollyEmbed = scrollyTableauEnabled() ? tableauEmbedFor(TABLEAU_VIEWS.ratchet) : null;
 
   const tokens: Record<string, string> = {
     latestQuarter: quarterLabel(h.latestDate),
@@ -97,11 +102,30 @@ export default async function Home() {
 
       <ChapterSection chapter={ratchet} f={f}>
         <Figure id="fig-ratchet" label="Figure 1" tableauView={TABLEAU_VIEWS.ratchet} {...ratchet.figure}>
-          <RatchetChart data={ratchetData(data)} crises={crisisList} title={ratchet.figure.title} />
+          <RatchetChart data={ratchetRows} crises={crisisList} title={ratchet.figure.title} />
         </Figure>
       </ChapterSection>
 
       <ChapterSection chapter={crisisByCrisis} f={f}>
+        <section className="figure scrolly-figure" id="crisis-walkthrough" aria-labelledby="crisis-walkthrough-title">
+          <header className="figure__head">
+            <p className="figure__label">{crisisScrolly.label}</p>
+            <h3 className="figure__title" id="crisis-walkthrough-title">{crisisScrolly.title}</h3>
+            <p className="figure__caption">{crisisScrolly.intro}</p>
+          </header>
+          <CrisisScrolly
+            steps={crisisSteps(data, crisisByCrisis.notes)}
+            data={ratchetRows}
+            crises={crisisList}
+            embed={scrollyEmbed ? { scriptUrl: scrollyEmbed.scriptUrl, src: scrollyEmbed.src, needsToken: scrollyEmbed.needsToken } : null}
+            title={crisisScrolly.title}
+            copy={crisisScrolly}
+            holderNotes={holderNotes}
+          />
+          <p className="figure__source">
+            <span>Source</span> {ratchet.figure.source}
+          </p>
+        </section>
         <Figure id="fig-crises" label="Figure 2" tableauView={TABLEAU_VIEWS.crises} {...crisisByCrisis.figure}>
           <CrisisMultiples
             data={crisisWindows(data)}
