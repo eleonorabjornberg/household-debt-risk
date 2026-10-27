@@ -1,0 +1,19 @@
+# data & caches
+data/
+*.pkl
+*.parquet
+__pycache__/
+.venv/
+.pytest_cache/
+# web
+node_modules/
+.next/
+.vercel/
+# secrets
+.env
+.env.*
+!.env.example
+# tableau
+*.twbx
+*.hyper
+*.tde
