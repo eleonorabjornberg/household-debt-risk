@@ -9,7 +9,7 @@ export const site = {
   kicker: "Who holds America's household debt, 1952–2026",
   description:
     "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
-  original: "https://household-debt-risk-web.vercel.app",
+  repo: "https://github.com/eleonorabjornberg/household-debt-risk",
 };
 
 export const PILE_NAMES = [
