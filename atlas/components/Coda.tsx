@@ -87,8 +87,8 @@ export default function Coda({ series }: { series: Series }) {
           {coda.sources.map((s) => <li key={s}>{s}</li>)}
         </ul>
         <p className="coda__more">
-          The full analysis, with methods, caveats and the crisis-by-crisis test, is at{" "}
-          <a href={site.original}>Who Holds the Debt?</a>{" "}
+          The code, the data pipeline and the full analysis (methods, caveats and the crisis-by-crisis test) are on{" "}
+          <a href={site.repo}>GitHub</a>.{" "}
           {series.cpiBase ? `CPI base: ${series.cpiBase}. ` : ""}
           Data loaded from {series.source === "supabase" ? "Supabase" : "the pipeline's snapshot"}.
         </p>
