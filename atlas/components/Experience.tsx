@@ -164,22 +164,27 @@ export default function Experience({ series }: { series: Series }) {
             <div className="hud__when">
               <span className="hud__year">{fmtQuarter(date)}</span>
               <span className={`hud__badge${recession ? " is-on" : ""}`} aria-hidden={!recession}>
-                {recession ? `Recession · ${recession.name}` : " "}
+                {recession ? recession.name : " "}
               </span>
             </div>
-            <div className="hud__nums">
-              <div>
-                <span className="hud__big">{fmtPct(share)}</span>
-                <span className="hud__label">public</span>
+            <div className="split">
+              <div className="split__labels">
+                <span className="split__pub-label">
+                  <b>{fmtPct(share)}</b> public
+                </span>
+                <span className="split__priv-label">
+                  private <b>{fmtPct(1 - share)}</b>
+                </span>
               </div>
-              <div>
-                <span className="hud__mid">{fmtTrillions(total)}</span>
-                <span className="hud__label">total, 2026 $</span>
+              <div className="split__bar" aria-hidden>
+                <span className="split__pub" style={{ width: `${share * 100}%` }} />
+                <span className="split__priv" />
               </div>
+              <span className="split__caption">Public vs private share of debt</span>
             </div>
-            <div className="split" aria-hidden>
-              <span className="split__pub" style={{ width: `${share * 100}%` }} />
-              <span className="split__priv" />
+            <div className="hud__total">
+              <span className="hud__mid">{fmtTrillions(total)}</span>
+              <span className="hud__label">total debt, 2026 $</span>
             </div>
             <div className="lens" role="group" aria-label="Lens">
               <button type="button" aria-pressed={lens === "dollars"} onClick={() => setLens("dollars")}>Dollars</button>

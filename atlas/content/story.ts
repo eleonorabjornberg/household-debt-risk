@@ -6,7 +6,7 @@
 
 export const site = {
   title: "Hot Potato",
-  kicker: "Who holds America's household debt, 1952–2026",
+  kicker: "Who holds America's household debt?",
   description:
     "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
   repo: "https://github.com/eleonorabjornberg/household-debt-risk",
@@ -102,6 +102,34 @@ export const steps: Step[] = [
       "Drag the timeline or press play. Switch to Shares to see only the mix, with a fixed 1,000 dots. Hover over a pile, or tap it, to see its numbers.",
   },
 ];
+
+// "What does this mean?" Tokens: {share} latest public share, {pls} private-label holdings
+// in the latest quarter. Everything else is quoted from analysis/findings.md.
+export const meaning = {
+  title: "What does this mean?",
+  points: [
+    {
+      stat: "{share}",
+      title: "Taxpayers are the backstop",
+      body: "Most household debt now sits with the public sector, so in the next downturn most of the losses land on public balance sheets, not on banks. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008.",
+    },
+    {
+      stat: "1 of 11",
+      title: "Crises rarely move the risk",
+      body: "Across eleven recessions, the shift after a crisis looks like any other period's (placebo p ≈ 0.30). 2007–11 is the exception: it added 13 points, and it never reversed. Private-label debt went from $4.6T in 2006 to {pls} today.",
+    },
+    {
+      stat: "86%",
+      title: "The public book is going unsecured",
+      body: "The public sector holds 86% of student loans and 51% of all household debt with no collateral behind it, up from 7% in 2007. More of what taxpayers hold is debt that can't be repossessed.",
+    },
+    {
+      stat: "2025",
+      title: "What to watch",
+      body: "Any plan to release Fannie and Freddie from conservatorship would move the biggest pile back across the line. Student-loan collections restarted in 2025, the first real test of the unsecured public book.",
+    },
+  ],
+};
 
 export const coda = {
   sourcesTitle: "About the data",

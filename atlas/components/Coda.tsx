@@ -1,6 +1,6 @@
 import { fmtPct, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
-import type { Series } from "@/lib/types";
-import { coda, PILE_LONG, site } from "@/content/story";
+import { BUCKETS, type Series } from "@/lib/types";
+import { coda, meaning, PILE_LONG, site } from "@/content/story";
 
 export default function Coda({ series }: { series: Series }) {
   const firstYear = Number(series.dates[0].slice(0, 4)) + 1;
@@ -8,10 +8,27 @@ export default function Coda({ series }: { series: Series }) {
   const decades: number[] = [];
   for (let y = firstYear; y <= lastYear; y++) if (y % 10 === 0 || y === lastYear) decades.push(y);
 
+  const latest = series.dates.length - 1;
+  const fill = (text: string) =>
+    text
+      .replaceAll("{share}", fmtPct(series.publicShare[latest]))
+      .replaceAll("{pls}", fmtTrillions(series.real[latest][BUCKETS.indexOf("private_securitization")].reduce((a, b) => a + b, 0)));
+
   return (
     <section className="coda" aria-labelledby="coda-title">
       <div className="coda__inner">
-        <h2 id="coda-title">{coda.sourcesTitle}</h2>
+        <h2 id="coda-title">{meaning.title}</h2>
+        <ol className="meaning">
+          {meaning.points.map((p) => (
+            <li key={p.title}>
+              <span className="meaning__n">{fill(p.stat)}</span>
+              <h3>{p.title}</h3>
+              <p>{fill(p.body)}</p>
+            </li>
+          ))}
+        </ol>
+
+        <h2>{coda.sourcesTitle}</h2>
         <ul className="sources">
           {coda.sources.map((s) => <li key={s}>{s}</li>)}
         </ul>
