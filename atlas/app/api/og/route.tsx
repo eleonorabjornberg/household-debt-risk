@@ -23,14 +23,14 @@ export async function GET(req: Request) {
 
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", background: "#0b0d12", color: "#f3efe6", padding: 64, fontFamily: "serif" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", background: "#f3ecdc", color: "#1b1a33", padding: 64, fontFamily: "serif" }}>
         <div style={{ display: "flex", flexDirection: "column", width: 640 }}>
-          <div style={{ fontSize: 26, color: "#9aa3b2", letterSpacing: 3, textTransform: "uppercase", fontFamily: "sans-serif" }}>
+          <div style={{ fontSize: 26, color: "#f3ecdc", background: "#1b1a33", padding: "4px 12px", alignSelf: "flex-start", letterSpacing: 3, textTransform: "uppercase", fontFamily: "sans-serif" }}>
             {`Hot Potato · ${year}`}
           </div>
-          <div style={{ fontSize: 168, lineHeight: 1, marginTop: 36, color: "#7fb2ff" }}>{`${pct}%`}</div>
+          <div style={{ fontSize: 168, lineHeight: 1, marginTop: 36, color: "#1f6fe0", fontWeight: 800 }}>{`${pct}%`}</div>
           <div style={{ fontSize: 40, marginTop: 20, lineHeight: 1.2 }}>of US household debt was held by the public sector</div>
-          <div style={{ fontSize: 24, marginTop: "auto", color: "#9aa3b2", fontFamily: "sans-serif" }}>
+          <div style={{ fontSize: 24, marginTop: "auto", color: "#5d5849", fontFamily: "sans-serif" }}>
             Federal Reserve Z.1 · mortgages and consumer credit
           </div>
         </div>
@@ -38,7 +38,7 @@ export async function GET(req: Request) {
           {dots.map((pub, i) => (
             <div
               key={i}
-              style={{ width: 36, height: 36, borderRadius: 18, background: pub ? "#7fb2ff" : "#ff8a5c", opacity: pub ? 1 : 0.85 }}
+              style={{ width: 36, height: 36, borderRadius: 18, background: pub ? "#1f6fe0" : "#f2631c" }}
             />
           ))}
         </div>

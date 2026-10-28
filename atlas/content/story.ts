@@ -104,8 +104,6 @@ export const steps: Step[] = [
 ];
 
 export const coda = {
-  title: "Pick a year",
-  lede: "Any year since 1952 on one card. Download it as an image to share.",
   sourcesTitle: "About the data",
   sources: [
     "Federal Reserve Z.1 Financial Accounts: holders of 1–4 family mortgages and consumer credit. Mortgage holders are apportioned to the household sector.",

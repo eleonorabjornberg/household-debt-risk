@@ -202,12 +202,13 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
       const r = layout.dotRadius;
 
       // Public | private divider.
-      ctx.font = `600 11px ${theme.font}`;
+      ctx.font = `700 11px ${theme.font}`;
       ctx.letterSpacing = "0.12em";
-      ctx.fillStyle = theme.muted;
+      ctx.fillStyle = theme.ink;
+      ctx.lineWidth = 2;
       if (layout.dividerX !== null) {
         ctx.strokeStyle = theme.rule;
-        ctx.setLineDash([3, 5]);
+        ctx.setLineDash([8, 6]);
         ctx.beginPath();
         ctx.moveTo(layout.dividerX, 16);
         ctx.lineTo(layout.dividerX, height - 16);
@@ -219,7 +220,7 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
         ctx.fillText("PRIVATE →", layout.dividerX + 12, 24);
       } else if (layout.dividerY !== null) {
         ctx.strokeStyle = theme.rule;
-        ctx.setLineDash([3, 5]);
+        ctx.setLineDash([8, 6]);
         ctx.beginPath();
         ctx.moveTo(12, layout.dividerY);
         ctx.lineTo(width - 12, layout.dividerY);
@@ -235,14 +236,18 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
       if (hoverPile >= 0 && frame >= 0) {
         const c = layout.centers[hoverPile];
         const rr = layout.spacing * Math.sqrt(tl.counts[frame][hoverPile] + 0.5) + r + 6;
-        ctx.strokeStyle = theme.piles[hoverPile];
-        ctx.globalAlpha = 0.5;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = theme.ink;
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
         ctx.beginPath();
         ctx.arc(c.x, c.y, rr, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.globalAlpha = 1;
+        ctx.setLineDash([]);
       }
+
+      // Overprint like riso ink where dots and streaks cross.
+      ctx.globalCompositeOperation = "multiply";
 
       // Motion streaks for dots in flight.
       ctx.lineCap = "round";
@@ -297,15 +302,22 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
         }
       }
       ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
 
-      // Labels under each pile.
+      // Labels under each pile, with an ink swatch.
       if (frame >= 0) {
         const lines = props.current.labels(frame);
         ctx.textAlign = "center";
         lines.forEach((l, i) => {
           const c = layout!.centers[i];
+          ctx.font = `700 ${layout!.fontSize}px ${theme.font}`;
+          const w = ctx.measureText(l.name).width;
+          const sw = layout!.fontSize - 2;
+          if (layout!.fontSize >= 12) {
+            ctx.fillStyle = theme.piles[i];
+            ctx.fillRect(c.x - w / 2 - sw - 5, layout!.labelY[i] - sw, sw, sw);
+          }
           ctx.fillStyle = theme.ink;
-          ctx.font = `600 ${layout!.fontSize}px ${theme.font}`;
           ctx.fillText(l.name, c.x, layout!.labelY[i]);
           ctx.fillStyle = theme.muted;
           ctx.font = `400 ${layout!.fontSize}px ${theme.font}`;

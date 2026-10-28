@@ -12,15 +12,25 @@ export default async function Page() {
   return (
     <main>
       <header className="hero">
-        <p className="hero__kicker">{site.kicker}</p>
-        <h1>
-          Hot <em>Potato</em>
-        </h1>
-        <p className="hero__lede">
-          In 1952 the public sector held {fmtPct(series.publicShare[1])} of American household debt. Today it holds{" "}
-          {fmtPct(series.publicShare[last])}. Watch it change hands, one $50 billion dot at a time.
-        </p>
-        <p className="hero__cue" aria-hidden>Scroll ↓</p>
+        <span className="hero__disc hero__disc--a" aria-hidden />
+        <span className="hero__disc hero__disc--b" aria-hidden />
+        <span className="hero__disc hero__disc--c" aria-hidden />
+        <div className="hero__inner">
+          <p className="hero__kicker tag">{site.kicker}</p>
+          <h1 aria-label={site.title}>
+            <span className="riso-2" aria-hidden>Hot</span>
+            <span className="riso" aria-hidden>Potato</span>
+          </h1>
+          <p className="hero__lede">
+            In 1952 the public sector held <b className="old">{fmtPct(series.publicShare[1])}</b> of American household
+            debt. Today it holds <b className="pub">{fmtPct(series.publicShare[last])}</b>. Watch it change hands, one
+            $50 billion dot at a time.
+          </p>
+          <div className="inkbar" aria-hidden>
+            {[0, 1, 2, 3, 4, 5].map((i) => <span key={i} style={{ background: `var(--pile-${i})` }} />)}
+          </div>
+          <p className="hero__cue" aria-hidden>Scroll ↓</p>
+        </div>
       </header>
       <Experience series={series} />
     </main>
