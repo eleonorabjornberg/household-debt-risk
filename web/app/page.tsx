@@ -126,7 +126,7 @@ export default async function Home() {
             <span>Source</span> {ratchet.figure.source}
           </p>
         </section>
-        <Figure id="fig-crises" label="Figure 2" tableauView={TABLEAU_VIEWS.crises} {...crisisByCrisis.figure}>
+        <Figure id="fig-crises" label="Figure 2" tableauView={TABLEAU_VIEWS.crises} tableauHeight={1350} {...crisisByCrisis.figure}>
           <CrisisMultiples
             data={crisisWindows(data)}
             metricLabels={crisisByCrisis.metricLabels}

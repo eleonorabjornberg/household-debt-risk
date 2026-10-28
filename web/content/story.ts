@@ -227,7 +227,7 @@ export const collateral: Chapter & { classLabels: Record<string, string> } = {
   figure: {
     title: "What household debt is backed by",
     caption:
-      "Left: share of household mortgages and consumer credit by collateral. Right: market value of the collateral divided by the debt it backs. Vehicle coverage uses all consumer durables as a proxy and overstates it.",
+      "Share of household mortgages and consumer credit by the collateral behind it, and the coverage ratio: market value of the homes divided by the mortgage debt they back.",
     source: "Fed Z.1: FL153165105, FL153166100/220/400/205 (debt); FL155035015, FL155111005 (collateral).",
   },
   classLabels: {
@@ -251,7 +251,7 @@ export const paymentPriority: Chapter & { loanLabels: Record<string, string>; st
   figure: {
     title: "Share of balances moving into serious delinquency, by loan type",
     caption:
-      "Percent of balance transitioning into 90+ days delinquent, annualized, as published by the NY Fed. Each panel highlights one loan type against the others in gray. Shaded band: federal student-loan payment pause.",
+      "Percent of balance transitioning into 90+ days delinquent, annualized, as published by the NY Fed, one panel per loan type. Student-loan rates sit near zero from 2020 to early 2025 because of the federal payment pause, then jump as defaulted loans were reported again.",
     source: "Federal Reserve Bank of New York, Household Debt and Credit Report (Consumer Credit Panel / Equifax).",
   },
   loanLabels: {

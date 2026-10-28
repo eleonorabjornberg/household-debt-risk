@@ -11,11 +11,13 @@ interface Props {
   source: string;
   /** Tableau view path, e.g. "WhoHoldsTheDebt/Ratchet". Omit for native-only figures. */
   tableauView?: string;
+  /** Embed height in px when the Tableau view is shown (default set in TableauViz). */
+  tableauHeight?: number;
   children: ReactNode;
 }
 
 /** A numbered figure: native chart, swapped for the Tableau view when that view is configured. */
-export function Figure({ id, label, title, caption, source, tableauView, children }: Props) {
+export function Figure({ id, label, title, caption, source, tableauView, tableauHeight, children }: Props) {
   const embed = tableauView ? tableauEmbedFor(tableauView) : null;
   return (
     <figure className="figure" id={id} aria-labelledby={`${id}-title`}>
@@ -25,7 +27,7 @@ export function Figure({ id, label, title, caption, source, tableauView, childre
         <p className="figure__caption">{caption}</p>
       </header>
       {embed ? (
-        <TableauViz scriptUrl={embed.scriptUrl} src={embed.src} needsToken={embed.needsToken} title={title} fallback={children} />
+        <TableauViz scriptUrl={embed.scriptUrl} src={embed.src} needsToken={embed.needsToken} title={title} height={tableauHeight} fallback={children} />
       ) : (
         <>
           {children}
