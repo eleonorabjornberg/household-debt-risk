@@ -1,0 +1,261 @@
+"use client";
+
+// The scrollytelling shell: sticky stage (canvas + HUD + scrubber) with story steps scrolling
+// over it. Scrolling to a step sets the target quarter; the scrubber and play button set it
+// directly. The canvas reports back which quarter it is actually showing, and the HUD follows.
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import DotStage, { type PileLabel } from "./DotStage";
+import { buildTimeline, DOLLAR_UNIT_MUSD, SHARE_DOTS, type Lens } from "@/lib/timeline";
+import { fmtPct, fmtQuarter, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
+import type { Series } from "@/lib/types";
+import { PILE_LONG, PILE_NAMES, steps } from "@/content/story";
+import Coda from "./Coda";
+
+function useReducedMotion(): boolean {
+  const [rm, setRm] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setRm(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return rm;
+}
+
+export default function Experience({ series }: { series: Series }) {
+  const last = series.dates.length - 1;
+  const [lens, setLens] = useState<Lens>("dollars");
+  const [target, setTarget] = useState(() => nearestIndex(series.dates, steps[0].date));
+  const [frame, setFrame] = useState(target);
+  const [playing, setPlaying] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const [hover, setHover] = useState<{ pile: number; x: number; y: number } | null>(null);
+  const reducedMotion = useReducedMotion();
+  const stepRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const dollars = useMemo(() => buildTimeline(series.real, "dollars"), [series.real]);
+  const shares = useMemo(() => (lens === "shares" ? buildTimeline(series.real, "shares") : null), [lens, series.real]);
+  const timeline = lens === "shares" && shares ? shares : dollars;
+
+  const stepIndex = useMemo(() => steps.map((s) => nearestIndex(series.dates, s.date)), [series.dates]);
+
+  // Scroll -> target quarter.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const i = Number((e.target as HTMLElement).dataset.step);
+          setActiveStep(i);
+          setTarget(stepIndex[i]);
+          setPlaying(false);
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    stepRefs.current.forEach((el) => el && io.observe(el));
+    return () => io.disconnect();
+  }, [stepIndex]);
+
+  // Play: advance one quarter every 90 ms.
+  useEffect(() => {
+    if (!playing) return;
+    const id = window.setInterval(() => {
+      setTarget((t) => {
+        if (t >= last) {
+          setPlaying(false);
+          return t;
+        }
+        return t + 1;
+      });
+    }, 90);
+    return () => window.clearInterval(id);
+  }, [playing, last]);
+
+  // Arrow keys step through quarters when focus isn't in a form control.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const stage = document.getElementById("stage");
+      if (!stage) return;
+      const r = stage.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      e.preventDefault();
+      setPlaying(false);
+      setTarget((t) => Math.max(0, Math.min(last, t + (e.key === "ArrowRight" ? 1 : -1))));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [last]);
+
+  const labels = useCallback(
+    (f: number): PileLabel[] => {
+      const cells = series.real[f];
+      const total = sumReal(cells);
+      return PILE_NAMES.map((name, b) => {
+        const v = cells[b][0] + cells[b][1];
+        return {
+          name,
+          value: lens === "dollars" ? `${fmtTrillions(v)} · ${fmtPct(v / total)}` : fmtPct(v / total),
+        };
+      });
+    },
+    [series.real, lens],
+  );
+
+  const date = series.dates[frame];
+  const total = sumReal(series.real[frame]);
+  const share = series.publicShare[frame];
+  const recession = series.recessions.find((r) => date >= r.start && date <= r.end) ?? null;
+  const settled = frame === target;
+
+  const fill = (body: string, q: number) => {
+    const t = sumReal(series.real[q]);
+    const s = series.publicShare[q];
+    return body
+      .replaceAll("{share}", fmtPct(s))
+      .replaceAll("{total}", fmtTrillions(t))
+      .replaceAll("{public}", fmtTrillions(t * s));
+  };
+
+  const tip = hover && (() => {
+    const b = hover.pile;
+    const cells = series.real[frame];
+    const v = cells[b][0] + cells[b][1];
+    const prevQ = Math.max(0, frame - 4);
+    const prev = series.real[prevQ];
+    const shareNow = v / total;
+    const sharePrev = (prev[b][0] + prev[b][1]) / sumReal(prev);
+    const delta = (shareNow - sharePrev) * 100;
+    return (
+      <div className="tip" style={{ left: `clamp(130px, ${hover.x}px, calc(100% - 130px))`, top: hover.y }} role="status">
+        <strong>{PILE_LONG[b]}</strong>
+        <span>{fmtTrillions(v)} in 2026 dollars · {lens === "dollars" ? Math.round(v / DOLLAR_UNIT_MUSD) : Math.round(shareNow * SHARE_DOTS)} dots</span>
+        <span>{fmtPct(shareNow)} of all household debt</span>
+        <span>
+          {delta >= 0 ? "+" : "−"}
+          {Math.abs(delta).toFixed(1)} pts vs a year earlier
+        </span>
+        <span className="tip__sub">Mortgages {fmtTrillions(cells[b][0])} · consumer {fmtTrillions(cells[b][1])}</span>
+      </div>
+    );
+  })();
+
+  const ticks = series.recessions.map((r) => ({
+    ...r,
+    left: (nearestIndex(series.dates, r.start) / last) * 100,
+    width: Math.max(0.4, ((nearestIndex(series.dates, r.end) - nearestIndex(series.dates, r.start)) / last) * 100),
+  }));
+
+  return (
+    <>
+      <section className="scrolly" aria-label="The story">
+        <div id="stage" className="stage" data-recession={recession ? "" : undefined}>
+          <div className="hud">
+            <div className="hud__when">
+              <span className="hud__year">{fmtQuarter(date)}</span>
+              <span className={`hud__badge${recession ? " is-on" : ""}`} aria-hidden={!recession}>
+                {recession ? `Recession · ${recession.name}` : " "}
+              </span>
+            </div>
+            <div className="hud__nums">
+              <div>
+                <span className="hud__big">{fmtPct(share)}</span>
+                <span className="hud__label">public</span>
+              </div>
+              <div>
+                <span className="hud__mid">{fmtTrillions(total)}</span>
+                <span className="hud__label">total, 2026 $</span>
+              </div>
+            </div>
+            <div className="lens" role="group" aria-label="Lens">
+              <button type="button" aria-pressed={lens === "dollars"} onClick={() => setLens("dollars")}>Dollars</button>
+              <button type="button" aria-pressed={lens === "shares"} onClick={() => setLens("shares")}>Shares</button>
+            </div>
+          </div>
+
+          <div className="stage__plot">
+            <DotStage
+              timeline={timeline}
+              target={target}
+              reducedMotion={reducedMotion}
+              labels={labels}
+              onFrame={setFrame}
+              onHover={setHover}
+              ariaLabel={`Dot chart of US household debt by holder, ${fmtQuarter(date)}. ${fmtPct(share)} is held by the public sector.`}
+            />
+            {tip}
+          </div>
+
+          <div className="legend" aria-hidden>
+            <span><i className="dot dot--solid" /> Mortgage</span>
+            <span><i className="dot dot--ring" /> Consumer credit</span>
+            <span>{lens === "dollars" ? "1 dot = $50B (2026 $)" : "1 dot = 0.1% of all debt"}</span>
+          </div>
+
+          <div className="scrub">
+            <button
+              type="button"
+              className="scrub__play"
+              onClick={() => {
+                if (!playing && target >= last) setTarget(0);
+                setPlaying((p) => !p);
+              }}
+              aria-label={playing ? "Pause" : "Play from here"}
+            >
+              {playing ? "❚❚" : "▶"}
+            </button>
+            <div className="scrub__track">
+              {ticks.map((t) => (
+                <span key={t.id} className="scrub__band" style={{ left: `${t.left}%`, width: `${t.width}%` }} title={t.name} />
+              ))}
+              <input
+                type="range"
+                min={0}
+                max={last}
+                value={target}
+                aria-label="Quarter"
+                aria-valuetext={fmtQuarter(series.dates[target])}
+                onChange={(e) => {
+                  setPlaying(false);
+                  setTarget(Number(e.target.value));
+                }}
+              />
+            </div>
+            <span className="scrub__ends" aria-hidden>
+              {series.dates[0].slice(0, 4)}–{series.dates[last].slice(0, 4)}
+            </span>
+          </div>
+
+          <p className="sr-only" aria-live="polite">
+            {settled ? `${fmtQuarter(date)}: ${fmtPct(share)} public, ${fmtTrillions(total)} in total.` : ""}
+          </p>
+        </div>
+
+        <div className="steps">
+          {steps.map((s, i) => (
+            <article
+              key={i}
+              ref={(el) => {
+                stepRefs.current[i] = el;
+              }}
+              data-step={i}
+              className={`step${i === activeStep ? " is-active" : ""}`}
+            >
+              <div className="step__card">
+                <p className="step__kicker">{s.kicker}</p>
+                <h2>{s.title}</h2>
+                <p>{fill(s.body, stepIndex[i])}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <Coda series={series} />
+    </>
+  );
+}

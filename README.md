@@ -29,6 +29,14 @@ How US household debt has been reshaped by economic crises since the 1950s. The 
 | Analysis & viz | Tableau Desktop / Tableau Cloud (live connection as `tableau_reader`) | `tableau/` |
 | Story site | Next.js on Vercel, Tableau Embedding API v3 | `web/` |
 | Notebooks / findings | Python | `analysis/` |
+| Hot Potato (dot-flow site) | Next.js + Canvas on Vercel, reads the same `mart` views | `atlas/` |
+
+## Hot Potato (`atlas/`)
+A second, standalone site that tells the same story as an animated dot flow. Each dot is $50B of debt in 2026 dollars, and dots move between six holder piles as you scroll. A Shares lens shows 1,000 dots, 0.1% each. Dots keep their identity from quarter to quarter: each quarter is rounded with the largest-remainder method, and only the difference moves, by the fewest dots possible (`atlas/lib/timeline.ts`, tested in `timeline.test.ts`). It deploys as its own Vercel project with **Root Directory `atlas`** and the same two `NEXT_PUBLIC_SUPABASE_*` variables. Without them it falls back to the `web/public/data` snapshots.
+
+```bash
+cd atlas && npm install && npm test && npm run dev
+```
 
 ## Data
 - Fed **Z.1 Financial Accounts** (`FRB_Z1_csv.zip`): holders of 1-4 family mortgages and consumer credit, the consumer credit split by type, and household real estate and durables.
