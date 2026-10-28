@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """Generate the Tableau Public starter workbook for "Who Holds the Debt?".
 
-    python3 -I tableau/build_workbook.py            # writes WhoHoldsTheDebt.twb and .twbx
-    python3 -I tableau/build_workbook.py --check    # also re-reads both with tableaudocumentapi, if installed
-    python3 -I tableau/build_workbook.py --corpus DIR   # also checks sibling order against real .twb files in DIR
+    uv run --with tableauhyperapi python tableau/build_workbook.py         # writes the .twb and .twbx
+    ... build_workbook.py --check        # also re-reads both with tableaudocumentapi, if installed
+    ... build_workbook.py --corpus DIR   # also checks sibling order against real .twb files in DIR
 
-Stdlib only. Outputs (next to this file):
-  WhoHoldsTheDebt.twb    the XML workbook; its text-file connection points at the relative folder Data/data
-  WhoHoldsTheDebt.twbx   zip: WhoHoldsTheDebt.twb at the root + Data/data/*.csv (self-contained; open this one)
+Needs tableauhyperapi (for the extracts); otherwise stdlib. Outputs (next to this file), named like the
+published Tableau Public workbook `WhoHoldsTheDebt-extracts`:
+  WhoHoldsTheDebt-extracts.twb    the XML workbook (text-file connections to Data/data + hyper extracts in
+                                  Data/Extracts, both relative to the package)
+  WhoHoldsTheDebt-extracts.twbx   zip: the .twb at the root + Data/data/*.csv + Data/Extracts/*.hyper
+                                  (self-contained; open this one)
+v3.3: panel labels on CrisisSmallMultiples, label-keyed PaymentPriority legend, SUM where one row per mark,
+untitled quarter axes, and the Ratchet stack order as <sort class='computed'> (Bucket label by MIN(Sort order)
+descending).
 
 v1/v2 contents: data source `ratchet` (ratchet.csv), worksheets "Ratchet – main" (stacked area of
 SUM(share_of_total) by bucket_label over the continuous quarter) and "Public share" (line of
@@ -100,8 +106,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 DATA_DIR = HERE / "data"
-TWB = HERE / "WhoHoldsTheDebt.twb"
-TWBX = HERE / "WhoHoldsTheDebt.twbx"
+# File name = the published Tableau Public workbook name, so the app's default "Save to Tableau Public" name matches.
+TWB = HERE / "WhoHoldsTheDebt-extracts.twb"
+TWBX = HERE / "WhoHoldsTheDebt-extracts.twbx"
 PACKAGED_DIR = "Data/data"  # relative directory inside the .twbx, as in Tableau-packaged workbooks
 CSV_FILES = ["ratchet.csv", "crisis_windows.csv", "collateral.csv", "payment_priority.csv", "crises.csv"]
 
@@ -186,6 +193,7 @@ CRISIS_FIELDS = {  # == tableau_export.COLUMNS["crisis_windows"]
     "value": ("real", "measure", "quantitative", "Value", None),
     "value_at_t0": ("real", "measure", "quantitative", "Value at t0", None),
     "delta_from_t0": ("real", "measure", "quantitative", "Change since t0", None),
+    "panel_label": ("string", "dimension", "nominal", "Crisis", None),
 }
 COLLATERAL_FIELDS = {  # == tableau_export.COLUMNS["collateral"]
     "date": ("date", "dimension", "ordinal", "Date", None),
@@ -193,7 +201,7 @@ COLLATERAL_FIELDS = {  # == tableau_export.COLUMNS["collateral"]
     "class_label": ("string", "dimension", "nominal", "Class label", None),
     "debt_musd": ("real", "measure", "quantitative", "Debt $M", None),
     "collateral_value_musd": ("real", "measure", "quantitative", "Collateral value $M", None),
-    "coverage_ratio": ("real", "measure", "quantitative", "Coverage ratio", None),
+    "coverage_ratio": ("real", "measure", "quantitative", "Home coverage ratio", None),
     "share_of_debt": ("real", "measure", "quantitative", "Share of debt", "p0%"),
     "is_estimated": ("boolean", "dimension", "nominal", "Is estimated", None),
 }
@@ -204,10 +212,13 @@ PAYMENT_FIELDS = {  # == tableau_export.COLUMNS["payment_priority"]
     "loan_label": ("string", "dimension", "nominal", "Loan label", None),
     "collateral_class": ("string", "dimension", "nominal", "Collateral class", None),
     "balance_busd": ("real", "measure", "quantitative", "Balance $B", None),
-    "transition_serious_pct": ("real", "measure", "quantitative", "Into serious delinquency (%)", PCT),
+    "transition_serious_pct": ("real", "measure", "quantitative", "Serious delinquency rate", PCT),
     "baseline_2003_06_pct": ("real", "measure", "quantitative", "Baseline 2003-06 (%)", PCT),
     "stress_index": ("real", "measure", "quantitative", "Stress index", None),
+    "collateral_label": ("string", "dimension", "nominal", "Collateral", None),
 }
+COLLATERAL_SHORT = {"home_backed": "Home-backed", "vehicle_backed": "Vehicle-backed",
+                    "uncollateralized": "No collateral", "other_nonrevolving": "Other"}  # payment_priority.csv
 COLLATERAL_LABELS = {"home_backed": "Home-backed", "vehicle_backed": "Vehicle-backed",
                      "uncollateralized": "No collateral", "other_nonrevolving": "Other non-revolving"}
 COLLATERAL_COLORS = {"home_backed": "#6250d6", "vehicle_backed": "#eda100", "uncollateralized": "#e34948",
@@ -247,13 +258,15 @@ I_PUBLIC = "[avg:public_share:qk]"
 I_CLASS_LABEL = "[none:class_label:nk]"
 I_CCLASS = "[none:collateral_class:nk]"
 I_COLL_SHARE = "[sum:share_of_debt:qk]"
-I_COVER = "[avg:coverage_ratio:qk]"
-I_CRISIS = "[none:crisis_name:nk]"
+I_COVER = "[sum:coverage_ratio:qk]"  # one row per (date, class) after the filter -> SUM == the value
+I_CRISIS = "[none:panel_label:nk]"
+I_CLABEL = "[none:collateral_label:nk]"
+I_SORT = "[min:sort_order:qk]"
 I_METRIC = "[none:metric:nk]"
 I_QOFF = "[none:q_offset:qk]"
-I_PTS = "[avg:" + CALC_PTS[1:-1] + ":qk]"
+I_PTS = "[sum:" + CALC_PTS[1:-1] + ":qk]"  # one row per (crisis, metric, q_offset)
 I_LOAN = "[none:loan_label:nk]"
-I_TRANS = "[avg:transition_serious_pct:qk]"
+I_TRANS = "[sum:transition_serious_pct:qk]"  # one row per (date, loan type)
 
 
 def qs(key: str, inst: str) -> str:
@@ -518,13 +531,13 @@ def build_datasource(parent, labels):
 def build_fig_datasources(parent):
     """Figures 2-4: one packaged text source each, no joins."""
     cl = [(f'"{COLLATERAL_LABELS[k]}"', c) for k, c in COLLATERAL_COLORS.items()]
-    ck = [(f'"{k}"', c) for k, c in COLLATERAL_COLORS.items()]
+    ck = [(f'"{COLLATERAL_SHORT[k]}"', c) for k, c in COLLATERAL_COLORS.items()]
     build_text_datasource(parent, SRC["crisis_windows"], calcs=[CALC_PTS])
     build_text_datasource(parent, SRC["collateral"], instances=[("class_label", "None", I_CLASS_LABEL, "nominal")],
                           palettes=[(I_CLASS_LABEL, cl)])
     build_text_datasource(parent, SRC["payment_priority"],
-                          instances=[("collateral_class", "None", I_CCLASS, "nominal")],
-                          palettes=[(I_CCLASS, ck)])
+                          instances=[("collateral_label", "None", I_CLABEL, "nominal")],
+                          palettes=[(I_CLABEL, ck)])
 
 
 # ---------------------------------------------------------------- worksheets
@@ -558,17 +571,22 @@ def build_main_sheet(parent, labels):
     ws = sub(parent, "worksheet", {"name": SHEET_MAIN})
     title(ws, "Share of US household mortgages + consumer credit, by who holds the risk")
     table = sub(ws, "table")
-    view = view_header(table, ["bucket_label", "date", "share_of_total"], [
+    view = view_header(table, ["bucket_label", "date", "share_of_total", "sort_order"], [
         ("bucket_label", "None", I_BUCKET, "nominal"),
+        ("sort_order", "Min", I_SORT, "quantitative"),
         ("share_of_total", "Sum", I_SHARE, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
     ])
-    # No sort element: Tableau Public rejected <manual-sort> here (error D2E8DA72, "element
-    # 'manual-sort' is not allowed"). Stack order is set by hand (GETTING_STARTED.md: sort
-    # Bucket label by Sort order); the legend falls back to alphabetical until then.
+    # v3.3 stack order: Bucket label by MIN(Sort order), descending (public holders at the bottom). The
+    # pre-SortTagCleanup <sort class='computed' column=... direction=... using=...> form, placed after
+    # datasource-dependencies and before <aggregation> exactly as document-api-python
+    # samples/replicate-workbook/sample-superstore.twb and Logshark DataServer.twbx (using a [min:...] instance,
+    # declared in the dependencies) do. NOT <manual-sort>/<computed-sort>: those need a SortTagCleanup manifest
+    # entry, which is why v1's <manual-sort> failed with D2E8DA72.
+    sub(view, "sort", {"class": "computed", "column": q(I_BUCKET), "direction": "DESC", "using": q(I_SORT)})
     sub(view, "aggregation", {"value": "true"})
-    style = sub(table, "style")
-    rule = sub(style, "style-rule", {"element": "axis"})
+    rule = axis_rule(table)
+    untitled_date_axis(rule, "ratchet")
     sub(rule, "encoding", {"attr": "space", "class": "0", "field": q(I_SHARE), "field-type": "quantitative",
                            "max": "1.0", "min": "0.0", "range-type": "fixed", "scope": "rows", "type": "space"})
     panes = sub(table, "panes")
@@ -591,7 +609,8 @@ def build_public_sheet(parent):
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
     ])
     sub(view, "aggregation", {"value": "true"})
-    sub(table, "style")
+    # public_share repeats on every row of a quarter (12 rows), so it stays AVG
+    untitled_date_axis(axis_rule(table), "ratchet")
     panes = sub(table, "panes")
     pane = sub(panes, "pane", {"selection-relaxation-option": "selection-relaxation-allow"})
     pv = sub(pane, "view")
@@ -602,6 +621,16 @@ def build_public_sheet(parent):
     sub(pane, "mark", {"class": "Automatic"})
     sub(table, "rows", text=q(I_PUBLIC))
     sub(table, "cols", text=q(I_QUARTER))
+
+
+def untitled_date_axis(rule, key):
+    """Hide the "Quarter of Date" axis title: <format attr='title' class='0' field=... scope='cols' value='' />,
+    exactly as Logshark ClusterController.twbx "Disk Space Used" (18.1, 2022.3.22) does for its time axis."""
+    sub(rule, "format", {"attr": "title", "class": "0", "field": qs(key, I_QUARTER), "scope": "cols", "value": ""})
+
+
+def axis_rule(table):
+    return sub(sub(table, "style"), "style-rule", {"element": "axis"})
 
 
 def member_filter(view, key, inst, value):
@@ -627,15 +656,18 @@ def build_crisis_sheet(parent):
     ws = sub(parent, "worksheet", {"name": SHEET_CRISIS})
     title(ws, "Public share around each crisis: change since the start quarter (t0), percentage points")
     table = sub(ws, "table")
-    view = view_header(table, ["crisis_name", "delta_from_t0", "metric", "q_offset"], [
-        ("crisis_name", "None", I_CRISIS, "nominal"),
+    view = view_header(table, ["delta_from_t0", "metric", "panel_label", "q_offset"], [
+        ("panel_label", "None", I_CRISIS, "nominal"),
         ("metric", "None", I_METRIC, "nominal"),
         ("q_offset", "None", I_QOFF, "quantitative"),
-        (CALC_PTS[1:-1], "Avg", I_PTS, "quantitative"),
+        (CALC_PTS[1:-1], "Sum", I_PTS, "quantitative"),
     ], calcs=[CALC_PTS], key=k)
     member_filter(view, k, I_METRIC, "public_share")
     sub(view, "aggregation", {"value": "true"})
-    sub(table, "style")
+    # row-header width for the panel labels: <style-rule element='header'><format attr='width' field=... value=.../>
+    # as in Logshark ClusterController.twbx "Disk Space Used"
+    hdr = sub(sub(table, "style"), "style-rule", {"element": "header"})
+    sub(hdr, "format", {"attr": "width", "field": qs(k, I_CRISIS), "value": "150"})
     simple_pane(table, "Line")
     # one panel per row: discrete dimension crossed with the measure, '([dim:nk] * [measure:qk])' as in
     # Logshark Bridge.twbx (18.1) / TSI ts_web_requests_03.01.twb
@@ -654,7 +686,8 @@ def build_collateral_sheets(parent):
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
     ], key=k)
     sub(view, "aggregation", {"value": "true"})
-    rule = sub(sub(table, "style"), "style-rule", {"element": "axis"})
+    rule = axis_rule(table)
+    untitled_date_axis(rule, k)
     sub(rule, "encoding", {"attr": "space", "class": "0", "field": qs(k, I_COLL_SHARE), "field-type": "quantitative",
                            "max": "1.0", "min": "0.0", "range-type": "fixed", "scope": "rows", "type": "space"})
     simple_pane(table, "Area", qs(k, I_CLASS_LABEL))
@@ -666,12 +699,12 @@ def build_collateral_sheets(parent):
     table = sub(ws, "table")
     view = view_header(table, ["collateral_class", "coverage_ratio", "date"], [
         ("collateral_class", "None", I_CCLASS, "nominal"),
-        ("coverage_ratio", "Avg", I_COVER, "quantitative"),
+        ("coverage_ratio", "Sum", I_COVER, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
     ], key=k)
     member_filter(view, k, I_CCLASS, "home_backed")
     sub(view, "aggregation", {"value": "true"})
-    sub(table, "style")
+    untitled_date_axis(axis_rule(table), k)
     simple_pane(table, "Line")
     sub(table, "rows", text=qs(k, I_COVER))
     sub(table, "cols", text=qs(k, I_QUARTER))
@@ -682,15 +715,15 @@ def build_payment_sheet(parent):
     ws = sub(parent, "worksheet", {"name": SHEET_PAYMENT})
     title(ws, "Share of balances moving into serious delinquency (90+ days), by loan type")
     table = sub(ws, "table")
-    view = view_header(table, ["collateral_class", "date", "loan_label", "transition_serious_pct"], [
-        ("collateral_class", "None", I_CCLASS, "nominal"),
+    view = view_header(table, ["collateral_label", "date", "loan_label", "transition_serious_pct"], [
+        ("collateral_label", "None", I_CLABEL, "nominal"),
         ("loan_label", "None", I_LOAN, "nominal"),
-        ("transition_serious_pct", "Avg", I_TRANS, "quantitative"),
+        ("transition_serious_pct", "Sum", I_TRANS, "quantitative"),
         ("date", "Quarter-Trunc", I_QUARTER, "quantitative"),
     ], key=k)
     sub(view, "aggregation", {"value": "true"})
-    sub(table, "style")
-    simple_pane(table, "Line", qs(k, I_CCLASS))
+    untitled_date_axis(axis_rule(table), k)
+    simple_pane(table, "Line", qs(k, I_CLABEL))
     sub(table, "rows", text=f"({qs(k, I_LOAN)} * {qs(k, I_TRANS)})")
     sub(table, "cols", text=qs(k, I_QUARTER))
 
@@ -709,10 +742,10 @@ DASHBOARDS = {  # name -> zones top to bottom: (kind, px or None = takes the res
                       ("sheet", 220, SHEET_COLL_COVER, None, None)],
     DASH_PAYMENT: [("title", 50, "Which debts do households stop paying first?", None, None),
                    ("sheet", None, SHEET_PAYMENT, None, None),
-                   ("legend", 50, SHEET_PAYMENT, qs("payment_priority", I_CCLASS), "0")],
+                   ("legend", 50, SHEET_PAYMENT, qs("payment_priority", I_CLABEL), "0")],
 }
 SHEET_LEGENDS = {SHEET_MAIN: (q(I_BUCKET), "0"), SHEET_COLL_SHARE: (qs("collateral", I_CLASS_LABEL), "0"),
-                 SHEET_PAYMENT: (qs("payment_priority", I_CCLASS), "0")}
+                 SHEET_PAYMENT: (qs("payment_priority", I_CLABEL), "0")}
 
 
 def zone_style(parent, margin):
@@ -934,7 +967,12 @@ def self_check() -> None:
         assert used <= decl, (w.get("name"), used - decl)
     seqs = check_view_order(root)
     main = root.find(f"worksheets/worksheet[@name='{SHEET_MAIN}']/table")
-    assert main.findtext("rows") == q(I_SHARE) and main.find("view/sort") is None
+    assert main.findtext("rows") == q(I_SHARE) and not list(root.iter("manual-sort"))
+    srt = main.find("view/sort")
+    assert (srt.get("class"), srt.get("column"), srt.get("direction"), srt.get("using")) == \
+        ("computed", q(I_BUCKET), "DESC", q(I_SORT))
+    titles = [f for f in root.iter("format") if f.get("attr") == "title" and f.get("value") == ""]
+    assert len(titles) == 5, len(titles)  # every quarter axis untitled
     assert [p.get("id") for p in main.iterfind("panes/pane")] == [None]
     legend = [z for z in root.iter("zone") if z.get("type") == "color"][0]
     assert legend.get("pane-specification-id") == "0" and legend.get("param") == q(I_BUCKET)
