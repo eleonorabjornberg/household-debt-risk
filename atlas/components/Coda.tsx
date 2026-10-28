@@ -1,6 +1,3 @@
-"use client";
-
-import { useMemo, useState } from "react";
 import { fmtPct, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
 import type { Series } from "@/lib/types";
 import { coda, PILE_LONG, site } from "@/content/story";
@@ -8,49 +5,16 @@ import { coda, PILE_LONG, site } from "@/content/story";
 export default function Coda({ series }: { series: Series }) {
   const firstYear = Number(series.dates[0].slice(0, 4)) + 1;
   const lastYear = Number(series.dates[series.dates.length - 1].slice(0, 4));
-  const years = useMemo(() => Array.from({ length: lastYear - firstYear + 1 }, (_, i) => firstYear + i), [firstYear, lastYear]);
-  const [year, setYear] = useState(2008);
-
-  const q = nearestIndex(series.dates, `${year}-12-31`);
-  const cells = series.real[q];
-  const total = sumReal(cells);
-  const share = series.publicShare[q];
-  const holders = cells.map((c, b) => ({ b, v: c[0] + c[1] })).sort((a, b) => b.v - a.v);
-  const decades = years.filter((y) => y % 10 === 0 || y === lastYear);
+  const decades: number[] = [];
+  for (let y = firstYear; y <= lastYear; y++) if (y % 10 === 0 || y === lastYear) decades.push(y);
 
   return (
     <section className="coda" aria-labelledby="coda-title">
       <div className="coda__inner">
-        <h2 id="coda-title">{coda.title}</h2>
-        <p className="coda__lede">{coda.lede}</p>
-        <label className="coda__pick">
-          <span>Year</span>
-          <select value={year} onChange={(e) => setYear(Number(e.target.value))}>
-            {years.map((y) => (
-              <option key={y} value={y}>{y}</option>
-            ))}
-          </select>
-        </label>
-
-        <figure className="receipt">
-          <p className="receipt__year">{year === lastYear ? `${year} (latest)` : year}</p>
-          <p className="receipt__big">{fmtPct(share)}</p>
-          <p className="receipt__what">of US household debt held by the public sector</p>
-          <dl>
-            <div><dt>Public</dt><dd>{fmtTrillions(total * share)}</dd></div>
-            <div><dt>Total</dt><dd>{fmtTrillions(total)}</dd></div>
-            <div><dt>Largest holder</dt><dd>{PILE_LONG[holders[0].b]}</dd></div>
-          </dl>
-          <div className="receipt__bar" aria-hidden>
-            <span style={{ width: `${share * 100}%` }} />
-          </div>
-          <figcaption>2026 dollars. Federal Reserve Z.1.</figcaption>
-        </figure>
-        <p>
-          <a className="button" href={`/api/og?year=${year}`} download={`hot-potato-${year}.png`}>
-            Download {year} as an image
-          </a>
-        </p>
+        <h2 id="coda-title">{coda.sourcesTitle}</h2>
+        <ul className="sources">
+          {coda.sources.map((s) => <li key={s}>{s}</li>)}
+        </ul>
 
         <details className="table">
           <summary>The numbers by decade</summary>
@@ -82,10 +46,6 @@ export default function Coda({ series }: { series: Series }) {
           </div>
         </details>
 
-        <h2>{coda.sourcesTitle}</h2>
-        <ul className="sources">
-          {coda.sources.map((s) => <li key={s}>{s}</li>)}
-        </ul>
         <p className="coda__more">
           The code, the data pipeline and the full analysis (methods, caveats and the crisis-by-crisis test) are on{" "}
           <a href={site.repo}>GitHub</a>.{" "}

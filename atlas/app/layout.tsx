@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces, Space_Grotesk } from "next/font/google";
 import { site } from "@/content/story";
 import "./globals.css";
 
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", axes: ["opsz"], display: "swap" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-text", display: "swap" });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", axes: ["opsz", "SOFT", "WONK"], style: ["normal", "italic"], display: "swap" });
+const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-text", display: "swap" });
 
 const host = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 
@@ -22,15 +22,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0b0d12" },
-    { media: "(prefers-color-scheme: light)", color: "#f6f4ef" },
-  ],
+  // One deliberate print-on-paper theme, in light and dark system modes alike.
+  themeColor: "#f3ecdc",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${grotesk.variable}`}>
       <body>{children}</body>
     </html>
   );

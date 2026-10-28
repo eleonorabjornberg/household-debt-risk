@@ -150,6 +150,12 @@ export default function Experience({ series }: { series: Series }) {
     width: Math.max(0.4, ((nearestIndex(series.dates, r.end) - nearestIndex(series.dates, r.start)) / last) * 100),
   }));
 
+  // Public share over time, drawn as a filled sparkline behind the scrubber.
+  const spark = useMemo(
+    () => `M0 1 ${series.publicShare.map((v, i) => `L${i} ${(1 - (Number.isFinite(v) ? v : 0) / 0.7).toFixed(4)}`).join(" ")} L${last} 1 Z`,
+    [series.publicShare, last],
+  );
+
   return (
     <>
       <section className="scrolly" aria-label="The story">
@@ -170,6 +176,10 @@ export default function Experience({ series }: { series: Series }) {
                 <span className="hud__mid">{fmtTrillions(total)}</span>
                 <span className="hud__label">total, 2026 $</span>
               </div>
+            </div>
+            <div className="split" aria-hidden>
+              <span className="split__pub" style={{ width: `${share * 100}%` }} />
+              <span className="split__priv" />
             </div>
             <div className="lens" role="group" aria-label="Lens">
               <button type="button" aria-pressed={lens === "dollars"} onClick={() => setLens("dollars")}>Dollars</button>
@@ -209,6 +219,9 @@ export default function Experience({ series }: { series: Series }) {
               {playing ? "❚❚" : "▶"}
             </button>
             <div className="scrub__track">
+              <svg className="scrub__spark" viewBox={`0 0 ${last} 1`} preserveAspectRatio="none" aria-hidden>
+                <path d={spark} />
+              </svg>
               {ticks.map((t) => (
                 <span key={t.id} className="scrub__band" style={{ left: `${t.left}%`, width: `${t.width}%` }} title={t.name} />
               ))}
@@ -246,7 +259,7 @@ export default function Experience({ series }: { series: Series }) {
               className={`step${i === activeStep ? " is-active" : ""}`}
             >
               <div className="step__card">
-                <p className="step__kicker">{s.kicker}</p>
+                <p className="step__kicker tag">{s.kicker}</p>
                 <h2>{s.title}</h2>
                 <p>{fill(s.body, stepIndex[i])}</p>
               </div>
