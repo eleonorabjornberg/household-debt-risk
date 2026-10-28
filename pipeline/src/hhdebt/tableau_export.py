@@ -22,6 +22,22 @@ TABLEAU_DATA_DIR = config.REPO_ROOT / "tableau" / "data"
 
 COLLATERAL_LABELS = {"home_backed": "Home-backed", "vehicle_backed": "Vehicle-backed",
                      "uncollateralized": "No collateral", "other_nonrevolving": "Other non-revolving"}
+COLLATERAL_SHORT = {"home_backed": "Home-backed", "vehicle_backed": "Vehicle-backed",
+                    "uncollateralized": "No collateral", "other_nonrevolving": "Other"}
+# Small-multiple panel titles: "<start year> <short name>", <= 22 chars, so alphabetical order = chronological.
+PANEL_NAMES = {
+    "recession_1953": "Recession", "recession_1957": "Recession", "recession_1960": "Recession",
+    "recession_1969": "Recession", "oil_shock_1973": "Oil shock", "recession_1980": "Recession",
+    "volcker_1981": "Volcker", "sl_1990": "S&L crisis", "dotcom_2001": "Dot-com",
+    "gfc_2007": "Great Recession", "covid_2020": "COVID-19", "cares_forbearance_2020": "CARES Act",
+    "student_repayment_2023": "Loans restart", "student_collections_2025": "Collections",
+}
+
+
+def panel_label(crisis_id: str, name: str, start_q) -> str:
+    return f"{pd.Timestamp(start_q).year} {PANEL_NAMES.get(crisis_id, name)}"[:22]
+
+
 LOAN_TYPES = {  # loan_type -> (label, collateral class)
     "mortgage": ("Mortgage", "home_backed"), "heloc": ("HELOC", "home_backed"),
     "auto": ("Auto", "vehicle_backed"), "credit_card": ("Credit card", "uncollateralized"),
@@ -34,11 +50,11 @@ COLUMNS = {
                 "nominal_musd", "real_musd", "share_of_total", "public_share", "fed_mbs_share_of_scope",
                 "recession", "crisis_id"],
     "crisis_windows": ["crisis_id", "crisis_name", "kind", "start_q", "metric", "q_offset", "date",
-                       "value", "value_at_t0", "delta_from_t0"],
+                       "value", "value_at_t0", "delta_from_t0", "panel_label"],
     "collateral": ["date", "collateral_class", "class_label", "debt_musd", "collateral_value_musd",
                    "coverage_ratio", "share_of_debt", "is_estimated"],
     "payment_priority": ["date", "loan_type", "loan_label", "collateral_class", "balance_busd",
-                         "transition_serious_pct", "baseline_2003_06_pct", "stress_index"],
+                         "transition_serious_pct", "baseline_2003_06_pct", "stress_index", "collateral_label"],
     "crises": ["crisis_id", "name", "kind", "start_q", "end_q", "notes"],
 }
 
@@ -81,6 +97,8 @@ def build(t: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
                .merge(crises[["crisis_id", "name", "kind", "start_q"]].rename(columns={"name": "crisis_name"}),
                       on="crisis_id", how="left")
                .sort_values(["start_q", "metric", "q_offset"]))
+    windows["panel_label"] = [panel_label(c, n, q) for c, n, q in
+                              zip(windows.crisis_id, windows.crisis_name, windows.start_q)]
 
     coll = t["mart.collateral_coverage"].assign(
         class_label=lambda d: d.collateral_class.map(COLLATERAL_LABELS)).sort_values(["date", "collateral_class"])
@@ -88,6 +106,7 @@ def build(t: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     ny = t["mart.nyfed_by_type"].copy()
     ny["loan_label"] = ny.loan_type.map(lambda k: LOAN_TYPES[k][0])
     ny["collateral_class"] = ny.loan_type.map(lambda k: LOAN_TYPES[k][1])
+    ny["collateral_label"] = ny.collateral_class.map(COLLATERAL_SHORT)
     base = (ny[ny.date.dt.year <= 2006].groupby("loan_type").transition_serious_pct.mean()
             .rename("baseline_2003_06_pct"))
     ny = ny.merge(base, on="loan_type", how="left")

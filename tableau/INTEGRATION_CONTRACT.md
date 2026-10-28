@@ -4,8 +4,8 @@ The website (`web/`) drives and listens to the published Tableau Public workbook
 Embedding API v3. Both sides depend on these exact names. Change them only together.
 
 ## Published workbook
-- Workbook: `WhoHoldsTheDebt`, on profile `eleonora.bj.rnberg`.
-- Dashboard (view): `Ratchet` → `https://public.tableau.com/views/WhoHoldsTheDebt/Ratchet`.
+- Workbook: `WhoHoldsTheDebt-extracts` (file `tableau/WhoHoldsTheDebt-extracts.twbx`), on profile `eleonora.bj.rnberg`. Figure 1 still points at the older `WhoHoldsTheDebt` workbook until v3.3 is published.
+- Dashboard (view): `Ratchet` → `https://public.tableau.com/views/WhoHoldsTheDebt-extracts/Ratchet`.
 - Worksheets inside the dashboard: `Ratchet – main` (stacked area) and `Public share` (line).
   The dash is an en dash (U+2013).
 
@@ -17,7 +17,7 @@ Embedding API v3. Both sides depend on these exact names. Change them only toget
 | `Recession` | `recession` | 1 when the quarter is inside an NBER recession (start_q..end_q inclusive), else 0. |
 | `Crisis id` | `crisis_id` | The `crisis_id` of that NBER recession; empty outside recessions. |
 
-## Parameter
+## Parameter (removed in v3.1: the dual-axis bands crashed Tableau Public; the site tolerates its absence)
 - Name: `Active crisis`. String, default `none`. Allowed values: `none` + every `crisis_id` in
   `tableau/data/crises.csv`.
 - Effect: the band for that recession is drawn darker. All other bands stay light grey.

@@ -4,9 +4,9 @@
 
 The project currently publishes with **Tableau Public**. Tableau Public can't connect to Postgres, so it reads flat, pre-joined CSVs instead.
 
-* **Start here: [`GETTING_STARTED.md`](GETTING_STARTED.md)**. It's a beginner guide covering installing Tableau Public, opening the workbook, a tour of the screen, a manual rebuild fallback, saving as `WhoHoldsTheDebt`, wiring the view into the site (`NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE`, `NEXT_PUBLIC_TABLEAU_VIEWS`) and the quarterly refresh.
-* **Workbook:** `WhoHoldsTheDebt.twbx` (packaged: the `.twb` plus `Data/data/*.csv`). v1 contains the **Ratchet** dashboard (worksheets `Ratchet – main` and `Public share`). The other three dashboards come in later versions.
-* **Generator:** `python3 -I tableau/build_workbook.py` rewrites `WhoHoldsTheDebt.twb` and `WhoHoldsTheDebt.twbx` from `data/*.csv` (stdlib only). Add `--check` to also re-read both files with `tableaudocumentapi` if it's installed. Both outputs are committed (`tableau/.gitignore` un-ignores the `.twbx`).
+* **Start here: [`GETTING_STARTED.md`](GETTING_STARTED.md)**. It's a beginner guide covering installing Tableau Public, opening the workbook, a tour of the screen, a manual rebuild fallback, saving as `WhoHoldsTheDebt-extracts`, wiring the view into the site (`NEXT_PUBLIC_TABLEAU_PUBLIC_PROFILE`, `NEXT_PUBLIC_TABLEAU_VIEWS`) and the quarterly refresh.
+* **Workbook:** `WhoHoldsTheDebt-extracts.twbx`, named like the published Tableau Public workbook. It is packaged: the `.twb` plus `Data/data/*.csv` and one built-in `.hyper` extract per data source in `Data/Extracts/`, because Tableau Public only saves extract-backed data. It holds four dashboards: **Ratchet**, **CrisisSmallMultiples**, **Collateral** and **PaymentPriority**.
+* **Generator:** `uv run --with tableauhyperapi python tableau/build_workbook.py` rewrites `WhoHoldsTheDebt-extracts.twb` and `.twbx` from `data/*.csv`. Add `--check` to also re-read both files with `tableaudocumentapi`. Both outputs are committed (`tableau/.gitignore` un-ignores the `.twbx`).
 * **Data:** `data/*.csv`, one file per dashboard, written by `uv run hhdebt export-tableau` (part of `hhdebt run --export`). Column names are defined in `pipeline/src/hhdebt/tableau_export.py` (`COLUMNS`). Don't hand-edit them. The quarterly GitHub Action uploads fresh copies in the `data-snapshots-<run id>` artifact.
 
 | File | Source | Dashboard |

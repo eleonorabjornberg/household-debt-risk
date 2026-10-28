@@ -52,3 +52,17 @@ def test_ratchet_recession_flags(built):
     gfc = r[(dates == "2008-12-31")]
     assert (gfc.recession == 1).all() and (gfc.crisis_id == "gfc_2007").all()
     assert (r[dates == "2006-12-31"].recession == 0).all()
+
+
+def test_panel_and_collateral_labels(built):
+    _, out = built
+    cw = out["crisis_windows"]
+    panels = cw.drop_duplicates("crisis_id").sort_values("start_q")
+    labels = list(panels.panel_label)
+    assert labels == sorted(labels), labels  # alphabetical == chronological
+    assert len(set(labels)) == len(labels) and max(map(len, labels)) <= 22
+    assert (cw.groupby("crisis_id").panel_label.nunique() == 1).all()
+    assert labels[0] == "1953 Recession" and "2019 COVID-19" in labels and "2020 CARES Act" in labels
+    pp = out["payment_priority"]
+    assert set(pp.collateral_label) == {"Home-backed", "Vehicle-backed", "No collateral", "Other"}
+    assert (pp.groupby("collateral_class").collateral_label.nunique() == 1).all()
