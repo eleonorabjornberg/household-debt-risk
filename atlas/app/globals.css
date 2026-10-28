@@ -117,7 +117,7 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 
 .hud { display: flex; align-items: flex-end; gap: 10px 28px; padding-bottom: 12px; border-bottom: 3px solid var(--ink); }
 .hud__when { display: flex; flex-direction: column; flex: none; width: min-content; }
-.hud__year { font-family: var(--font-display), serif; font-weight: 800; font-size: clamp(30px, 3.6vw, 46px); line-height: 0.95; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hud__year { font-family: var(--font-display), serif; font-weight: 500; font-size: clamp(28px, 3.2vw, 42px); line-height: 0.95; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .hud__badge {
   align-self: flex-start; margin-top: 8px;
   font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
@@ -126,16 +126,16 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 }
 .hud__badge.is-on { visibility: visible; }
 .hud__total { display: flex; flex-direction: column; flex: none; }
-.hud__mid { font-family: var(--font-display), serif; font-weight: 800; font-size: clamp(22px, 2.6vw, 32px); line-height: 1; font-variant-numeric: tabular-nums; }
-.hud__label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
+.hud__mid { font-family: var(--font-display), serif; font-weight: 500; font-size: clamp(20px, 2.2vw, 28px); line-height: 1; font-variant-numeric: tabular-nums; }
+.hud__label { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
 
 /* Public vs private split, labelled at both ends. */
 .split { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-.split__labels { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-.split__labels b { font-family: var(--font-display), serif; font-size: clamp(22px, 2.6vw, 32px); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.split__labels { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; white-space: nowrap; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.split__labels b { font-family: var(--font-display), serif; font-weight: 500; font-size: clamp(20px, 2.2vw, 28px); letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .split__pub-label { color: var(--public); }
 .split__priv-label { color: var(--private); text-align: right; }
-.split__caption { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.split__caption { color: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .split__bar { display: flex; height: 16px; border: 2px solid var(--ink); }
 .split__pub { background: var(--public); transition: width 200ms linear; border-right: 2px solid var(--ink); }
 .split__priv { flex: 1; background: var(--private); }
@@ -157,7 +157,7 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 .scrub { display: flex; align-items: center; gap: 12px; }
 .scrub__play {
   width: 40px; height: 40px; flex: none; border: 2px solid var(--ink); border-radius: 50%;
-  background: var(--sun); color: var(--ink); cursor: pointer; font-size: 13px; font-weight: 700;
+  background: var(--accent); color: var(--paper); cursor: pointer; font-size: 13px; font-weight: 700;
   box-shadow: 3px 3px 0 var(--ink);
 }
 .scrub__play:active { transform: translate(3px, 3px); box-shadow: none; }
