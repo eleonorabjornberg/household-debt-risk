@@ -26,9 +26,6 @@ export default async function Page() {
             debt. Today it holds <b className="pub">{fmtPct(series.publicShare[last])}</b>. Watch it change hands, one
             $50 billion dot at a time.
           </p>
-          <div className="inkbar" aria-hidden>
-            {[0, 1, 2, 3, 4, 5].map((i) => <span key={i} style={{ background: `var(--pile-${i})` }} />)}
-          </div>
           <p className="hero__cue" aria-hidden>Scroll ↓</p>
         </div>
       </header>
