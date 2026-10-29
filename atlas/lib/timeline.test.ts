@@ -82,7 +82,7 @@ describe("shares lens", () => {
 
 describe("layout", () => {
   const tl = buildTimeline(real, "dollars");
-  for (const [w, h] of [[1280, 760], [375, 520]]) {
+  for (const [w, h] of [[1280, 760], [375, 520], [358, 300], [350, 240]]) {
     it(`fits ${w}x${h} without overlapping piles`, () => {
       const l = computeLayout(w, h, tl.maxCounts);
       for (let i = 0; i < l.centers.length; i++) {
