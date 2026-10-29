@@ -219,16 +219,21 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
         ctx.textAlign = "left";
         ctx.fillText("PRIVATE →", layout.dividerX + 12, 24);
       } else if (layout.dividerY !== null) {
+        // Label sits in a gap in the middle of the line, clear of the pile labels.
+        const label = "↑ PUBLIC   ↓ PRIVATE";
+        const half = ctx.measureText(label).width / 2 + 12;
+        const cx = width / 2;
         ctx.strokeStyle = theme.rule;
         ctx.setLineDash([8, 6]);
         ctx.beginPath();
         ctx.moveTo(12, layout.dividerY);
+        ctx.lineTo(cx - half, layout.dividerY);
+        ctx.moveTo(cx + half, layout.dividerY);
         ctx.lineTo(width - 12, layout.dividerY);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.textAlign = "left";
-        ctx.fillText("↑ PUBLIC", 12, layout.dividerY - 8);
-        ctx.fillText("↓ PRIVATE", 12, layout.dividerY + 18);
+        ctx.textAlign = "center";
+        ctx.fillText(label, cx, layout.dividerY + 4);
       }
       ctx.letterSpacing = "0px";
 

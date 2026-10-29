@@ -19,7 +19,6 @@ export interface Layout {
   fontSize: number;
 }
 
-const LABEL_SPACE = 44;
 
 /** Solve spacing so a row of piles (widths 2*s*sqrt(max), with a floor) fills `avail` px. */
 function solveRow(maxes: number[], avail: number, minPile: number): number {
@@ -56,17 +55,20 @@ export function computeLayout(width: number, height: number, maxCounts: number[]
   const divider = 64;
   const minPile = narrow ? 76 : 92;
   const fontSize = narrow ? 11 : 12;
+  const LABEL_SPACE = narrow ? 36 : 44;
+  // Never let the piles collapse to a point, however short the canvas gets.
+  const MIN_SPACING = 1.6;
   const pub = maxCounts.slice(0, publicCount);
   const priv = maxCounts.slice(publicCount);
   const sq = (xs: number[]) => Math.sqrt(Math.max(...xs, 1));
 
   // Option A: one row, public | private.
   const availA = width - 2 * pad - (maxCounts.length - 2) * gap - divider;
-  const sA = Math.max(0, Math.min(solveRow(maxCounts, availA, minPile), (height - 2 * pad - LABEL_SPACE) / (2 * sq(maxCounts))));
+  const sA = Math.max(MIN_SPACING, Math.min(solveRow(maxCounts, availA, minPile), (height - 2 * pad - LABEL_SPACE) / (2 * sq(maxCounts))));
   // Option B: public row on top, private row below.
   const availB = (n: number) => width - 2 * pad - (n - 1) * gap;
-  const midGap = 28;
-  const sB = Math.max(0, Math.min(
+  const midGap = narrow ? 18 : 28;
+  const sB = Math.max(MIN_SPACING, Math.min(
     solveRow(pub, availB(pub.length), minPile),
     solveRow(priv, availB(priv.length), minPile),
     (height - 2 * pad - 2 * LABEL_SPACE - midGap) / (2 * (sq(pub) + sq(priv))),

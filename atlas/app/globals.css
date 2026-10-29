@@ -212,24 +212,32 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 
 @media (max-width: 899px) {
   :root { --steps-w: 100%; --shadow: 4px 4px 0 var(--ink); }
-  .stage { padding-bottom: calc(34svh + 8px); }
-  .step { align-items: flex-end; padding-bottom: 3svh; }
-  .step__card { max-height: 33svh; overflow: auto; padding: 14px 16px; font-size: 15px; }
+  /* Phones: keep the top bar to two short rows and reserve less room for the story card,
+     so the chart keeps most of the screen. */
+  .stage { padding: 10px 12px calc(27svh + 14px); }
+  .step { align-items: flex-end; padding: 0 12px 2svh; }
+  .step__card { max-height: 25svh; overflow: auto; padding: 12px 14px; font-size: 14px; line-height: 1.45; }
   .step.is-active .step__card { box-shadow: 5px 5px 0 var(--accent); }
-  .step__card h2 { font-size: 22px; }
-  .hud { flex-wrap: wrap; gap: 6px 14px; padding-bottom: 8px; border-bottom-width: 2px; }
-  .hud__year { font-size: 26px; }
-  .hud__mid { font-size: 18px; }
-  .hud__label { font-size: 9px; margin-top: 3px; }
+  .step__card h2 { font-size: 19px; margin: 8px 0 6px; }
+  .step__kicker { font-size: 10px; }
+  .hud { flex-wrap: wrap; align-items: center; gap: 4px 12px; padding-bottom: 6px; border-bottom-width: 2px; }
+  .hud__year { font-size: 22px; }
+  .hud__mid { font-size: 16px; }
+  .hud__label { font-size: 8px; margin-top: 2px; }
   .hud__badge { display: none; }
-  .hud__badge.is-on { display: inline-block; margin-top: 4px; font-size: 10px; }
-  .split { order: 4; flex: 1 1 100%; }
-  .split__labels b { font-size: 20px; }
-  .split__bar { height: 10px; }
-  .lens { margin-left: auto; align-self: center; box-shadow: none; }
-  .legend { font-size: 11px; gap: 2px 12px; padding: 4px 0; }
-  .scrub__play { width: 34px; height: 34px; }
-  .scrub__track { height: 34px; }
+  .hud__badge.is-on { display: inline-block; margin-top: 3px; font-size: 9px; }
+  .split { order: 4; flex: 1 1 100%; gap: 3px; }
+  .split__labels { font-size: 10px; }
+  .split__labels b { font-size: 18px; }
+  .split__bar { height: 8px; }
+  .split__caption { display: none; }
+  .lens { margin-left: auto; box-shadow: none; }
+  .lens button { padding: 3px 7px; font-size: 10px; }
+  .legend { font-size: 10px; gap: 0 10px; padding: 2px 0; }
+  .scrub { gap: 8px; }
+  .scrub__play { width: 30px; height: 30px; font-size: 11px; }
+  .scrub__track { height: 30px; }
+  .scrub__ends { font-size: 10px; }
 }
 
 /* Coda */
