@@ -17,7 +17,7 @@
 
 **Status values:** `done` · `in progress` · `next` · `todo` · `blocked (reason)` · `needs-approval` · `dropped (reason)`
 
-**Current position:** Phase 0. 0.1–0.4 done; 0.5, 0.8 and 0.10 in progress (parallel subagents); 0.2 and 0.4 done.
+**Current position:** Phase 0. 0.1–0.4 done; 0.10 done; 0.5 and 0.8 in progress (parallel subagents); 0.2 and 0.4 done.
 
 ---
 
@@ -111,7 +111,7 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 | 0.7 | **Recommendation v1 ("So what")** for taxpayers, policy and mortgage default risk | 0.3, 0.5 | Every claim has a register row and an attached limit (holding ≠ guarantee, correlation ≠ cause, revisions). Hot Potato's "What does this mean?" revised; the "losses land on public balance sheets" overstatement fixed. Preview deployment only | todo |
 | 0.8 | **Skill `z1-release-update`**: detect a new release → extract → transform → validation gate → "what moved" note → flag stale copy → draft commit | 0.3, 0.5 | `.claude/skills/z1-release-update/SKILL.md` plus scripts; trigger examples (should fire / should not) recorded; tested by replaying the June → September 2026 releases (June vintage found at `https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip`, wide per-table CSVs; `validation/zparse.py` reads both formats) before the next live release (10 Dec 2026) | in progress |
 | 0.9 | **README index and reproduce steps**: one line and link per artifact (per the layout above); how a reader rebuilds every number from a fresh clone | 0.3–0.8 | Every folder in the layout is listed; a fresh clone following the README reproduces the validation report | todo |
-| 0.10 | **Prompt archive** `prompts/`: the prompts that set the scope and built each part, from this session on; earlier prompts recovered from the 27–29 Oct session transcript where feasible (token-heavy, done by a subagent) | 0.6 | One dated file per session; each prompt linked to the commits it produced; agent and skill prompts referenced, not duplicated | in progress |
+| 0.10 | **Prompt archive** `prompts/`: the prompts that set the scope and built each part, from this session on; earlier prompts recovered from the 27–29 Oct session transcript where feasible (token-heavy, done by a subagent) | 0.6 | One dated file per session; each prompt linked to the commits it produced; agent and skill prompts referenced, not duplicated | done (67 prompts from the 27–29 Oct session; this session's prompts to add at session end) |
 
 **Phase 0 exit:** validation passes or every failure is explained and approved; register covers all published numbers; skill tested on the replay; Eleonora approves.
 
