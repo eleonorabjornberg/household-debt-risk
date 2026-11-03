@@ -2,7 +2,6 @@
 data/
 # web/public/data holds the committed JSON snapshots (hhdebt export-snapshot)
 !web/public/data/
-!tableau/data/
 *.pkl
 *.parquet
 __pycache__/
@@ -16,8 +15,3 @@ node_modules/
 .env
 .env.*
 !.env.example
-# tableau
-*.twbx
-*.hyper
-*.tde
-hyperd*.log

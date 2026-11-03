@@ -10,15 +10,13 @@ export const build = {
     { step: "Warehouse", text: "Supabase Postgres in three layers: raw (every vintage), core (latest values) and mart (analysis-ready). The website reads mart through Supabase's API with a read-only public key." },
     { step: "Refresh", text: "A GitHub Actions workflow re-runs the pipeline after each quarterly Z.1 release, reloads Supabase and runs the tests." },
     { step: "Analysis", text: "A Python notebook tested the original thesis with placebo windows. The thesis failed, and the story was rewritten around what the data showed." },
-    { step: "Tableau", text: "A script generates the Tableau workbook; it is published to Tableau Public and embedded here with Tableau's Embedding API, which lets the page zoom and highlight the chart as you read." },
-    { step: "Website", text: "Next.js on Vercel. Every chart has a built-in version, so the page works even when Tableau is unavailable." },
+    { step: "Website", text: "Next.js on Vercel. Every chart is hand-drawn SVG, so the page needs no third-party chart service." },
   ],
 
   stack: [
     { name: "GitHub", body: "Source code, history and the quarterly refresh workflow (GitHub Actions)." },
     { name: "Supabase", body: "Hosted Postgres database and its REST API. Row-level security keeps the raw and core layers private." },
     { name: "Vercel", body: "Builds and hosts this site, and redeploys on every push to the main branch." },
-    { name: "Tableau Public", body: "Hosts the interactive dashboard embedded in the story." },
     { name: "Python, pandas, uv, pytest", body: "Data pipeline, analysis and tests." },
     { name: "Next.js, React, TypeScript", body: "The story site. Charts are hand-drawn SVG." },
   ],
@@ -31,23 +29,19 @@ export const build = {
     { name: "Vercel", body: "Looked up the account. The connector had no access to the personal account, so the Vercel project itself was created in the dashboard by hand." },
     { name: "Web search and fetch", body: "Background research on household debt, and downloads of the Fed, FRED and NY Fed data." },
   ],
-  notConnected:
-    "Tableau has no connector or publishing API for Tableau Public, so the workbook is opened and saved to Tableau Public in the desktop app by hand.",
 
   agentsLede:
     "The larger pieces were built by several Claude agents working in parallel, each owning one folder. The main session wrote the shared contract between them, reviewed each result, checked the numbers against each other and made the commits.",
   agents: [
     { name: "Pipeline agent", body: "Data extraction, the warehouse load, tests and the refresh workflow." },
-    { name: "Analysis agent", body: "The thesis test, the findings write-up and the Tableau specifications." },
-    { name: "Website agent", body: "This site, its charts and the Tableau integration." },
-    { name: "Workbook agent", body: "The script that generates the Tableau workbook, and the beginner's guide." },
+    { name: "Analysis agent", body: "The thesis test and the findings write-up." },
+    { name: "Website agent", body: "This site and its charts." },
   ],
 
   human: [
     "Chose the topic, the angle and the tools, and approved each plan.",
     "Created the GitHub repository and the Vercel project, and set the site's environment variables.",
     "Added the database connection as a GitHub secret, so the password never passed through the chat.",
-    "Opened the workbook in Tableau, fixed the stacking order and published it to Tableau Public.",
     "Reviewed the live site and asked for layout and wording changes.",
   ],
 };

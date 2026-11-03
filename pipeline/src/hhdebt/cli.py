@@ -1,4 +1,4 @@
-"""`hhdebt` command line: run | extract | transform | load | export-snapshot | export-tableau."""
+"""`hhdebt` command line: run | extract | transform | load | export-snapshot."""
 from __future__ import annotations
 
 import argparse
@@ -55,11 +55,6 @@ def cmd_export(a) -> None:
     export.run(source=a.source)
 
 
-def cmd_export_tableau(a) -> None:
-    from . import tableau_export
-    tableau_export.run(source=a.source)
-
-
 def cmd_run(a) -> None:
     cmd_extract(a)
     cmd_transform(a)
@@ -69,7 +64,6 @@ def cmd_run(a) -> None:
         logging.warning("DATABASE_URL not set (or --no-load): skipping load")
     if a.export:
         cmd_export(a)
-        cmd_export_tableau(a)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -89,7 +83,7 @@ def main(argv: list[str] | None = None) -> None:
     sp = sub.add_parser("run", help="extract -> transform -> load (if DATABASE_URL) [-> export-snapshot]")
     extract_args(sp)
     sp.add_argument("--no-load", action="store_true")
-    sp.add_argument("--export", action="store_true", help="also write web/public/data snapshots and tableau/data CSVs")
+    sp.add_argument("--export", action="store_true", help="also write web/public/data snapshots")
     sp.add_argument("--source", default="auto", choices=["auto", "db", "local"], help=argparse.SUPPRESS)
     sp.set_defaults(func=cmd_run)
 
@@ -104,11 +98,6 @@ def main(argv: list[str] | None = None) -> None:
     sp.add_argument("--source", default="auto", choices=["auto", "db", "local"],
                     help="auto = database if DATABASE_URL is set, else data/out")
     sp.set_defaults(func=cmd_export)
-
-    sp = sub.add_parser("export-tableau", help="write tableau/data/<dashboard>.csv (flat, pre-joined)")
-    sp.add_argument("--source", default="auto", choices=["auto", "db", "local"],
-                    help="auto = database if DATABASE_URL is set, else data/out")
-    sp.set_defaults(func=cmd_export_tableau)
 
     a = p.parse_args(argv)
     logging.basicConfig(level=logging.DEBUG if a.verbose else logging.INFO,

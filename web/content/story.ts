@@ -210,7 +210,6 @@ export const crisisScrolly = {
   cardSince: "since",
   cardBegan: "began",
   cardClose: "Clear",
-  nativeNote: "Built-in chart. The interactive Tableau version loads on wider screens.",
   stepCta: "Show in the chart",
 };
 
@@ -287,8 +286,6 @@ export const now = {
   tilesSource: "Fed Z.1 Financial Accounts; Fed MBS from FRED (WSHOMCB), quarter-end.",
 };
 
-export const tableauNote = "An interactive Tableau version of this chart is coming.";
-
 export const fixtureBanner =
   "Development preview. Charts on this page use synthetic fixture data, not the Fed series. Numbers in the text may not match them.";
 
@@ -300,7 +297,7 @@ export const methods = {
     { step: "raw", text: "Every observation from every release is kept with its vintage date, because the Fed revises history each quarter." },
     { step: "core", text: "The latest vintage of each series, joined to dimensions for series, risk bucket and crisis." },
     { step: "mart", text: "Analysis-ready tables: debt by risk holder, public share, collateral coverage, crisis windows and NY Fed delinquency by loan type." },
-    { step: "Outputs", text: "This site and the Tableau workbook read the same mart tables, so the numbers match." },
+    { step: "Outputs", text: "This site reads the mart tables directly, so the numbers match the warehouse." },
   ],
   scope: [
     "The unit is the household sector as the Fed defines it, which includes nonprofit organizations. Scope is home mortgages on 1–4 family properties plus consumer credit (Z.1 series FL154104015). That is about 87% of household liabilities; the remaining 13% is excluded.",

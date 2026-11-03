@@ -13,14 +13,12 @@ import {
 import { getStoryData, overallSource } from "@/lib/data";
 import { fill, pct, quarterLabel, usdFromBillions } from "@/lib/format";
 import { collateralData, crises, crisisSteps, crisisWindows, headline, nyfedData, publicSeries, ratchetData } from "@/lib/shape";
-import { scrollyTableauEnabled, TABLEAU_VIEWS, tableauEmbedFor } from "@/lib/tableau";
 
 export default async function Home() {
   const data = await getStoryData();
   const h = headline(data);
   const crisisList = crises(data);
   const ratchetRows = ratchetData(data);
-  const scrollyEmbed = scrollyTableauEnabled() ? tableauEmbedFor(TABLEAU_VIEWS.scrolly) : null;
 
   const tokens: Record<string, string> = {
     latestQuarter: quarterLabel(h.latestDate),
@@ -101,7 +99,7 @@ export default async function Home() {
       </nav>
 
       <ChapterSection chapter={ratchet} f={f}>
-        <Figure id="fig-ratchet" label="Figure 1" tableauView={TABLEAU_VIEWS.ratchet} {...ratchet.figure}>
+        <Figure id="fig-ratchet" label="Figure 1" {...ratchet.figure}>
           <RatchetChart data={ratchetRows} crises={crisisList} title={ratchet.figure.title} />
         </Figure>
       </ChapterSection>
@@ -117,7 +115,6 @@ export default async function Home() {
             steps={crisisSteps(data, crisisByCrisis.notes)}
             data={ratchetRows}
             crises={crisisList}
-            embed={scrollyEmbed ? { scriptUrl: scrollyEmbed.scriptUrl, src: scrollyEmbed.src, needsToken: scrollyEmbed.needsToken } : null}
             title={crisisScrolly.title}
             copy={crisisScrolly}
             holderNotes={holderNotes}
@@ -126,7 +123,7 @@ export default async function Home() {
             <span>Source</span> {ratchet.figure.source}
           </p>
         </section>
-        <Figure id="fig-crises" label="Figure 2" tableauView={TABLEAU_VIEWS.crises} tableauHeight={1350} {...crisisByCrisis.figure}>
+        <Figure id="fig-crises" label="Figure 2" {...crisisByCrisis.figure}>
           <CrisisMultiples
             data={crisisWindows(data)}
             metricLabels={crisisByCrisis.metricLabels}
@@ -137,13 +134,13 @@ export default async function Home() {
       </ChapterSection>
 
       <ChapterSection chapter={collateral} f={f}>
-        <Figure id="fig-collateral" label="Figure 3" tableauView={TABLEAU_VIEWS.collateral} {...collateral.figure}>
+        <Figure id="fig-collateral" label="Figure 3" {...collateral.figure}>
           <CollateralCharts data={collateralData(data)} crises={crisisList} labels={collateral.classLabels} title={collateral.figure.title} />
         </Figure>
       </ChapterSection>
 
       <ChapterSection chapter={paymentPriority} f={f}>
-        <Figure id="fig-priority" label="Figure 4" tableauView={TABLEAU_VIEWS.priority} {...paymentPriority.figure}>
+        <Figure id="fig-priority" label="Figure 4" {...paymentPriority.figure}>
           <PaymentPriority data={nyfedData(data)} labels={paymentPriority.loanLabels} title={paymentPriority.figure.title} />
           <p className="chart__footnote">{paymentPriority.studentNote}</p>
         </Figure>
