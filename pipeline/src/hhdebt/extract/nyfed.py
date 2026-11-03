@@ -21,7 +21,7 @@ import openpyxl
 import pandas as pd
 
 from .. import config
-from . import http_get, write_staging
+from . import download_raw, record_local, write_staging
 
 log = logging.getLogger(__name__)
 
@@ -52,7 +52,8 @@ def find_latest_xlsx(today: dt.date | None = None) -> tuple[str, bytes, dt.date]
     today = today or dt.date.today()
     urls: list[str] = []
     try:
-        html = http_get(config.NYFED_PAGE_URL).text
+        html = download_raw("nyfed", config.NYFED_PAGE_URL, "hhdc_page.html").path.read_text(
+            encoding="utf-8", errors="replace")
         urls += sorted(set(re.findall(r'href="([^"]*HHD_C_Report_\d{4}Q\d\.xlsx)"', html)), reverse=True)
     except Exception as e:  # page is optional; the probe below is the main path
         log.warning("nyfed: could not read hhdc page (%s)", e)
@@ -60,15 +61,18 @@ def find_latest_xlsx(today: dt.date | None = None) -> tuple[str, bytes, dt.date]
     for url in urls:
         if url.startswith("/"):
             url = "https://www.newyorkfed.org" + url
+        def vintage_of(rec):
+            lm = rec.headers.get("Last-Modified")
+            return parsedate_to_datetime(lm).date() if lm else today
         try:
-            r = http_get(url, allow_redirects=False)
+            rec = download_raw("nyfed", url, url.rsplit("/", 1)[-1], allow_redirects=False,
+                               validate=lambda rec, head: rec.status == 200 and head[:2] == b"PK",
+                               vintage_fn=vintage_of)
         except Exception:
             continue
-        if r.status_code == 200 and r.content[:2] == b"PK":
-            lm = r.headers.get("Last-Modified")
-            vintage = parsedate_to_datetime(lm).date() if lm else today
-            log.info("nyfed: using %s (vintage %s)", url, vintage)
-            return url, r.content, vintage
+        vintage = vintage_of(rec)
+        log.info("nyfed: using %s (vintage %s)", url, vintage)
+        return url, rec.path.read_bytes(), vintage
     raise RuntimeError("nyfed: no HHD_C_Report xlsx found for the last 6 quarters")
 
 
@@ -130,6 +134,7 @@ def parse_workbook(content: bytes) -> pd.DataFrame:
 def extract(xlsx_path: Path | None = None) -> pd.DataFrame:
     if xlsx_path:
         content, vintage = xlsx_path.read_bytes(), dt.date.fromtimestamp(xlsx_path.stat().st_mtime)
+        record_local("nyfed", xlsx_path, vintage=vintage)
     else:
         url, content, vintage = find_latest_xlsx()
         dest = config.DATA_DIR / "nyfed" / url.rsplit("/", 1)[-1]
