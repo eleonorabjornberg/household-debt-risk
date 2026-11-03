@@ -8,33 +8,37 @@ from __future__ import annotations
 
 import datetime as dt
 import io
+import json
 import logging
 import os
 
 import pandas as pd
 
 from .. import config
-from . import http_get, write_staging
+from . import download_raw, write_staging
 
 log = logging.getLogger(__name__)
 
 
 def _via_api(sid: str, key: str) -> tuple[pd.DataFrame, dt.date]:
-    meta = http_get(f"{config.FRED_API_URL}/series", params={"series_id": sid, "api_key": key, "file_type": "json"}).json()
+    meta = json.loads(download_raw(
+        "fred", f"{config.FRED_API_URL}/series", f"{sid}_series.json",
+        params={"series_id": sid, "api_key": key, "file_type": "json"}).path.read_bytes())
     last_updated = pd.Timestamp(meta["seriess"][0]["last_updated"][:10]).date()
-    obs = http_get(
-        f"{config.FRED_API_URL}/series/observations",
-        params={"series_id": sid, "api_key": key, "file_type": "json"},
-    ).json()["observations"]
+    obs = json.loads(download_raw(
+        "fred", f"{config.FRED_API_URL}/series/observations", f"{sid}_observations.json",
+        params={"series_id": sid, "api_key": key, "file_type": "json"}, vintage=last_updated,
+    ).path.read_bytes())["observations"]
     df = pd.DataFrame(obs)[["date", "value"]]
     return df, last_updated
 
 
 def _via_csv(sid: str) -> tuple[pd.DataFrame, dt.date]:
-    text = http_get(config.FRED_CSV_URL.format(id=sid)).text
-    df = pd.read_csv(io.StringIO(text))
+    vintage = dt.date.today()
+    rec = download_raw("fred", config.FRED_CSV_URL.format(id=sid), f"{sid}.csv", vintage=vintage)
+    df = pd.read_csv(io.StringIO(rec.path.read_text(encoding="utf-8")))
     df.columns = ["date", "value"]
-    return df, dt.date.today()
+    return df, vintage
 
 
 def extract() -> pd.DataFrame:
