@@ -1,0 +1,1162 @@
+{
+  "meta": {
+    "vintage": "2026-09-11 10:41",
+    "latest": "2026Q2",
+    "zip_name": "FRB_Z1_csv.zip",
+    "zip_bytes": 64219006,
+    "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
+    "run_at": "2026-11-03 23:56:02"
+  },
+  "checks": [
+    {
+      "id": "A1",
+      "description": "17 mortgage holders sum to FL893065105, 1952Q1-2026Q2",
+      "expected": "max |diff| <= $0.5M",
+      "observed": "max |diff| $0.000M (298 qtrs)",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": "worst quarter 1952Q1"
+    },
+    {
+      "id": "A2",
+      "description": "9 consumer-credit holders sum to FL153166000, 1952Q1-2026Q2",
+      "expected": "max |diff| <= $0.5M",
+      "observed": "max |diff| $0.000M (298 qtrs)",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": "worst quarter 1952Q1"
+    },
+    {
+      "id": "A3",
+      "description": "4 consumer-credit types sum to FL153166000, 1952Q1-2026Q2",
+      "expected": "max |diff| <= $0.5M",
+      "observed": "max |diff| $0.000M (298 qtrs)",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": "worst quarter 1952Q1"
+    },
+    {
+      "id": "A4",
+      "description": "FL153165105 + FL153166000 = FL154104015, 1952Q1-2026Q2",
+      "expected": "max |diff| <= $0.5M",
+      "observed": "max |diff| $0.000M (298 qtrs)",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": "worst quarter 1952Q1"
+    },
+    {
+      "id": "B1",
+      "description": "1990Q3 mortgages: sum of apportioned holders vs FL153165105",
+      "expected": "= $2,447,266.0M",
+      "observed": "$2,447,266.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B2",
+      "description": "1990Q3 consumer credit: sum of holders vs FL153166000",
+      "expected": "= $812,302.0M",
+      "observed": "$812,302.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B3",
+      "description": "1990Q3 scope total: holders vs FL154104015",
+      "expected": "= $3,259,568.0M",
+      "observed": "$3,259,568.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B4",
+      "description": "1990Q3 public + private vs FL154104015 (public share 34.54%)",
+      "expected": "= $3,259,568.0M",
+      "observed": "pub $1,125,710M+priv $2,133,858M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B5",
+      "description": "2007Q4 mortgages: sum of apportioned holders vs FL153165105",
+      "expected": "= $10,577,134.0M",
+      "observed": "$10,577,134.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B6",
+      "description": "2007Q4 consumer credit: sum of holders vs FL153166000",
+      "expected": "= $2,609,477.0M",
+      "observed": "$2,609,477.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B7",
+      "description": "2007Q4 scope total: holders vs FL154104015",
+      "expected": "= $13,186,611.0M",
+      "observed": "$13,186,611.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B8",
+      "description": "2007Q4 public + private vs FL154104015 (public share 36.12%)",
+      "expected": "= $13,186,611.0M",
+      "observed": "pub $4,762,410M+priv $8,424,201M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B9",
+      "description": "2011Q4 mortgages: sum of apportioned holders vs FL153165105",
+      "expected": "= $9,754,939.0M",
+      "observed": "$9,754,939.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B10",
+      "description": "2011Q4 consumer credit: sum of holders vs FL153166000",
+      "expected": "= $2,756,225.0M",
+      "observed": "$2,756,225.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B11",
+      "description": "2011Q4 scope total: holders vs FL154104015",
+      "expected": "= $12,511,164.0M",
+      "observed": "$12,511,164.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B12",
+      "description": "2011Q4 public + private vs FL154104015 (public share 49.22%)",
+      "expected": "= $12,511,164.0M",
+      "observed": "pub $6,158,130M+priv $6,353,034M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B13",
+      "description": "2026Q2 mortgages: sum of apportioned holders vs FL153165105",
+      "expected": "= $13,976,938.0M",
+      "observed": "$13,976,938.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B14",
+      "description": "2026Q2 consumer credit: sum of holders vs FL153166000",
+      "expected": "= $5,120,258.0M",
+      "observed": "$5,120,258.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B15",
+      "description": "2026Q2 scope total: holders vs FL154104015",
+      "expected": "= $19,097,196.0M",
+      "observed": "$19,097,196.0M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B16",
+      "description": "2026Q2 public + private vs FL154104015 (public share 56.38%)",
+      "expected": "= $19,097,196.0M",
+      "observed": "pub $10,767,594M+priv $8,329,602M; diff 0.000",
+      "tolerance": "$0.5M",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C1",
+      "description": "Public share 1952Q1",
+      "expected": "3.2%",
+      "observed": "3.22%",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C2",
+      "description": "Public share 2026Q2",
+      "expected": "56.4%",
+      "observed": "56.38%",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C3",
+      "description": "Public $ and scope 2026Q2",
+      "expected": "$10.77T of $19.10T",
+      "observed": "$10.768T of $19.097T",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C4",
+      "description": "Public share 2007Q4 -> 2011Q4",
+      "expected": "36.1% -> 49.2%",
+      "observed": "36.12% -> 49.22%",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C5",
+      "description": "Jump 2007Q4 -> 2011Q4",
+      "expected": "+13.1 pp",
+      "observed": "+13.11 pp (rounded pts: +13.1)",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C6",
+      "description": "All-time high public share",
+      "expected": "58.6% in 2021Q1",
+      "observed": "58.60% in 2021Q1",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C7",
+      "description": "2026Q2 public share of mortgages",
+      "expected": "65.6%",
+      "observed": "65.55%",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C8",
+      "description": "2026Q2 public share of consumer credit",
+      "expected": "31.3%",
+      "observed": "31.35%",
+      "tolerance": "rounded as published",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C9",
+      "description": "'The 2007-11 jump never reversed': min share 2012Q1..latest",
+      "expected": ">= 2011Q4 level (i); also report vs 2007Q4 (ii)",
+      "observed": "min 49.92% in 2012Q1; vs 2011Q4 49.22% (+0.70 pp); vs 2007Q4 36.12% (+13.80 pp)",
+      "tolerance": "none (strict)",
+      "status": "PASS",
+      "note": "(i) holds: share never fell below its 2011Q4 level after 2011Q4"
+    },
+    {
+      "id": "D1",
+      "description": "web/public/data/public_share.json vs recomputation, every quarter (299 rows)",
+      "expected": "max abs diff within tol; same quarter set",
+      "observed": "scope_total_musd $0.000M; public_musd $0.000M; public_share 4.98e-11; public_share_mortgage 4.99e-11; public_share_cc 4.99e-11",
+      "tolerance": "1e-6 shares, $1M levels",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "D2",
+      "description": "mart.public_share (database) vs recomputation",
+      "expected": "match",
+      "observed": "DATABASE_URL_READONLY not set",
+      "tolerance": "1e-6 shares, $1M levels",
+      "status": "NOT RUN",
+      "note": "no read-only database URL in the environment"
+    },
+    {
+      "id": "E1",
+      "description": "1968Q1: revolving credit (FL153166100) starts",
+      "expected": "zero before, > 0 from 1968Q1",
+      "observed": "first positive 1968Q1 ($1,439M)",
+      "tolerance": "exact",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E2",
+      "description": "1977Q1: revolving reclassification visible in cc-type shares",
+      "expected": "|robust z| > 6 in a cc type",
+      "observed": "FL153166205 -7.06 pp of cc, z=-16.4",
+      "tolerance": "z>6 & >=1.0pp",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E3",
+      "description": "2006Q1: student loans (FL153166220) split out of other non-revolving",
+      "expected": "first positive 2006Q1",
+      "observed": "first positive 2006Q1 ($480,967M); other non-revolving -407,678M q/q",
+      "tolerance": "exact",
+      "status": "PASS",
+      "note": "student loans are zero before; inside other non-revolving"
+    },
+    {
+      "id": "E4",
+      "description": "2010Q1 FAS 166/167: GSE pools move from sector 41 to 40",
+      "expected": "40 up, 41 down at 2010Q1",
+      "observed": "FL403065105 +4.35T (z=+226.8); FL413065105 -4.34T (z=-194.9)",
+      "tolerance": "sign + visible",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E5",
+      "description": "2010Q1 FAS 166/167: card ABS moves onto banks (cc holders)",
+      "expected": "ABS issuers down, banks up",
+      "observed": "ABS -0.51T (z=-200.4); banks +0.32T (z=+22.8)",
+      "tolerance": "sign + visible",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E6",
+      "description": "Public share continuous through 2010 (sectors 40+41 summed)",
+      "expected": "no |robust z| > 6 in 2009Q4-2010Q4",
+      "observed": "max |q/q| 1.10 pp (z=3.2); 40+41 share max |q/q| 1.05 pp",
+      "tolerance": "z<=6",
+      "status": "PASS",
+      "note": "40 and 41 individually jump; the sum should not"
+    },
+    {
+      "id": "E7",
+      "description": "No missing quarters in any of 37 Z.1 catalog series after first value (1952Q1-2026Q2)",
+      "expected": "0 gaps, common end date",
+      "observed": "0 gaps in 0 series; 0 short",
+      "tolerance": "exact",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E8",
+      "description": "Other quarter-on-quarter jumps in component shares (robust z > 6, >= 1.0 pp)",
+      "expected": "none unexplained",
+      "observed": "93 unexplained (+12 at known breaks) of 32 series",
+      "tolerance": "|z|>6 & >=1.0pp",
+      "status": "WARN",
+      "note": "see list in report"
+    },
+    {
+      "id": "F1",
+      "description": "Scope total FL154104015 revisions, 1952Q1-2026Q1 (297 qtrs)",
+      "expected": "report",
+      "observed": "19 quarters revised > $0.5M; max |rev| $5,272M in 2025Q3",
+      "tolerance": "report only",
+      "status": "WARN",
+      "note": "prev vintage 2026-06-10 [per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000]"
+    },
+    {
+      "id": "F2",
+      "description": "Public share revisions across common quarters",
+      "expected": "report",
+      "observed": "max |rev| 0.021 pp in 2025Q3; mean -0.0002 pp; public $ max |rev| $1,623M",
+      "tolerance": "headline 0.1 pp",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "F3",
+      "description": "Headline shares, previous -> current vintage",
+      "expected": "equal at published 0.1 pp precision",
+      "observed": "2026Q1 (latest common): 56.60% -> 56.59%; 2011Q4: 49.22% -> 49.22%; 2007Q4: 36.12% -> 36.12%; 1952Q1: 3.22% -> 3.22%",
+      "tolerance": "0.1 pp",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "F4",
+      "description": "All-time-high quarter, previous vs current (through common quarters)",
+      "expected": "same quarter",
+      "observed": "prev 2021Q1 58.60%; now 2021Q1 58.60%",
+      "tolerance": "exact quarter",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "F5",
+      "description": "New quarter(s) in current vintage",
+      "expected": "report",
+      "observed": "2026Q2",
+      "tolerance": "-",
+      "status": "PASS",
+      "note": ""
+    }
+  ],
+  "unexplained_jumps": [
+    {
+      "series": "FL403065105",
+      "quarter": "2003Q4",
+      "date": "2003-12-31",
+      "delta_pp": 1.9784560973779521,
+      "robust_z": 11.120057399841166
+    },
+    {
+      "series": "FL403065105",
+      "quarter": "2020Q4",
+      "date": "2020-12-31",
+      "delta_pp": 1.2966507947354156,
+      "robust_z": 7.287920760090033
+    },
+    {
+      "series": "FL403065105",
+      "quarter": "2021Q1",
+      "date": "2021-03-31",
+      "delta_pp": 1.178460763631456,
+      "robust_z": 6.623625033888749
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "1982Q4",
+      "date": "1982-12-31",
+      "delta_pp": 1.493202247265593,
+      "robust_z": 6.646778970507778
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "1983Q1",
+      "date": "1983-03-31",
+      "delta_pp": 1.3672835837347104,
+      "robust_z": 6.029391405335727
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "1986Q3",
+      "date": "1986-09-30",
+      "delta_pp": 1.6850358036681334,
+      "robust_z": 7.587351630545679
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "1986Q4",
+      "date": "1986-12-31",
+      "delta_pp": 2.3861082958891613,
+      "robust_z": 11.024756593752624
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "1987Q1",
+      "date": "1987-03-31",
+      "delta_pp": 1.6884857909621354,
+      "robust_z": 7.604267147241867
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2003Q4",
+      "date": "2003-12-31",
+      "delta_pp": -1.5881911184385922,
+      "robust_z": -8.461497229730265
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2004Q1",
+      "date": "2004-03-31",
+      "delta_pp": -1.1203363615174877,
+      "robust_z": -6.167574302579439
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2004Q2",
+      "date": "2004-06-30",
+      "delta_pp": -1.4309468343892573,
+      "robust_z": -7.690518067911006
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2004Q3",
+      "date": "2004-09-30",
+      "delta_pp": -1.1791726887539211,
+      "robust_z": -6.456052720294369
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2004Q4",
+      "date": "2004-12-31",
+      "delta_pp": -1.3121271152757463,
+      "robust_z": -7.10793709841139
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2007Q4",
+      "date": "2007-12-31",
+      "delta_pp": 1.5121899490225077,
+      "robust_z": 6.739876932534984
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2008Q2",
+      "date": "2008-06-30",
+      "delta_pp": 1.471478622356448,
+      "robust_z": 6.540266595667661
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2009Q3",
+      "date": "2009-09-30",
+      "delta_pp": 1.4526535502809523,
+      "robust_z": 6.447966017763036
+    },
+    {
+      "series": "FL673065105",
+      "quarter": "2004Q3",
+      "date": "2004-09-30",
+      "delta_pp": 1.141842389384523,
+      "robust_z": 11.418423893845231
+    },
+    {
+      "series": "FL673065105",
+      "quarter": "2005Q1",
+      "date": "2005-03-31",
+      "delta_pp": 1.2203523387015665,
+      "robust_z": 12.203523387015663
+    },
+    {
+      "series": "FL673065105",
+      "quarter": "2005Q2",
+      "date": "2005-06-30",
+      "delta_pp": 1.1964720270727787,
+      "robust_z": 11.964720270727785
+    },
+    {
+      "series": "FL673065105",
+      "quarter": "2005Q3",
+      "date": "2005-09-30",
+      "delta_pp": 1.3052560136089297,
+      "robust_z": 13.052560136089298
+    },
+    {
+      "series": "FL673065105",
+      "quarter": "2005Q4",
+      "date": "2005-12-31",
+      "delta_pp": 1.2362151279752098,
+      "robust_z": 12.362151279752098
+    },
+    {
+      "series": "FL153065103",
+      "quarter": "1975Q1",
+      "date": "1975-03-31",
+      "delta_pp": -1.3107181898914633,
+      "robust_z": -12.865292768076431
+    },
+    {
+      "series": "FL153065103",
+      "quarter": "1985Q1",
+      "date": "1985-03-31",
+      "delta_pp": 1.4556059640602268,
+      "robust_z": 14.79794877144047
+    },
+    {
+      "series": "FL103065105",
+      "quarter": "1975Q1",
+      "date": "1975-03-31",
+      "delta_pp": 1.295968626631472,
+      "robust_z": 12.95968626631472
+    },
+    {
+      "series": "FL613065105",
+      "quarter": "2010Q4",
+      "date": "2010-12-31",
+      "delta_pp": -1.190537501904882,
+      "robust_z": -11.509808991414548
+    },
+    {
+      "series": "FL613065105",
+      "quarter": "2021Q2",
+      "date": "2021-06-30",
+      "delta_pp": 1.982466872790503,
+      "robust_z": 19.683928920952248
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2009Q3",
+      "date": "2009-09-30",
+      "delta_pp": 1.1082766176112882,
+      "robust_z": 11.082766176112882
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2009Q4",
+      "date": "2009-12-31",
+      "delta_pp": 1.9452513942332939,
+      "robust_z": 19.45251394233294
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2010Q3",
+      "date": "2010-09-30",
+      "delta_pp": 2.2560720478359593,
+      "robust_z": 22.560720478359595
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2011Q1",
+      "date": "2011-03-31",
+      "delta_pp": 2.004405071551338,
+      "robust_z": 20.04405071551338
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2011Q3",
+      "date": "2011-09-30",
+      "delta_pp": 1.2675651128486316,
+      "robust_z": 12.675651128486315
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2012Q1",
+      "date": "2012-03-31",
+      "delta_pp": 1.4076873682009827,
+      "robust_z": 14.076873682009827
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2012Q3",
+      "date": "2012-09-30",
+      "delta_pp": 1.1124349651290304,
+      "robust_z": 11.124349651290304
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2013Q1",
+      "date": "2013-03-31",
+      "delta_pp": 1.4689744141424765,
+      "robust_z": 14.689744141424764
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2014Q1",
+      "date": "2014-03-31",
+      "delta_pp": 1.2762287557026686,
+      "robust_z": 12.762287557026685
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2015Q1",
+      "date": "2015-03-31",
+      "delta_pp": 1.2596263220498782,
+      "robust_z": 12.596263220498782
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2016Q1",
+      "date": "2016-03-31",
+      "delta_pp": 1.0764434854948102,
+      "robust_z": 10.764434854948101
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2017Q1",
+      "date": "2017-03-31",
+      "delta_pp": 1.0874029518423534,
+      "robust_z": 10.874029518423534
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2018Q1",
+      "date": "2018-03-31",
+      "delta_pp": 1.0292555914050872,
+      "robust_z": 10.29255591405087
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2020Q1",
+      "date": "2020-03-31",
+      "delta_pp": 1.3672410387266687,
+      "robust_z": 13.672410387266687
+    },
+    {
+      "series": "FL313066220",
+      "quarter": "2021Q2",
+      "date": "2021-06-30",
+      "delta_pp": -1.620191677732885,
+      "robust_z": -16.20191677732885
+    },
+    {
+      "series": "FL473066000",
+      "quarter": "2025Q1",
+      "date": "2025-03-31",
+      "delta_pp": 1.2936660878745065,
+      "robust_z": 7.034622527444257
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1989Q1",
+      "date": "1989-03-31",
+      "delta_pp": 4.4314007166821785,
+      "robust_z": 44.31400716682178
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1989Q4",
+      "date": "1989-12-31",
+      "delta_pp": 1.2794058517944926,
+      "robust_z": 12.794058517944928
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1990Q2",
+      "date": "1990-06-30",
+      "delta_pp": 1.0758474339364887,
+      "robust_z": 10.758474339364888
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1990Q4",
+      "date": "1990-12-31",
+      "delta_pp": 1.0298881012086814,
+      "robust_z": 10.298881012086813
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1991Q1",
+      "date": "1991-03-31",
+      "delta_pp": 1.0783959357153108,
+      "robust_z": 10.783959357153108
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1991Q3",
+      "date": "1991-09-30",
+      "delta_pp": 1.0809923528811187,
+      "robust_z": 10.809923528811188
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1995Q3",
+      "date": "1995-09-30",
+      "delta_pp": 1.449726313946051,
+      "robust_z": 14.49726313946051
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1995Q4",
+      "date": "1995-12-31",
+      "delta_pp": 1.1546370488452835,
+      "robust_z": 11.546370488452833
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1996Q1",
+      "date": "1996-03-31",
+      "delta_pp": 1.0848232278542203,
+      "robust_z": 10.848232278542202
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1997Q3",
+      "date": "1997-09-30",
+      "delta_pp": 1.0826593070098505,
+      "robust_z": 10.826593070098506
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1998Q1",
+      "date": "1998-03-31",
+      "delta_pp": 1.0370698252885224,
+      "robust_z": 10.370698252885225
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1998Q2",
+      "date": "1998-06-30",
+      "delta_pp": 1.9383826218163869,
+      "robust_z": 19.38382621816387
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1999Q2",
+      "date": "1999-06-30",
+      "delta_pp": 1.3229111122115444,
+      "robust_z": 13.229111122115444
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1999Q3",
+      "date": "1999-09-30",
+      "delta_pp": 1.1785448406391508,
+      "robust_z": 11.785448406391508
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "1999Q4",
+      "date": "1999-12-31",
+      "delta_pp": -1.0845242395546795,
+      "robust_z": -10.845242395546794
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2002Q3",
+      "date": "2002-09-30",
+      "delta_pp": -1.2084651557272008,
+      "robust_z": -12.084651557272007
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2003Q3",
+      "date": "2003-09-30",
+      "delta_pp": -1.5719294609807088,
+      "robust_z": -15.719294609807088
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2003Q4",
+      "date": "2003-12-31",
+      "delta_pp": -1.3936289959855297,
+      "robust_z": -13.936289959855296
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2008Q3",
+      "date": "2008-09-30",
+      "delta_pp": -1.0210654899051623,
+      "robust_z": -10.210654899051624
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2008Q4",
+      "date": "2008-12-31",
+      "delta_pp": -1.0132509535415974,
+      "robust_z": -10.132509535415974
+    },
+    {
+      "series": "FL613066005",
+      "quarter": "2010Q4",
+      "date": "2010-12-31",
+      "delta_pp": 3.347486255016263,
+      "robust_z": 8.625801138798051
+    },
+    {
+      "series": "FL613066005",
+      "quarter": "2015Q4",
+      "date": "2015-12-31",
+      "delta_pp": -3.394411725831567,
+      "robust_z": -8.190849681245444
+    },
+    {
+      "series": "FL613066005",
+      "quarter": "2021Q2",
+      "date": "2021-06-30",
+      "delta_pp": 2.4837575542515173,
+      "robust_z": 6.471359762605057
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1953Q1",
+      "date": "1953-03-31",
+      "delta_pp": -2.4547884871687797,
+      "robust_z": -9.632954802225338
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1954Q4",
+      "date": "1954-12-31",
+      "delta_pp": 1.5469885612743788,
+      "robust_z": 6.188148816279421
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1955Q1",
+      "date": "1955-03-31",
+      "delta_pp": -2.242035203607526,
+      "robust_z": -8.79183054576302
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1956Q1",
+      "date": "1956-03-31",
+      "delta_pp": -1.7668036536246183,
+      "robust_z": -6.91299334317892
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1957Q1",
+      "date": "1957-03-31",
+      "delta_pp": -1.8735176919564416,
+      "robust_z": -7.334889375256392
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1958Q1",
+      "date": "1958-03-31",
+      "delta_pp": -1.7184833574481888,
+      "robust_z": -6.721958109723937
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1959Q4",
+      "date": "1959-12-31",
+      "delta_pp": 1.8607628367233786,
+      "robust_z": 7.428661534655664
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1960Q1",
+      "date": "1960-03-31",
+      "delta_pp": -2.766485696280421,
+      "robust_z": -10.865255798322192
+    },
+    {
+      "series": "FL103066003",
+      "quarter": "1961Q1",
+      "date": "1961-03-31",
+      "delta_pp": -2.2869728621511847,
+      "robust_z": -8.96949245535611
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2007Q1",
+      "date": "2007-03-31",
+      "delta_pp": 1.1113186726376871,
+      "robust_z": 11.113186726376872
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2008Q1",
+      "date": "2008-03-31",
+      "delta_pp": 1.211151941696803,
+      "robust_z": 12.111519416968031
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2008Q3",
+      "date": "2008-09-30",
+      "delta_pp": 1.0739083124486903,
+      "robust_z": 10.739083124486903
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2009Q1",
+      "date": "2009-03-31",
+      "delta_pp": 1.8640692611199883,
+      "robust_z": 18.64069261119988
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2009Q3",
+      "date": "2009-09-30",
+      "delta_pp": 1.2293154737018253,
+      "robust_z": 12.293154737018252
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2009Q4",
+      "date": "2009-12-31",
+      "delta_pp": 1.0275764124129394,
+      "robust_z": 10.275764124129394
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2010Q3",
+      "date": "2010-09-30",
+      "delta_pp": 1.05381512835655,
+      "robust_z": 10.5381512835655
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2010Q4",
+      "date": "2010-12-31",
+      "delta_pp": -1.4605788724441737,
+      "robust_z": -14.605788724441737
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2011Q1",
+      "date": "2011-03-31",
+      "delta_pp": 1.8013514342042791,
+      "robust_z": 18.01351434204279
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2012Q1",
+      "date": "2012-03-31",
+      "delta_pp": 1.397090271693413,
+      "robust_z": 13.97090271693413
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2013Q1",
+      "date": "2013-03-31",
+      "delta_pp": 1.2744560462069232,
+      "robust_z": 12.744560462069233
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2014Q1",
+      "date": "2014-03-31",
+      "delta_pp": 1.1029829895816357,
+      "robust_z": 11.029829895816356
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2015Q1",
+      "date": "2015-03-31",
+      "delta_pp": 1.1189235049280433,
+      "robust_z": 11.189235049280432
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2017Q1",
+      "date": "2017-03-31",
+      "delta_pp": 1.0288374250256083,
+      "robust_z": 10.288374250256082
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2018Q1",
+      "date": "2018-03-31",
+      "delta_pp": 1.0128327432619544,
+      "robust_z": 10.128327432619544
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2020Q1",
+      "date": "2020-03-31",
+      "delta_pp": 1.5798540975616948,
+      "robust_z": 15.798540975616948
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2021Q2",
+      "date": "2021-06-30",
+      "delta_pp": -2.073382399137719,
+      "robust_z": -20.733823991377186
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2022Q2",
+      "date": "2022-06-30",
+      "delta_pp": -1.0393528497428084,
+      "robust_z": -10.393528497428084
+    },
+    {
+      "series": "FL153166205",
+      "quarter": "2010Q4",
+      "date": "2010-12-31",
+      "delta_pp": 3.804428072874075,
+      "robust_z": 9.388865719466141
+    }
+  ],
+  "known_break_jumps": [
+    {
+      "series": "FL403065105",
+      "quarter": "2010Q1",
+      "date": "2010-03-31",
+      "delta_pp": 40.34855026320744,
+      "robust_z": 226.78198193120198
+    },
+    {
+      "series": "FL413065105",
+      "quarter": "2010Q1",
+      "date": "2010-03-31",
+      "delta_pp": -39.6128316943393,
+      "robust_z": -194.89883386759894
+    },
+    {
+      "series": "FL763066005",
+      "quarter": "2010Q1",
+      "date": "2010-03-31",
+      "delta_pp": 13.754287342811622,
+      "robust_z": 22.834058294702235
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2006Q1",
+      "date": "2006-03-31",
+      "delta_pp": -1.3424538053064787,
+      "robust_z": -13.424538053064788
+    },
+    {
+      "series": "FL673066000",
+      "quarter": "2010Q1",
+      "date": "2010-03-31",
+      "delta_pp": -20.041071746256993,
+      "robust_z": -200.41071746256995
+    },
+    {
+      "series": "FL613066005",
+      "quarter": "2010Q1",
+      "date": "2010-03-31",
+      "delta_pp": 5.326050161790286,
+      "robust_z": 13.561031312835123
+    },
+    {
+      "series": "FL163066223",
+      "quarter": "2006Q1",
+      "date": "2006-03-31",
+      "delta_pp": 2.883274832786829,
+      "robust_z": 28.832748327868288
+    },
+    {
+      "series": "FL153166100",
+      "quarter": "1977Q1",
+      "date": "1977-03-31",
+      "delta_pp": 6.21257874017247,
+      "robust_z": 15.892493493716417
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2006Q1",
+      "date": "2006-03-31",
+      "delta_pp": 20.575380146604296,
+      "robust_z": 205.75380146604294
+    },
+    {
+      "series": "FL153166220",
+      "quarter": "2010Q1",
+      "date": "2010-03-31",
+      "delta_pp": 1.88860415258561,
+      "robust_z": 18.8860415258561
+    },
+    {
+      "series": "FL153166205",
+      "quarter": "1977Q1",
+      "date": "1977-03-31",
+      "delta_pp": -7.055851486694187,
+      "robust_z": -16.42275018178716
+    },
+    {
+      "series": "FL153166205",
+      "quarter": "2006Q1",
+      "date": "2006-03-31",
+      "delta_pp": -17.641304807527252,
+      "robust_z": -41.58118682785552
+    }
+  ],
+  "previous_vintage": {
+    "prev_path": "data/validation/prev_z1_csv_files.zip",
+    "prev_member_timestamp": "2026-06-10T16:02:22",
+    "format": "per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000",
+    "common_quarters": 297,
+    "last_common": "2026Q1",
+    "conflicts": []
+  },
+  "previous_vintage_urls_tried": [],
+  "summary": {
+    "PASS": 41,
+    "FAIL": 0,
+    "WARN": 2,
+    "NOT RUN": 1
+  }
+}
