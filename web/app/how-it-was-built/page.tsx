@@ -56,7 +56,6 @@ export default function HowItWasBuiltPage() {
           <h2 id="connectors">Connectors used</h2>
           <div className="prose"><p>{build.connectorsLede}</p></div>
           <DefinitionList items={build.connectors} />
-          <p className="figure__caption" style={{ marginTop: "1rem" }}>{build.notConnected}</p>
         </div>
       </section>
 

@@ -2,22 +2,12 @@
 // "Crisis by crisis" scroll-through: a sticky Ratchet chart beside one step card per crisis.
 //
 // When a step crosses the trigger line the chart zooms to t0 − 2y … t0 + 4y and the crisis band is
-// emphasised. With Tableau configured (and a wide screen) the sticky chart is the published
-// Ratchet dashboard, driven through lib/tableauControl.ts; otherwise, or if Tableau fails, it is
-// the native RatchetChart with the same zoom, highlight, legend and side card.
+// emphasised. The sticky chart is the native RatchetChart, with a holder legend and side card.
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { Crisis, CrisisStep, RatchetData } from "@/lib/shape";
 import type { RiskBucket } from "@/lib/types";
 import { pct, pts, quarterLabel, quarterToYear } from "@/lib/format";
 import { CRISIS_FOCUS_EVENT, crisisStepId } from "@/lib/crisisFocus";
-import {
-  createRatchetController,
-  loadEmbeddingApi,
-  logOnce,
-  whenInteractive,
-  type HolderSelection,
-  type RatchetController,
-} from "@/lib/tableauControl";
 import { RatchetChart } from "@/components/charts/RatchetChart";
 
 export interface ScrollyCopy {
@@ -29,7 +19,6 @@ export interface ScrollyCopy {
   cardSince: string;
   cardBegan: string;
   cardClose: string;
-  nativeNote: string;
   stepCta: string;
 }
 
@@ -37,8 +26,6 @@ interface Props {
   steps: CrisisStep[];
   data: RatchetData;
   crises: Crisis[];
-  /** Tableau embed for the Ratchet view, or null for the native chart only. */
-  embed: { scriptUrl: string; src: string; needsToken: boolean } | null;
   title: string;
   copy: ScrollyCopy;
   holderNotes: Record<string, string>;
@@ -46,8 +33,6 @@ interface Props {
 
 const WIDE = "(min-width: 769px)";
 const REDUCED = "(prefers-reduced-motion: reduce)";
-// Embed height. The dashboard uses automatic sizing, so it fills the column width at this height.
-const VIZ_H = 640;
 
 function useMediaQuery(query: string, serverValue: boolean) {
   return useSyncExternalStore(
@@ -68,32 +53,21 @@ function indexAtOrBefore(dates: string[], iso: string): number {
   return best;
 }
 
-type Load = "off" | "loading" | "mounted" | "failed";
-
-export function CrisisScrolly({ steps, data, crises, embed, title, copy, holderNotes }: Props) {
+export function CrisisScrolly({ steps, data, crises, title, copy, holderNotes }: Props) {
   const isWide = useMediaQuery(WIDE, true);
   const reduced = useMediaQuery(REDUCED, false);
 
   const [active, setActive] = useState<string | null>(null);
   const [focusBucket, setFocusBucket] = useState<RiskBucket | null>(null);
-  const [tabSel, setTabSel] = useState<HolderSelection | null>(null);
-  const [load, setLoad] = useState<Load>("off");
-  const [token, setToken] = useState<string | undefined>();
-  const [ready, setReady] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
-  const vizRef = useRef<HTMLElement | null>(null);
-  const ctlRef = useRef<RatchetController | null>(null);
   const activeRef = useRef<string | null>(null);
-  const immediateRef = useRef(false);
   const lockUntil = useRef(0);
-  const startedRef = useRef(false);
 
   const stepById = useMemo(() => new Map(steps.map((s) => [s.id, s])), [steps]);
   const activeStep = active ? stepById.get(active) ?? null : null;
-  const tableauOn = ready && load === "mounted";
 
-  // ---- data derived from the site's own tables (never from Tableau)
+  // ---- data derived from the site's own tables
   const holder = useMemo(() => {
     const n = data.dates.length;
     const totals = new Array<number>(n).fill(0);
@@ -109,93 +83,12 @@ export function CrisisScrolly({ steps, data, crises, embed, title, copy, holderN
     );
     return { share, publicShare };
   }, [data]);
-  const keyByLabel = useMemo(() => new Map(data.buckets.map((b) => [b.label, b.key])), [data.buckets]);
   const latest = data.dates[data.dates.length - 1];
 
   // ---- mark the active step (ref mirror for observers)
   useEffect(() => {
     activeRef.current = active;
   }, [active]);
-
-  // ---- lazy-load Tableau when the section comes near, on wide screens only
-  const startTableau = useCallback(async () => {
-    if (!embed || startedRef.current) return;
-    startedRef.current = true;
-    setLoad("loading");
-    try {
-      if (embed.needsToken) {
-        const [res] = await Promise.all([fetch("/api/tableau-token", { cache: "no-store" }), loadEmbeddingApi(embed.scriptUrl)]);
-        if (!res.ok) throw new Error(`Token request failed (${res.status})`);
-        setToken(((await res.json()) as { token: string }).token);
-      } else {
-        await loadEmbeddingApi(embed.scriptUrl);
-      }
-      setLoad("mounted");
-    } catch (err) {
-      logOnce("Embedding API load (scroll-through)", err);
-      setLoad("failed");
-    }
-  }, [embed]);
-
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!embed || !el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting) && window.matchMedia(WIDE).matches) {
-          io.disconnect();
-          void startTableau();
-        }
-      },
-      { rootMargin: "1200px 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [embed, startTableau]);
-
-  // ---- once <tableau-viz> is in the DOM: wait for firstinteractive, then build the controller
-  const mounted = load === "mounted";
-  useEffect(() => {
-    const el = vizRef.current;
-    if (!mounted || !el) return;
-    let cancelled = false;
-    whenInteractive(el)
-      .then((viz) => createRatchetController(viz))
-      .then((ctl) => {
-        if (cancelled) return ctl.dispose();
-        ctlRef.current = ctl;
-        setReady(true);
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        logOnce("Ratchet embed (scroll-through)", err);
-        setLoad("failed");
-      });
-    return () => {
-      cancelled = true;
-      ctlRef.current?.dispose();
-      ctlRef.current = null;
-    };
-  }, [mounted]);
-
-  // ---- drive Tableau from the active step (debounced + serialised inside the controller)
-  useEffect(() => {
-    const ctl = ctlRef.current;
-    if (!tableauOn || !ctl) return;
-    const s = active ? stepById.get(active) : null;
-    ctl.focusCrisis(s ? { id: s.id, min: s.min, max: s.max } : null, { immediate: immediateRef.current });
-    immediateRef.current = false;
-  }, [active, tableauOn, stepById]);
-
-  // ---- Tableau → site: selected marks drive the side card
-  useEffect(() => {
-    const ctl = ctlRef.current;
-    if (!tableauOn || !ctl) return;
-    return ctl.onSelection((sel) => {
-      setTabSel(sel);
-      setFocusBucket(sel ? keyByLabel.get(sel.label) ?? null : null);
-    });
-  }, [tableauOn, keyByLabel]);
 
   // ---- scroll trigger: a 1px line at 50% of the viewport (72% on phones, under the sticky chart)
   useEffect(() => {
@@ -254,7 +147,6 @@ export function CrisisScrolly({ steps, data, crises, embed, title, copy, holderN
       const el = document.getElementById(crisisStepId(id));
       if (!el || !stepById.has(id)) return false;
       lockUntil.current = performance.now() + (scroll ? (reduced ? 200 : 1400) : 400);
-      immediateRef.current = true;
       setActive(id);
       if (scroll) {
         el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
@@ -275,36 +167,23 @@ export function CrisisScrolly({ steps, data, crises, embed, title, copy, holderN
 
   const reset = () => {
     lockUntil.current = performance.now() + 400;
-    immediateRef.current = true;
     setActive(null);
   };
 
-  // ---- site → Tableau: legend
+  // ---- legend
   const onHolder = (key: RiskBucket) => {
-    const next = focusBucket === key ? null : key;
-    setFocusBucket(next);
-    const ctl = ctlRef.current;
-    if (tableauOn && ctl) void ctl.selectHolder(next ? data.buckets.find((b) => b.key === next)!.label : null);
+    setFocusBucket(focusBucket === key ? null : key);
   };
   const clearHolder = () => {
     setFocusBucket(null);
-    setTabSel(null);
-    const ctl = ctlRef.current;
-    if (tableauOn && ctl) void ctl.selectHolder(null);
   };
 
   // ---- side card (values from the site's data)
   const windowEnd = activeStep ? (activeStep.max < latest ? activeStep.max : latest) : latest;
   const card = (() => {
-    let key: RiskBucket | null = null;
-    let date = windowEnd;
-    if (tableauOn) {
-      if (!tabSel) return null;
-      key = keyByLabel.get(tabSel.label) ?? null;
-      if (tabSel.dates.length) date = tabSel.dates[tabSel.dates.length - 1];
-    } else key = focusBucket;
+    const key = focusBucket;
     if (!key) return null;
-    const i = indexAtOrBefore(data.dates, date);
+    const i = indexAtOrBefore(data.dates, windowEnd);
     if (i < 0) return null;
     const d = data.dates[i];
     const share = holder.share[key][i];
@@ -334,14 +213,13 @@ export function CrisisScrolly({ steps, data, crises, embed, title, copy, holderN
   const xDomain: [number, number] | undefined = activeStep
     ? [quarterToYear(activeStep.start) - 2, quarterToYear(activeStep.start) + 4]
     : undefined;
-  const showNative = !tableauOn;
   const nPublic = data.buckets.filter((b) => b.isPublic).length;
 
   return (
-    <div className={`scrolly${tableauOn ? " scrolly--tableau" : ""}`} ref={rootRef}>
+    <div className="scrolly" ref={rootRef}>
       <div className="scrolly__panel">
         <div className="scrolly__viz">
-          <div className={`scrolly__caption${tableauOn ? " is-overlay" : ""}`} aria-live="polite" aria-atomic="true">
+          <div className="scrolly__caption" aria-live="polite" aria-atomic="true">
             <strong>{caption.name}</strong> <span>{caption.detail}</span>
             {activeStep && (
               <button type="button" className="scrolly__reset" onClick={reset}>
@@ -349,40 +227,15 @@ export function CrisisScrolly({ steps, data, crises, embed, title, copy, holderN
               </button>
             )}
           </div>
-          {mounted && (
-            <div
-              className={`scrolly__tableau${tableauOn ? "" : " is-loading"}`}
-              style={{ height: VIZ_H }}
-              aria-hidden={tableauOn ? undefined : true}
-            >
-              <tableau-viz
-                ref={vizRef}
-                src={embed!.src}
-                {...(token ? { token } : {})}
-                toolbar="hidden"
-                hide-tabs
-                width="100%"
-                height={`${VIZ_H}px`}
-                aria-label={`${title} (interactive Tableau view)`}
-                style={{ display: "block" }}
-              />
-            </div>
-          )}
-          {showNative && (
-            <RatchetChart
-              data={data}
-              crises={crises}
-              title={title}
-              xDomain={xDomain}
-              activeCrisis={active}
-              focusBucket={focusBucket}
-              chrome={false}
-            />
-          )}
-          {embed && !isWide && <p className="figure__soon">{copy.nativeNote}</p>}
-          {load === "failed" && (
-            <p className="figure__soon">The interactive Tableau version could not load, so the built-in chart is shown instead.</p>
-          )}
+          <RatchetChart
+            data={data}
+            crises={crises}
+            title={title}
+            xDomain={xDomain}
+            activeCrisis={active}
+            focusBucket={focusBucket}
+            chrome={false}
+          />
         </div>
 
         <div className="holderlegend" role="group" aria-label={copy.legendLabel}>

@@ -15,9 +15,9 @@
 3. Work only on that task. When its acceptance criteria are met, set it to `done`, add a log entry, commit, push.
 4. **Stop at the end of every phase** and ask for approval before starting the next one.
 
-**Status values:** `done` · `next` · `todo` · `blocked (reason)` · `needs-approval` · `dropped (reason)`
+**Status values:** `done` · `in progress` · `next` · `todo` · `blocked (reason)` · `needs-approval` · `dropped (reason)`
 
-**Current position:** PLAN.md written, waiting for approval. On approval, task **0.1** is `next`.
+**Current position:** Phase 0. 0.1, 0.3, 0.4 and 0.10 in progress (parallel subagents); 0.2 built and tested locally, waiting for approval to apply to the production database.
 
 ---
 
@@ -72,6 +72,10 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-03 | Read-only database access goes through a new `research_reader` role, not `tableau_reader`. | Eleonora / Claude |
 | 2026-11-03 | The two earlier scope updates are replaced by this plan. | Eleonora |
 | 2026-11-03 | This plan covers the product only. | Eleonora |
+| 2026-11-03 | Plan approved. | Eleonora |
+| 2026-11-03 | Eleonora registers any Freddie Mac / Fannie Mae data accounts herself (A2, B2). | Eleonora |
+| 2026-11-03 | Research memos (D3) target financial institutions: banks, asset managers, insurers, MBS and CRT investors. | Eleonora |
+| 2026-11-03 | Licences (default, open to change): MIT for code; CC BY 4.0 for derived data and text. Third-party series (e.g. S&P Case-Shiller via FRED) are not redistributed, only linked. | Eleonora / Claude |
 
 ## Environment prerequisites
 
@@ -98,16 +102,16 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 | ID | Task | Depends | Acceptance criteria | Status |
 |---|---|---|---|---|
 | 0.0 | **Audit** of repo, data, schema, frontends and evidence of Claude use | — | Summary delivered in session; key points in `docs/building-with-claude.md` | done |
-| 0.1 | **Remove Tableau** and add a repo `CLAUDE.md` (how to work here, pointers to this file, the rules above) | — | `git grep -i tableau` finds nothing outside git history; pipeline tests pass; `web/` builds with native charts only; `CLAUDE.md` committed | todo |
-| 0.2 | **`research_reader` role**: migration with SELECT on `mart` + `core` dimensions, no password; drop `tableau_reader` | 0.1 | Migration applies cleanly on a local Postgres; Eleonora sets the password herself (exact SQL provided); the role cannot read `raw` or write anywhere (test) | todo |
-| 0.3 | **Validation suite** `validation/run.py`, one entry point, independent of `hhdebt` code | 0.1 | Recomputes from the Fed zip: (a) the 4 Z.1 identities every quarter; (b) sector totals vs published Z.1 series for 1990Q3, 2007Q4, 2011Q4, 2026Q2; (c) headlines: 3.2% (1952Q1), 56.4% / $10.77T of $19.10T (2026Q2), 36.1% → 49.2% (2007Q4–2011Q4), "never reversed" as a testable rule; (d) committed snapshots and the database (if reachable) match; (e) known breaks (1968Q1, 1977Q1, 2006Q1, 2010Q1) flagged, new jumps and gaps detected; (f) revisions between two vintages. Writes `validation/REPORT.md` plus a terminal pass/fail table. **Any failure is reported to Eleonora; no number is changed silently.** | todo |
-| 0.4 | **Raw-download provenance**: every extract records URL, retrieval time, bytes and SHA-256 in a manifest | 0.3 | `data/manifest.jsonl` written by every extractor; validation checks the manifest | todo |
+| 0.1 | **Remove Tableau** and add a repo `CLAUDE.md` (how to work here, pointers to this file, the rules above) | — | `git grep -i tableau` finds nothing in code, config, sites or current docs; the only mentions left are historical records (applied migrations, which are never edited; the build log; this plan's decisions); pipeline tests pass; `web/` builds with native charts only; `CLAUDE.md` committed | in progress |
+| 0.2 | **`research_reader` role**: migration with SELECT on `mart` + `core` dimensions, no password; drop `tableau_reader` | 0.1 | Migration applies cleanly on a local Postgres; Eleonora sets the password herself (exact SQL provided); the role cannot read `raw` or write anywhere (test) | needs-approval (built and tested on local Postgres; applying it to production drops `tableau_reader`) |
+| 0.3 | **Validation suite** `validation/run.py`, one entry point, independent of `hhdebt` code | 0.1 | Recomputes from the Fed zip: (a) the 4 Z.1 identities every quarter; (b) sector totals vs published Z.1 series for 1990Q3, 2007Q4, 2011Q4, 2026Q2; (c) headlines: 3.2% (1952Q1), 56.4% / $10.77T of $19.10T (2026Q2), 36.1% → 49.2% (2007Q4–2011Q4), "never reversed" as a testable rule; (d) committed snapshots and the database (if reachable) match; (e) known breaks (1968Q1, 1977Q1, 2006Q1, 2010Q1) flagged, new jumps and gaps detected; (f) revisions between two vintages. Writes `validation/REPORT.md` plus a terminal pass/fail table. **Any failure is reported to Eleonora; no number is changed silently.** | in progress |
+| 0.4 | **Raw-download provenance**: every extract records URL, retrieval time, bytes and SHA-256 in a manifest | 0.3 | `data/manifest.jsonl` written by every extractor; validation checks the manifest | in progress |
 | 0.5 | **Claims register v0** `claims/register.csv` (pulled forward from F1): every headline number in README, `findings.md` and both sites | 0.3 | Each row has claim, value, unit, query or code path, series IDs, vintage and validation status; a test fails if a site number has no register row | todo |
 | 0.6 | **Building-with-Claude log** (F5 started now) | — | `docs/building-with-claude.md` exists with an entry per session: tasks, model tier used, tokens/cost where measurable (otherwise "not measured"), errors Claude made and how they were caught | done |
 | 0.7 | **Recommendation v1 ("So what")** for taxpayers, policy and mortgage default risk | 0.3, 0.5 | Every claim has a register row and an attached limit (holding ≠ guarantee, correlation ≠ cause, revisions). Hot Potato's "What does this mean?" revised; the "losses land on public balance sheets" overstatement fixed. Preview deployment only | todo |
 | 0.8 | **Skill `z1-release-update`**: detect a new release → extract → transform → validation gate → "what moved" note → flag stale copy → draft commit | 0.3, 0.5 | `.claude/skills/z1-release-update/SKILL.md` plus scripts; trigger examples (should fire / should not) recorded; tested by replaying the June → September 2026 releases (archive URLs to verify) before the next live release (10 Dec 2026) | todo |
 | 0.9 | **README index and reproduce steps**: one line and link per artifact (per the layout above); how a reader rebuilds every number from a fresh clone | 0.3–0.8 | Every folder in the layout is listed; a fresh clone following the README reproduces the validation report | todo |
-| 0.10 | **Prompt archive** `prompts/`: the prompts that set the scope and built each part, from this session on; earlier prompts recovered from the 27–29 Oct session transcript where feasible (token-heavy, done by a subagent) | 0.6 | One dated file per session; each prompt linked to the commits it produced; agent and skill prompts referenced, not duplicated | todo |
+| 0.10 | **Prompt archive** `prompts/`: the prompts that set the scope and built each part, from this session on; earlier prompts recovered from the 27–29 Oct session transcript where feasible (token-heavy, done by a subagent) | 0.6 | One dated file per session; each prompt linked to the commits it produced; agent and skill prompts referenced, not duplicated | in progress |
 
 **Phase 0 exit:** validation passes or every failure is explained and approved; register covers all published numbers; skill tested on the replay; Eleonora approves.
 
@@ -211,7 +215,4 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 
 ## Open questions for Eleonora
 
-1. Approve this plan (and the order: Phase 0 first)?
-2. A2 and B2: OK to register for free Freddie/Fannie data accounts yourself if the deal data needs a login?
-3. D3 audiences: which named market audiences should the memos target?
-4. Licence for the open data and code (F4)?
+None at present.

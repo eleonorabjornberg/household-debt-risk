@@ -31,7 +31,7 @@
   --s4: #eda100;
   --s5: #e87ba4;
   --s6: #008300;
-  /* risk buckets: public cool, private warm (tableau/workbook_specs.md 0.2) */
+  /* risk buckets: public cool, private warm */
   --b-federal_direct: #1c5cab;
   --b-gse_agency: #1baf7a;
   --b-state_local: #3987e5;
@@ -491,16 +491,6 @@ p {
   letter-spacing: 0.06em;
   font-size: 0.6875rem;
   margin-right: 0.35rem;
-}
-.figure__soon {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-top: 0.75rem;
-  font-style: italic;
-}
-.tableau {
-  width: 100%;
-  overflow: hidden;
 }
 
 /* ---------------------------------------------------------------- charts */
@@ -1126,21 +1116,6 @@ p {
 .scrolly__caption span {
   font-variant-numeric: tabular-nums;
 }
-/* Over the Tableau dashboard's static title row (which says 1952–2026 even when zoomed). */
-.scrolly__caption.is-overlay {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0.45rem 0.6rem;
-  background: var(--paper);
-  border-bottom: 1px solid var(--rule);
-}
-.scrolly--tableau .scrolly__viz {
-  padding-top: 0;
-}
 .scrolly__reset {
   margin-left: auto;
   font: inherit;
@@ -1154,20 +1129,6 @@ p {
 }
 .scrolly__reset:hover {
   border-color: var(--accent);
-}
-.scrolly__tableau {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 4px;
-}
-.scrolly__tableau.is-loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  pointer-events: none;
 }
 
 .holderlegend {

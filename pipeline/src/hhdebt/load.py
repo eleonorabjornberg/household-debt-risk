@@ -1,7 +1,7 @@
 """Load into Postgres in ONE transaction:
   1. upsert data/staging/*.csv into raw.observations (every vintage kept; same vintage -> value updated)
   2. replace the contents of core.* and mart.* with data/out/*.csv (DELETE + COPY, so concurrent
-     readers such as Tableau live connections keep seeing the previous version until commit).
+     readers such as the sites keep seeing the previous version until commit).
 """
 from __future__ import annotations
 

@@ -1,7 +1,4 @@
 import type { ReactNode } from "react";
-import { tableauNote } from "@/content/story";
-import { tableauEmbedFor } from "@/lib/tableau";
-import { TableauViz } from "./TableauViz";
 
 interface Props {
   id: string;
@@ -9,16 +6,11 @@ interface Props {
   title: string;
   caption: string;
   source: string;
-  /** Tableau view path, e.g. "WhoHoldsTheDebt/Ratchet". Omit for native-only figures. */
-  tableauView?: string;
-  /** Embed height in px when the Tableau view is shown (default set in TableauViz). */
-  tableauHeight?: number;
   children: ReactNode;
 }
 
-/** A numbered figure: native chart, swapped for the Tableau view when that view is configured. */
-export function Figure({ id, label, title, caption, source, tableauView, tableauHeight, children }: Props) {
-  const embed = tableauView ? tableauEmbedFor(tableauView) : null;
+/** A numbered figure: a native SVG chart with its caption and source. */
+export function Figure({ id, label, title, caption, source, children }: Props) {
   return (
     <figure className="figure" id={id} aria-labelledby={`${id}-title`}>
       <header className="figure__head">
@@ -26,24 +18,9 @@ export function Figure({ id, label, title, caption, source, tableauView, tableau
         <h3 className="figure__title" id={`${id}-title`}>{title}</h3>
         <p className="figure__caption">{caption}</p>
       </header>
-      {embed ? (
-        <TableauViz scriptUrl={embed.scriptUrl} src={embed.src} needsToken={embed.needsToken} title={title} height={tableauHeight} fallback={children} />
-      ) : (
-        <>
-          {children}
-          {tableauView && <p className="figure__soon">{tableauNote}</p>}
-        </>
-      )}
+      {children}
       <p className="figure__source">
         <span>Source</span> {source}
-        {embed?.openUrl && (
-          <>
-            {" · "}
-            <a href={embed.openUrl} target="_blank" rel="noopener noreferrer" aria-label="Open on Tableau Public (opens in a new tab)">
-              Open on Tableau Public
-            </a>
-          </>
-        )}
       </p>
     </figure>
   );
