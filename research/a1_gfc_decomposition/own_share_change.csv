@@ -1,5 +1,5 @@
 loan,side,holder,own_share_change_pp
-mortgages,public,"Ginnie Mae pools (FHA, VA, USDA)",6.1191
+mortgages,public,"Ginnie Mae pools (FHA, VA, USDA) and FmHA pools",6.1191
 consumer credit,public,Federal government (student loans),3.0775
 mortgages,public,Fannie Mae (portfolio + pools),3.0173
 mortgages,public,Freddie Mac (portfolio + pools),0.8702

@@ -1,0 +1,15 @@
+id,release,freq,role,first_vintage,n_vintages,first_obs,n_obs,lag_days_min,lag_days_median,lag_days_max,median_abs_revision_share,rows_rescaled_to_millions,units_label_current
+HMLBSHNO,Z.1,Q,target,2010-06-10,66,1945-10-01,65,65,70,101,0.007479,3321,Millions of U.S. Dollars
+CCLBSHNO,Z.1,Q,target,2010-06-10,66,1945-10-01,65,65,70,101,0.006963,1300,Millions of U.S. Dollars
+BOGZ1FL154104015Q,Z.1,Q,target,2019-03-07,31,1945-10-01,30,67,72,172,0.009096,0,Millions of U.S. Dollars
+BOGZ1FL413065105Q,Z.1,Q,target,2019-03-07,31,1945-10-01,30,67,71.5,101,0,0,Millions of U.S. Dollars
+BOGZ1FL403065105Q,Z.1,Q,target,2019-03-07,31,1945-10-01,30,67,71.5,101,0.001088,0,Millions of U.S. Dollars
+FGCCSAQ027S,Z.1,Q,target,2013-06-06,54,1945-10-01,53,65,71,101,0.001335,0,Millions of U.S. Dollars
+TOTALNS,G.19,M,total_cc,1996-12-06,359,1943-01-01,357,33,38,41,0.02764,9635,Millions of U.S. Dollars
+TOTALGOV,G.19,M,public_cc,2008-10-07,217,1977-01-01,215,33,38,41,0.002713,2004,Millions of U.S. Dollars
+TOTALDI,G.19,M,private_cc,2012-06-07,173,1943-01-01,171,33,38,41,0.001296,3903,Millions of U.S. Dollars
+TOTALFC,G.19,M,private_cc,2008-10-07,217,1943-01-01,215,33,38,41,0.00528,2948,Millions of U.S. Dollars
+TOTALTCU,G.19,M,private_cc,2008-10-07,217,1943-01-01,215,33,38,41,0.007377,2552,Millions of U.S. Dollars
+RREACBW027NBOG,H.8,W,private_mort,2015-02-20,609,2004-06-02,608,8,9,12,0.001088,16575,Billions of U.S. Dollars
+CLSACBW027NBOG,H.8,W,private_cc,2012-08-17,741,1973-01-03,740,8,9,12,0.00299,26162,Billions of U.S. Dollars
+WSHOMCB,H.4.1,W,market,2011-07-07,799,2002-12-18,798,1,1,8,0,0,Millions of U.S. Dollars

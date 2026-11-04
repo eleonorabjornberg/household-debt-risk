@@ -1,0 +1,24 @@
+# Excerpt of Freddie Mac Form 10-K for FY2015 (10k_021816.pdf, freddiemac.com/investors/financials/pdf/), pdftotext -layout, lines verbatim. Test fixture only.
+
+CREDIT PROTECTION AND OTHER FORMS OF CREDIT ENHANCEMENT
+
+In connection with many of our single-family loans and other mortgage-related guarantees, we have
+various forms of credit protection.
+The table below presents the UPB of single-family loans on our consolidated balance sheets or
+underlying certain of our financial guarantees with credit protection and the maximum amounts of
+potential loss recovery by type of credit protection.
+
+                                                       UPB(1) at                                     Maximum Coverage(1)(2) at
+                                           December 31,        December 31,                      December 31,      December 31,
+(in millions)                                  2015                2014                              2015              2014
+Primary mortgage insurance               $         257,063 $           227,495                 $          65,760 $             57,938
+Other credit protection:
+ STACR debt note and ACIS
+ transactions(3)                                    241,450                   144,272                         14,916                    6,657
+ Lender recourse and                                    6,339                      6,527                       5,396                    6,092
+ indemnifications
+ Pool insurance(4)                                      1,706                      2,284                         753                      947
+ HFA indemnification                                    2,599                      3,357                       2,599                    3,324
+ Subordination                                          3,021                      2,377                         336                      339
+ Other credit enhancements                                 15                      20                             10                       18
+Total                                    $          512,193      $            386,332          $              89,770     $             75,315

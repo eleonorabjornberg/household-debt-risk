@@ -1,0 +1,1 @@
+Mortgage balances 90+ days delinquent, Q4 2025. Tile map of the 50 states and DC, one square per state, shaded in six quantile bands. Highest: LA (1.83%); lowest: WI (0.47%); median 0.89%.
