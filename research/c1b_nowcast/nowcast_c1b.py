@@ -10,8 +10,12 @@ Inputs: C1's inputs (research/c1_nowcast; this script imports C1's nowcast.py un
 baseline) and freddie_mvs_reports.csv / freddie_mvs_rows.csv (freddie_mvs.py). Real-time sample only.
 
 Development outputs next to this file: nowcasts_dev.csv, scores_dev.csv, tests_dev.csv, results_dev.json.
-The holdout path is gated exactly like research/c2_forecast/holdout_run.py: an Eleonora "unseal ... holdout" row in
-PLAN.md at --approval, a clean tree, and every file in FREEZE.json unchanged. It writes holdout_results.json.
+The holdout path is part of ONE joint run (prereg, "Joint holdout run"): research/c2_forecast/holdout_run.py runs
+first with the same --approval; then this script, which requires: an Eleonora row in PLAN.md at --approval that says
+"unseal", "holdout" and "C1b"; the approval commit after C1b's freeze commit and an ancestor of HEAD; every file in
+this FREEZE.json and in research/c2_forecast/FREEZE.json unchanged; C2's fresh, uncommitted holdout_results.json
+from the same approval and no other change in the tree. It writes holdout_results.json and nowcasts_holdout.csv;
+all three result files are then committed as one commit (quant-reviewer R-20261104-mkt-q25).
 """
 from __future__ import annotations
 
@@ -32,6 +36,8 @@ ROOT = HERE.parents[1]
 FREEZE = HERE / "FREEZE.json"
 PREREG_COMMIT = "0acbde6"
 DRY_SPLIT = "2019Q2"          # dry run: targets after this play the holdout
+C2_FREEZE = ROOT / "research" / "c2_forecast" / "FREEZE.json"
+C2_RESULT = "research/c2_forecast/holdout_results.json"
 
 
 def _load(name, path):
@@ -137,6 +143,24 @@ def paired_t_hln(d: np.ndarray) -> tuple[float, float]:
     return float(stat), float(2 * nc.t_sf(abs(stat), n - 1))
 
 
+def mean_hac1(e: np.ndarray) -> tuple[float, float]:
+    """Mean and its Newey-West (lag 1, Bartlett) standard error (prereg: bias with its HAC s.e.)."""
+    n = len(e)
+    u = e - e.mean()
+    v = (u @ u + 2 * 0.5 * (u[1:] @ u[:-1])) / n
+    return float(e.mean()), float(math.sqrt(max(v, 0.0) / n))
+
+
+def bias_table(df: pd.DataFrame) -> pd.DataFrame:
+    out = []
+    d0 = df[df["k"] <= 3].dropna(subset=["bridge_c1b", "actual"])
+    for k, g in list(d0.groupby("k")) + [("all", d0)]:
+        for m in MODELS:
+            me, se = mean_hac1(100 * (g[m] - g["actual"]).to_numpy())
+            out.append({"k": k, "model": m, "n": len(g), "mean_error_pp": me, "hac1_se_pp": se})
+    return pd.DataFrame(out)
+
+
 def tests(df: pd.DataFrame) -> pd.DataFrame:
     out = []
     d0 = df[df["k"] <= 3].dropna(subset=["bridge_c1b", "actual"])
@@ -152,6 +176,7 @@ def tests(df: pd.DataFrame) -> pd.DataFrame:
                     "c1b_better": bool(abs(eb.mean()) < abs(e1.mean())), "posthoc_dm_hac1_p": np.nan})
     t = pd.DataFrame(out)
     t["p_holm"] = nc.holm(t["p"]).values
+    t["supported"] = (t["p_holm"] < 0.05) & t["c1b_better"]     # H1 and H2 at k, as pre-registered
     return t
 
 
@@ -159,14 +184,16 @@ def verdict(sc: pd.DataFrame, ts: pd.DataFrame, holdout_sc: pd.DataFrame | None 
     """Prereg decision rules (development part; the holdout condition is added when holdout_sc is given)."""
     r = sc[sc["k"] != "all"].pivot(index="k", columns="model", values="rmse_pp")
     if (r["bridge_c1"] < r["bridge_c1b"]).any():
-        return "does not improve"
+        return "does not improve"                      # takes priority over "comparable" (prereg [implementation])
+    if (r["bridge_c1b"] >= r["bridge_c1"]).any():      # an exact tie at some k: not "lower at every k"
+        return "comparable"
     h1 = ts[ts["hypothesis"] == "H1 RMSE"]
     if not (h1["p_holm"] < 0.05).any():
         return "comparable"
     if holdout_sc is not None:
         a = holdout_sc[holdout_sc["k"] == "all"].set_index("model")["rmse_pp"]
         if not a["bridge_c1b"] < a["bridge_c1"]:
-            return "comparable"
+            return "comparable (holdout RMSE not lower)"
     return "improves on C1"
 
 
@@ -182,15 +209,30 @@ def clean(o):
     return o
 
 
+def robustness(df: pd.DataFrame) -> dict:
+    """Descriptive (quant-reviewer q28): instants that used a re-issued report vs the rest."""
+    d = df[df["k"] <= 3].dropna(subset=["bridge_c1b", "actual"])
+    out = {}
+    for name, g in [("reissued_report", d[d["freddie_label"] == "content possibly revised"]),
+                    ("other_reports", d[d["freddie_label"] != "content possibly revised"])]:
+        rm = {m: math.sqrt(((100 * (g[m] - g["actual"])) ** 2).mean()) if len(g) else None for m in MODELS}
+        out[name] = {"n": int(len(g)), "rmse_pp": rm,
+                     "ratio_c1b_to_c1": rm["bridge_c1b"] / rm["bridge_c1"] if len(g) else None}
+    return out
+
+
 def summary(df, sc, ts) -> dict:
     d = df[df["k"] <= 3].dropna(subset=["bridge_c1b"])
+    bt = bias_table(df)
     return {
         "prereg": f"docs/decisions/c1b-prereg.md @ {PREREG_COMMIT}",
         "run": "Freddie only (Fannie and Ginnie carried flat)",
         "n_instants": int(len(df)), "n_scored": {str(k): int(n) for k, n in d.dropna(subset=["actual"]).groupby("k").size().items()},
         "rmse_pp": {str(k): {m: float(g.set_index("model").loc[m, "rmse_pp"]) for m in MODELS} for k, g in sc.groupby("k", sort=False)},
         "mean_error_pp": {str(k): {m: float(g.set_index("model").loc[m, "mean_error_pp"]) for m in MODELS} for k, g in sc.groupby("k", sort=False)},
+        "mean_error_hac1": bt.to_dict(orient="records"),
         "tests": ts.to_dict(orient="records"),
+        "robustness_reissued": robustness(df),
         "verdict_rule": verdict(sc, ts),
         "freddie_share_s_range": [float(d["freddie_share_s"].min()), float(d["freddie_share_s"].max())],
         "instants_using_reissued_report": int((d["freddie_label"] == "content possibly revised").sum()),
@@ -210,6 +252,40 @@ def check_freeze() -> dict:
     return fz
 
 
+def git(*args) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+
+
+def check_order(approval: str) -> None:
+    """C1b's freeze commit < approval commit <= HEAD."""
+    fz = git("log", "-1", "--format=%H", "--", str(FREEZE.relative_to(ROOT))).stdout.strip()
+    if not fz:
+        raise SystemExit("FREEZE.json is not committed")
+    if git("merge-base", "--is-ancestor", fz, approval).returncode != 0 or fz == git("rev-parse", approval).stdout.strip():
+        raise SystemExit("the approval commit must come after C1b's freeze commit")
+    if git("merge-base", "--is-ancestor", approval, "HEAD").returncode != 0:
+        raise SystemExit("the approval commit is not an ancestor of HEAD")
+
+
+def check_freezes() -> dict:
+    fz = check_freeze()
+    c2 = json.loads(C2_FREEZE.read_text())
+    bad = sorted(p for p, h in c2["files"].items() if sha(ROOT / p) != h)
+    if bad:
+        raise SystemExit(f"C2's frozen files changed: {bad}")
+    return fz
+
+
+def check_c2_ran(approval: str) -> None:
+    """The tree may differ from HEAD only by C2's fresh holdout result, from the same approval commit."""
+    st = [l[3:] for l in git("status", "--porcelain", "--untracked-files=all").stdout.splitlines()]
+    if st != [C2_RESULT]:
+        raise SystemExit(f"run research/c2_forecast/holdout_run.py first; tree must differ only by {C2_RESULT}, got {st}")
+    r = json.loads((ROOT / C2_RESULT).read_text())
+    if r.get("approval_commit") != approval:
+        raise SystemExit("C2's holdout result was made with a different approval commit")
+
+
 def check_approval(commit: str) -> str:
     plan = subprocess.run(["git", "show", f"{commit}:PLAN.md"], cwd=ROOT, capture_output=True, text=True)
     if plan.returncode != 0:
@@ -221,12 +297,6 @@ def check_approval(commit: str) -> str:
     return rows[-1]
 
 
-def clean_tree() -> None:
-    st = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
-    if st.strip():
-        raise SystemExit("working tree not clean: the holdout run must be one clean commit")
-
-
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--holdout", action="store_true")
@@ -236,8 +306,9 @@ def main(argv=None) -> int:
     if a.holdout:
         if not a.approval:
             raise SystemExit("--holdout needs --approval <commit>")
-        clean_tree()
-        check_freeze()
+        check_c2_ran(a.approval)
+        check_freezes()
+        check_order(a.approval)
         row = check_approval(a.approval)
     z = nc.Z1()
     inputs = [i for i in nc.pit.load_inputs() if i["id"] in nc.FREQ]
@@ -270,6 +341,7 @@ def main(argv=None) -> int:
     dev.to_csv(HERE / "nowcasts_dev.csv", index=False, float_format="%.8g")
     sc, ts = score(dev, "development"), tests(dev)
     sc.to_csv(HERE / "scores_dev.csv", index=False, float_format="%.6g")
+    bias_table(dev).to_csv(HERE / "bias_dev.csv", index=False, float_format="%.6g")
     ts.to_csv(HERE / "tests_dev.csv", index=False, float_format="%.6g")
     (HERE / "results_dev.json").write_text(json.dumps(clean(summary(dev, sc, ts)), indent=2, allow_nan=False) + "\n")
     print(sc.to_string(index=False))

@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** Eleonora decided on 2026-11-04 to pre-register this run (Q-C1b, option (a): Freddie Mac and Ginnie Mae monthly data, Fannie Mae carried flat; PLAN.md "Decisions taken"). The design choices below are hers to make. Claude drafted them as `CHOICE:` lines with a recommendation. Nothing here has been run.
 
-Status: **choices filled, not yet frozen.** Drafted 2026-11-04 by Claude (markets track). Eleonora's choices filled in on 2026-11-04 (evening) from PLAN.md "Decisions taken" (cards c1b-joint, c1b-cells-2, c1b-pubdate-2, c1b-map). This version is committed before `research/c1b_nowcast/nowcast_c1b.py` exists or has scored anything. Lines marked *[implementation]* are Claude's mechanical details and can be overruled before the freeze.
+Status: **frozen.** The freeze commit is the commit that adds `research/c1b_nowcast/FREEZE.json` (SHA-256 of this file, the code, the inputs and the development outputs). Before that: Drafted 2026-11-04 by Claude (markets track). Eleonora's choices filled in on 2026-11-04 (evening) from PLAN.md "Decisions taken" (cards c1b-joint, c1b-cells-2, c1b-pubdate-2, c1b-map). This version is committed before `research/c1b_nowcast/nowcast_c1b.py` exists or has scored anything. Lines marked *[implementation]* are Claude's mechanical details and can be overruled before the freeze. The development run was scored after the choices commit (0acbde6) and the code commit (9e0820a); the quant-reviewer's pre-freeze objections (R-20261104-mkt-q25 to q28) were then resolved by the *[implementation]* lines marked "added before the freeze". The holdout has not been run.
 
 **Before any result.** No C1b output exists. C1's own development results are known, and they are what motivated this run: they showed a downward bias, possibly from carrying the public mortgage holders flat (`research/c1_nowcast/README.md`). This design is therefore not blind to C1's development results; it is blind to C1b's. C1's and C2's holdout (2023Q3–2026Q2) is still sealed (Q-C1c).
 
@@ -48,7 +48,8 @@ Does adding agency monthly data for the public mortgage holders reduce the error
 ## Multiple testing
 Two hypotheses × 3 instant indices. C1b's bridge against C1's bridge is non-nested: DM with the HLN correction, lag 0, plus the post-hoc lag-1 sensitivity, as C1. Holm over the 6 tests. All p-values descriptive given about 25 targets per k.
 - *[implementation]* H1 test: DM-HLN on squared errors, C1's bridge vs C1b's bridge, two-sided, per k.
-- *[implementation]* H2 test: paired t-test (HLN small-sample factor, lag 0, two-sided) of the mean of e(C1b) − e(C1), per k. H2 is supported at k when the test is significant after Holm and |mean e(C1b)| < |mean e(C1)|.
+- *[implementation]* H2 test: paired t-test (HLN small-sample factor, lag 0, two-sided) of the mean of e(C1b) − e(C1), per k. H2 is supported at k when the test is significant after Holm and |mean e(C1b)| < |mean e(C1)|. H1 is supported at k when its test is significant after Holm and C1b's RMSE is lower (column `supported` in `tests_dev.csv`).
+- *[implementation]* Bias: mean error of each model per k, with a Newey–West standard error (lag 1, Bartlett weights) (`bias_dev.csv`). Added before the freeze after quant-reviewer R-20261104-mkt-q26.
 
 ## Decision rules
 - **"Improves on C1":** lower RMSE at every k on development, significant after Holm at one or more k, and lower in the holdout (if (a) above).
@@ -56,6 +57,16 @@ Two hypotheses × 3 instant indices. C1b's bridge against C1's bridge is non-nes
 - **"Comparable":** not significant, or the sign differs across k.
 - **"Does not improve":** C1's bridge has lower RMSE at one or more k.
 - **Bias:** reported as mean error with its HAC standard error, descriptively.
+- *[implementation, added before the freeze after quant-reviewer R-20261104-mkt-q27]* The rules are applied in this order: "does not improve" first (C1's RMSE lower at one or more k); then "comparable" if C1b's RMSE is not strictly lower at every k (an exact tie counts as not lower) or no H1 test is significant after Holm; then, in the joint run, "comparable (holdout RMSE not lower)" if C1b's pooled holdout RMSE is not lower; otherwise "improves on C1". "Sign differs across k" in "comparable" is therefore read as covered by "does not improve".
+- *Descriptive robustness (not a decision rule; quant-reviewer R-20261104-mkt-q28):* RMSE on instants that used a re-issued Freddie report vs the rest.
+
+## Joint holdout run
+*[implementation, added before the freeze after quant-reviewer R-20261104-mkt-q25]* One run, one commit, opened once:
+1. Eleonora adds a row to PLAN.md "Decisions taken" that says "unseal", "holdout" and "C1b"; that commit is the approval commit. It must come after C1b's freeze commit (`research/c1b_nowcast/FREEZE.json`).
+2. On a clean tree, `research/c2_forecast/holdout_run.py --prereg 192d60c --approval <commit>` runs C2 and C1 on the holdout (its own gates, unchanged).
+3. Immediately after, `research/c1b_nowcast/nowcast_c1b.py --holdout --approval <same commit>`. It refuses unless the tree differs from HEAD only by C2's fresh `holdout_results.json` made with the same approval commit, both FREEZE.json files match, and the approval commit lies between C1b's freeze and HEAD.
+4. The three result files (C2's `holdout_results.json`, C1b's `holdout_results.json` and `nowcasts_holdout.csv`) are committed together as one commit. Neither script is rerun.
+C1's holdout numbers appear in both outputs (C1b's as the comparison column `bridge_c1`); both come from the same frozen C1 code in the same run.
 
 ## What is and is not identified
 - It measures whether Freddie's (and possibly Ginnie's) monthly data improve a mechanical nowcast. It says nothing about why the share moves.
@@ -63,4 +74,4 @@ Two hypotheses × 3 instant indices. C1b's bridge against C1's bridge is non-nes
 - s is a proxy (multifamily inside Freddie's total; Freddie's total also includes Freddie-guaranteed securities held outside the pools cell). It matters only as the weight on Freddie's growth.
 
 ## Deviations (dated, after freezing)
-None (not frozen).
+None.
