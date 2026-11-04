@@ -1,0 +1,45 @@
+{
+ "vintage_dfa": "dfa.zip files dated 2026-09-15 (data through 2026:Q2)",
+ "sha256_dfa_zip": "e7f35451dc4df13986ef416d8659d00689ad98a9af79f4b09977e41be5e35919",
+ "vintage_state": "NY Fed State Level Household Debt Statistics 2003-2025, February 2026",
+ "sha256_state_xlsx": "10dbcbeee92e7c9acb7d7a37dd90d0cb26dd4b7a01b7e6f3ba2253e03275cfca",
+ "vintage_z1_csv": "2026-09-11 10:41:06",
+ "wealth_2026q2_pct": {
+  "bottom50_mortgages": 22.6,
+  "bottom50_consumer_credit": 51.6,
+  "bottom50_net_worth": 2.3,
+  "next40_mortgages": 48.9,
+  "next40_consumer_credit": 34.9,
+  "top10_mortgages": 28.4,
+  "top10_net_worth": 68.9,
+  "bottom50_mortgages_1989q3": 27.5,
+  "bottom50_consumer_credit_1989q3": 43.8
+ },
+ "income_2026q2_pct": {
+  "bottom20_consumer_credit": 7.1,
+  "bottom20_mortgages": 3.3,
+  "top20_mortgages": 53.2
+ },
+ "leverage_2026q2": {
+  "bottom50_liabilities_to_assets": 0.5836,
+  "top1_liabilities_to_assets": 0.0107,
+  "bottom50_mortgages_to_real_estate": 0.6555,
+  "bottom50_liabilities_to_assets_2007q4": 0.8149
+ },
+ "state_2025": {
+  "mortgage_pc_max_state": "DC",
+  "mortgage_pc_max": 78140,
+  "mortgage_pc_min_state": "WV",
+  "mortgage_pc_min": 20770,
+  "mortgage_pc_max_over_min": 3.76,
+  "studentloan_pc_max_state": "DC",
+  "studentloan_pc_max": 12650,
+  "studentloan_pc_min_state": "WY",
+  "studentloan_pc_min": 3180,
+  "studentloan_pc_max_over_min": 3.98
+ },
+ "loan_type_public_share_2026q2": {
+  "mortgages": 0.6555,
+  "consumer credit": 0.3135
+ }
+}

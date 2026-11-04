@@ -1,0 +1,12 @@
+{
+ "title": "Mortgage debt per person with a credit file, Q4 2025",
+ "source_line": "FRBNY CCP/Equifax (NY Fed state statistics, Feb 2026 (Q4 2025))",
+ "vintage": "NY Fed state statistics, Feb 2026 (Q4 2025)",
+ "data_source": {
+  "file": "research/a5_distribution/state_2025.csv",
+  "column": "mortgage_pc_2025"
+ },
+ "rows": 51,
+ "unit": "USD",
+ "alt": "Mortgage debt per person with a credit file, Q4 2025. Tile map of the 50 states and DC, one square per state, shaded in six quantile bands. Highest: DC ($78.1k); lowest: WV ($20.8k); median $40.3k."
+}
