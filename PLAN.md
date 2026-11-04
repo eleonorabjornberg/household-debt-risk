@@ -110,6 +110,9 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Accept Claude's recommended option on every CHOICE in the A4, A7 and C2 pre-registrations; freeze them. Frozen commits: A4 `02cc47f`, A7 `206e126`, C2 `192d60c`. | Eleonora |
 | 2026-11-04 | A4's R `strucchange` cross-check runs on Eleonora's Mac, once the Python implementation exists. | Eleonora |
 | 2026-11-04 | A7: credit Abadie, Diamond and Hainmueller (2010) for the 5× placebo cutoff if the paper confirms it; checked against the paper, then added as a dated deviation. | Eleonora |
+| 2026-11-04 | Track questions: accept Claude's recommendation on every item in `docs/decisions/open-questions-2026-11-04.md` (A2 Q1–Q3, A5 Q4, A8 Q5, B1, C1 items 1–9, F2-1, F2-2, F4-1–F4-3). C1 item 6 must agree with the frozen C2 protocol; any conflict goes in as a dated deviation there. | Eleonora |
+| 2026-11-04 | A8 national-statistics hosts, `www.sec.gov`/`efts.sec.gov` and `www.freddiemac.com`/`www.fanniemae.com` added to Allowed domains. | Eleonora |
+| 2026-11-04 | Live database checks go through the Supabase connector (HTTPS), since raw-TCP Postgres is not supported through this environment's proxy. | Eleonora |
 
 ## Environment prerequisites
 
@@ -118,7 +121,7 @@ Set in the cloud environment's settings (session title bar → environment menu 
 | Need | For | Status |
 |---|---|---|
 | `FRED_API_KEY` (free, fred.stlouisfed.org → My Account → API Keys) | ALFRED vintages for 0.3, C1, C2 | set (2026-11-04) |
-| `DATABASE_URL_READONLY` (`research_reader`, Supabase → Connect → Session pooler) | 0.3, D (MCP, evals, Ask Hot Potato) | set; the pooler host `aws-0-us-east-1.pooler.supabase.com` does not resolve from the sandbox (2026-11-04), so it needs adding to Allowed domains |
+| `DATABASE_URL_READONLY` (`research_reader`, Supabase → Connect → Session pooler) | 0.3, D (MCP, evals, Ask Hot Potato) | set; the pooler host does not resolve from the sandbox and the proxy carries HTTPS only, so live checks go through the Supabase connector instead (2026-11-04) |
 | `DATABASE_URL` (write; ideally a Supabase dev branch) | schema changes from Phase A on | set (2026-11-04) |
 | `ANTHROPIC_API_KEY` (console.anthropic.com → API Keys; paid) | D (Ask Hot Potato), E1–E4 | added to environment settings 2026-11-04 (new sessions pick it up; unset in the coordinator session) |
 | Network: `www.federalreserve.gov`, `fred.stlouisfed.org`, `api.stlouisfed.org`, `www.newyorkfed.org` | 0.3, 0.9, 0.8 live run, every Z.1/FRED/NY Fed extract | reachable on 2026-11-03; proxy 403 early on 2026-11-04; allowed again later that day |

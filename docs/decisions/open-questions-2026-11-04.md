@@ -1,5 +1,7 @@
 > **Claude draft.** Claude collected these questions from the three track sessions and wrote the recommendations. The decisions are Eleonora's. Each answer goes into PLAN.md "Decisions taken" under her name.
 
+**Status:** decided by Eleonora 2026-11-04: every recommendation accepted (PLAN.md "Decisions taken").
+
 # Open questions from the tracks, 2026-11-04
 
 Answer each item by its ID ("Q1 b", "Q-C1.4 a"), or reply "accept all" to take every recommendation. Sources: `tracks/analysis.md`, `tracks/markets.md` and `tracks/infra.md` on the track branches.
