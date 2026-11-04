@@ -107,7 +107,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Build the Claude tooling (skills, subagents, MCP) with the whole plan in mind: D1, D2, D4, D5 pulled forward. | Eleonora |
 | 2026-11-04 | `ANTHROPIC_API_KEY` added to the environment settings (D6, E1–E4); `fraser.stlouisfed.org`, `www.census.gov`, `www.cbo.gov` allowed (A3, A6). | Eleonora |
 | 2026-11-04 | A1 method: Shapley split of public vs private totals, pro rata within each side; the endpoint identity and the chained path are kept as sensitivity (`docs/decisions/a1-decomposition.md`). | Eleonora |
-| 2026-11-04 | Accept Claude's recommended option on every CHOICE in the A4, A7 and C2 pre-registrations; freeze them. | Eleonora |
+| 2026-11-04 | Accept Claude's recommended option on every CHOICE in the A4, A7 and C2 pre-registrations; freeze them. Frozen commits: A4 `02cc47f`, A7 `206e126`, C2 `192d60c`. | Eleonora |
 
 ## Environment prerequisites
 
