@@ -1,0 +1,8 @@
+{
+  "F": 7.557408613107584,
+  "p": 7.034401092342139e-05,
+  "n": 285,
+  "seasonal": true,
+  "sample": "1952Q2-2023Q2",
+  "rule": "p < 0.05 => seasonal naive enters the decision rules"
+}

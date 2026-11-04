@@ -29,8 +29,10 @@ def repo_file(*parts: str) -> Path:
 class SnapshotBackend:
     name = "snapshot"
 
-    def __init__(self, directory: Path | None = None):
+    def __init__(self, directory: Path | None = None, note: str | None = None):
         self.dir = Path(directory) if directory else snapshot_dir()
+        # Set when this backend stands in for an unreachable database (get_backend); every answer carries it.
+        self.note = note
 
     def _load(self, table: str) -> list[dict]:
         return _load_json(str(self.dir / f"{table}.json"))
@@ -134,6 +136,14 @@ class ReadOnlyDB:
         conn.read_only = True  # BEGIN READ ONLY; must be set before the first statement
         return conn
 
+    def probe(self) -> None:
+        """Open and close one read-only connection; raises if the database cannot be reached."""
+        conn = self._open()
+        try:
+            conn.rollback()
+        finally:
+            conn.close()
+
     def run_sql(self, sql: str, params: tuple = ()) -> list[dict]:
         if sql not in ALLOWED_SQL.values():
             raise GuardError("refused: only the server's own parameterised SELECTs may run")
@@ -201,6 +211,22 @@ class PostgresBackend:
         return self.db.fetch("crisis_window", metric, crisis_id, crisis_id)
 
 
-def get_backend():
+def get_backend(connect: Callable[..., Any] | None = None):
+    """Postgres (research_reader) when DATABASE_URL_READONLY is set and reachable, else the snapshots.
+
+    The database is probed once, at first use. If it cannot be reached (an unresolvable host, a refused
+    connection or a timeout), the server falls back to the committed snapshots and says so in every answer
+    (`backend_note`), rather than failing every tool call. HOUSEHOLD_CREDIT_REQUIRE_DB=1 turns the fallback off.
+    """
     url = os.environ.get("DATABASE_URL_READONLY")
-    return PostgresBackend(url) if url else SnapshotBackend()
+    if not url:
+        return SnapshotBackend()
+    db = ReadOnlyDB(url, connect=connect)
+    try:
+        db.probe()
+    except Exception as e:  # psycopg.OperationalError, OSError: any failure to connect
+        if os.environ.get("HOUSEHOLD_CREDIT_REQUIRE_DB") == "1":
+            raise
+        first = (str(e).splitlines() or [type(e).__name__])[0][:160]
+        return SnapshotBackend(note=f"database unreachable ({first}); answering from the committed snapshots")
+    return PostgresBackend(url, db=db)
