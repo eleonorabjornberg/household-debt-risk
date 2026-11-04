@@ -1,0 +1,23 @@
+# Excerpt of Freddie Mac Form 10-K for FY2025 (10k_021226.pdf, freddiemac.com/investors/financials/pdf/), pdftotext -layout, lines verbatim. Test fixture only.
+Table 23 - Single-Family Mortgage Portfolio Credit Enhancement Coverage Outstanding
+                                                                                                                           December 31, 2025
+(Dollars in millions)                                                                                 UPB                   % of Portfolio        Maximum Coverage(1)
+Primary mortgage insurance(2)                                                                            $680,950                        22%                     $181,462
+STACR                                                                                                   1,165,412                        37                         24,935
+ACIS                                                                                                        594,409                      19                         15,081
+Other                                                                                                        38,373                          1                      10,361
+Less: UPB with multiple credit enhancements and other reconciling items(3)                                  (552,393)                   (18)                                —
+Single-Family mortgage portfolio - credit-enhanced                                                      1,926,751                        61                       231,839
+Single-Family mortgage portfolio - non-credit-enhanced                                                  1,229,539                        39                                 N/A
+Total                                                                                                  $3,156,290                       100%                     $231,839
+
+                                                                                                                         December 31, 2024
+(Dollars in millions)                                                                                 UPB                  % of Portfolio         Maximum Coverage(1)
+Primary mortgage insurance(2)                                                                           $658,104                         21%                     $174,445
+STACR                                                                                                   1,196,740                        39                         28,471
+ACIS                                                                                                        754,489                      24                         16,474
+Other                                                                                                        38,951                          1                      10,643
+Less: UPB with multiple credit enhancements and other reconciling items(3)                               (733,818)                      (23)                                —
+Single-Family mortgage portfolio - credit-enhanced                                                      1,914,466                        62                       230,033
+Single-Family mortgage portfolio - non-credit-enhanced                                                  1,189,708                        38                          N/A
+Total                                                                                                  $3,104,174                      100%                      $230,033
