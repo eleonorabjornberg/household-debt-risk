@@ -76,3 +76,27 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Allowed the data and source hosts (federalreserve.gov, FRED, newyorkfed.org; govinfo.gov, fhfa.gov, ginniemae.gov).
 - Asked for hooks (pre-commit checks, no hand edits to `results.json`).
 - Set the authorship rule: write-ups are hers; Claude drafts.
+
+### Same day, later: Phase D tools, parallel tracks, pre-registration drafts, A1 review
+- **Pulled forward from Phase D (Eleonora approved):** D5 MCP server (a454901), D1 `claim-check` skill (06c888b), D2 `chart-from-sql` skill (c0901c7). Each was built by a subagent and reviewed and committed by the main model.
+- **Parallel tracks (Eleonora's decision, also the rule change that lets tracks run in parallel):** three cloud sessions, one branch each. Data analysis (A2, A5, A8) `session_01GDxCQ3Tq6Z9j6emj4Q8k4H` on `claude/track-analysis`; markets and nowcast (B1, C1) `session_01GDxCQ5mfCtZVbBawWKpjrM` on `claude/track-markets`; infrastructure (F1, F2, F4) `session_01GDxCQ3WP8LwrGDccxMmSG1` on `claude/track-infra`. This session coordinates and owns the shared files.
+- **Pre-registration options, drafts only, not frozen:** A4 `docs/decisions/breaks.md` (15 choices), A7 `docs/decisions/a7-causal-prereg.md` (9), C2 `docs/decisions/scoring-protocol.md` (13). No results were computed for any of them. Each choice waits for Eleonora.
+- **A1 reviewed:** quant-reviewer R-20261104-1..5, skeptic R-20261104-6..12, all open in `claims/review-log.md`. No A1 number changes, but the write-up overstates the growth-versus-retreat split and some timing and causal wording.
+- **Subagents** (tokens as reported at completion):
+
+| Task | Agent | Tokens | Outcome |
+|---|---|---|---|
+| D5 MCP server | general-purpose | 115,706 | committed |
+| D1 claim-check | general-purpose | 146,117 | committed |
+| D2 chart-from-sql | general-purpose | 144,968 | committed |
+| A4 options | general-purpose | 95,519 | committed as draft |
+| A7 options | general-purpose | 93,665 | committed as draft |
+| C2 options | general-purpose | 98,195 | committed as draft |
+| A1 method review | quant-reviewer | 31,143 | 5 objections logged |
+| A1 data review | skeptic | 61,322 | 7 objections logged |
+
+- **Errors, and how they were caught:**
+  15. A1's growth-versus-retreat split (7.1 / 6.0) is endpoint-weighted. Quarter by quarter the split is 6.3 / 6.8 and Shapley gives 6.3 / 6.9, so which side is larger flips. The docstring's "chained and endpoint totals both equal P1 − P0" was true only for the grand total. Caught by the quant-reviewer subagent (R-1); the main model confirmed it from `path.csv`.
+  16. "1.3 pp by 2008Q3, before the conservatorship" is wrong: 2008Q3 is the 30 September stock, after the 6 September conservatorship. The pre-conservatorship figure is 1.1 at 2008Q2. Caught by the skeptic subagent (R-6); the main model confirmed it from `path.csv`.
+  17. The A1 decision note was committed together with the results and says "Decided by: Claude". Caught by the quant-reviewer (R-2). Fixing it needs Eleonora's choice of method.
+  18. A curl to cbo.gov that faked a browser User-Agent was denied by the auto-mode classifier as bot-check circumvention. Not retried; the CBO files will be downloaded by hand if the data pages refuse.
