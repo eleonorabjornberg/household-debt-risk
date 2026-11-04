@@ -27,7 +27,7 @@ FRED_ASOF ?= $(shell python3 -c "import json;print(json.load(open('web/public/da
 export FRED_ASOF
 export HHDEBT_FRED_ASOF := $(FRED_ASOF)
 
-.PHONY: test-db ci-static all ingest validate models build check ci test site-test site-build site-copies f1-links repro clean-data help
+.PHONY: evals test-db ci-static all ingest validate models build check ci test site-test site-build site-copies f1-links repro clean-data help
 
 all: ingest validate models build check  ## everything, from a fresh clone
 
@@ -90,6 +90,10 @@ repro:  ## regenerated results match the committed ones
 check: test f1-links repro  ## after a full run
 	$(PY) claims/check_register.py
 	node claims/site/sync.mjs --check
+
+evals:  ## E3: which evals need rerunning (prompts, models or code changed), then chart results over time
+	$(PY) evals/regression.py status
+	$(PY) evals/regression.py chart
 
 # What CI runs on every push: no network, no secrets, no money.
 ci: ci-static test site-test site-build f1-links
