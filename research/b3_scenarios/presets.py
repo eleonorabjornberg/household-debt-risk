@@ -11,7 +11,11 @@ losses spread evenly over nine quarters (DFAST publishes the total, not the path
 
 Federal student loans are not covered by DFAST: in the main preset they are left out (absent, not given a default);
 the variant "dfast2026_proxy_with_student" applies DFAST's "other consumer" rate to them, labelled a weak proxy.
-Writes presets/dfast2026.json and results_dfast2026.json.
+Preset "replay_2008_2012_proxy" (second family): realised net charge-off rates of all commercial banks,
+2008Q1-2012Q4 (Fed charge-off release via FRED: CORSFRMACBS, CORCCACBS, COROCLACBS). Each quarter's loss is the
+annualised rate / 400 (the release multiplies the quarterly ratio by 400); the quarterly path gives the timing
+vector. Again a PROXY for non-bank holders; federal student loans absent.
+Writes presets/dfast2026.json, presets/replay_2008_2012.json, results_dfast2026.json, results_replay_2008_2012.json.
 """
 from __future__ import annotations
 
@@ -30,6 +34,8 @@ _s.loader.exec_module(eng)
 # checked against the rendered page. Percent of average balances, cumulative over nine quarters.
 DFAST2026 = {"first_lien_mortgages": 1.5, "junior_liens_helocs": 3.2, "credit_cards": 17.1, "other_consumer": 7.3}
 QUARTERS = 9
+REPLAY = {"mortgage": "CORSFRMACBS", "cards": "CORCCACBS", "other_consumer": "COROCLACBS"}
+REPLAY_WINDOW = ("2008-01-01", "2012-10-01")
 CC_TYPES = {"revolving": "FL153166100", "auto": "FL153166400", "student": "FL153166220", "other_nonrevolving": "FL153166205"}
 
 
@@ -64,6 +70,25 @@ def build(mix: dict) -> dict:
                                                          "note": "federal student loans at DFAST 'other consumer' rate: weak proxy"}}}
 
 
+def build_replay(w_rev: float) -> dict:
+    sys.path.insert(0, str(ROOT / "research" / "common"))
+    import fred
+    q = {k: fred.observations(sid)[REPLAY_WINDOW[0]:REPLAY_WINDOW[1]] / 400 for k, sid in REPLAY.items()}
+    assert all(len(v) == 20 and v.notna().all() for v in q.values()), {k: len(v) for k, v in q.items()}
+    cons = w_rev * q["cards"] + (1 - w_rev) * q["other_consumer"]
+    classes = {}
+    for name, path in [("mortgage", q["mortgage"]), ("consumer_other", cons)]:
+        tot = float(path.sum())
+        classes[name] = {"pd": tot, "lgd": 1.0, "timing": [float(x) / tot for x in path]}
+    man = {m["tag"]: m for m in fred.manifest()}
+    return {"source": "Federal Reserve charge-off rates, all commercial banks, via FRED (SA, annualised x400), 2008Q1-2012Q4",
+            "label": "PROXY: realised bank net charge-off rates applied to all holders",
+            "series": {k: {"id": sid, "sha256": man.get(f"obs_{sid}", {}).get("sha256"),
+                           "retrieved_utc": man.get(f"obs_{sid}", {}).get("retrieved_utc")} for k, sid in REPLAY.items()},
+            "cumulative_loss_pct": {"mortgage": 100 * classes["mortgage"]["pd"], "consumer_other": 100 * classes["consumer_other"]["pd"]},
+            "presets": {"replay_2008_2012_proxy": {"classes": classes, "note": "federal student loans absent (no bank series)"}}}
+
+
 def main() -> int:
     zip_path = ROOT / "data" / "validation" / "FRB_Z1_csv.zip"
     ex = json.loads((HERE / "exposures.json").read_text())
@@ -80,6 +105,16 @@ def main() -> int:
                      "public_share_of_losses": s["public"] / s["total"],
                      "by_class": {c: sum(e["balance"] * pr["classes"][c]["pd"] for e in ex["exposures"] if e["class"] == c)
                                   for c in pr["classes"]}}
+    rp = build_replay(p["consumer_other_revolving_weight"])
+    (HERE / "presets" / "replay_2008_2012.json").write_text(json.dumps(rp, indent=1) + "\n")
+    out_r = {"as_of": ex["as_of"], "units": "USD millions", "label": rp["label"], "cumulative_loss_pct": rp["cumulative_loss_pct"]}
+    for name, pr in rp["presets"].items():
+        r = eng.run(ex["exposures"], pr["classes"])
+        s = r["sum"]
+        out_r[name] = {"public_musd": s["public"], "private_musd": s["private"], "total_musd": s["total"],
+                       "public_share_of_losses": s["public"] / s["total"], "quarters": len(r["total"])}
+    (HERE / "results_replay_2008_2012.json").write_text(json.dumps(out_r, indent=1) + "\n")
+    print(json.dumps(out_r, indent=1))
     pub_hold = sum(e["balance"] for e in ex["exposures"] if e["side"] == "public")
     out["public_share_of_holdings"] = pub_hold / sum(e["balance"] for e in ex["exposures"])
     (HERE / "results_dfast2026.json").write_text(json.dumps(out, indent=1) + "\n")
