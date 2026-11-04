@@ -20,7 +20,11 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 | Q-B2.2 | (c), deal data from crt.freddiemac.com and EDGAR | crt.freddiemac.com still blocked (not worked around). No EDGAR requests from this track: the request list is below for the coordinator to route |
 | Q-B3 | (c), both preset families, DFAST first (labelled a proxy), then the 2008–12 replay; then B4 | in progress |
 
-### EDGAR request list for B2 (for the coordinator to route; no requests made from this track)
+**Later decisions (PLAN.md "Decisions taken", rows recorded by the coordinator):**
+- SEC access for markets decided by Eleonora 2026-11-04 ("Markets gets access", chat ~16:50 UTC). The User-Agent is passed as a per-command prefix only and never written to a file; `git grep` is checked before each commit.
+- Holdout unseal approved by Eleonora 2026-11-04 (PLAN.md at cba74f9, "Go ahead", chat ~16:55 UTC). **The run is on HOLD** at the coordinator's request (17:06 UTC): the C1b CHOICE on whether C1b enters the joint run is still open for her, and running now would remove that option. The freeze (949acec) still matches.
+
+### EDGAR request list for B2 (now run by this track: SEC access decided 2026-11-04)
 *To confirm before relying on it:* STACR (Freddie Mac) and CAS (Fannie Mae) notes have been issued as exempt or Rule 144A offerings, the later ones through trusts, so their offering circulars and pricing are probably **not** on EDGAR. What EDGAR certainly holds is the GSEs' own periodic reports.
 1. **Freddie Mac (CIK 0001026214, to confirm):** forms 10-K for FY2017–FY2023, and 10-Q for each quarter of 2017–2023. What B2 needs: the CRT programme tables (STACR and ACIS issuance by year, protection purchased, and the annual cost of CRT, often reported as "credit enhancement expense" or similar), plus reference-pool UPB covered.
 2. **Fannie Mae (CIK 0000310522, to confirm):** forms 10-K FY2017–FY2023 and 10-Q 2017–2023. Same items for CAS and CIRT: issuance, risk in force, and annual credit-enhancement or CRT expense.
@@ -32,8 +36,8 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 |---|---|---|
 | B1 | ready for review | `research/b1_market_pricing/`. Spec fixed in `METHOD.md` before results (commit b094579, before results a8fc3de). Verdict under the pre-set rule: no robust association in every variant; levels fits mostly fail Engle–Granger, the positive levels sign coincides with the period from 2022Q4 on (PMMS method change and other conditions), and the test has little power, so the README reads "inconclusive". quant-reviewer and skeptic run; 12 of 13 objections resolved, 1 open (g-fee control: a design extension, below). 46 register rows in `claims/tracks/markets.csv`. |
 | B2 | ready for review | `research/b2_crt_pricing/`. FHFA Dec 2016 deal-level credit costs, 47 deals 2013–16; zero-attach median 32 bps a year, a multiple of about 6.4 (outstanding basis) or 10.4 (original basis) of FHFA's own baseline expected loss; 3.3–6.9% a year per dollar of tranche. Skeptic (s16–s22, 4 major) addressed. 2017+ prices chart-only; GSE/SEC deal data blocked. Method choices: Q-B2. |
-| B3 | ready for review (core); presets and app blocked (Q-B3; app is coordinator site work) | `research/b3_scenarios/`: Python engine + JS twin, invariant tests, JS matches Python on fixed cases (ee9df53, 4b33458). No preset scenario values until sourced. |
-| B4 | blocked (needs B3 presets: Q-B3) | Policy-regime scenarios run on B3 presets; nothing built. |
+| B3 | ready for review | Engine + JS twin; presets per Q-B3: DFAST 2026 proxy (public share of losses 23% vs 56.4% of holdings) and the 2008–12 bank charge-off replay proxy (42%) (e58b420, d5f2953). The app is coordinator site work. |
+| B4 | in progress (recession range done; GSE and student scenarios wait on Q-B4) | `research/b4_policy_scenarios/`: debate status looked up from FHFA and GovInfo on 2026-11-04; recession range $595B–$1,886B, public share of losses 23–42% (proxies). |
 | C2 | in progress (development done and quant-reviewed; three protocol items await Eleonora; holdout sealed) | `research/c2_forecast/` (0bc647b). Under the frozen protocol, development only, pseudo out-of-sample: at h = 1 both Z candidates beat no-change after Holm, but not AR; nothing survives Holm at h = 4 or 8; 80% intervals cover at h = 1 and fall short at h = 8; Z+C1 has too few origins. Holdout not opened. Placebo shows drift-like skill (protocol question). |
 | C1 | ready for review (development sample); holdout run waits on Q-C1c | Spec `EVALUATION.md` (7ae4afb) before any score; deviations dated there. Real-time Z.1 from all 41 archived releases (2017-03-09 in folder 20170305). Development result (99d56cd): accounting bridge RMSE about 0.74 of no-change, not significant after Holm, biased downward (mostly 2020–21); bridge regression better on its own 2019Q3–2023Q2 targets, Holm-significant at k = 1 and 2 only. quant-reviewer (q11–q16) and skeptic (s9–s15) run and addressed; one minor stated limitation open (s12). |
 
@@ -130,6 +134,24 @@ The engine has no built-in loss parameters. Each preset needs a primary source.
   - (c) Both, each dated and sourced.
   - (d) No presets: the user enters values, and the app says so.
 - **Recommendation: (c)**, starting with (a), whose source is reachable. (b) is partial until hud.gov and studentaid.gov are allowed. Every preset value gets a register row.
+
+### Q-B4 (new). How the two policy scenarios map onto the engine
+The status of each debate was looked up on 2026-11-04 (`research/b4_policy_scenarios/sources.md`):
+- **GSEs:** FHFA says they "continue to operate under conservatorship".
+- **Student loans:** P.L. 119-21, approved July 4, 2025, ends Grad PLUS for periods from July 1, 2026, sets new limits and adds a Repayment Assistance Plan.
+- **Blocked:** Treasury, ED and the Federal Register are unreachable.
+
+Questions:
+1. **GSE release: which share of GSE-book losses becomes private on release.**
+   (a) a 0–100% range, with points at 25, 50 and 75;
+   (b) private up to GSE capital (from 10-Ks; Fannie's blocked);
+   (c) specific release terms (none found).
+   **Recommendation: (a).** Ginnie pools stay public in every case.
+2. **Student-loan reform.**
+   (a) the stock is unchanged, with a flow note;
+   (b) an illustrative 0–10% move of the federal stock to private, labelled hypothetical;
+   (c) a CBO or ED estimate of the shift (needs a source).
+   **Recommendation: (a).**
 
 ### Q-C1c (new). When to run the C1 holdout
 C1 and C2 share the holdout 2023Q3–2026Q2, and C2's Family Z+C1 uses C1's indicators. Scoring C1 on the holdout now would show holdout outcomes before C2's candidates are frozen, which could steer C2's design.
