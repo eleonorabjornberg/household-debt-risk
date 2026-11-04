@@ -10,13 +10,13 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
 | A4 | ready for review: run to prereg 02cc47f; break at 1966Q1; no evidence at the 2008–10 dates; R strucchange cross-check within tolerance; deviations accepted by Eleonora | `research/a4_breaks/` |
 | A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
-| A8 | done, partial by design (accepted 17:00 UTC). Q7 (c) applied (Eleonora, card q7-2): German publicly owned banks are a third risk-bearer category, 30.3%, with the promotional-bank part (1.1%) shown separately; skeptic ana-39 to -44 addressed; scope question on promotional banks sent to the coordinator | `research/a8_international/` |
+| A8 | done, partial by design (accepted 17:00 UTC). Q7 (c) applied and accepted (rv-q7c); q7-promo-2 (c): the category holds public-law banks only (29.1%), promotional banks (1.1%) unclassified, KfW Art. 1a as context | `research/a8_international/` |
 
 ## Handoff (2026-11-04, about 17:15 UTC)
 - **Accepted as is by Eleonora (PLAN.md, review round 1, 17:00 UTC):** A2 Freddie part, A3, A4, A5, A8 (partial by design). The coordinator marks them done.
 - **On her review queue. Don't change these until she answers:** A7 (results.json, README), and the A2 Fannie part (`fannie_*`, the "Both Enterprises" section of the A2 README).
 - **Decided (relayed 17:18 UTC):** Q7 (c), applied in 119d829 and the skeptic follow-up; A7 family of four kept, A7 verdict unchanged; A7 and the A2 Fannie part accepted as is.
-- **Open for Eleonora:** whether the Q7 (c) category includes promotional banks (1.1% of German bank lending to individuals), whose guarantee status no source here covers (skeptic R-20261104-ana-39).
+- **Decided (relayed 20:26 UTC):** q7-promo-2 (c), promotional banks unclassified until the Länder statutes can be reached; reaching those hosts needs her separate approval.
 - **Blocked:** A6. It needs a CBO fair-value figure replicated first, and cbo.gov answers 403. Don't work around it.
 - **For a fresh session:**
   - Run `git config core.hooksPath .githooks`.
@@ -73,6 +73,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - Skeptic (A8 Q7, about 51k tokens): 6 objections, R-20261104-ana-39 to -44. Skeptic caught a blocker: the "not guaranteed" label covered promotional banks, but the 2005 sources cover only public-law banks, and nothing sourced covers promotional banks' guarantee status. Also caught: an overclaim ("absorbed losses in 2008–12" where the sources show 2008–09 recapitalisations and a 2016 settlement); the 30.3% sat in the (b) column under the US range; stale "unverified" text in CROSSWALK/sources; ownership sourced only for KfW. Addressed: the promotional-bank part is reported separately (29.1% + 1.1%), with two register rows; wording fixed. Scope question sent to the coordinator.
 - A6 still blocked: www.cbo.gov 403 (one check, 17:15 UTC).
 - Q7 promotional banks, option (iii) (Eleonora, card q7-promo; relayed 17:33 UTC). Source-provenance by the main model, no subagent. Found: KfW law Art. 1a, a federal guarantee of KfW's obligations (KfW's own English PDF). Not reachable: gesetze-im-internet.de, EUR-Lex, the Commission, the Länder bank sites and law portals. So the Länder promotional banks are unsourced, and the 1.1% cannot be split. Category unchanged pending her decision. Claude caught its own overreach in the first draft of the evidence note (a comparison with pre-2005 Anstaltslast that the Bundesbank quote does not make) and removed it before commit.
+
+- q7-promo-2 (c) applied by the main model (relayed 20:26 UTC; checked in PLAN.md): `public_owned_not_guaranteed` now 29.1% (savings banks + Landesbanken), `promotional_banks_unclassified` 1.1%; test checks that the two add to the holder share 30.3%. Register rows merged (a8_de_public_law_banks_share folded into a8_de_public_owned_not_guaranteed; a8_de_promotional_banks_share renamed a8_de_promotional_banks_unclassified). No host contacted.
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
