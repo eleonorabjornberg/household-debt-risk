@@ -18,6 +18,11 @@ claims register and passes `claim-check`.
   quarters used as labels are fine.
 - Never use a row marked `STALE`. Say "estimate" next to any `ESTIMATE` row. An `UNVERIFIED` row is allowed,
   but its status shows in the Sources table.
+- **Definitions (memo_check cannot catch these; the examples needed fixing for exactly this):** "public" means
+  the federal government (direct loans, mostly student loans), Fannie Mae, Freddie Mac and the agency pools
+  (Ginnie Mae's included), and state and local governments (`pipeline/series_catalog.yaml` `risk_buckets`). The
+  Fed is **not** a public holder in that count: Fed-held MBS are an overlay inside the agency pools, never added,
+  so Fed runoff changes who holds agency paper but does not move the public share.
 - Holdings are not guarantees: "the public sector holds" never means "taxpayers bear the loss". Never put a NY
   Fed credit-report figure next to a Z.1 figure without saying which is which.
 - No investment advice: describe what the data show and what to watch, not trades.
