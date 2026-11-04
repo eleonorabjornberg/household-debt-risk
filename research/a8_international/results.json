@@ -10,7 +10,6 @@
  "uk_household_credit_lcu_m": 1943184.0,
  "de_holder_a": 0.3028,
  "de_household_credit_lcu_m": 1551414.0,
- "de_public_owned_not_guaranteed": 0.3028,
- "de_public_owned_excl_promotional": 0.2913,
- "de_promotional_banks_share": 0.0115
+ "de_public_owned_not_guaranteed": 0.2913,
+ "de_promotional_banks_unclassified": 0.0115
 }

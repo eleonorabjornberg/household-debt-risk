@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** Evidence gathered for Eleonora's decision on Q7 (`tracks/analysis.md`). The choice is hers: this note sets each option against the evidence and does not pick one.
 
-**Decision (Eleonora, 2026-11-04, card q7-2): option (c), a third category "publicly owned, not guaranteed" on the risk-bearer measure.** Applied in `compare.py` (`public_owned_not_guaranteed`, with the promotional-bank part shown separately because no source here covers its guarantee status), `comparison.csv`, `results.json` and the README.
+**Decision (Eleonora, 2026-11-04, card q7-2): option (c), a third category "publicly owned, not guaranteed" on the risk-bearer measure.** Applied in `compare.py`, `comparison.csv`, `results.json` and the README; its scope was narrowed to public-law banks by the q7-promo-2 decision below.
 
 Context: A8's holder measure counts savings banks (Sparkassen), Landesbanken and promotional banks as publicly owned lenders (30.3% of German bank lending to individuals, Q4 2025). The question is whether, on the headline risk-bearer measure, a credit loss at one of these banks is a *public* loss.
 
@@ -44,6 +44,8 @@ Retrieved 2026-11-04 17:34 UTC by the main session; details and the hosts that d
 - **KfW: yes, for KfW's own obligations.** KfW law, Article 1a (KfW's English version, `e32bf2c7…`): "The Federal Republic guarantees all obligations of KfW in respect of loans extended to and debt securities issued by KfW, fixed forward transactions or options entered into by KfW, and other credits extended to KfW …". This guarantees KfW's creditors and funding, not the households KfW lends to. A loss on a KfW loan is KfW's, and KfW's obligations are backed by the federal government. On this source, the "not guaranteed" label does not fit KfW, although no household borrower is guaranteed either. On KfW's on-lent programme loans, the on-lending bank takes the liability (KfW programme sheet 124/134, above).
 - **Länder promotional banks: not established.** No statute or Commission text could be reached (gesetze-im-internet.de, EUR-Lex, the Commission, NRW.BANK, L-Bank and the Länder law portals did not answer), so whether they carry a state guarantee is unsourced here.
 - **Size: not split.** The 1.1% is the Bundesbank category "banks with special, development and other central support tasks". No source here lists its members or gives KfW's share of its lending to individuals.
+
+**Decision (Eleonora, 2026-11-04, card q7-promo-2): option (c).** The category "publicly owned, not guaranteed" holds the public-law banks only (savings banks and Landesbanken, 29.1% of bank lending to individuals). Promotional banks (1.1%) stay unclassified until the Länder promotional-bank statutes can be reached; KfW's Art. 1a guarantee is kept as context. Applied in `compare.py` (`public_owned_not_guaranteed`, `promotional_banks_unclassified`), `results.json` and the README. Reaching the statute hosts needs her separate approval.
 
 ## What would make the choice firmer
 
