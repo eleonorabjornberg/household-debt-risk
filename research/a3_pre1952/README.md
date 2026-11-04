@@ -6,23 +6,23 @@
 
 ## Result
 
-**Before the Second World War the public share was far higher than in 1952.** It was zero until 1932, because no federal body held home mortgages. The Home Owners' Loan Corporation, created in June 1933, refinanced distressed home mortgages, and by 1935 public holders had 14.1% of household mortgages and consumer credit. The share then fell every year except 1942 as HOLC's book ran off, to 5.0% in 1944, 3.51% in 1945 and a low of 1.62% in 1947. It was back to 3.16% by 1952, where the quarterly series begins.
+**In the mid-1930s the public share was far higher than in 1952.** No HOLC or FNMA existed before 1933, and the share is set to zero for 1925–1932 (other public holders before 1945 are not measured; see Limits). The Home Owners' Loan Corporation, created in June 1933, refinanced distressed home mortgages, and by 1935 HOLC and FNMA held 14.1% of household mortgages and consumer credit; scaled to Z.1's definitions the estimate is 15.0% (see Splice). The share fell in every later year except 1942, through HOLC's run-off and the swings in total debt, to 5.0% in 1944. In Z.1 it was 3.51% in 1945, a low of 1.62% in 1947, and 3.16% in 1952, where the quarterly series begins.
 
 | Year | Public share | Source | Reliability |
 |---|---|---|---|
-| 1925–1932 | zero (no federal holder) | Historical Statistics | C |
-| 1935 | 14.1% | Historical Statistics (HOLC, FNMA) | B |
+| 1925–1932 | set to zero (no HOLC or FNMA yet) | Historical Statistics | C |
+| 1935 | 14.1% (15.0% scaled to Z.1) | Historical Statistics (HOLC, FNMA) | B |
 | 1945 | 3.51% | Z.1 annual | A |
 | 1947 | 1.62% | Z.1 annual | A |
 | 1952 | 3.16% | Z.1 annual = Z.1 quarterly at 1952Q4 | A |
 
-Reliability: **A** = Fed Z.1. **B** = federal holdings from HOLC and FNMA reports, total debt from Grebler, Blank and Winnick via *Historical Statistics*, which warns that these estimates "must be used with caution". **C** = zero by construction (no federal holder yet); state and local holdings are not measured in the source.
+Reliability: **A** = Fed Z.1. **B** = federal holdings from HOLC and FNMA reports, total debt from Grebler, Blank and Winnick via *Historical Statistics*, which warns that these estimates "must be used with caution". **C** = no HOLC or FNMA yet, so the federal share is set to zero; other public holders are not measured in the source.
 
 ## Splice and checks
 
 - **1945–1952 from Z.1 annual levels**, the same series and cells as A1. For every year both exist (81 years, 1945–2025), each annual level equals the Q4 quarterly level exactly, so the annual and quarterly series join with no adjustment (`z1_1945.py`).
-- **1925–1944 from Historical Statistics**: public = HOLC (N 270) + FNMA (N 271); total = 1- to 4-family mortgage debt (N 273) + consumer credit (X 551). HOLC lent only on homes "for not more than four families" (Home Owners' Loan Act, sec. 2(c)), so the 1- to 4-family total is the matching denominator.
-- **Overlap at 1945**, the one year both sources exist: Historical Statistics gives 3.54%, Z.1 gives 3.51%, a gap of 0.035 pp (tolerance 0.25 pp, asserted). The series switches source at 1945 with no rescaling; a ratio-adjusted variant is kept as a sensitivity column.
+- **1925–1944 from Historical Statistics**: public = HOLC (N 270) + FNMA (N 271); total = 1- to 4-family mortgage debt (N 273) + consumer credit (X 551). HOLC lent only on homes "for not more than four families" (Home Owners' Loan Act, sec. 2(c)); FNMA's figure includes some multifamily loans, which the 1- to 4-family total does not.
+- **Overlap, 1945–1951** (`overlap_1945_1951.csv`). The two sources agree closely in 1945 but not in every year: the largest gap is 0.50 pp (1951). Z.1's federal holdings run above HOLC plus FNMA (by about 1.12 times on average over 1945–47, more in 1947–48), and Z.1's consumer credit runs about 1.17 times X 551; the 1945 match comes from these two gaps offsetting. The series switches source at 1945 with no rescaling. A second, component-adjusted estimate scales each historical component by its 1945–47 Z.1 ratio; it is reported next to the main series (`adjusted_estimate_pct`) and labelled an estimate.
 
 ## Policy timeline (each date checked against the statute or an official report; `sources.md`)
 
@@ -31,7 +31,7 @@ Reliability: **A** = Fed Z.1. **B** = federal holdings from HOLC and FNMA report
 | 13 Jun 1933 | Home Owners' Loan Act: creates HOLC to refinance home mortgages | 48 Stat. 128, ch. 64 |
 | 27 Jun 1934 | National Housing Act: creates the FHA (mortgage insurance) | 48 Stat. 1246, ch. 847 |
 | 3 Feb 1938 | National Housing Act amendments (Title III, national mortgage associations) | 52 Stat. 8, ch. 13 |
-| 10 Feb 1938 | First national mortgage association (later Fannie Mae) established by the RFC | FHLB Review, March 1938; RFC Final Report (1959) |
+| 10 Feb 1938 | First national mortgage association (later Fannie Mae) chartered by the Federal Housing Administrator and organised by the RFC | RFC Final Report (1959); FHLB Review, March 1938 |
 | 22 Jun 1944 | Servicemen's Readjustment Act: VA home-loan guaranty | 58 Stat. 284, ch. 268 |
 | 15 Jul 1949 | Housing Act of 1949 | 63 Stat. 413, ch. 338 |
 | 8 Nov 1965 | Higher Education Act: federally insured student loans (Title IV, Part B) | 79 Stat. 1219, P.L. 89-329 |
@@ -43,7 +43,7 @@ The 2008–2010 steps are in A1's `sources.md`.
 ## Limits
 
 - **The points before 1945 are estimates by others.** The 1925–1952 totals in *Historical Statistics* come from Grebler, Blank and Winnick (NBER, 1956), which could not be reached (`www.nber.org` does not answer); the 1- to 4-family total is rounded to $0.1 billion.
-- **What is missing before 1945.** State and local holdings, federal holdings of consumer credit, and farm mortgages (outside the project's scope throughout). Federal Land Bank farm loans are not household mortgages here, as in Z.1.
+- **What is missing before 1945.** Public holders other than HOLC and FNMA (state and local programmes, other federal bodies; none checked), federal holdings of consumer credit, and farm mortgages (outside the project's scope throughout). Z.1's federal holdings exceed HOLC plus FNMA in 1945–48, so the 1935–44 shares may be understated too.
 - **Holder, not risk.** FHA (from 1934) and VA (from 1944) insured or guaranteed loans held by private lenders are not counted, as in the rest of the project; by 1945 FHA-insured 1- to 4-family loans were $4.1 billion (N 274), so a risk-bearer measure would be much higher from the late 1930s.
 - **Values read by hand.** Every Historical Statistics value was read from page images (170–200 dpi) of the FRASER copy; the transcription is in `hist_stats_1925_1945.csv`.
 - **Fannie Mae was a federal agency until 1968**; Z.1 records it under the federal government until then, so the GSE share is zero before 1968.
