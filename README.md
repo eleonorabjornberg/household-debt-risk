@@ -21,6 +21,56 @@ How US household debt has been reshaped by economic crises since the 1950s. The 
 | 2007Q4 | 36.1% | 49.2% |
 | 2019Q4 | 55.2% | 56.2% |
 
+## Repository index
+
+Status of each part is in [`PLAN.md`](PLAN.md); how it was built, with which models and what went wrong, is in [`docs/building-with-claude.md`](docs/building-with-claude.md).
+
+| Path | What it is |
+|---|---|
+| [`PLAN.md`](PLAN.md) | Phases, tasks, acceptance criteria and status: the source of truth for what is done and what is next |
+| [`CLAUDE.md`](CLAUDE.md) | How to work in this repo (rules for people and for Claude) |
+| [`pipeline/`](pipeline/) | Python package `hhdebt`: extract → transform → load → export snapshots. Series catalog: [`pipeline/series_catalog.yaml`](pipeline/series_catalog.yaml) |
+| [`supabase/migrations/`](supabase/migrations/) | Warehouse schema (`raw` → `core` → `mart`) and the read-only `research_reader` role |
+| [`validation/`](validation/) | One-command validation suite, independent of the pipeline code. Latest run: [`validation/REPORT.md`](validation/REPORT.md) |
+| [`claims/`](claims/) | [`register.csv`](claims/register.csv): every published number with its source, series, vintage and validation status; a test fails if a site number has no row |
+| [`analysis/`](analysis/) | Notebook, [`findings.md`](analysis/findings.md), [`recommendation.md`](analysis/recommendation.md) (the "so what", with limits), tables and figures |
+| [`atlas/`](atlas/) | Hot Potato, the dot-flow site (Next.js + Canvas) |
+| [`web/`](web/) | The long-form story site (Next.js, hand-drawn SVG charts) |
+| [`.claude/skills/z1-release-update/`](.claude/skills/z1-release-update/) | Skill that runs a new Z.1 release end to end and stops for approval; trigger examples and a June → September 2026 replay in `examples/` |
+| [`prompts/`](prompts/) | The prompts that built the project, one dated file per session |
+| [`docs/`](docs/) | [`building-with-claude.md`](docs/building-with-claude.md), the session log |
+| [`.github/workflows/`](.github/workflows/) | Quarterly pipeline refresh |
+
+Planned and not built yet (see PLAN.md): `research/` (Phases A–C), `.claude/agents/`, `mcp/household-credit-mcp/`, `plugin/fed-data-desk/`, `evals/`, `docs/decisions/`, `paper/`, `claims/review-log.md`.
+
+## How to reproduce the numbers
+
+From a fresh clone, with Python 3.13 and [uv](https://docs.astral.sh/uv/). It needs network access to `www.federalreserve.gov`, and no database or API keys.
+
+1. Install the Python environment:
+   ```bash
+   cd pipeline && uv sync && cd ..
+   ```
+2. Rebuild every headline number from the Fed's raw Z.1 file and check it. This downloads `FRB_Z1_csv.zip` (about 64 MB) into `data/validation/`, recomputes the identities, sector totals and headlines, compares them with the committed snapshots, and compares with the previous (June 2026) vintage:
+   ```bash
+   uv run --project pipeline python validation/run.py
+   ```
+   It writes `validation/REPORT.md` and `validation/results.json`. Compare them with the committed versions (`git diff validation/`): on the same Z.1 vintage (`Z1.csv` dated 2026-09-11) only the run time should change. A later vintage will move some numbers; step 4 lists which published ones.
+3. Check the claims register and the tests:
+   ```bash
+   uv run --project pipeline pytest -q claims validation/test_run.py .claude/skills/z1-release-update/tests
+   ```
+   ```bash
+   cd pipeline && uv run pytest -q && cd ..
+   ```
+4. See which published numbers a new vintage would change (it never edits copy):
+   ```bash
+   uv run --project pipeline python .claude/skills/z1-release-update/scripts/stale_claims.py
+   ```
+5. Optional: rerun the pipeline and the analysis (`cd pipeline && uv run hhdebt run --export --no-load`, then `cd analysis && uv run --with pandas --with matplotlib --with numpy python -I notebook.py`, as the notebook's header says), and build the sites (`cd atlas && npm install && npm test && npm run build`; `cd web && npm install && npm run build`).
+
+Check D2 (database vs recomputation) runs only when `DATABASE_URL_READONLY` is set; otherwise it reports NOT RUN, which is never counted as a pass.
+
 ## Stack
 | Layer | Tech | Folder |
 |---|---|---|

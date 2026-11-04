@@ -104,29 +104,29 @@ export const steps: Step[] = [
 ];
 
 // "What does this mean?" Tokens: {share} latest public share, {pls} private-label holdings
-// in the latest quarter. Everything else is quoted from analysis/findings.md.
+// in the latest quarter. Every number has a row in claims/register.csv (analysis/recommendation.md, 0.7).
 export const meaning = {
   title: "What does this mean?",
   points: [
     {
       stat: "{share}",
-      title: "Taxpayers are the backstop",
-      body: "Most household debt now sits with the public sector, so in the next downturn most of the losses land on public balance sheets, not on banks. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008.",
+      title: "Taxpayers are the backstop, not the first loss",
+      body: "The public sector holds most household debt, but holding a loan is not the same as losing on it. Most of the public book is mortgages, and in aggregate homes are worth 3.56× the mortgages against them. Borrowers' equity, private mortgage insurance and the GSEs' risk-transfer deals stand in front of the taxpayer; this site does not measure how much they absorb. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008.",
     },
     {
-      stat: "1 of 11",
+      stat: "p ≈ 0.30",
       title: "Crises rarely move the risk",
-      body: "Across eleven recessions, the shift after a crisis looks like any other period's (placebo p ≈ 0.30). 2007–11 is the exception: it added 13 points, and it never reversed. Private-label debt went from $4.6T in 2006 to {pls} today.",
+      body: "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to {pls} today, in 2026 dollars.",
     },
     {
       stat: "86%",
       title: "The public book is going unsecured",
-      body: "The public sector holds 86% of student loans and 51% of all household debt with no collateral behind it, up from 7% in 2007. More of what taxpayers hold is debt that can't be repossessed.",
+      body: "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral.",
     },
     {
       stat: "2025",
       title: "What to watch",
-      body: "Any plan to release Fannie and Freddie from conservatorship would move the biggest pile back across the line. Student-loan collections restarted in 2025, the first real test of the unsecured public book.",
+      body: "Releasing Fannie Mae and Freddie Mac from conservatorship would change who stands behind the biggest pile, not which pile it is in: this site counts them as public either way. Student-loan collections restarted in 2025, the first real test of the unsecured public book.",
     },
   ],
 };
