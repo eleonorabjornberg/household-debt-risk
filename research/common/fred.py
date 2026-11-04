@@ -99,3 +99,39 @@ def series_info(series_id: str, refresh: bool = False) -> dict:
 def manifest() -> list[dict]:
     p = CACHE / "manifest.jsonl"
     return [json.loads(x) for x in p.read_text().splitlines()] if p.exists() else []
+
+
+def units_history(series_id: str, refresh: bool = False) -> pd.DataFrame:
+    """Units label of a series over real time (ALFRED series metadata): realtime_start, realtime_end, units."""
+    d = _get("series", {"series_id": series_id, "realtime_start": "1776-07-04", "realtime_end": "9999-12-31"},
+             f"units_{series_id}", refresh)
+    h = pd.DataFrame(d["seriess"])[["realtime_start", "realtime_end", "units"]]
+    h["realtime_start"] = pd.to_datetime(h["realtime_start"])
+    h["realtime_end"] = pd.to_datetime(h["realtime_end"].replace("9999-12-31", "2262-04-11"))
+    return h
+
+
+SCALE = {"thousands": 1e-3, "millions": 1.0, "billions": 1e3, "trillions": 1e6}
+
+
+def to_millions(v: pd.DataFrame, units: pd.DataFrame) -> tuple[pd.DataFrame, int]:
+    """Rescale every vintage row to millions using the units label that was current when it was published.
+
+    Returns the rescaled frame and the number of rows changed. Units without a dollar scale word
+    (percent, index) are returned unchanged. Uses only the label in force at each row's realtime_start,
+    so it adds no look-ahead.
+    """
+    def factor(label: str):
+        w = label.lower().split()[0]
+        return SCALE.get(w)
+
+    out = v.copy()
+    f = pd.Series(1.0, index=out.index)
+    for _, u in units.iterrows():
+        k = factor(u["units"])
+        if k is None:
+            return v, 0
+        m = (out["realtime_start"] >= u["realtime_start"]) & (out["realtime_start"] <= u["realtime_end"])
+        f[m] = k
+    out["value"] = out["value"] * f
+    return out, int((f != 1.0).sum())
