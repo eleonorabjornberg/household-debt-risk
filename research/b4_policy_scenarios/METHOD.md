@@ -21,5 +21,8 @@ PLAN task B4: "Policy-regime scenarios: GSEs released from conservatorship, stud
   - (b) Move a range of the federal student-loan stock to private, as an illustrative sensitivity (for example 0–10%), labelled hypothetical.
   - (c) Use an estimate from CBO or ED of the volume shift. Needs a source; cbo.gov's data pages are untested and ED is blocked.
 
+- **Decided (Eleonora, card b4-student, option (c), 2026-11-04):** use a CBO or ED estimate of the shift in lending, from a reachable, free source; if none is found, it goes back to her.
+- **Search result (2026-11-04, `sources.md`).** ED's final rule (91 FR 23768, RIA Table 3.1) estimates the **reduction in federal** non-consolidated disbursements over 2026–2035. Neither it nor the NPRM estimates how much of that lending **moves to private lenders**; ED says only that "there may be a transition". CBO is not reachable (403 from the site). So the estimate that option (c) asks for, the shift to private lending, was not found. **Nothing is built;** the item goes back to Eleonora with what was found.
+
 ## Results
 The recession range and the GSE-release range are computed (`results.json`, `b4.py`; README by `make_readme_and_rows.py`). Section 3 waits for a sourced estimate (card b4-student (c)).
