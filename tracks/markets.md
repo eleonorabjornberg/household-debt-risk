@@ -90,6 +90,15 @@ The specification in `research/b1_market_pricing/METHOD.md` (proxies, controls, 
    (c) get deal data from crt.freddiemac.com (needs the host allowed) and EDGAR (needs `SEC_USER_AGENT` set in this environment).
    **Recommendation: (c) if you can add the host and variable; otherwise (b).** Chart reading adds error that the register cannot verify.
 
+### Q-B3 (new). Where B3's scenario values come from
+The engine has no built-in loss parameters. Each preset needs a primary source.
+- **Options.**
+  - (a) A recession case from the Fed's stress test (DFAST): projected loss rates by loan type for the largest banks under the severely adverse scenario, free on federalreserve.gov (reachable 2026-11-04). These are bank portfolios, so the result would be labelled a proxy for GSE and federal books.
+  - (b) A 2008–12 replay from realised losses: Freddie Mac 10-Ks (freddiemac.com reachable; A2 already parses them), FHA actuarial reviews (hud.gov blocked), federal student-loan default data (studentaid.gov blocked).
+  - (c) Both, each dated and sourced.
+  - (d) No presets: the user enters values, and the app says so.
+- **Recommendation: (c)**, starting with (a), whose source is reachable. (b) is partial until hud.gov and studentaid.gov are allowed. Every preset value gets a register row.
+
 ### Q-C1c (new). When to run the C1 holdout
 C1 and C2 share the holdout 2023Q3–2026Q2, and C2's Family Z+C1 uses C1's indicators. Scoring C1 on the holdout now would show holdout outcomes before C2's candidates are frozen, which could steer C2's design.
 - **Options:** (a) run the C1 holdout now; (b) run it in the same single run as C2's holdout, after C2's candidates are frozen; (c) keep it unrun until C3.
@@ -103,6 +112,8 @@ The development results show the bridge biased downward. A likely cause is that 
 
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
+- **B3 in the app.** Add an atlas page or panel that imports `research/b3_scenarios/engine.mjs` (or a copy under `atlas/lib/`) and `exposures.json`. Show sliders for default rate, severity and timing per loan class, plus the transfer share and cap. Show bars for public versus private losses. Preview deployment only. Wait for Q-B3 before shipping any preset.
+- **Register.** The b1_* rows are back in `claims/tracks/markets.csv` (dc68eb7) for re-folding, together with the new b2_* rows. The c1_* rows in `register.csv` were replaced in place with their current versions during the merge (1c51735).
 1. **PLAN.md B1 row → done** once the coordinator's review agrees: "inconclusive, low power; no robust association under the pre-set rule; `research/b1_market_pricing/`".
 2. **PLAN.md C1 row → blocked (Eleonora: evaluation design)**, with the plumbing noted.
 3. **PLAN.md Environment prerequisites:** add `www.freddiemac.com` and `www.fanniemae.com` as not reachable on 2026-11-04 (needed for C1 option 2c); note `alfred.stlouisfed.org` blocked but `api.stlouisfed.org` sufficient.
