@@ -1,0 +1,22 @@
+{
+ "dates_equal": true,
+ "ssr_max_rel_diff": 8.475722466306601e-13,
+ "bic_choice_r": 4,
+ "supF_hac_r_homogeneous": 15.675933,
+ "supF_hac_py_heterogeneous": 15.277048043624871,
+ "supF_argmax_r": "1965Q4",
+ "supF_argmax_py": "1965Q4",
+ "supF_rel_diff": 0.025445691581810734,
+ "ci_r": [
+  "before sample start",
+  "1966Q1",
+  "1966Q4"
+ ],
+ "ci_py": [
+  "1952Q2",
+  "1967Q1"
+ ],
+ "ci_upper_diff_quarters": -1,
+ "within_tolerance": true,
+ "not_cross_checked": "sequential sup-F(l+1|l), UDmax/WDmax and the simulated critical values (not in strucchange)"
+}

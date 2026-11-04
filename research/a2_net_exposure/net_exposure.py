@@ -140,7 +140,7 @@ def main(argv=None) -> int:
     check(t)
 
     # Q1 (b), decided 2026-11-04: outstanding cover from the 10-Ks. Freddie Mac only so far (Fannie's filings are not
-    # reachable: fanniemae.com 403, SEC not fetched until the User-Agent contact is settled).
+    # in this block; Fannie is added below from fannie_ce_outstanding.csv).
     fo = load_freddie().reindex(yr)
     fre_col = [k for k in ff_cols if k[2].startswith("Freddie")]
     g_fre = pd.Series(c.loc[ends, fre_col].sum(axis=1).values, index=yr)
@@ -156,6 +156,19 @@ def main(argv=None) -> int:
     t["public_share_net_freddie_crt_pct"] = 100 * (pub - fo["crt_maxcov_musd"] * a) / s
     t["z1_freddie_over_10k_portfolio"] = g_fre_unapp / fo["sf_portfolio_upb_musd"]
     check_freddie(t, fo, crt)
+
+    # Fannie Mae, same decision (Q1 b): outstanding CRT risk in force from its 10-Ks (stated rounded to $1bn, FY2017 and
+    # FY2020 on), mortgage insurance risk in force (FY2017 on). Missing years stay missing.
+    fa = pd.read_csv(HERE / "fannie_ce_outstanding.csv").set_index("year_end").reindex(yr)
+    t["fannie_crt_out_hh_bn"] = fa["crt_rif_bn"] * a
+    t["fannie_mi_out_hh_bn"] = fa["mi_rif_bn"] * a
+    both = (fo["crt_maxcov_musd"] / 1e3 + fa["crt_rif_bn"]) * a  # $bn, household share; NaN where Fannie is missing
+    t["public_share_net_both_crt_pct"] = 100 * (pub - both * 1e3) / s
+    have = crt["fan_cum_rif_musd"].dropna().index.intersection(fa["crt_rif_bn"].dropna().index)
+    assert (fa.loc[have, "crt_rif_bn"] * 1e3 <= crt.loc[have, "fan_cum_rif_musd"]).all(), "Fannie outstanding CRT above FHFA issued"
+    ok = t["public_share_net_both_crt_pct"].dropna().index
+    assert (t.loc[ok, "public_share_net_lower_pct"] <= t.loc[ok, "public_share_net_both_crt_pct"] + 1e-9).all()
+    assert (t.loc[ok, "public_share_net_both_crt_pct"] <= t.loc[ok, "public_share_net_freddie_crt_pct"] + 1e-9).all()
     t.round(4).to_csv(HERE / "net_exposure.csv")
 
     last = int(t.index.max())
@@ -201,11 +214,22 @@ def main(argv=None) -> int:
             "z1_freddie_over_10k_portfolio_min": r(t["z1_freddie_over_10k_portfolio"].min(), 4),
             "z1_freddie_over_10k_portfolio_max": r(t["z1_freddie_over_10k_portfolio"].max(), 4),
         },
+        "fannie_10k": {
+            "source": "Fannie Mae Form 10-K FY2013-FY2025 via SEC EDGAR (fannie_ce_outstanding.csv); CRT risk in force stated rounded to $1bn",
+            "crt_rif_bn_unapportioned_last": float(fa.at[last, "crt_rif_bn"]),
+            "mi_rif_bn_unapportioned_last": float(fa.at[last, "mi_rif_bn"]),
+            "crt_years_available": [int(y) for y in fa["crt_rif_bn"].dropna().index],
+            "public_share_net_both_crt_pct_last": r(t.at[last, "public_share_net_both_crt_pct"], 3),
+            "both_crt_out_hh_bn_last": r(float(both[last]), 1),
+            "gap_gross_minus_net_both_pp_last": r(t.at[last, "public_share_gross_pct"] - t.at[last, "public_share_net_both_crt_pct"], 3),
+        },
         "checks": {
             "net_le_gross_all_years": True,
             "net_lower_positive_all_years": True,
             "freddie_outstanding_crt_le_fhfa_issued": True,
             "net_share_bounds_ordered": True,
+            "fannie_outstanding_crt_le_fhfa_issued": True,
+            "net_both_within_bounds": True,
             "scope_reconstruction_max_abs_musd": float(scope_gap),
         },
     }
