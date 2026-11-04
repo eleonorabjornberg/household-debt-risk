@@ -1,0 +1,261 @@
+{
+ "prereg_commit": "02cc47f",
+ "deviations": [
+  "Critical values simulated (tables not available offline); see module docstring.",
+  "Bai (1997) interval sign corrected after the first run (bug fix, quant-reviewer R-20261104-ana-35)."
+ ],
+ "critical_values_simulated": {
+  "supF": {
+   "1": 9.114,
+   "2": 7.7,
+   "3": 6.467,
+   "4": 5.762,
+   "5": 5.173
+  },
+  "UDmax": 9.242,
+  "WDmax": 10.41,
+  "seq": {
+   "1": 10.672,
+   "2": 11.356,
+   "3": 11.798,
+   "4": 12.495
+  },
+  "T": 600,
+  "reps": 2000,
+  "seed": 20261104,
+  "h": 60
+ },
+ "vintage_primary": "z1:2026-09-11",
+ "total": {
+  "T": 297,
+  "h": 29,
+  "sample": "1952Q2-2026Q2",
+  "supF": {
+   "1": 15.0734,
+   "2": 8.2525,
+   "3": 8.9994,
+   "4": 11.17,
+   "5": 13.1216
+  },
+  "UDmax": 15.0734,
+  "WDmax": 23.1182,
+  "H1_reject_no_break": true,
+  "sequential": [
+   {
+    "l": 1,
+    "supF_l1_given_l": 5.7405,
+    "cv5": 10.6717,
+    "reject": false,
+    "at": "1994Q3"
+   }
+  ],
+  "m_selected": 1,
+  "m_BIC_LWZ": {
+   "BIC": 4,
+   "LWZ": 4
+  },
+  "breaks": [
+   {
+    "quarter": "1966Q1",
+    "ci95": [
+     "1952Q2",
+     "1967Q1"
+    ]
+   }
+  ],
+  "regime_means_pp": [
+   -0.0116,
+   0.2223
+  ],
+  "known_dates": {
+   "2008Q1": {
+    "event": "Economic Stimulus Act of 2008",
+    "shift_pp_per_quarter": 0.1264,
+    "wald": 1.6937,
+    "p": 0.19311058278462948,
+    "bp_ci_covers": false,
+    "step_pp": 0.8935,
+    "step_robust_z": 2.516,
+    "step_flag": false,
+    "holm_reject": false,
+    "placebo_share_larger": 0.5127,
+    "verdict": "No evidence of a break at D"
+   },
+   "2008Q2": {
+    "event": "ECASLA",
+    "shift_pp_per_quarter": 0.1145,
+    "wald": 1.459,
+    "p": 0.22708414760870935,
+    "bp_ci_covers": false,
+    "step_pp": 1.1523,
+    "step_robust_z": 3.372,
+    "step_flag": false,
+    "holm_reject": false,
+    "placebo_share_larger": 0.5297,
+    "verdict": "No evidence of a break at D"
+   },
+   "2008Q3": {
+    "event": "HERA + conservatorship",
+    "shift_pp_per_quarter": 0.0978,
+    "wald": 1.0649,
+    "p": 0.3020919267524972,
+    "bp_ci_covers": false,
+    "step_pp": 0.9569,
+    "step_robust_z": 2.726,
+    "step_flag": false,
+    "holm_reject": false,
+    "placebo_share_larger": 0.5932,
+    "verdict": "No evidence of a break at D"
+   },
+   "2009Q1": {
+    "event": "ARRA",
+    "shift_pp_per_quarter": 0.0708,
+    "wald": 0.597,
+    "p": 0.43971116992928233,
+    "bp_ci_covers": false,
+    "step_pp": 1.0021,
+    "step_robust_z": 2.875,
+    "step_flag": false,
+    "holm_reject": false,
+    "placebo_share_larger": 0.6737,
+    "verdict": "No evidence of a break at D"
+   },
+   "2010Q3": {
+    "event": "SAFRA effective",
+    "shift_pp_per_quarter": -0.0244,
+    "wald": 0.0931,
+    "p": 0.7602371862055591,
+    "bp_ci_covers": false,
+    "step_pp": 0.6354,
+    "step_robust_z": 1.661,
+    "step_flag": false,
+    "holm_reject": false,
+    "placebo_share_larger": 0.911,
+    "verdict": "No evidence of a break at D"
+   }
+  },
+  "placebo_n": 236
+ },
+ "mortgage_descriptive": {
+  "T": 297,
+  "h": 29,
+  "sample": "1952Q2-2026Q2",
+  "supF": {
+   "1": 8.6348,
+   "2": 3.1958,
+   "3": 6.7445,
+   "4": 8.5355,
+   "5": 5.3057
+  },
+  "UDmax": 8.6348,
+  "WDmax": 13.4992,
+  "H1_reject_no_break": true,
+  "sequential": [
+   {
+    "l": 1,
+    "supF_l1_given_l": 6.1183,
+    "cv5": 10.6717,
+    "reject": false,
+    "at": "1994Q3"
+   }
+  ],
+  "m_selected": 1,
+  "m_BIC_LWZ": {
+   "BIC": 5,
+   "LWZ": 4
+  },
+  "breaks": [
+   {
+    "quarter": "1966Q1",
+    "ci95": [
+     "1952Q2",
+     "1969Q1"
+    ]
+   }
+  ],
+  "regime_means_pp": [
+   -0.0179,
+   0.2555
+  ]
+ },
+ "consumer_credit_descriptive": {
+  "T": 297,
+  "h": 29,
+  "sample": "1952Q2-2026Q2",
+  "supF": {
+   "1": 17.252,
+   "2": 36.5384,
+   "3": 24.458,
+   "4": 25.8281,
+   "5": NaN
+  },
+  "UDmax": 36.5384,
+  "WDmax": 43.2432,
+  "H1_reject_no_break": true,
+  "sequential": [
+   {
+    "l": 1,
+    "supF_l1_given_l": 38.6284,
+    "cv5": 10.6717,
+    "reject": true,
+    "at": "2016Q2"
+   },
+   {
+    "l": 2,
+    "supF_l1_given_l": 5.995,
+    "cv5": 11.3559,
+    "reject": false,
+    "at": "1977Q3"
+   }
+  ],
+  "m_selected": 2,
+  "m_BIC_LWZ": {
+   "BIC": 2,
+   "LWZ": 2
+  },
+  "breaks": [
+   {
+    "quarter": "2009Q1",
+    "ci95": [
+     "2007Q4",
+     "2009Q3"
+    ]
+   },
+   {
+    "quarter": "2016Q2",
+    "ci95": [
+     "2015Q1",
+     "2017Q4"
+    ]
+   }
+  ],
+  "regime_means_pp": [
+   0.0225,
+   0.8239,
+   0.0571
+  ]
+ },
+ "vintage_june_2026_cut_2026Q1": {
+  "sept_breaks": [
+   "1966Q1"
+  ],
+  "june_breaks": [
+   "1966Q1"
+  ],
+  "verdicts_sept": {
+   "2008Q1": "No evidence of a break at D",
+   "2008Q2": "No evidence of a break at D",
+   "2008Q3": "No evidence of a break at D",
+   "2009Q1": "No evidence of a break at D",
+   "2010Q3": "No evidence of a break at D"
+  },
+  "verdicts_june": {
+   "2008Q1": "No evidence of a break at D",
+   "2008Q2": "No evidence of a break at D",
+   "2008Q3": "No evidence of a break at D",
+   "2009Q1": "No evidence of a break at D",
+   "2010Q3": "No evidence of a break at D"
+  },
+  "vintage_sensitive": false
+ }
+}

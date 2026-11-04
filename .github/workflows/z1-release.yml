@@ -1,0 +1,124 @@
+name: z1-release
+
+# PLAN F3: after each Z.1 release, rebuild everything and open a pull request with the "what moved"
+# note. Nothing is published, loaded or deployed by this workflow: the data reach the sites only when
+# Eleonora merges the PR (and the database is loaded by hand afterwards with refresh-data).
+#
+# Z.1 comes out about the second week of Mar/Jun/Sep/Dec at noon ET. The job checks once a day from
+# the 5th to the 25th of those months; on other days it is a cheap no-op (one 64 MB download).
+# Scheduled runs only fire from the default branch, so nothing runs from this branch until merged.
+#
+# Needs: repository secret FRED_API_KEY (ALFRED-pinned FRED pulls), and Settings → Actions → General →
+# "Allow GitHub Actions to create and approve pull requests". No database or Vercel secrets are used.
+on:
+  schedule:
+    - cron: "41 17 5-25 3,6,9,12 *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild and open a PR even if the Z.1 vintage is not new (rehearsal)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: z1-release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Download the current Z.1 release
+        run: |
+          mkdir -p data/z1
+          curl -fsSL --retry 4 --retry-delay 10 -o data/z1/FRB_Z1_csv.zip \
+            https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip
+
+      - name: Is it new?
+        id: detect
+        run: |
+          python3 tools/z1_release.py detect data/z1/FRB_Z1_csv.zip | tee -a "$GITHUB_OUTPUT"
+          v=$(python3 tools/z1_release.py detect data/z1/FRB_Z1_csv.zip | sed -n 's/^vintage=//p')
+          if git ls-remote --exit-code --heads origin "data/z1-$v" >/dev/null; then
+            echo "Branch data/z1-$v already exists: a PR for this release was opened before."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stop when there is nothing new
+        if: steps.detect.outputs.exists == 'true' || (steps.detect.outputs.new != 'true' && !inputs.force)
+        run: echo "No new Z.1 release (have ${{ steps.detect.outputs.previous }}, live ${{ steps.detect.outputs.vintage }}), or its PR exists."
+
+      - name: Set up uv and Node
+        if: steps.detect.outputs.exists != 'true' && (steps.detect.outputs.new == 'true' || inputs.force)
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: pipeline/uv.lock
+      - if: steps.detect.outputs.exists != 'true' && (steps.detect.outputs.new == 'true' || inputs.force)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Rebuild (ingest -> validate -> models), FRED pinned to today, no database
+        id: build
+        if: steps.detect.outputs.exists != 'true' && (steps.detect.outputs.new == 'true' || inputs.force)
+        run: |
+          [ -n "$FRED_API_KEY" ] || { echo "::error::FRED_API_KEY secret is not set (needed for ALFRED-pinned pulls)"; exit 1; }
+          today=$(date -u +%F)
+          mkdir -p data/release && curl -fsSL --retry 4 -o data/release/prev.zip "${{ steps.detect.outputs.prev_url }}"
+          make ingest FRED_ASOF="$today"
+          # Validation FAIL does not stop the PR: it is opened as a draft marked FAILED, so it is seen.
+          set +e
+          uv run -q --project pipeline python validation/run.py --z1-zip data/z1/FRB_Z1_csv.zip --prev-z1-zip data/release/prev.zip
+          echo "validation_exit=$?" >> "$GITHUB_OUTPUT"
+          set -e
+          make models FRED_ASOF="$today"
+
+      - name: What moved, stale numbers, reproduction check
+        if: steps.build.outcome == 'success'
+        run: |
+          v=${{ steps.detect.outputs.vintage }}
+          out=opendata/releases/z1-$v && mkdir -p "$out"
+          uv run -q --project pipeline python .claude/skills/z1-release-update/scripts/what_moved.py \
+            --prev data/release/prev.zip --curr data/z1/FRB_Z1_csv.zip --results validation/results.json --out "$out/what_moved.md"
+          uv run -q --project pipeline python .claude/skills/z1-release-update/scripts/stale_claims.py > "$out/stale_claims.txt" || true
+          python3 tools/repro_check.py > "$out/repro.txt" || true
+          python3 tools/z1_release.py pr-body "$out" > data/release/pr_body.md
+
+      - name: Open the pull request
+        if: steps.build.outcome == 'success'
+        run: |
+          v=${{ steps.detect.outputs.vintage }}
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "data/z1-$v"
+          git add -A web/public/data analysis validation research opendata
+          git commit -m "data: Z.1 $v release (automated draft, not published)" \
+            -m "Rebuilt by .github/workflows/z1-release.yml. Validation exit ${{ steps.build.outputs.validation_exit }}. Database not loaded."
+          git push origin "data/z1-$v"
+          draft=""; [ "${{ steps.build.outputs.validation_exit }}" = "0" ] || draft="--draft"
+          gh pr create $draft --base "${{ github.event.repository.default_branch }}" --head "data/z1-$v" \
+            --title "Z.1 $v release: what moved (review before merging)" --body-file data/release/pr_body.md
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: z1-release-${{ github.run_id }}
+          path: |
+            data/release/
+            opendata/releases/
+            validation/REPORT.md
+          if-no-files-found: ignore

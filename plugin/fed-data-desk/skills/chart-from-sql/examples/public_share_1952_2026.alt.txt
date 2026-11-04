@@ -1,0 +1,1 @@
+Line chart titled "Public share of U.S. household mortgage and consumer debt": Public share (Percent of mortgage and consumer credit (%)) by date, 1951Q4 to 2026Q2, 299 observations. Public share rose from 2.9% in 1951Q4 to 56.4% in 2026Q2 (high 58.6% in 2021Q1; low 2.5% in 1965Q3). Shaded bands mark 11 NBER recessions (1953Q2 to 2020Q2).

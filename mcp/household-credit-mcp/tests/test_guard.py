@@ -75,7 +75,10 @@ def test_get_backend_default_is_snapshot(monkeypatch):
     monkeypatch.delenv("DATABASE_URL_READONLY", raising=False)
     assert backends.get_backend().name == "snapshot"
     monkeypatch.setenv("DATABASE_URL_READONLY", "postgres://u@h/db")
-    assert backends.get_backend().name == "postgres"  # lazy: does not connect
+    # Since 2026-11-04 get_backend probes the database once: reachable -> postgres (tests/test_fallback.py
+    # covers the unreachable case, which falls back to the snapshots).
+    conn = type("Conn", (), {"read_only": False, "rollback": lambda self: None, "close": lambda self: None})
+    assert backends.get_backend(connect=lambda url, **kw: conn()).name == "postgres"
 
 
 @pytest.mark.skipif(not os.environ.get("DATABASE_URL_READONLY"), reason="DATABASE_URL_READONLY not set")

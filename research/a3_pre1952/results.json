@@ -1,0 +1,22 @@
+{
+ "vintage_z1_csv": "2026-09-11 10:41:06",
+ "public_share_pct": {
+  "1945": 3.5051,
+  "1946": 2.1018,
+  "1947": 1.624,
+  "1948": 1.628,
+  "1949": 1.7647,
+  "1950": 2.2992,
+  "1951": 2.9439,
+  "1952": 3.1629
+ },
+ "min_year": 1947,
+ "min_pct": 1.624,
+ "federal_direct_1945_pct": 3.5051,
+ "federal_direct_1947_pct": 1.5037,
+ "checks": {
+  "splice_max_abs_level_gap_musd": 0.0,
+  "splice_max_share_gap_pp": 0.0,
+  "years_overlap": 81
+ }
+}

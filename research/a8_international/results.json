@@ -1,0 +1,13 @@
+{
+ "label": "A8 comparison, 2025 year end; null = not computable from a national source",
+ "us_public_bucket_incl_pools": 0.5639,
+ "us_risk_b_low": 0.5524,
+ "us_risk_b_high": 0.5619,
+ "ca_cmhc_share_of_residential_mortgages": 0.198,
+ "ca_household_credit_lcu_m": 3071623.0,
+ "dk_household_credit_lcu_m": 2589640.5,
+ "dk_private_mortgage_bank_share": 0.8039,
+ "uk_household_credit_lcu_m": 1943184.0,
+ "de_holder_a": 0.3028,
+ "de_household_credit_lcu_m": 1551414.0
+}
