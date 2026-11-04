@@ -54,7 +54,9 @@ KNOWN = {"2008Q1": "Economic Stimulus Act of 2008", "2008Q2": "ECASLA", "2008Q3"
          "2009Q1": "ARRA", "2010Q3": "SAFRA effective"}
 MEASUREMENT = ["1968Q1", "1977Q1", "2006Q1", "2010Q1"]
 SEED, SIM_T, SIM_N = 20261104, 600, 2000
-DEVIATIONS = ["Critical values simulated (tables not available offline); see module docstring."]
+CI_REPS = 4000  # replications for the Bai (1997) argmax quantiles
+DEVIATIONS = ["Critical values simulated (tables not available offline); see module docstring.",
+              "Bai (1997) interval sign corrected after the first run (bug fix, quant-reviewer R-20261104-ana-35)."]
 
 
 # ---------------------------------------------------------------- HAC: QS kernel, Andrews AR(1) bandwidth, prewhitened
@@ -232,9 +234,11 @@ def bai_ci(y: np.ndarray, bk: list[int]) -> list[tuple[int, int]]:
         u1, u2 = y[a1:b1] - y[a1:b1].mean(), y[a2:b2] - y[a2:b2].mean()
         w1, w2 = lrv(u1), lrv(u2)
         delta = y[a2:b2].mean() - y[a1:b1].mean()
-        lo, hi = argmax_quantiles(w2 / w1)
+        lo, hi = argmax_quantiles(w2 / w1, reps=CI_REPS)
         scale = delta ** 2 / w1
-        out.append((b + int(math.floor(lo / scale)) - 1, b + int(math.ceil(hi / scale)) + 1))
+        # (b_hat - b_true) * scale -> argmax Z, so b_true = b_hat - Z/scale: the 97.5% quantile sets the LOWER end.
+        # (A first version added the quantiles; correct only when phi = 1. Caught by quant-reviewer, R-20261104-ana-35.)
+        out.append((b - int(math.ceil(hi / scale)) - 1, b - int(math.floor(lo / scale)) + 1))
     return out
 
 

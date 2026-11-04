@@ -166,4 +166,9 @@ A4 depends on A3 (pre-1952 history), which is not done.
 What A3 would add: annual Z.1 for 1945–51 and earlier historical sources, so the New Deal dates (HOLC 1933, FHA 1934, Fannie Mae 1938) become testable; verified dates for the post-1952 statutes listed above; a longer pre-sample. Limits: annual frequency needs its own break test (fewer observations, different trimming); spliced pre-1945 points carry source and reliability labels and may not support formal inference.
 
 ## Deviations (dated, after freezing)
-None yet.
+
+### 2026-11-04: simulated critical values (analysis track, before the first run)
+The Bai-Perron (2003) tables are not reachable from this environment, so the 5% critical values of sup-F(k), UDmax, WDmax and sup-F(l+1|l) are simulated under the null (i.i.d. normal, T = 600, 2,000 replications, fixed seed; sup-F(l+1|l) as the 0.95^(1/(l+1)) quantile of sup-F(1)). Declared in `research/a4_breaks/breaks.py` before the first run (commit eed0ce7). No decision in the results is close to a critical value.
+
+### 2026-11-04: break-date interval corrected (analysis track, after the first run)
+The first run computed the Bai (1997) interval with the simulated quantiles added instead of subtracted, which is wrong whenever the regimes' long-run variances differ. Found by the quant-reviewer (`claims/review-log.md`, R-20261104-ana-35). Bug fix only: no choice above changed, and no H2 verdict changed. The 1966Q1 interval moved from 1965Q1–1997Q4 to 1952Q2–1967Q1.
