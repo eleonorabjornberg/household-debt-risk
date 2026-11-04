@@ -10,7 +10,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-03 23:56:02 |
+| Run timestamp (UTC) | 2026-11-04 04:38:13 |
 | Result | 41 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
@@ -47,7 +47,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | C8 | **PASS** | 2026Q2 public share of consumer credit | 31.3% | 31.35% | rounded as published |  |
 | C9 | **PASS** | 'The 2007-11 jump never reversed': min share 2012Q1..latest | >= 2011Q4 level (i); also report vs 2007Q4 (ii) | min 49.92% in 2012Q1; vs 2011Q4 49.22% (+0.70 pp); vs 2007Q4 36.12% (+13.80 pp) | none (strict) | (i) holds: share never fell below its 2011Q4 level after 2011Q4 |
 | D1 | **PASS** | web/public/data/public_share.json vs recomputation, every quarter (299 rows) | max abs diff within tol; same quarter set | scope_total_musd $0.000M; public_musd $0.000M; public_share 4.98e-11; public_share_mortgage 4.99e-11; public_share_cc 4.99e-11 | 1e-6 shares, $1M levels |  |
-| D2 | **NOT RUN** | mart.public_share (database) vs recomputation | match | DATABASE_URL_READONLY not set | 1e-6 shares, $1M levels | no read-only database URL in the environment |
+| D2 | **NOT RUN** | mart.public_share (database) vs recomputation | match | OperationalError | 1e-6 shares, $1M levels | could not query database: failed to resolve host 'aws-0-us-east-1.pooler.supabase.com': [Errno -2] Name or service not known |
 | E1 | **PASS** | 1968Q1: revolving credit (FL153166100) starts | zero before, > 0 from 1968Q1 | first positive 1968Q1 ($1,439M) | exact |  |
 | E2 | **PASS** | 1977Q1: revolving reclassification visible in cc-type shares | \|robust z\| > 6 in a cc type | FL153166205 -7.06 pp of cc, z=-16.4 | z>6 & >=1.0pp |  |
 | E3 | **PASS** | 2006Q1: student loans (FL153166220) split out of other non-revolving | first positive 2006Q1 | first positive 2006Q1 ($480,967M); other non-revolving -407,678M q/q | exact | student loans are zero before; inside other non-revolving |
@@ -56,7 +56,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | E6 | **PASS** | Public share continuous through 2010 (sectors 40+41 summed) | no \|robust z\| > 6 in 2009Q4-2010Q4 | max \|q/q\| 1.10 pp (z=3.2); 40+41 share max \|q/q\| 1.05 pp | z<=6 | 40 and 41 individually jump; the sum should not |
 | E7 | **PASS** | No missing quarters in any of 37 Z.1 catalog series after first value (1952Q1-2026Q2) | 0 gaps, common end date | 0 gaps in 0 series; 0 short | exact |  |
 | E8 | **WARN** | Other quarter-on-quarter jumps in component shares (robust z > 6, >= 1.0 pp) | none unexplained | 93 unexplained (+12 at known breaks) of 32 series | \|z\|>6 & >=1.0pp | see list in report |
-| F1 | **WARN** | Scope total FL154104015 revisions, 1952Q1-2026Q1 (297 qtrs) | report | 19 quarters revised > $0.5M; max \|rev\| $5,272M in 2025Q3 | report only | prev vintage 2026-06-10 [per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000] |
+| F1 | **WARN** | Scope total FL154104015 revisions, 1952Q1-2026Q1 (297 qtrs) | report | 19 quarters revised > $0.5M; max \|rev\| $5,272M in 2025Q3 | report only | prev vintage 2026-06-11 release (zip built 2026-06-10) [per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000] |
 | F2 | **PASS** | Public share revisions across common quarters | report | max \|rev\| 0.021 pp in 2025Q3; mean -0.0002 pp; public $ max \|rev\| $1,623M | headline 0.1 pp |  |
 | F3 | **PASS** | Headline shares, previous -> current vintage | equal at published 0.1 pp precision | 2026Q1 (latest common): 56.60% -> 56.59%; 2011Q4: 49.22% -> 49.22%; 2007Q4: 36.12% -> 36.12%; 1952Q1: 3.22% -> 3.22% | 0.1 pp |  |
 | F4 | **PASS** | All-time-high quarter, previous vs current (through common quarters) | same quarter | prev 2021Q1 58.60%; now 2021Q1 58.60% | exact quarter |  |

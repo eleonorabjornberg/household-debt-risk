@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/": ["./public/data/**/*.json", "./fixtures/**/*.json"],
     "/methods": ["./public/data/**/*.json", "./fixtures/**/*.json"],
+    "/data": ["./public/data/**/*.json", "./public/downloads/v1/index.json"],
   },
 };
 

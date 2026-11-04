@@ -73,10 +73,38 @@ def load_z1() -> pd.DataFrame:
     return w.loc["1952-03-31":]
 
 
+def fred_asof() -> str | None:
+    """FRED as-of date (PLAN F2-1): env FRED_ASOF, else the committed snapshot's vintages.fred."""
+    if os.environ.get("FRED_ASOF"):
+        return os.environ["FRED_ASOF"]
+    meta = HERE.parent / "web" / "public" / "data" / "meta.json"
+    return json.loads(meta.read_text()).get("vintages", {}).get("fred") if meta.exists() else None
+
+
 def load_fred(sid: str) -> pd.Series:
-    f = CACHE / "fred" / f"{sid}.csv"
-    if not f.exists():
-        subprocess.run(["curl", "-sS", "-o", str(f), f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}"], check=True)
+    """Pinned: ALFRED observations as they stood on fred_asof() (needs FRED_API_KEY), so reruns
+    reproduce results.json. Without a key, falls back to the latest fredgraph.csv and says so."""
+    asof, key = fred_asof(), os.environ.get("FRED_API_KEY")
+    if asof and key:
+        f = CACHE / "fred" / f"{sid}@{asof}.csv"
+        if not f.exists():
+            import urllib.parse
+            import urllib.request
+            q = urllib.parse.urlencode({"series_id": sid, "api_key": key, "file_type": "json",
+                                        "realtime_start": asof, "realtime_end": asof})
+            with urllib.request.urlopen(f"https://api.stlouisfed.org/fred/series/observations?{q}", timeout=60) as r:
+                obs = json.load(r)["observations"]
+            # "." marks a missing observation; ALFRED also writes some whole numbers as "1721271.0".
+            # Normalise both so values parse exactly as they do from fredgraph.csv.
+            d = pd.DataFrame([o for o in obs if o["value"] != "."])[["date", "value"]]
+            v = pd.to_numeric(d.value)
+            d["value"] = v.astype("int64") if (v % 1 == 0).all() else v
+            d.to_csv(f, index=False)
+    else:
+        print(f"WARNING: FRED {sid} not pinned (no FRED_API_KEY or as-of date): latest data, results may drift", file=sys.stderr)
+        f = CACHE / "fred" / f"{sid}.csv"
+        if not f.exists():
+            subprocess.run(["curl", "-sS", "-o", str(f), f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}"], check=True)
     s = pd.read_csv(f)
     s.columns = ["date", "value"]
     s["date"] = pd.to_datetime(s.date)

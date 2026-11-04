@@ -1,0 +1,2023 @@
+{
+ "site": "web",
+ "generatedFrom": [
+  "claims/register.csv"
+ ],
+ "claims": [
+  {
+   "id": "a1_ff_pp",
+   "claim": "Fannie Mae and Freddie Mac contributed 1.2 pp of the jump (Shapley, pro rata within public side).",
+   "display": [
+    "1.2 pp",
+    "1.2 pts",
+    "1.2 points"
+   ],
+   "value": "1.2456",
+   "unit": "pp",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:39",
+    "web/content/story.ts:148"
+   ],
+   "computation": "research/a1_gfc_decomposition/decompose.py -> results.json groups_pp.fannie_freddie",
+   "series": [
+    "FL403065110",
+    "FL403065120",
+    "FL413065143",
+    "FL413065123",
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL893065105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "1.2 pts"
+   ]
+  },
+  {
+   "id": "a1_private_change_pp",
+   "claim": "Shrinking private holdings explain 6.9 pp of the 2007Q4-2011Q4 jump (Shapley).",
+   "display": [
+    "6.9 pp",
+    "6.9 pts",
+    "6.9 points"
+   ],
+   "value": "6.8602",
+   "unit": "pp",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:37",
+    "web/content/story.ts:148"
+   ],
+   "computation": "research/a1_gfc_decomposition/decompose.py -> results.json from_private_change_pp",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL893065105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Different split from findings.md counterfactual (6.1 pp with private held fixed); both about half.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "6.9 pts"
+   ]
+  },
+  {
+   "id": "a1_public_growth_pp",
+   "claim": "Growth in public holdings explains 6.2 pp of the 2007Q4-2011Q4 jump (Shapley).",
+   "display": [
+    "6.2 pp",
+    "6.2 pts",
+    "6.2 points"
+   ],
+   "value": "6.2453",
+   "unit": "pp",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:38",
+    "web/content/story.ts:148"
+   ],
+   "computation": "research/a1_gfc_decomposition/decompose.py -> results.json from_public_growth_pp",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL893065105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "6.2 pts"
+   ]
+  },
+  {
+   "id": "cc_holders_count",
+   "claim": "The 9 consumer-credit holders sum exactly to household consumer credit.",
+   "display": [
+    "9 consumer-credit holders"
+   ],
+   "value": "9",
+   "unit": "count",
+   "period": "1952Q1-2026Q2",
+   "locations": [
+    "web/content/story.ts:304"
+   ],
+   "computation": "A2",
+   "series": [
+    "FL153166000",
+    "FL313066220",
+    "FL403066005",
+    "FL763066005",
+    "FL473066000",
+    "FL673066000",
+    "FL613066005",
+    "FL103066003",
+    "FL113066003",
+    "FL163066223"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "A2",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Z.1 reports who holds all 1–4 family mortgages, including those owed by businesses. We take each holder's share of that total and apply it to the household liability, so holder amounts are apportioned rather than reported. The 17 mortgage holders sum exactly to the all-sector total, and the 9 consumer-credit holders sum exactly to household consumer credit."
+   ],
+   "exact": []
+  },
+  {
+   "id": "debt_to_income_2007q4",
+   "claim": "Mortgage and consumer debt was about 124% of disposable income at the end of 2007.",
+   "display": [
+    "124%"
+   ],
+   "value": "1.244",
+   "unit": "share",
+   "period": "2007Q4",
+   "locations": [
+    "web/content/story.ts:61",
+    "web/content/story.ts:276"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.debt_to_dpi_2007Q4",
+   "series": [
+    "FL154104015",
+    "DSPI"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Households are also less stretched than before the last crash. Mortgage and consumer debt is about",
+    "of disposable income, against",
+    "at the end of 2007, and home equity is unusually high."
+   ],
+   "exact": [
+    "124%"
+   ]
+  },
+  {
+   "id": "debt_to_income_2026q2",
+   "claim": "Mortgage and consumer debt is about 80% of disposable income in 2026Q2.",
+   "display": [
+    "80%"
+   ],
+   "value": "0.797",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:60",
+    "web/content/story.ts:276"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.debt_to_dpi",
+   "series": [
+    "FL154104015",
+    "DSPI"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Households are also less stretched than before the last crash. Mortgage and consumer debt is about",
+    "of disposable income, against",
+    "at the end of 2007, and home equity is unusually high."
+   ],
+   "exact": [
+    "80%"
+   ]
+  },
+  {
+   "id": "dotcom_delta_pp",
+   "claim": "The share fell 3.8 pp in the 16 quarters after the 2001Q1 peak.",
+   "display": [
+    "3.8 pp",
+    "−3.8 pts",
+    "3.8 points"
+   ],
+   "value": "-3.81",
+   "unit": "pp",
+   "period": "2001Q1-2005Q1",
+   "locations": [
+    "web/content/story.ts:42",
+    "web/content/story.ts:149",
+    "web/content/story.ts:166"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/crisis_public_share.csv delta_pp (2001Q1)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "2001 went the other way,",
+    ", during the private-label boom. The 2020 recession added about one point. The CARES Act forbearance, the 2023 student-loan restart and the 2025 return of collections each moved the share by",
+    "The share falls 3.8 points as private-label securitization booms."
+   ],
+   "exact": [
+    "−3.8 pts"
+   ]
+  },
+  {
+   "id": "fed_mbs_now_share",
+   "claim": "Fed-held agency MBS are 10.3% of scope debt in 2026Q2.",
+   "display": [
+    "10.3%"
+   ],
+   "value": "0.1027",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:59",
+    "web/content/story.ts:277",
+    "web/content/story.ts:284"
+   ],
+   "computation": "analysis/notebook.py:q4_fed -> analysis/results.json fed_mbs.latest_share_scope; web/public/data/public_share.json fed_mbs_share_of_scope",
+   "series": [
+    "WSHOMCB",
+    "FL154104015"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "At its peak the Fed owned about one dollar in six of all household mortgage and consumer debt, as a bondholder exposed to interest rates, not as a lender exposed to defaults. Its agency mortgage-backed securities reached",
+    "of the debt in scope in",
+    "now. Those holdings sit inside the public share, not on top of it: the credit risk stays with Fannie Mae, Freddie Mac and Ginnie Mae.",
+    "Held by the Fed as MBS (peak"
+   ],
+   "exact": [
+    "10.3%"
+   ]
+  },
+  {
+   "id": "fed_mbs_peak_share",
+   "claim": "Fed-held agency MBS peaked at 16.4% of scope debt in 2022Q1.",
+   "display": [
+    "16.4%"
+   ],
+   "value": "0.1637",
+   "unit": "share",
+   "period": "2022Q1",
+   "locations": [
+    "web/content/story.ts:56",
+    "web/content/story.ts:277",
+    "web/content/story.ts:284"
+   ],
+   "computation": "analysis/notebook.py:q4_fed -> analysis/results.json fed_mbs.peak_share_scope; analysis/tables/fed_mbs.csv",
+   "series": [
+    "WSHOMCB",
+    "FL154104015"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Rate (duration) risk, not credit risk; sits inside the public share. Findings: 'Fed MBS at 16.4% → 10.3%' was cross-checked to the mart, no validation check yet.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "At its peak the Fed owned about one dollar in six of all household mortgage and consumer debt, as a bondholder exposed to interest rates, not as a lender exposed to defaults. Its agency mortgage-backed securities reached",
+    "of the debt in scope in",
+    "now. Those holdings sit inside the public share, not on top of it: the credit risk stays with Fannie Mae, Freddie Mac and Ginnie Mae.",
+    "Held by the Fed as MBS (peak"
+   ],
+   "exact": [
+    "16.4%"
+   ]
+  },
+  {
+   "id": "fed_mbs_peak_usd",
+   "claim": "Fed-held agency MBS peaked at $2.72T (2022Q1 quarter-end).",
+   "display": [
+    "$2.72T"
+   ],
+   "value": "2.72",
+   "unit": "usd_tn",
+   "period": "2022Q1",
+   "locations": [
+    "web/content/story.ts:58",
+    "web/content/story.ts:277"
+   ],
+   "computation": "analysis/notebook.py:q4_fed -> analysis/results.json fed_mbs.peak_busd (2,715.2)",
+   "series": [
+    "WSHOMCB"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "At its peak the Fed owned about one dollar in six of all household mortgage and consumer debt, as a bondholder exposed to interest rates, not as a lender exposed to defaults. Its agency mortgage-backed securities reached",
+    "of the debt in scope in",
+    "now. Those holdings sit inside the public share, not on top of it: the credit risk stays with Fannie Mae, Freddie Mac and Ginnie Mae."
+   ],
+   "exact": [
+    "$2.72T"
+   ]
+  },
+  {
+   "id": "gfc_half_private_retreat",
+   "claim": "About half of the 2007-11 rise was private lenders retreating rather than public expansion.",
+   "display": [
+    "half of that was private lenders retreating",
+    "half of it private lenders retreating",
+    "half private retreat"
+   ],
+   "value": "0.54",
+   "unit": "share",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:167"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet; (13.11 - 6.11) / 13.11 from gfc_dollars_busd",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "No digits in the copy; registered because it is a quantitative claim. 7.0 of 13.1 pp = 53%.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The one real ratchet: +13.1 points, a little over half of it private lenders retreating, not Fannie and Freddie growing. It never reversed."
+   ],
+   "exact": []
+  },
+  {
+   "id": "gfc_jump_pp",
+   "claim": "The public share rose 13.1 percentage points from 2007Q4 to 2011Q4.",
+   "display": [
+    "+13.1 pp",
+    "+13.1 pts",
+    "13.1 points",
+    "+13.1 points",
+    "13 points"
+   ],
+   "value": "13.11",
+   "unit": "pp",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:30",
+    "web/content/story.ts:87",
+    "web/content/story.ts:148",
+    "web/content/story.ts:282",
+    "web/content/story.ts:167"
+   ],
+   "computation": "C5",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C5",
+   "notes": "Atlas rounds to '13 points'. Findings also gives the same gap as 'largest change of any crisis'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Change over 2007–11, the one real ratchet",
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans.",
+    "Public share gain over 2007–11, the only crisis that moved it",
+    "The one real ratchet: +13.1 points, a little over half of it private lenders retreating, not Fannie and Freddie growing. It never reversed."
+   ],
+   "exact": [
+    "+13.1 pts"
+   ]
+  },
+  {
+   "id": "gfc_percentile",
+   "claim": "The 2007Q4-2011Q4 change ranks in the 98th percentile of all 16-quarter windows since 1952.",
+   "display": [
+    "98th percentile",
+    "98th",
+    "98% of all four-year windows"
+   ],
+   "value": "98.2",
+   "unit": "pct_rank",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:31",
+    "web/content/story.ts:148"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json ratchet_windows[2007Q4].percentile_among_all_windows (0.982); analysis/tables/ratchet_windows.csv",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "98th"
+   ]
+  },
+  {
+   "id": "gfc_private_label_share_pp",
+   "claim": "The private-label securitization share fell 12.5 percentage points from 2007Q4 to 2011Q4.",
+   "display": [
+    "12.5 pp",
+    "12.5 pts"
+   ],
+   "value": "12.48",
+   "unit": "pp",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:34",
+    "web/content/story.ts:148"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json gfc_window_split_pp.private_securitization (-12.48)",
+   "series": [
+    "FL673065105",
+    "FL643065173",
+    "FL673066000",
+    "FL154104015"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "12.5 pts"
+   ]
+  },
+  {
+   "id": "gfc_private_shrink_pct",
+   "claim": "Privately held household debt shrank 24.6% from 2007Q4 to 2011Q4.",
+   "display": [
+    "24.6%"
+   ],
+   "value": "0.2458",
+   "unit": "share",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:32",
+    "web/content/story.ts:148"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json gfc_dollars_busd: private_t16 / private_t0 - 1",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Value is the size of the fall (positive share). Same display as the README table's 1985Q3 share (nber_1981q3_t16); different claim.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "24.6%"
+   ]
+  },
+  {
+   "id": "gfc_private_shrink_usd",
+   "claim": "Privately held household debt shrank by $2.07T from 2007Q4 to 2011Q4.",
+   "display": [
+    "−$2.07T",
+    "$2.07T"
+   ],
+   "value": "2.07",
+   "unit": "usd_tn",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:33",
+    "web/content/story.ts:148"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json gfc_dollars_busd: private_t0 - private_t16 (8,424.2 - 6,353.0 $B)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Nominal dollars.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "$2.07T"
+   ]
+  },
+  {
+   "id": "gfc_public_growth_pct",
+   "claim": "Public holdings grew 29% from 2007Q4 to 2011Q4.",
+   "display": [
+    "29%"
+   ],
+   "value": "0.293",
+   "unit": "share",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:35",
+    "web/content/story.ts:148"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json gfc_dollars_busd: public_t16 / public_t0 - 1",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Nominal dollars.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "29%"
+   ]
+  },
+  {
+   "id": "gfc_public_growth_usd",
+   "claim": "Public holdings grew by $1.40T from 2007Q4 to 2011Q4.",
+   "display": [
+    "$1.40T"
+   ],
+   "value": "1.4",
+   "unit": "usd_tn",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "web/content/story.ts:36",
+    "web/content/story.ts:148"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json gfc_dollars_busd: public_t16 - public_t0 (6,158.1 - 4,762.4 $B)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Nominal dollars; 1,395.7 $B.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "$1.40T"
+   ]
+  },
+  {
+   "id": "gse_1980s_pp",
+   "claim": "GSE and agency pools added 18.8 pp of public share in the 1980s (1979Q4-1989Q4).",
+   "display": [
+    "+18.8 pp",
+    "+18.8 pts",
+    "18.8 points"
+   ],
+   "value": "18.83",
+   "unit": "pp",
+   "period": "1979Q4-1989Q4",
+   "locations": [
+    "web/content/story.ts:25",
+    "web/content/story.ts:120"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/structural_periods.csv (1979Q4-1989Q4 d_gse_agency_pp)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL403065105",
+    "FL413065105",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The share climbed for the next three decades, and fastest when nothing was going wrong. Ginnie Mae issued the first mortgage-backed security in 1970 and Freddie Mac was chartered the same year. Through the 1980s, thrifts and banks sold or swapped their mortgages into agency pools. The GSEs and agency pools added",
+    "of household debt in that decade alone."
+   ],
+   "exact": [
+    "+18.8 pts"
+   ]
+  },
+  {
+   "id": "home_coverage_2026q2",
+   "claim": "Home collateral coverage (real estate value / mortgage debt) was 3.56x in 2026Q2.",
+   "display": [
+    "3.56×",
+    "3.56x"
+   ],
+   "value": "3.562",
+   "unit": "ratio",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:52",
+    "web/content/story.ts:223"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.home_cov_latest; mart.collateral_coverage where collateral_class='home_backed' and date='2026-06-30'",
+   "series": [
+    "FL155035015",
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Household debt has not drifted away from houses. Mortgages are",
+    "of the debt in scope, and the cushion behind them is unusually thick: owner-occupied real estate is worth",
+    "the mortgages against it, a",
+    "equity cushion. Outside 2022–26, coverage has not been that high since 1960. The low point was",
+    ", after the housing crash."
+   ],
+   "exact": [
+    "3.56×"
+   ]
+  },
+  {
+   "id": "home_coverage_low",
+   "claim": "Home coverage bottomed at 1.85x in 2012Q1.",
+   "display": [
+    "1.85×"
+   ],
+   "value": "1.852",
+   "unit": "ratio",
+   "period": "2012Q1",
+   "locations": [
+    "web/content/story.ts:54",
+    "web/content/story.ts:223"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.home_cov_min_all",
+   "series": [
+    "FL155035015",
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings.md line 5 also cites the low; the README does not.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Household debt has not drifted away from houses. Mortgages are",
+    "of the debt in scope, and the cushion behind them is unusually thick: owner-occupied real estate is worth",
+    "the mortgages against it, a",
+    "equity cushion. Outside 2022–26, coverage has not been that high since 1960. The low point was",
+    ", after the housing crash."
+   ],
+   "exact": [
+    "1.85×"
+   ]
+  },
+  {
+   "id": "home_cushion",
+   "claim": "The equity cushion behind mortgages is 72% (1 - 1/3.56).",
+   "display": [
+    "72%"
+   ],
+   "value": "0.719",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:53",
+    "web/content/story.ts:223"
+   ],
+   "computation": "derived: 1 - 1 / collateral.home_cov_latest (analysis/results.json) = 0.7192",
+   "series": [
+    "FL155035015",
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Aggregate cushion, not any borrower's.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Household debt has not drifted away from houses. Mortgages are",
+    "of the debt in scope, and the cushion behind them is unusually thick: owner-occupied real estate is worth",
+    "the mortgages against it, a",
+    "equity cushion. Outside 2022–26, coverage has not been that high since 1960. The low point was",
+    ", after the housing crash."
+   ],
+   "exact": [
+    "72%"
+   ]
+  },
+  {
+   "id": "mortgage_holders_count",
+   "claim": "The 17 mortgage holders sum exactly to the all-sector mortgage total.",
+   "display": [
+    "17 mortgage holders"
+   ],
+   "value": "17",
+   "unit": "count",
+   "period": "1952Q1-2026Q2",
+   "locations": [
+    "web/content/story.ts:304"
+   ],
+   "computation": "A1",
+   "series": [
+    "FL893065105",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "(+13",
+    "more",
+    "holder",
+    "series",
+    "in",
+    "pipeline/series_catalog.yaml)"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "A1",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Z.1 reports who holds all 1–4 family mortgages, including those owed by businesses. We take each holder's share of that total and apply it to the household liability, so holder amounts are apportioned rather than reported. The 17 mortgage holders sum exactly to the all-sector total, and the 9 consumer-credit holders sum exactly to household consumer credit."
+   ],
+   "exact": []
+  },
+  {
+   "id": "mortgage_share_of_scope_2026q2",
+   "claim": "Mortgages are 73.2% (about 73%) of in-scope household debt in 2026Q2.",
+   "display": [
+    "73.2%",
+    "73%"
+   ],
+   "value": "0.7319",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:51",
+    "web/content/story.ts:223"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.home_share_latest",
+   "series": [
+    "FL153165105",
+    "FL154104015"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Household debt has not drifted away from houses. Mortgages are",
+    "of the debt in scope, and the cushion behind them is unusually thick: owner-occupied real estate is worth",
+    "the mortgages against it, a",
+    "equity cushion. Outside 2022–26, coverage has not been that high since 1960. The low point was",
+    ", after the housing crash."
+   ],
+   "exact": [
+    "73%"
+   ]
+  },
+  {
+   "id": "nyfed_mortgage_change",
+   "claim": "NY Fed mortgage balances fell $74B in 2026Q2.",
+   "display": [
+    "−$74B",
+    "$74B"
+   ],
+   "value": "-74",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:64",
+    "web/content/story.ts:97",
+    "web/content/story.ts:317"
+   ],
+   "computation": "mart.nyfed_by_type: balance_busd(mortgage, 2026-06-30) - balance_busd(mortgage, 2026-03-31) = 13,117 - 13,191",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The New York Fed's credit-report data show household debt falling in the second quarter of 2026 for the first time since 2020, to",
+    ", with mortgage balances down",
+    "NY Fed and Z.1 can disagree",
+    "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
+   ],
+   "exact": [
+    "−$74B"
+   ]
+  },
+  {
+   "id": "nyfed_sample_share",
+   "claim": "The NY Fed series comes from a 5% sample of credit reports.",
+   "display": [
+    "5% sample"
+   ],
+   "value": "0.05",
+   "unit": "share",
+   "period": "n/a",
+   "locations": [
+    "web/content/story.ts:99",
+    "web/content/story.ts:317"
+   ],
+   "computation": "external description of the NY Fed Consumer Credit Panel (not computed in this repo)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Source: NY Fed Household Debt and Credit Report methodology; add the citation URL when this is checked.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "They measure different things. The New York Fed series comes from a 5% sample of individual credit reports. Z.1 is built from lenders' balance sheets and counts nonprofits as households. Neither is wrong; a single quarter's direction is not something to build a story on.",
+    "NY Fed and Z.1 can disagree",
+    "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
+   ],
+   "exact": []
+  },
+  {
+   "id": "nyfed_total_2026q2",
+   "claim": "The NY Fed credit-report data show total household debt of $18.77T in 2026Q2.",
+   "display": [
+    "$18.77T"
+   ],
+   "value": "18.77",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:63",
+    "web/content/story.ts:97"
+   ],
+   "computation": "sum of balance_busd for date 2026-06-30 in web/public/data/nyfed_by_type.json (18,770.5 $B); mart.nyfed_by_type",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed Consumer Credit Panel, not Z.1; the copy says so.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The New York Fed's credit-report data show household debt falling in the second quarter of 2026 for the first time since 2020, to",
+    ", with mortgage balances down"
+   ],
+   "exact": [
+    "$18.77T"
+   ]
+  },
+  {
+   "id": "out_of_scope_share",
+   "claim": "About 13% of household liabilities are out of scope.",
+   "display": [
+    "13%"
+   ],
+   "value": "0.1272",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:303",
+    "web/content/story.ts:311"
+   ],
+   "computation": "derived: 1 - analysis/results.json now.scope_of_total_liab",
+   "series": [
+    "FL154104015",
+    "FL154190005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "12.7% rounds to 13%.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The unit is the household sector as the Fed defines it, which includes nonprofit organizations. Scope is home mortgages on 1–4 family properties plus consumer credit (Z.1 series FL154104015). That is about 87% of household liabilities; the remaining 13% is excluded.",
+    "About 13% of liabilities are out of scope",
+    "Commercial mortgages owed by nonprofits, deferred and unpaid life insurance premiums and other loans are excluded. The public share is a share of mortgages plus consumer credit, not of all household liabilities."
+   ],
+   "exact": []
+  },
+  {
+   "id": "pipeline_test_count",
+   "claim": "The pipeline has more than 40 automated tests.",
+   "display": [
+    "More than 40"
+   ],
+   "value": "40",
+   "unit": "count",
+   "period": "2026-11-04",
+   "locations": [
+    "web/content/build.ts:9"
+   ],
+   "computation": "cd pipeline && uv run pytest --collect-only -q  (50 collected on 2026-11-04)",
+   "series": [
+    "n/a"
+   ],
+   "vintage": "n/a",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "A Python package (hhdebt, managed with uv) downloads the sources, checks that every holder adds up to its published total, and builds the analysis tables. More than 40 automated tests."
+   ],
+   "exact": []
+  },
+  {
+   "id": "pre_gfc_decline_1999_2007_pp",
+   "claim": "The public share fell 5.0 pp between 1999Q4 and 2007Q4.",
+   "display": [
+    "−5.0 pts",
+    "5.0 points",
+    "5.0 pts"
+   ],
+   "value": "-4.96",
+   "unit": "pp",
+   "period": "1999Q4-2007Q4",
+   "locations": [
+    "web/content/story.ts:43",
+    "web/content/story.ts:121"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/structural_periods.csv (1999Q4-2007Q4 d_public_pp = -4.96)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "A different window from the findings' 5.7 pp (16 quarters before the 2007Q4 peak); the two are not interchangeable.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The share fell in the early 2000s, by",
+    "between the end of 1999 and the end of 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from",
+    "at the end of 2007 to",
+    "four years later and never came back down. It peaked at"
+   ],
+   "exact": [
+    "−5.0 pts"
+   ]
+  },
+  {
+   "id": "public_book_home_backed",
+   "claim": "The public book is still 85% home-backed.",
+   "display": [
+    "85%"
+   ],
+   "value": "0.8512",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:45",
+    "web/content/story.ts:224"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book: public_mortgage_latest_busd / public_latest_busd (9,162.5 / 10,767.6)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The change is inside the public book. It is still about",
+    "home-backed, but student loans went from",
+    "of it at the end of 2007 to",
+    "now. The public sector holds",
+    "of student loans and",
+    "of all household debt with no collateral, up from",
+    "in 2007. That is where the two lenses meet: the debt the government took on most recently is the debt with nothing behind it."
+   ],
+   "exact": [
+    "85%"
+   ]
+  },
+  {
+   "id": "public_share_1952q1",
+   "claim": "The public share of household mortgages and consumer credit was 3.2% in 1952Q1.",
+   "display": [
+    "3.2%"
+   ],
+   "value": "0.0322",
+   "unit": "share",
+   "period": "1952Q1",
+   "locations": [
+    "web/content/story.ts:19",
+    "web/content/story.ts:80",
+    "web/content/story.ts:85",
+    "web/content/story.ts:119"
+   ],
+   "computation": "C1",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C1",
+   "notes": "Public = federal direct + GSE/agency pools + state & local. The atlas copy gets this through the {share} token at step 1952-03-31 (fmtPct of the snapshot value); web copy reads facts.publicShareFirst.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In 1952 the federal government, the housing agencies and state and local governments held",
+    "of what American households owed on their homes and consumer loans. By",
+    ". The obvious story is that every crisis pushed more risk onto taxpayers. The data mostly say otherwise. The climb was a slow build-out of Fannie Mae, Freddie Mac and the agency pools. The one real exception is 2007.",
+    "Public share, 1952 Q1",
+    "Start in 1952. Banks, savings institutions, life insurers and households selling their own homes on credit held nearly all US home mortgages and consumer loans. Public holders, meaning the federal government, the housing agencies and state and local governments, had"
+   ],
+   "exact": [
+    "3.2%"
+   ]
+  },
+  {
+   "id": "public_share_2001q1",
+   "claim": "The public share was 40.6% at the 2001Q1 NBER peak.",
+   "display": [
+    "40.6%"
+   ],
+   "value": "0.4057",
+   "unit": "share",
+   "period": "2001Q1",
+   "locations": [
+    "web/content/story.ts:40"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/crisis_public_share.csv share_t0 (2001Q1)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": [
+    "40.6%"
+   ]
+  },
+  {
+   "id": "public_share_2005q1",
+   "claim": "The public share was 36.8% sixteen quarters after the 2001Q1 peak.",
+   "display": [
+    "36.8%"
+   ],
+   "value": "0.3675",
+   "unit": "share",
+   "period": "2005Q1",
+   "locations": [
+    "web/content/story.ts:41"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/crisis_public_share.csv share_t16 (2001Q1)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "36.7507% before rounding.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": [
+    "36.8%"
+   ]
+  },
+  {
+   "id": "public_share_2007q4",
+   "claim": "The public share was 36.1% at the 2007Q4 NBER peak.",
+   "display": [
+    "36.1%"
+   ],
+   "value": "0.3612",
+   "unit": "share",
+   "period": "2007Q4",
+   "locations": [
+    "web/content/story.ts:28",
+    "web/content/story.ts:121",
+    "web/content/story.ts:148"
+   ],
+   "computation": "C4",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C4",
+   "notes": "Atlas 2007 step prints it through {share} (token at 2007-12-31); the 2011 step hard-codes '36.1%'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The share fell in the early 2000s, by",
+    "between the end of 1999 and the end of 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from",
+    "at the end of 2007 to",
+    "four years later and never came back down. It peaked at",
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "36.1%"
+   ]
+  },
+  {
+   "id": "public_share_2011q4",
+   "claim": "The public share was 49.2% in 2011Q4, 16 quarters after the 2007Q4 peak.",
+   "display": [
+    "49.2%"
+   ],
+   "value": "0.4922",
+   "unit": "share",
+   "period": "2011Q4",
+   "locations": [
+    "web/content/story.ts:29",
+    "web/content/story.ts:121",
+    "web/content/story.ts:148"
+   ],
+   "computation": "C4",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C4",
+   "notes": "Atlas 2011 step prints it through {share} (token at 2011-12-31).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The share fell in the early 2000s, by",
+    "between the end of 1999 and the end of 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from",
+    "at the end of 2007 to",
+    "four years later and never came back down. It peaked at",
+    "The financial crisis is the exception. The public share rose",
+    "from the end of 2007, from",
+    ", which puts it in the",
+    "percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank",
+    ") and private-label securities lost",
+    "of share, while public holdings grew",
+    "). Split exactly, the private retreat accounts for",
+    "and public growth for",
+    ". Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only",
+    "of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans."
+   ],
+   "exact": [
+    "49.2%"
+   ]
+  },
+  {
+   "id": "public_share_2026q2",
+   "claim": "The public share of household mortgages and consumer credit was 56.4% in 2026Q2.",
+   "display": [
+    "56.4%"
+   ],
+   "value": "0.5638",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:20",
+    "web/content/story.ts:80",
+    "web/content/story.ts:121",
+    "web/content/story.ts:275",
+    "web/content/story.ts:281",
+    "web/app/page.tsx:66"
+   ],
+   "computation": "C2",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C2",
+   "notes": "Atlas 'Today' step and the first 'What does this mean?' stat use the {share} token (latest quarter, fmtPct of public_share). web/app/page.tsx renders it from the mart snapshot with pct(.,1).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In 1952 the federal government, the housing agencies and state and local governments held",
+    "of what American households owed on their homes and consumer loans. By",
+    ". The obvious story is that every crisis pushed more risk onto taxpayers. The data mostly say otherwise. The climb was a slow build-out of Fannie Mae, Freddie Mac and the agency pools. The one real exception is 2007.",
+    "The share fell in the early 2000s, by",
+    "between the end of 1999 and the end of 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from",
+    "at the end of 2007 to",
+    "four years later and never came back down. It peaked at",
+    "public holders had",
+    "in household mortgages and consumer credit,",
+    ". That is a little below the",
+    ", and the share has barely moved through the pandemic, the student-loan restart or the return of collections.",
+    "Public share of household debt,",
+    "public_share_2026q2"
+   ],
+   "exact": [
+    "56.4%"
+   ]
+  },
+  {
+   "id": "public_share_of_student_loans",
+   "claim": "The public sector holds 86% of student loans.",
+   "display": [
+    "86%"
+   ],
+   "value": "0.8638",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:48",
+    "web/content/story.ts:224"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.public_share_of_student_latest",
+   "series": [
+    "FL153166220",
+    "FL313066220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Holdings, not guarantees: bank-held FFEL loans carried federal guarantees but are counted private.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The change is inside the public book. It is still about",
+    "home-backed, but student loans went from",
+    "of it at the end of 2007 to",
+    "now. The public sector holds",
+    "of student loans and",
+    "of all household debt with no collateral, up from",
+    "in 2007. That is where the two lenses meet: the debt the government took on most recently is the debt with nothing behind it."
+   ],
+   "exact": [
+    "86%"
+   ]
+  },
+  {
+   "id": "public_share_of_uncoll_2007q4",
+   "claim": "The public sector held 7% of uncollateralized household debt in 2007Q4.",
+   "display": [
+    "7%"
+   ],
+   "value": "0.0727",
+   "unit": "share",
+   "period": "2007Q4",
+   "locations": [
+    "web/content/story.ts:50",
+    "web/content/story.ts:224",
+    "web/content/story.ts:283"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.public_share_of_uncoll_2007Q4",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL313066220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The change is inside the public book. It is still about",
+    "home-backed, but student loans went from",
+    "of it at the end of 2007 to",
+    "now. The public sector holds",
+    "of student loans and",
+    "of all household debt with no collateral, up from",
+    "in 2007. That is where the two lenses meet: the debt the government took on most recently is the debt with nothing behind it.",
+    "Of debt with no collateral now held publicly ("
+   ],
+   "exact": [
+    "7%"
+   ]
+  },
+  {
+   "id": "public_share_of_uncoll_2026q2",
+   "claim": "The public sector holds 51% of all uncollateralized household debt.",
+   "display": [
+    "51%"
+   ],
+   "value": "0.5068",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:49",
+    "web/content/story.ts:224",
+    "web/content/story.ts:283"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.public_share_of_uncoll_latest",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL313066220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The change is inside the public book. It is still about",
+    "home-backed, but student loans went from",
+    "of it at the end of 2007 to",
+    "now. The public sector holds",
+    "of student loans and",
+    "of all household debt with no collateral, up from",
+    "in 2007. That is where the two lenses meet: the debt the government took on most recently is the debt with nothing behind it.",
+    "Of debt with no collateral now held publicly ("
+   ],
+   "exact": [
+    "51%"
+   ]
+  },
+  {
+   "id": "public_share_peak",
+   "claim": "The public share peaked at 58.6% in 2021Q1.",
+   "display": [
+    "58.6%"
+   ],
+   "value": "0.586",
+   "unit": "share",
+   "period": "2021Q1",
+   "locations": [
+    "web/content/story.ts:23",
+    "web/content/story.ts:86",
+    "web/content/story.ts:121",
+    "web/content/story.ts:275"
+   ],
+   "computation": "C6",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C6",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "All-time high,",
+    "The share fell in the early 2000s, by",
+    "between the end of 1999 and the end of 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from",
+    "at the end of 2007 to",
+    "four years later and never came back down. It peaked at",
+    "public holders had",
+    "in household mortgages and consumer credit,",
+    ". That is a little below the",
+    ", and the share has barely moved through the pandemic, the student-loan restart or the return of collections."
+   ],
+   "exact": [
+    "58.6%"
+   ]
+  },
+  {
+   "id": "public_usd_2026q2",
+   "claim": "Public holders held $10.77T of household mortgages and consumer credit in 2026Q2.",
+   "display": [
+    "$10.77T"
+   ],
+   "value": "10.77",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:21",
+    "web/content/story.ts:80",
+    "web/content/story.ts:88",
+    "web/content/story.ts:275"
+   ],
+   "computation": "C3",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C3",
+   "notes": "Nominal dollars (10,767,594 $M). Mortgage holders are apportioned to the household sector. The atlas shows a different figure for the same thing, see public_usd_2026q2_atlas_real.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In 1952 the federal government, the housing agencies and state and local governments held",
+    "of what American households owed on their homes and consumer loans. By",
+    ". The obvious story is that every crisis pushed more risk onto taxpayers. The data mostly say otherwise. The climb was a slow build-out of Fannie Mae, Freddie Mac and the agency pools. The one real exception is 2007.",
+    "Publicly held,",
+    "public holders had",
+    "in household mortgages and consumer credit,",
+    ". That is a little below the",
+    ", and the share has barely moved through the pandemic, the student-loan restart or the return of collections."
+   ],
+   "exact": [
+    "$10.77T"
+   ]
+  },
+  {
+   "id": "ratchet_crises_above_median",
+   "claim": "Only 5 of 11 crisis windows beat the median ordinary window.",
+   "display": [
+    "5 of 11"
+   ],
+   "value": "5",
+   "unit": "count",
+   "period": "1953Q2-2019Q4",
+   "locations": [
+    "web/content/story.ts:27",
+    "web/content/story.ts:147"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json ratchet.all_nber_1953_2019.crises_above_median_window ('5/11')",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952, recession windows are statistically indistinguishable (p ≈",
+    "in a placebo test), and only",
+    "recessions beat the median window. The big gains of the 1970s and 1980s happened inside recessions and outside them alike, because the agencies were growing the whole time."
+   ],
+   "exact": [
+    "5 of 11"
+   ]
+  },
+  {
+   "id": "ratchet_placebo_p",
+   "claim": "Crisis windows are indistinguishable from placebo windows (p about 0.30; 30% of random date sets do as well).",
+   "display": [
+    "p ≈ 0.30",
+    "0.30",
+    "30%"
+   ],
+   "value": "0.3025",
+   "unit": "pvalue",
+   "period": "1953Q2-2019Q4",
+   "locations": [
+    "web/content/story.ts:26",
+    "web/content/story.ts:147"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json ratchet.all_nber_1953_2019.p_random_dates (0.3025); circular-shift p = 0.306",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952, recession windows are statistically indistinguishable (p ≈",
+    "in a placebo test), and only",
+    "recessions beat the median window. The big gains of the 1970s and 1980s happened inside recessions and outside them alike, because the agencies were growing the whole time."
+   ],
+   "exact": [
+    "0.30"
+   ]
+  },
+  {
+   "id": "scope_share_of_liabilities",
+   "claim": "In-scope debt is about 87% of household liabilities.",
+   "display": [
+    "87%",
+    "about 87%"
+   ],
+   "value": "0.8728",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:303"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.scope_of_total_liab",
+   "series": [
+    "FL154104015",
+    "FL154190005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings.md intro (outside the Headline findings section) prints 87.3%.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The unit is the household sector as the Fed defines it, which includes nonprofit organizations. Scope is home mortgages on 1–4 family properties plus consumer credit (Z.1 series FL154104015). That is about 87% of household liabilities; the remaining 13% is excluded."
+   ],
+   "exact": []
+  },
+  {
+   "id": "scope_usd_2026q2",
+   "claim": "Household 1-4 family mortgages plus consumer credit totalled $19.10T in 2026Q2.",
+   "display": [
+    "$19.10T"
+   ],
+   "value": "19.1",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:22",
+    "web/content/story.ts:80",
+    "web/content/story.ts:88",
+    "web/content/story.ts:275"
+   ],
+   "computation": "C3",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C3",
+   "notes": "Nominal dollars (19,097,196 $M); FL154104015 = FL153165105 + FL153166000 (A4).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In 1952 the federal government, the housing agencies and state and local governments held",
+    "of what American households owed on their homes and consumer loans. By",
+    ". The obvious story is that every crisis pushed more risk onto taxpayers. The data mostly say otherwise. The climb was a slow build-out of Fannie Mae, Freddie Mac and the agency pools. The one real exception is 2007.",
+    "Publicly held,",
+    "public holders had",
+    "in household mortgages and consumer credit,",
+    ". That is a little below the",
+    ", and the share has barely moved through the pandemic, the student-loan restart or the return of collections."
+   ],
+   "exact": [
+    "$19.10T"
+   ]
+  },
+  {
+   "id": "shocks_max_pp",
+   "claim": "Policy shocks (CARES Act, 2023 restart, 2025 collections) each moved the share by less than 1 point.",
+   "display": [
+    "less than 1 point",
+    "more than one point"
+   ],
+   "value": "0.42",
+   "unit": "pp",
+   "period": "2020Q1-2026Q2",
+   "locations": [
+    "web/content/story.ts:44",
+    "web/content/story.ts:149"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json shocks (max |d_pp| = 0.42 for 2020Q1)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Bound, not a point value: shocks are +0.42, +0.13 and -0.24 pp.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "less than 1 point",
+    "2001 went the other way,",
+    ", during the private-label boom. The 2020 recession added about one point. The CARES Act forbearance, the 2023 student-loan restart and the 2025 return of collections each moved the share by"
+   ],
+   "exact": [
+    "less than 1 point"
+   ]
+  },
+  {
+   "id": "student_in_public_book_2007q4",
+   "claim": "Federal student loans were 2.4% of the public book in 2007Q4.",
+   "display": [
+    "2.4%"
+   ],
+   "value": "0.0243",
+   "unit": "share",
+   "period": "2007Q4",
+   "locations": [
+    "web/content/story.ts:46",
+    "web/content/story.ts:224"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.cc_share_2007Q4",
+   "series": [
+    "FL313066220",
+    "FL153166220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Computed as the consumer-credit part of the public book, which is almost entirely student loans.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The change is inside the public book. It is still about",
+    "home-backed, but student loans went from",
+    "of it at the end of 2007 to",
+    "now. The public sector holds",
+    "of student loans and",
+    "of all household debt with no collateral, up from",
+    "in 2007. That is where the two lenses meet: the debt the government took on most recently is the debt with nothing behind it."
+   ],
+   "exact": [
+    "2.4%"
+   ]
+  },
+  {
+   "id": "student_in_public_book_2026q2",
+   "claim": "Federal student loans are 14.9% of the public book in 2026Q2.",
+   "display": [
+    "14.9%"
+   ],
+   "value": "0.1491",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:47",
+    "web/content/story.ts:224"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.cc_share_latest",
+   "series": [
+    "FL313066220",
+    "FL153166220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The change is inside the public book. It is still about",
+    "home-backed, but student loans went from",
+    "of it at the end of 2007 to",
+    "now. The public sector holds",
+    "of student loans and",
+    "of all household debt with no collateral, up from",
+    "in 2007. That is where the two lenses meet: the debt the government took on most recently is the debt with nothing behind it."
+   ],
+   "exact": [
+    "14.9%"
+   ]
+  },
+  {
+   "id": "uncoll_break_2005q4",
+   "claim": "Without the student-loan imputation, uncollateralized debt would jump from 7.6% to 11.5% in 2006Q1.",
+   "display": [
+    "7.6%",
+    "11.5%"
+   ],
+   "value": "0.0763",
+   "unit": "share",
+   "period": "2005Q4-2006Q1",
+   "locations": [
+    "web/content/story.ts:312"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2005Q4_rev_only (0.0763) and uncoll_share_2006Q1 (0.1146)",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL153166205"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "ESTIMATE",
+   "checkId": "",
+   "notes": "Value is the 7.6% (2005Q4); the 11.5% (2006Q1) is 0.1146. Pre-2006 student loans are imputed by a linear ramp, so the 'without imputation' framing depends on an estimate.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Consumer credit types are partly estimated",
+    "Z.1 splits out revolving credit from 1968 and student loans only from 2006 Q1. Before 2006 student loans sit inside \"other non-revolving\"; the pipeline imputes them with a linear ramp from 1965 and flags those quarters as estimated, which removes a break that would otherwise make uncollateralized debt jump from 7.6% to 11.5% in 2006 Q1."
+   ],
+   "exact": []
+  },
+  {
+   "id": "z1_mortgage_change",
+   "claim": "Z.1 household mortgages rose $150B in 2026Q2 (not seasonally adjusted).",
+   "display": [
+    "+$150B",
+    "$150B"
+   ],
+   "value": "150.4",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:66",
+    "web/content/story.ts:98",
+    "web/content/story.ts:317"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.d_mort_qoq_busd (150.4)",
+   "series": [
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The Fed's Financial Accounts (Z.1), which every other number here comes from, show the opposite for the same quarter: mortgages up",
+    "and in-scope household debt up",
+    ", before seasonal adjustment.",
+    "NY Fed and Z.1 can disagree",
+    "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
+   ],
+   "exact": [
+    "+$150B"
+   ]
+  },
+  {
+   "id": "z1_scope_change",
+   "claim": "Z.1 in-scope household debt rose $199B in 2026Q2 (not seasonally adjusted).",
+   "display": [
+    "+$199B",
+    "$199B"
+   ],
+   "value": "198.53",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "web/content/story.ts:67",
+    "web/content/story.ts:98"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.d_total_qoq_busd (198.5); web/public/data/public_share.json scope_total_musd diff = 198,530 $M",
+   "series": [
+    "FL154104015"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Corrected 2026-11-04 from $198B: the change is $198.53B, which rounds to $199B. findings.md prints +$198.5B (consistent).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The Fed's Financial Accounts (Z.1), which every other number here comes from, show the opposite for the same quarter: mortgages up",
+    "and in-scope household debt up",
+    ", before seasonal adjustment."
+   ],
+   "exact": [
+    "+$199B"
+   ]
+  }
+ ]
+}

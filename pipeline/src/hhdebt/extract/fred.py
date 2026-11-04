@@ -3,6 +3,11 @@
 Observations are stored at native frequency in raw (monthly CPI, weekly WSHOMCB...); the transform
 step converts them to quarters. Vintage = series `last_updated` date from the API when available,
 otherwise the download date (fredgraph.csv carries no release date).
+
+Pinned runs (PLAN F2, decision F2-1): with HHDEBT_FRED_ASOF=YYYY-MM-DD the API is asked for the data as
+they stood on that date (ALFRED realtime_start = realtime_end = as-of), so a rerun reproduces the
+committed numbers exactly; the vintage recorded is the as-of date. `make` sets it from the committed
+web/public/data/meta.json (vintages.fred); a refresh moves it on purpose. Pinning needs FRED_API_KEY.
 """
 from __future__ import annotations
 
@@ -18,6 +23,20 @@ from .. import config
 from . import download_raw, write_staging
 
 log = logging.getLogger(__name__)
+
+
+def asof() -> dt.date | None:
+    v = os.environ.get("HHDEBT_FRED_ASOF") or None
+    return dt.date.fromisoformat(v) if v else None
+
+
+def _via_alfred(sid: str, key: str, day: dt.date) -> tuple[pd.DataFrame, dt.date]:
+    obs = json.loads(download_raw(
+        "fred", f"{config.FRED_API_URL}/series/observations", f"{sid}_observations_asof_{day}.json",
+        params={"series_id": sid, "api_key": key, "file_type": "json",
+                "realtime_start": day.isoformat(), "realtime_end": day.isoformat()}, vintage=day,
+    ).path.read_bytes())["observations"]
+    return pd.DataFrame(obs)[["date", "value"]], day
 
 
 def _via_api(sid: str, key: str) -> tuple[pd.DataFrame, dt.date]:
@@ -43,9 +62,12 @@ def _via_csv(sid: str) -> tuple[pd.DataFrame, dt.date]:
 
 def extract() -> pd.DataFrame:
     key = os.environ.get("FRED_API_KEY") or None
+    day = asof()
+    if day and not key:
+        raise RuntimeError("HHDEBT_FRED_ASOF needs FRED_API_KEY (ALFRED vintages are API-only)")
     frames = []
     for sid in config.series_ids("fred"):
-        df, vintage = _via_api(sid, key) if key else _via_csv(sid)
+        df, vintage = _via_alfred(sid, key, day) if day else _via_api(sid, key) if key else _via_csv(sid)
         df["value"] = pd.to_numeric(df["value"], errors="coerce")  # "." = missing
         df = df.dropna(subset=["value"])
         df["series_id"], df["source"], df["vintage"] = sid, "fred", vintage

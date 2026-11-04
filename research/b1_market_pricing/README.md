@@ -1,0 +1,59 @@
+# B1: Did the public takeover compress the price of household credit risk?
+
+> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+
+**PLAN task B1. Status: ready for review; the write-up is a Claude draft.** The specification was fixed in [`METHOD.md`](METHOD.md) before any result existed. Checks added after the reviews are declared there and marked post-hoc. Sources and hashes are in [`sources.md`](sources.md). The code is `b1.py`; its tests are in `test_b1.py`, and the HAC errors are checked against statsmodels. The reviews are in `claims/review-log.md` (R-20261104-mkt-q1 to q5, s1 to s8).
+
+Data: Fed Z.1 dated 2026-09-11; FRED retrieved 2026-11-04. Sample 1986Q1–2026Q2, quarterly. Every number in this file has a row in `claims/tracks/markets.csv`.
+
+## Result
+
+**Inconclusive. The data show no robust association in either direction.** The regression holds fixed the rate level, rate volatility, curve slope, the corporate Baa spread and a refinancing proxy. Under the reading rule fixed in advance, the 30-year mortgage rate's spread over the 10-year Treasury shows no robust association with the public share of household mortgages in any pre-specified variant. The test is weak, though: it could not have detected a sizeable compression either.
+
+| Specification | Coefficient on public share (pp of spread per unit of share) | 95% HAC interval | Residual ADF |
+|---|---|---|---|
+| Levels, main | 1.18 | 0.15 to 2.22 | −3.77 |
+| Levels, headline share (mortgages + consumer credit) | 1.77 | 0.40 to 3.14 | −3.87 |
+| Levels, 5y/10y Treasury blend | 1.07 | −0.05 to 2.20 | −3.67 |
+| Levels, sample ends 2022Q3 | −0.33 | −1.12 to 0.46 | −4.46 |
+| First differences, main | −0.57 | −4.48 to 3.34 |  |
+| *Post-hoc:* levels, dummy for 2022Q4+ | −0.33 | −1.08 to 0.43 | −4.73 |
+| *Post-hoc:* levels, Fannie+Freddie share only | 0.50 | −1.92 to 2.92 | −3.63 |
+| *Post-hoc:* levels, HAC lag 8 | 1.18 | −0.03 to 2.39 |  |
+
+All coefficients and the first-differences version of every row are in `regressions.csv`.
+
+*Correction, 2026-11-04.* The share is now computed at catalog level, as `validation/run.py` does. The first version used A1's finer holder cells. In 1974Q3–1986Q3 the Z.1 pool sub-series add up to more than the pool total, so those cells overstated the share in the first three sample quarters and put an artificial step at 1986Q4. That mostly moved the first-differences estimate. The verdict is unchanged. The issue was found while cross-checking C1's vintages.
+
+- **Treat the positive levels coefficients as artefacts.** Every residual ADF statistic falls short of the Engle–Granger 5% critical value (about −5.10 for this many variables, and still −3.79 counting only the three series that look non-stationary). So the levels fits may be spurious and their intervals unreliable.
+- **The positive sign comes from the PMMS method change.** Freddie Mac switched PMMS from a lender survey to application data on 2022-11-17. Ending the sample at 2022Q3, or adding a dummy for the later quarters, turns the coefficient negative and insignificant. The dummy itself is 0.87 pp. That is far larger than the step the skeptic estimated against Optimal Blue rates, so the dummy also absorbs other 2023–26 conditions.
+- **The test has little power.** The first-differences interval, scaled by the rise in the share between 1986Q1–2008Q2 and 2020Q1–2026Q2, allows the spread to have moved by about 0.70 pp either way. That covers any plausible compression.
+
+**Descriptive means** (`spreads_summary.csv`):
+
+| Period | Public share of household mortgages (mean) | 30-year mortgage rate − 10-year Treasury (mean) |
+|---|---|---|
+| 1986Q1–2008Q2 | 48.6% | 1.66 pp |
+| 2008Q3–2019Q4 | 59.9% | 1.73 pp |
+| 2020Q1–2026Q2 | 66.5% | 2.27 pp |
+
+The share rose by about 18 points across the three periods, and the average spread did not fall. Part of the 2020s level reflects the PMMS method change. These are period averages, not evidence about cause.
+
+**Agency versus privately held credit risk, 2017–2026 only (descriptive).** This comparison is confounded. Jumbo loans are too large for the GSEs to guarantee, so lenders keep the risk. But jumbo borrowers have higher incomes and credit scores, and banks compete for them as relationship clients. So the comparison does not price the *same* risk publicly and privately. With that caveat: the jumbo − conforming 30-year rate (Optimal Blue) averaged 0.03 pp, ranging from −0.48 to 0.38 pp by quarter. FHA − conforming averaged −0.05 pp. The public share was almost flat over these ten years, so there is no regression.
+
+## What this does and does not show
+
+- **The proxies are not the price of credit risk.** The PMMS spread bundles several things: the guarantee fee (set by Fannie, Freddie and FHFA, not by a market), loan-level price adjustments, the prepayment option, servicing and originator margins, and the agency MBS spread. For most of the sample, a public guarantor prices the credit risk in it administratively. Guarantee fees rose after 2012, so a flat spread can hide offsetting moves. Agency MBS option-adjusted spreads and private-label spreads would separate these, but they are paywalled (Bloomberg, ICE, Intex). FHFA's annual guarantee-fee reports (free, 2009+) would allow a fee control. That is a possible extension.
+- **Who holds the loan is not who bears the risk.** The share counts holdings. Credit-risk transfer (STACR, CAS), private mortgage insurance and FHA/VA insurance on loans that banks hold move risk between public and private hands without changing the share. A2 builds the net measure.
+- **Units do not match exactly.** The share is a quarter-end stock of all outstanding loans. The spread is a quarterly average of rates on new loans.
+- **Association, not cause.** The share moved with the 2008 crisis, which also moved every control. Nothing here identifies an effect; A7 is where that would come from.
+- **A data gap.** FHFA's MIRS (discontinued May 2019) has non-jumbo rates back to the 1980s but no jumbo table. Backing out a jumbo rate would need assumptions about the loan mix. That is a possible extension.
+
+## Reproduce
+
+```bash
+uv run --project pipeline python validation/run.py          # downloads the Z.1 zip to data/validation/
+uv run --project pipeline python research/b1_market_pricing/b1.py   # needs FRED_API_KEY
+uv run --project pipeline pytest -q research/b1_market_pricing
+```
+The quarterly panel is written to `data/b1/panel.csv`, outside git. The third-party rates in it are linked, not redistributed.
