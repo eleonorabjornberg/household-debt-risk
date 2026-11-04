@@ -172,6 +172,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | E2 decision rule (card e2-12, CHOICE-12): **(i)**, E2 is a descriptive pilot: recall with its interval and a per-category table, no supported/against verdict; the confirmatory 70% test waits for a larger run. | Eleonora |
 | 2026-11-04 | E2 intervals (card e2-8, changes CHOICE-8): **Wilson 95% intervals primary**, with the within-document clustering stated. | Eleonora |
 | 2026-11-04 | API pilot plan (card pilot-plan): **go**. E1 only: build and verify 10 questions (no API cost), then 10 questions × 3 models × 1 run = 30 runs, estimate $1.99, hard cap $2.98; stop if any model's cost per run exceeds 1.5× its estimate; re-check live prices first. | Eleonora |
+| 2026-11-04 | Q7 scope (card q7-promo): **(iii)**, look for a primary source on whether promotional banks (1.1%, e.g. KfW) carry a state guarantee before deciding whether they belong in "publicly owned, not guaranteed"; the question then comes back to her. | Eleonora |
+| 2026-11-04 | Review queue round 4 (17:31 UTC): A8 Q7 (c) application (Germany's third category, 30.3%) accepted as is. | Eleonora |
 
 ## Environment prerequisites
 
