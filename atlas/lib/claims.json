@@ -17,7 +17,7 @@
    "period": "n/a",
    "locations": [
     "atlas/content/story.ts:44",
-    "atlas/app/page.tsx:27",
+    "atlas/app/page.tsx:28",
     "atlas/content/story.ts:11",
     "atlas/components/Experience.tsx:211"
    ],
@@ -32,7 +32,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "Every dot is $50 billion of debt",
-    "public_share_2026q2",
+    "atlas_dot_unit",
     "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
     "1 dot = $50B (2026 $)",
     "1 dot = 0.1% of all debt"
@@ -177,7 +177,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
-    ", a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back."
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
@@ -268,7 +268,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
-    ", a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back."
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
@@ -298,7 +298,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
-    ", a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back."
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
@@ -360,7 +360,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
-    ", a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back."
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
@@ -409,7 +409,8 @@
    "unit": "share",
    "period": "1952Q1",
    "locations": [
-    "atlas/content/story.ts:46"
+    "atlas/content/story.ts:46",
+    "atlas/app/page.tsx:26"
    ],
    "computation": "C1",
    "series": [
@@ -429,7 +430,8 @@
    "notes": "Public = federal direct + GSE/agency pools + state & local. The atlas copy gets this through the {share} token at step 1952-03-31 (fmtPct of the snapshot value); web copy reads facts.publicShareFirst.",
    "register": "claims/register.csv",
    "anchors": [
-    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held"
+    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held",
+    "public_share_1952q1"
    ],
    "exact": []
   },
@@ -465,7 +467,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
-    ", a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back.",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing.",
     "Total debt is",
     ". The public sector holds",
     "of it. Keep an eye on the private-label pile."
@@ -503,7 +505,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
-    ", a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back."
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
@@ -588,7 +590,8 @@
    "period": "2026Q2",
    "locations": [
     "atlas/content/story.ts:95",
-    "atlas/content/story.ts:112"
+    "atlas/content/story.ts:112",
+    "atlas/app/page.tsx:27"
    ],
    "computation": "C2",
    "series": [
@@ -609,7 +612,8 @@
    "register": "claims/register.csv",
    "anchors": [
     "in 2026 dollars, or",
-    ", sits with the public sector. It mostly got there slowly. One crisis made it permanent."
+    ", sits with the public sector. It mostly got there slowly. One crisis made it permanent.",
+    "public_share_2026q2"
    ],
    "exact": []
   },
