@@ -150,7 +150,7 @@ def main() -> int:
                       "conflicting_series": " ".join(conflicts)})
     sv = pd.concat(shares, ignore_index=True)
     OUT.mkdir(parents=True, exist_ok=True)
-    pd.concat(long, ignore_index=True).to_csv(OUT / "z1_cells.csv", index=False, float_format="%.6g")
+    pd.concat(long, ignore_index=True).to_csv(OUT / "z1_cells.csv", index=False, float_format="%.12g")
     sv.to_csv(HERE / "z1_share_vintages.csv", index=False, float_format="%.8f")
     pd.DataFrame(notes).to_csv(HERE / "z1_vintage_notes.csv", index=False)
 
