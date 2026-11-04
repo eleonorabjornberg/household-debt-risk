@@ -46,7 +46,11 @@ def period_end(dates: pd.Series, freq: str) -> pd.Series:
 
 
 def as_of(v: pd.DataFrame, t) -> pd.Series:
-    """Values of one series as they were known at the end of day t (Timestamp or ISO date)."""
+    """Values of one series as they were known at the END of day t (Timestamp or ISO date).
+
+    Same-day rule: a value published on day t (realtime_start == t) is included, so a nowcast "at t"
+    means after that day's releases. Use t - 1 day for a nowcast made before the day's releases.
+    """
     t = pd.Timestamp(t)
     known = v[(v["realtime_start"] <= t) & (v["realtime_end"] >= t)]
     s = known.set_index("date")["value"].sort_index()
@@ -55,8 +59,13 @@ def as_of(v: pd.DataFrame, t) -> pd.Series:
 
 
 def first_release(v: pd.DataFrame) -> pd.DataFrame:
-    """First published value of each observation and the day it was published."""
-    f = v.sort_values("realtime_start").groupby("date", as_index=False).first()
+    """First published value of each observation and the day it was published.
+
+    For dates already in ALFRED's first vintage this is the first value ALFRED holds, not the true
+    first release (which predates ALFRED); callers that need true first releases must drop them,
+    as release_lags and revision_size do. NaN values ('.') count as published.
+    """
+    f = v.sort_values("realtime_start").groupby("date", as_index=False).nth(0)
     return f[["date", "realtime_start", "value"]].rename(columns={"realtime_start": "published"})
 
 
