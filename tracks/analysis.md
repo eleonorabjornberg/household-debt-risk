@@ -6,7 +6,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | Task | Status | Notes |
 |---|---|---|
 | A2 | in progress: Q1(b) built for Freddie Mac 2013–2025 (outstanding cover from 10-Ks, inside the FHFA bound); Fannie Mae waits for its filings (fanniemae.com 403; SEC User-Agent contact pending) | `research/a2_net_exposure/` |
-| A5 | ready for review (descriptive part; skeptic run, 7 objections incl. 1 blocker, all addressed, see `tracks/analysis-review-log.md`); borrower-to-holder link waits on Q4 | `research/a5_distribution/` |
+| A5 | in progress: Q4(c) estimate with (b) beside it built (SCF 2025 student-loan shares; labelled ESTIMATE); second skeptic pass pending | `research/a5_distribution/` |
 | A8 | blocked (network: every national source refused by the proxy; see `research/a8_international/AVAILABILITY.md`); availability note and unverified crosswalk draft done; metric choice is Q5 | `research/a8_international/` |
 
 ## Log notes for the coordinator
@@ -27,6 +27,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ### 2026-11-04 (later), after Eleonora's decisions on Q1–Q5 (PLAN.md, a590475)
 - Host check from this session: newly allowed hosts answer except `www150.statcan.gc.ca` and `data-api.ecb.europa.eu` (no answer) and `www.fanniemae.com` (403). Reported to the coordinator.
 - A2 Q1(b): Freddie Mac 10-Ks FY2013–FY2025 from freddiemac.com (not SEC); `tenk.py` parses four table layouts, every table reconciles to its own total, overlapping year ends agree across filings. Z.1 Freddie holdings are 99.4–99.6% of the 10-K portfolio UPB (independent check of the gross side). 14 register rows written by hand.
+- A5 Q4(c): `public_by_group.py` imputes public exposure by wealth and income group from DFA, SCF 2025 and Z.1; both methods add up to the Z.1 public total; 12 register rows (10 ESTIMATE) by hand.
 - Errors caught by Claude (main) through the reconciliation check while building the parser: a wrapped label turned a subtotal into a component (FY2018–20, doubled sums); "Total $" rows were missed so the parse ran past the table (FY2015); a wrapped "STACR ... / transactions" label would have been filed as "other". All caught by the table-total assert before any number was used.
 
 ## Questions for Eleonora
