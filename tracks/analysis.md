@@ -7,7 +7,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 |---|---|---|
 | A2 | ready for review (bounds; skeptic run, 6 objections, 5 fixed, see `tracks/analysis-review-log.md`); the net series itself waits on Q1 | `research/a2_net_exposure/` |
 | A5 | in progress: availability note, borrower tables, state maps done; register rows and skeptic pending; borrower-to-holder link waits on Q4 | `research/a5_distribution/` |
-| A8 | todo | |
+| A8 | blocked (network: every national source refused by the proxy; see `research/a8_international/AVAILABILITY.md`); availability note and unverified crosswalk draft done; metric choice is Q5 | `research/a8_international/` |
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
@@ -45,5 +45,16 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - Recommendation: (c) as a labelled estimate, with (b) shown next to it so the size of the assumption is visible. Until you answer, A5 stays at (a).
 
 
+**Q5 (A8). Which comparison metric, and can the national hosts be allowed?** The US share is a holder measure; Canada's public exposure is mostly insurance on privately held loans; Germany's public-law banks are publicly owned but do not guarantee borrowers (draft crosswalk, unverified: `research/a8_international/CROSSWALK.md`).
+- (a) Holder only: who owns the loan. Comparable with the US series, but misses Canadian mortgage insurance and would put Germany's Sparkassen either at 100% or at 0% depending on how ownership is treated.
+- (b) Credit-risk bearer: who takes the loss on default (holder, unless an insurer or guarantor stands in front). Closest to the project's question; needs insurance-in-force data (CMHC) and scheme data (UK).
+- (c) Report both (a) and (b), with the gaps stated.
+- Recommendation: (c), with (b) as the headline, since the project's question is who carries the risk. Either way A8 needs the hosts in `research/a8_international/AVAILABILITY.md` ("What would unblock A8") added to Allowed domains, or the national tables downloaded by hand into `data/a8/`.
+
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
+
+- PLAN.md "Environment prerequisites": CMHC, Bank of England, Bundesbank, Statbank DK, BIS and ECB are listed as reachable on 2026-11-03, but all were refused (403) on 2026-11-04. Also refused: `www.sec.gov`, `efts.sec.gov`, all freddiemac.com and fanniemae.com hosts, `api.census.gov`, `www2.census.gov`, `www.usmi.org`. Suggest updating that table.
+- PLAN.md row A2: suggested status "bounds done (net series waits on Q1/Q2)"; row A5: "descriptive part done (borrower-to-holder link waits on Q4)"; row A8: "blocked (network; Q5)".
+- claims/register.csv: on merge, fold `a5_public_share_cc_2026q2_readme` into `public_share_cc_2026q2` as an extra location (same claim, C8).
+- `tracks/analysis-review-log.md` → `claims/review-log.md` on merge.
