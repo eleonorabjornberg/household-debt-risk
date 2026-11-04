@@ -17,7 +17,7 @@ Nothing touched production or the database.
 | B2 | ready for review | `research/b2_crt_pricing/`. FHFA Dec 2016 deal-level credit costs, 47 deals 2013–16; zero-attach median 32 bps a year, a multiple of about 6.4 (outstanding basis) or 10.4 (original basis) of FHFA's own baseline expected loss; 3.3–6.9% a year per dollar of tranche. Skeptic (s16–s22, 4 major) addressed. 2017+ prices chart-only; GSE/SEC deal data blocked. Method choices: Q-B2. |
 | B3 | ready for review (core); presets and app blocked (Q-B3; app is coordinator site work) | `research/b3_scenarios/`: Python engine + JS twin, invariant tests, JS matches Python on fixed cases (ee9df53, 4b33458). No preset scenario values until sourced. |
 | B4 | blocked (needs B3 presets: Q-B3) | Policy-regime scenarios run on B3 presets; nothing built. |
-| C2 | in progress | Spec registry `research/c2_forecast/SPECS.md` opened before any score; implements frozen protocol 192d60c. |
+| C2 | in progress (development done; quant-reviewer running; three protocol items with the coordinator) | `research/c2_forecast/` (0bc647b). Under the frozen protocol, development only, pseudo out-of-sample: at h = 1 both Z candidates beat no-change after Holm, but not AR; nothing survives Holm at h = 4 or 8; 80% intervals cover at h = 1 and fall short at h = 8; Z+C1 has too few origins. Holdout not opened. Placebo shows drift-like skill (protocol question). |
 | C1 | ready for review (development sample); holdout run waits on Q-C1c | Spec `EVALUATION.md` (7ae4afb) before any score; deviations dated there. Real-time Z.1 from all 41 archived releases (2017-03-09 in folder 20170305). Development result (99d56cd): accounting bridge RMSE about 0.74 of no-change, not significant after Holm, biased downward (mostly 2020–21); bridge regression better on its own 2019Q3–2023Q2 targets, Holm-significant at k = 1 and 2 only. quant-reviewer (q11–q16) and skeptic (s9–s15) run and addressed; one minor stated limitation open (s12). |
 
 ## Log notes for the coordinator
@@ -46,6 +46,17 @@ Nothing touched production or the database.
 - Subagents this part: quant-reviewer on C1 (about 72k tokens, 21 tool calls; 6 objections, 2 major), skeptic on C1 (about 113k tokens, 38 tool calls; 7 objections, 2 major). Errors they caught: double-counted targets at k = 3 (quant-reviewer q11); the bridge regression compared on different targets from the bridge (q12, s11); the '2017-03-09 release missing' claim, which was wrong: it is in folder 20170305 (skeptic s9); wrong dates in sources.md (s14).
 - Coordinator's quant review of B1 (coord-q1..q4) caught: a false 'every row fails EG' sentence (major), a 95% half-width presented as power, a causal attribution from post-hoc variants, and the correction missing from METHOD.md. All fixed (dc68eb7).
 - Merge of the coordinator branch (1c51735): its folded register rows for b1/c1 were stale; c1 rows replaced in place, b1 rows moved back to `claims/tracks/markets.csv` (flagged to the coordinator).
+
+**Overnight run, 2026-11-04 (after the coordinator's queue message; Eleonora's approval checked in PLAN.md at cc74d76).**
+- B2 built and reviewed by the skeptic (sonnet, about 48k tokens, 10 tool calls; 7 objections, 4 major, all addressed). The skeptic caught:
+  - the EL basis mismatch;
+  - "per dollar sold" overstating the price;
+  - the guarantee-fee identity (FHFA's fee = cost + 21/30 bps), which made one "finding" an identity;
+  - ex-ante prices worded as payments.
+  I caught, from the rendered PDF, the mislabelled Freddie "retained" column and that the nameless rows are blank in FHFA's own table.
+- B3 engine and JS twin built (no reviewer: arithmetic engine, tested by invariants).
+- C2 built. Error *caught by Claude (main session)*: I ran the first development scoring before writing the leakage tests, against the protocol's order. It is recorded in `SPECS.md` and reported to the coordinator. The tests then passed without code changes.
+- The z1r parse for pre-2016 vintages was not attempted (lower priority than the queue).
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
