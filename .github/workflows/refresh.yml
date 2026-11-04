@@ -1,17 +1,16 @@
 name: refresh-data
 
-# Z.1 is released in the second week of Mar/Jun/Sep/Dec; run on the 20th of those months
-# (11:17 UTC) so the new release is always out. NY Fed HHDC (Feb/May/Aug/Nov) is picked up on the
-# next run. Manual runs: Actions -> refresh-data -> Run workflow.
+# Manual only (decision F3-1, Eleonora, 2026-11-04): load the database after a z1-release PR has been
+# reviewed and merged (Actions -> refresh-data -> Run workflow, load = true). New releases are detected,
+# rebuilt and proposed by z1-release.yml, which never loads or deploys; nothing here runs on a schedule,
+# so no data reach the sites before her merge.
 on:
-  schedule:
-    - cron: "17 11 20 3,6,9,12 *"
   workflow_dispatch:
     inputs:
       load:
-        description: "Load into the database (DATABASE_URL secret)"
+        description: "Load into the production database (DATABASE_URL secret). Only after merging a reviewed z1-release PR."
         type: boolean
-        default: true
+        default: false
 
 concurrency:
   group: refresh-data
@@ -28,7 +27,7 @@ jobs:
       run:
         working-directory: pipeline
     env:
-      DATABASE_URL: ${{ (github.event_name == 'schedule' || inputs.load) && secrets.DATABASE_URL || '' }}
+      DATABASE_URL: ${{ inputs.load && secrets.DATABASE_URL || '' }}
       FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       HHDEBT_REQUIRE_DATA: "1"
     steps:
