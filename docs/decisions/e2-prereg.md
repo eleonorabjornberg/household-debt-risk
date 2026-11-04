@@ -1,9 +1,9 @@
-> **Claude draft.** Drafted by Claude; Eleonora's choices are recorded in the Decisions table. Not frozen: E2 must not be run until every choice is made and the frozen commit exists (`preregister` skill).
+> **Claude draft.** Drafted by Claude; Eleonora's choices are recorded in the Decisions table. Not frozen: E2 must not be run until the frozen commit exists (`preregister` skill). Every choice now has her value; the freeze is held for one question (below).
 
 # Pre-registration: E2, planted-error test for the reviewer subagents
-Status: **draft, partly decided** (2026-11-04). Not frozen. No E2 result exists.
+Status: **draft, all choices decided, freeze held** (2026-11-04). Not frozen. No E2 result exists.
 
-## Decisions (Eleonora, 2026-11-04, decision card about 16:35–16:41 UTC; PLAN.md "Decisions taken", `543d96a`: "accept all the recommendations for CHOICE-1 to CHOICE-9")
+## Decisions (Eleonora, 2026-11-04, decision cards about 16:35–16:41 UTC; PLAN.md "Decisions taken" on `claude/sweet-gates-avwrcs`, `543d96a`: "accept all the recommendations for CHOICE-1 to CHOICE-9"; values for CHOICE-1, -2, -4 and -10 relayed by the coordinator session the same day)
 | Choice | Decided |
 |---|---|
 | CHOICE-3 size | (a) 12 planted documents × 3 errors + 4 controls (36 errors) |
@@ -12,12 +12,25 @@ Status: **draft, partly decided** (2026-11-04). Not frozen. No E2 result exists.
 | CHOICE-7 scoring | (b) `score.py` location match, human "same fix" judgement, a second human re-scores a random 20% |
 | CHOICE-8 intervals | both; cluster bootstrap over documents (2,000 resamples) is primary |
 | CHOICE-9 baseline reviewer | yes, on data documents only |
-| **CHOICE-1 recall threshold** | **open**: the draft gave no recommended value. Proposed 70% (tracks/infra.md E2-2) |
-| **CHOICE-2 false-alarm ceiling** | **open**: no recommended value. Proposed 25% |
-| **CHOICE-4 seed** | **open**: the draft listed two options with no recommendation. Proposed: the fixed integer `20261104`, written here before freezing (the commit-hash option cannot be known before the commit that contains it) |
-| **CHOICE-10 category balance** | **open**: outside "CHOICE-1 to 9". Recommended (b), stratified |
+| CHOICE-1 recall threshold | **70%** (same for skeptic and quant-reviewer) |
+| CHOICE-2 false-alarm ceiling | **25%** |
+| CHOICE-4 seed | **the fixed integer `20261104`** |
+| CHOICE-10 category balance | **(b) stratified**: each category planted a fixed number of times. With the document list below this is 3 per data category (8 × 3 = 24 skeptic errors) and 2 per method category (6 × 2 = 12 quant-reviewer errors): `plant.py --stratified` |
 
-The file is frozen (`prereg: E2 (frozen)`) once the four open choices have values. Until then `plant.py` refuses to run.
+### Before freezing: the per-agent sample size (found by Claude, 2026-11-04, while freezing)
+CHOICE-1 was recommended on the arithmetic "36 errors, about ±15 pp: 70% is supported only by 31/36 (86%) or more". But H1 and H2 are tested **per agent**, and the 36 errors of CHOICE-3 (a) split between the agents. With the documents listed below, 12 planted documents give 8 data and 4 method documents (a rehearsal with seed 20261104, nothing reviewed, confirms it):
+
+| Test | Errors | Smallest result that supports 70% (Wilson lower bound ≥ 0.70) |
+|---|---|---|
+| H1 skeptic | 24 | **22/24 (92%)**: lower bound 0.742; 21/24 gives 0.690 |
+| H2 quant-reviewer | 12 | **12/12 (100%)**; 11/12 gives 0.646 |
+
+These are Wilson bounds; the primary interval (CHOICE-8) is the cluster bootstrap over documents, which is usually wider, so the bar is if anything higher. The rehearsal used `research/c2_forecast/SPECS.md` as the second method document; the method list should name exact files at the freeze. So H2 can be supported only by a perfect score, and H1 needs 92%, not the 86% the recommendation quoted. The freeze is held so Eleonora can choose, knowing this:
+- (a) freeze as decided (H2 is then close to untestable; H1 strict);
+- (b) 12 planted documents per agent (12 data + 12 method, 36 errors each, the ±15 pp the recommendation assumed; at 70% then 31/36 is needed). This is CHOICE-3 (b)'s size, about twice the reviewer runs;
+- (c) keep the design and lower the threshold.
+
+Once she answers, the file is frozen (`prereg: E2 (frozen)`); until then `plant.py` refuses to run.
 
 ## Question
 How often do the project's reviewer subagents, `skeptic` (data: revisions, definitions, double counting, holder-vs-risk, causal words, arithmetic) and `quant-reviewer` (method: leakage, look-ahead, overfitting, multiple testing, standard errors, benchmarks), catch errors deliberately planted in copies of real project write-ups? Which kinds do they miss, and how often do they raise objections where nothing was planted?
@@ -54,7 +67,7 @@ How often do the project's reviewer subagents, `skeptic` (data: revisions, defin
 
 ## Planting and the hidden key
 - Tooling (built 2026-11-04, tested on synthetic documents only): `evals/e2_planted_errors/` (`catalogue.yaml`, `plant.py`, `score.py`). `plant.py` refuses to run until this file's Status line says frozen.
-- `plant.py` takes the frozen seed (**CHOICE-4**: a fixed integer chosen before running, or the first 8 hex digits of the freeze commit).
+- `plant.py` takes the frozen seed (**CHOICE-4**: `20261104`) and `--stratified` (**CHOICE-10**).
   - For each planted document, it applies the given number of catalogue transformations at random eligible lines.
   - It writes the variants to `evals/e2_planted_errors/run-<id>/docs/` and the key (document, line, category, original text, planted text) to `run-<id>/key.json`.
 - The key is hidden from the reviewers:
