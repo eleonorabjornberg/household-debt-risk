@@ -1924,18 +1924,17 @@
   },
   {
    "id": "uncoll_break_2005q4",
-   "claim": "Without the student-loan imputation, uncollateralized debt would jump from 7.6% to 11.5% in 2006Q1.",
+   "claim": "Uncollateralized debt was 7.6% of in-scope household debt in 2005Q4, counting revolving credit only (no student-loan imputation).",
    "display": [
-    "7.6%",
-    "11.5%"
+    "7.6%"
    ],
    "value": "0.0763",
    "unit": "share",
-   "period": "2005Q4-2006Q1",
+   "period": "2005Q4",
    "locations": [
     "web/content/story.ts:312"
    ],
-   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2005Q4_rev_only (0.0763) and uncoll_share_2006Q1 (0.1146)",
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2005Q4_rev_only (0.0763)",
    "series": [
     "FL153166100",
     "FL153166220",
@@ -1944,7 +1943,36 @@
    "vintage": "z1:2026-09-11",
    "validation": "ESTIMATE",
    "checkId": "",
-   "notes": "Value is the 7.6% (2005Q4); the 11.5% (2006Q1) is 0.1146. Pre-2006 student loans are imputed by a linear ramp, so the 'without imputation' framing depends on an estimate.",
+   "notes": "Pre-2006 student loans are imputed by a linear ramp, so the 'without imputation' framing depends on an estimate. The 2006Q1 value is row uncoll_share_2006q1 (split 2026-11-04, D3 claim-check finding).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Consumer credit types are partly estimated",
+    "Z.1 splits out revolving credit from 1968 and student loans only from 2006 Q1. Before 2006 student loans sit inside \"other non-revolving\"; the pipeline imputes them with a linear ramp from 1965 and flags those quarters as estimated, which removes a break that would otherwise make uncollateralized debt jump from 7.6% to 11.5% in 2006 Q1."
+   ],
+   "exact": []
+  },
+  {
+   "id": "uncoll_share_2006q1",
+   "claim": "Uncollateralized debt was 11.5% of in-scope household debt in 2006Q1, the first quarter with reported student loans.",
+   "display": [
+    "11.5%"
+   ],
+   "value": "0.1146",
+   "unit": "share",
+   "period": "2006Q1",
+   "locations": [
+    "web/content/story.ts:312"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2006Q1 (0.1146)",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL153166205"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "ESTIMATE",
+   "checkId": "",
+   "notes": "Split from uncoll_break_2005q4 (D3 claim-check finding, infra track).",
    "register": "claims/register.csv",
    "anchors": [
     "Consumer credit types are partly estimated",
