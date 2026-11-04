@@ -168,6 +168,10 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | B4 GSE release (card b4-gse): **(a)**, a range of 0–100% of GSE-book losses turning private, with 25/50/75 points; Ginnie pools stay public. | Eleonora |
 | 2026-11-04 | B4 student-loan reform (card b4-student): **(c)**, use a CBO or ED estimate of the shift in lending. Needs a reachable, free source (cbo.gov returned 403 and ED was blocked); if none is found, it comes back to her. | Eleonora |
 | 2026-11-04 | Review queue round 3 (17:24 UTC): B3 2008–12 replay and B4 recession range accepted as is. FRED_API_KEY and DATABASE_URL_READONLY secrets: Later (cards). | Eleonora |
+| 2026-11-04 | E2 design (card e2-11, CHOICE-11): **(a)**, one of each category: skeptic 8 planted errors in 4 documents, quant-reviewer 6 in 3, plus 2 controls (9 documents, +5 baseline). | Eleonora |
+| 2026-11-04 | E2 decision rule (card e2-12, CHOICE-12): **(i)**, E2 is a descriptive pilot: recall with its interval and a per-category table, no supported/against verdict; the confirmatory 70% test waits for a larger run. | Eleonora |
+| 2026-11-04 | E2 intervals (card e2-8, changes CHOICE-8): **Wilson 95% intervals primary**, with the within-document clustering stated. | Eleonora |
+| 2026-11-04 | API pilot plan (card pilot-plan): **go**. E1 only: build and verify 10 questions (no API cost), then 10 questions × 3 models × 1 run = 30 runs, estimate $1.99, hard cap $2.98; stop if any model's cost per run exceeds 1.5× its estimate; re-check live prices first. | Eleonora |
 
 ## Environment prerequisites
 
