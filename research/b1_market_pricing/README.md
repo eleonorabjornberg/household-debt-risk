@@ -12,20 +12,22 @@ Data: Fed Z.1 dated 2026-09-11; FRED retrieved 2026-11-04. Sample 1986Q1–2026Q
 
 | Specification | Coefficient on public share (pp of spread per unit of share) | 95% HAC interval | Residual ADF |
 |---|---|---|---|
-| Levels, main | 1.22 | 0.17 to 2.26 | −3.77 |
-| Levels, headline share (mortgages + consumer credit) | 1.80 | 0.41 to 3.19 | −3.87 |
-| Levels, 5y/10y Treasury blend | 1.11 | −0.04 to 2.25 | −3.67 |
-| Levels, sample ends 2022Q3 | −0.31 | −1.10 to 0.47 | −4.46 |
-| First differences, main | −0.08 | −3.66 to 3.49 | |
-| *Post-hoc:* levels, dummy for 2022Q4+ | −0.31 | −1.06 to 0.44 | −4.73 |
-| *Post-hoc:* levels, Fannie+Freddie share only | 0.46 | −1.97 to 2.89 | −3.63 |
-| *Post-hoc:* levels, HAC lag 8 | 1.22 | −0.01 to 2.44 | |
+| Levels, main | 1.18 | 0.15 to 2.22 | −3.77 |
+| Levels, headline share (mortgages + consumer credit) | 1.77 | 0.40 to 3.14 | −3.87 |
+| Levels, 5y/10y Treasury blend | 1.07 | −0.05 to 2.20 | −3.67 |
+| Levels, sample ends 2022Q3 | −0.33 | −1.12 to 0.46 | −4.46 |
+| First differences, main | −0.57 | −4.48 to 3.34 |  |
+| *Post-hoc:* levels, dummy for 2022Q4+ | −0.33 | −1.08 to 0.43 | −4.73 |
+| *Post-hoc:* levels, Fannie+Freddie share only | 0.50 | −1.92 to 2.92 | −3.63 |
+| *Post-hoc:* levels, HAC lag 8 | 1.18 | −0.03 to 2.39 |  |
 
 All coefficients and the first-differences version of every row are in `regressions.csv`.
 
+*Correction, 2026-11-04.* The share is now computed at catalog level, as `validation/run.py` does. The first version used A1's finer holder cells. In 1974Q3–1986Q3 the Z.1 pool sub-series add up to more than the pool total, so those cells overstated the share in the first three sample quarters and put an artificial step at 1986Q4. That mostly moved the first-differences estimate. The verdict is unchanged. The issue was found while cross-checking C1's vintages.
+
 - **Treat the positive levels coefficients as artefacts.** Every residual ADF statistic falls short of the Engle–Granger 5% critical value (about −5.10 for this many variables, and still −3.79 counting only the three series that look non-stationary). So the levels fits may be spurious and their intervals unreliable.
 - **The positive sign comes from the PMMS method change.** Freddie Mac switched PMMS from a lender survey to application data on 2022-11-17. Ending the sample at 2022Q3, or adding a dummy for the later quarters, turns the coefficient negative and insignificant. The dummy itself is 0.87 pp. That is far larger than the step the skeptic estimated against Optimal Blue rates, so the dummy also absorbs other 2023–26 conditions.
-- **The test has little power.** The first-differences interval, scaled by the rise in the share between 1986Q1–2008Q2 and 2020Q1–2026Q2, allows the spread to have moved by about 0.64 pp either way. That covers any plausible compression.
+- **The test has little power.** The first-differences interval, scaled by the rise in the share between 1986Q1–2008Q2 and 2020Q1–2026Q2, allows the spread to have moved by about 0.70 pp either way. That covers any plausible compression.
 
 **Descriptive means** (`spreads_summary.csv`):
 
