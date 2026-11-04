@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """E2: plant catalogued errors into copies of project write-ups, and write the hidden key (PLAN E2).
 
+The frozen E2 command (docs/decisions/e2-prereg.md, CHOICE-11 (a)):
+
     uv run --project pipeline python evals/e2_planted_errors/plant.py \
-        --data research/a1_gfc_decomposition/README.md analysis/findings.md \
-        --method research/c1_nowcast/README.md \
-        --planted 12 --errors-per-doc 3 --controls 4 --seed 20261104 --stratified --out evals/e2_planted_errors/run-<id>
+        --data research/a1_gfc_decomposition/README.md research/a2_net_exposure/README.md \
+               analysis/findings.md .claude/skills/research-memo/examples/bank_treasury.md \
+        --method research/c1_nowcast/README.md research/c1_nowcast/EVALUATION.md research/c2_forecast/SPECS.md \
+        --planted-data 4 --planted-method 3 --controls-data 1 --controls-method 1 \
+        --errors-per-doc 2 --seed 20261104 --stratified --out evals/e2_planted_errors/run-<id>
 
 Writes into --out:
   docs/doc-<hex>.md   the variants reviewers see (planted and control copies, neutral names, shuffled)
@@ -167,11 +171,12 @@ def stratify(docs: list[str], cats: list[dict], k: int, rng: random.Random) -> l
     return [[by_id[c] for c in combo] for combo in out]
 
 
-def is_frozen(prereg: Path = PREREG) -> bool:
+def is_frozen(prereg: Path | None = None) -> bool:
+    prereg = prereg or PREREG
     return prereg.exists() and re.search(r"^Status:\s*\**frozen", prereg.read_text(), re.M | re.I) is not None
 
 
-def run(data: list[Path], method: list[Path], planted: int, k: int, controls: int, seed: int, out: Path,
+def run(data: list[Path], method: list[Path], planted: int | dict, k: int, controls: int | dict, seed: int, out: Path,
         rehearsal: bool = False, stratified: bool = False) -> dict:
     if not rehearsal and not is_frozen():
         raise SystemExit("docs/decisions/e2-prereg.md is not frozen: E2 may not be run (use --rehearsal for a dry run)")
@@ -180,8 +185,21 @@ def run(data: list[Path], method: list[Path], planted: int, k: int, controls: in
     sources = [(p, "skeptic") for p in data] + [(p, "quant-reviewer") for p in method]
     if not sources:
         raise SystemExit("no documents")
-    jobs = [("planted", sources[i % len(sources)]) for i in range(planted)] + \
-           [("control", sources[i % len(sources)]) for i in range(controls)]
+    if isinstance(planted, dict) or isinstance(controls, dict):
+        # counts per agent (CHOICE-11): each agent cycles over its own documents
+        planted = planted if isinstance(planted, dict) else {}
+        controls = controls if isinstance(controls, dict) else {}
+        per = {"skeptic": [s_ for s_ in sources if s_[1] == "skeptic"],
+               "quant-reviewer": [s_ for s_ in sources if s_[1] == "quant-reviewer"]}
+        jobs = []
+        for role, counts in (("planted", planted), ("control", controls)):
+            for agent, n in counts.items():
+                if n and not per[agent]:
+                    raise SystemExit(f"no {agent} documents for {n} {role} copies")
+                jobs += [(role, per[agent][i % len(per[agent])]) for i in range(n)]
+    else:
+        jobs = [("planted", sources[i % len(sources)]) for i in range(planted)] + \
+               [("control", sources[i % len(sources)]) for i in range(controls)]
     rng.shuffle(jobs)
     (out / "docs").mkdir(parents=True, exist_ok=True)
     key = {"seed": seed, "rehearsal": rehearsal, "stratified": stratified, "errors_per_doc": k, "variants": []}
@@ -225,7 +243,11 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--data", nargs="*", type=Path, default=[])
     ap.add_argument("--method", nargs="*", type=Path, default=[])
-    ap.add_argument("--planted", type=int, required=True)
+    ap.add_argument("--planted", type=int, help="planted copies, cycling over all sources (pre-CHOICE-11)")
+    ap.add_argument("--planted-data", type=int, help="planted copies of data documents (skeptic)")
+    ap.add_argument("--planted-method", type=int, help="planted copies of method documents (quant-reviewer)")
+    ap.add_argument("--controls-data", type=int, help="control copies of data documents")
+    ap.add_argument("--controls-method", type=int, help="control copies of method documents")
     ap.add_argument("--errors-per-doc", type=int, default=3)
     ap.add_argument("--controls", type=int, default=0)
     ap.add_argument("--seed", type=int, required=True)
@@ -234,8 +256,16 @@ def main(argv=None) -> int:
                     help="CHOICE-10 (b): every category of an agent planted the same number of times")
     ap.add_argument("--rehearsal", action="store_true", help="dry run before the freeze; never a result")
     a = ap.parse_args(argv)
-    r = run([p.resolve() for p in a.data], [p.resolve() for p in a.method], a.planted, a.errors_per_doc,
-            a.controls, a.seed, a.out, a.rehearsal, a.stratified)
+    per_agent = any(v is not None for v in (a.planted_data, a.planted_method, a.controls_data, a.controls_method))
+    if per_agent == (a.planted is not None):
+        ap.error("give either --planted (and --controls) or the per-agent counts, not both")
+    if per_agent:
+        planted = {"skeptic": a.planted_data or 0, "quant-reviewer": a.planted_method or 0}
+        controls = {"skeptic": a.controls_data or 0, "quant-reviewer": a.controls_method or 0}
+    else:
+        planted, controls = a.planted, a.controls
+    r = run([p.resolve() for p in a.data], [p.resolve() for p in a.method], planted, a.errors_per_doc,
+            controls, a.seed, a.out, a.rehearsal, a.stratified)
     print(f"{r['variants']} variants, {r['errors']} planted errors; key.sha256 {r['digest']}")
     print("Commit key.sha256 now, before any reviewer runs. Do not show key.json to reviewers.")
     return 0
