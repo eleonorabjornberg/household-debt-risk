@@ -1,5 +1,9 @@
 # Who Holds the Debt?
 
+[![ci](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/ci.yml)
+[![refresh-data](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/refresh.yml/badge.svg)](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/refresh.yml)
+[![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](opendata/README.md) [![Code: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
+
 How US household debt has been reshaped by economic crises since the 1950s. The project looks at two things most analyses skip:
 
 1. **Who bears the credit risk.** Household debt is split by *holder*, not just by loan type: the federal government, the GSEs and agency pools, banks, private securitization, and others. Did crises ratchet it onto public balance sheets?
@@ -39,11 +43,20 @@ Status of each part is in [`PLAN.md`](PLAN.md); how it was built, with which mod
 | [`.claude/skills/z1-release-update/`](.claude/skills/z1-release-update/) | Skill that runs a new Z.1 release end to end and stops for approval; trigger examples and a June → September 2026 replay in `examples/` |
 | [`prompts/`](prompts/) | The prompts that built the project, one dated file per session |
 | [`docs/`](docs/) | [`building-with-claude.md`](docs/building-with-claude.md), the session log |
-| [`.github/workflows/`](.github/workflows/) | Quarterly pipeline refresh |
+| [`research/`](research/) | Phase A–C analyses (A1, A2, A5, A8, B1, C1 so far), one folder per task, each with a README and method notes |
+| [`docs/decisions/`](docs/decisions/) | Method decisions and frozen pre-registrations (A4, A7, C2) |
+| [`.claude/agents/`](.claude/agents/) | Review and helper subagents (skeptic, quant-reviewer, editor, register-keeper, analyst, prompt-archivist) |
+| [`mcp/household-credit-mcp/`](mcp/household-credit-mcp/) | Read-only MCP server over the project's data |
+| [`opendata/`](opendata/) | Downloads, data dictionary, licences and the API plan |
+| [`tools/`](tools/) | Reproduction check and chart-text checks |
+| [`claims/site/`](claims/site/) | Source references shared by both sites (F1) and the link check |
+| [`.github/workflows/`](.github/workflows/) | CI and the quarterly pipeline refresh |
 
-Planned and not built yet (see PLAN.md): `research/` (Phases A–C), `.claude/agents/`, `mcp/household-credit-mcp/`, `plugin/fed-data-desk/`, `evals/`, `docs/decisions/`, `paper/`, `claims/review-log.md`.
+Planned and not built yet (see PLAN.md): `plugin/fed-data-desk/`, `evals/`, `paper/`.
 
 ## How to reproduce the numbers
+
+Everything at once: `make all` (`make help` lists the steps; `make ci` runs what CI runs). Step by step:
 
 From a fresh clone, with Python and [uv](https://docs.astral.sh/uv/). It needs network access to `www.federalreserve.gov`, and no database or API keys.
 
