@@ -93,6 +93,9 @@ def join(deals: pd.DataFrame, costs: pd.DataFrame) -> pd.DataFrame:
         cand = cand[~cand.index.isin(used)]
         assert len(cand) == 1, ("ambiguous or missing deal match", c["name"], len(cand))
         i = cand.index[0]
+        if pd.isna(deals.loc[i, "name_deal_table"]):
+            # nameless deal-table row: matched by attach/detach and order; the dates must agree too (mkt-s21)
+            assert deals.loc[i, "date_deal_table"] == c["date_cost_table"], ("nameless row date mismatch", c["name"])
         used.add(i)
         d = deals.loc[i]
         assert (d.attach_bp, d.detach_bp) == (c.attach_bp, c.detach_bp), ("attach/detach disagree", c["name"])
@@ -119,14 +122,20 @@ def pool_path(cpr=CPR, cdr=CDR, lgd=LGD, months=HORIZON_M):
     return bals, cums
 
 
-def tranche_el_bp(attach_bp: float, detach_bp: float, **kw) -> float:
-    """Baseline expected loss of the slice, bps per year of reference UPB (METHOD.md item 2)."""
+def tranche_el_bp(attach_bp: float, detach_bp: float, basis: str = "outstanding", **kw) -> float:
+    """Baseline expected loss of the slice, bps per year (METHOD.md item 2).
+
+    basis="outstanding": per year of the average outstanding pool balance (main). FHFA's estimated guarantee fee
+      equals the credit cost plus fixed components (checked in main), and guarantee fees accrue on the outstanding
+      balance, so this is the footing on which the credit cost is read.
+    basis="original": per year of the original reference UPB (skeptic mkt-s16's alternative).
+    """
     bals, cums = pool_path(**kw)
     a, d = attach_bp / 1e4, detach_bp / 1e4
     slice_loss = min(max(cums[-1] - a, 0.0), d - a)
     years = len(bals) / 12
-    avg_bal = sum(bals) / len(bals)
-    return 1e4 * slice_loss / (avg_bal * years)
+    denom = (sum(bals) / len(bals)) if basis == "outstanding" else 1.0
+    return 1e4 * slice_loss / (denom * years)
 
 
 def main() -> int:
@@ -138,23 +147,35 @@ def main() -> int:
     assert ((c > 0) & (c < 100)).all()
     for prog, g in df.groupby("program"):
         assert g["date"].is_monotonic_increasing or g["date"].diff().dropna().min() >= pd.Timedelta(days=-31), prog
+    # FHFA's estimated guarantee fee = credit cost + TCCA 10 + G&A 7 + residual 4 (low LTV) or 13 (high LTV) bps:
+    # the fee is built from the cost, so their ratio is an identity, not a finding (mkt-s18). Checked on every row.
+    both = df.dropna(subset=["credit_cost_bp", "est_gfee_bp"])
+    gap = (both.est_gfee_bp - both.credit_cost_bp)
+    assert set(gap.round().astype(int)) <= {21, 30}, sorted(set(gap))
     df["el_bp"] = [tranche_el_bp(a, d) for a, d in zip(df.attach_bp, df.detach_bp)]
-    df["multiple"] = [cc / el if (el > 0 and cc == cc and cc is not None) else math.nan
-                      for cc, el in zip(df.credit_cost_bp, df.el_bp)]
+    df["el_orig_bp"] = [tranche_el_bp(a, d, basis="original") for a, d in zip(df.attach_bp, df.detach_bp)]
+    mult = lambda cc, el: cc / el if (el > 0 and cc == cc and cc is not None) else math.nan
+    df["multiple"] = [mult(cc, el) for cc, el in zip(df.credit_cost_bp, df.el_bp)]
+    df["multiple_orig"] = [mult(cc, el) for cc, el in zip(df.credit_cost_bp, df.el_orig_bp)]
+    # Annual cost at issuance (first-year balance = reference UPB). Per dollar of tranche, on FHFA's own basis
+    # (100% of the [attach, detach] slice sold), not per dollar actually sold (mkt-s17).
     df["annual_cost_musd"] = df.credit_cost_bp / 1e4 * df.ref_upb_musd
+    df["tranche_musd"] = (df.detach_bp - df.attach_bp) / 1e4 * df.ref_upb_musd
     cols = ["program", "name", "date", "year", "date_deal_table", "date_cost_table", "date_tables_disagree", "ref_upb_musd",
             "attach_bp", "detach_bp", "sold_musd", "cas_retained_musd", "stacr_acis_insured_musd", "credit_cost_bp", "est_gfee_bp", "avg_gfee_bp",
-            "el_bp", "multiple", "annual_cost_musd"]
+            "el_bp", "el_orig_bp", "multiple", "multiple_orig", "annual_cost_musd", "tranche_musd"]
     df[cols].to_csv(HERE / "deals.csv", index=False, float_format="%.6g")
 
     by = df.groupby("year").agg(n_deals=("name", "size"), n_priced=("credit_cost_bp", "count"),
                                 ref_upb_priced_musd=("ref_upb_musd", lambda s: s[df.loc[s.index, "credit_cost_bp"].notna()].sum()),
                                 annual_cost_musd=("annual_cost_musd", "sum"),
-                                sold_priced_musd=("sold_musd", lambda s: s[df.loc[s.index, "credit_cost_bp"].notna()].sum()))
+                                sold_priced_musd=("sold_musd", lambda s: s[df.loc[s.index, "credit_cost_bp"].notna()].sum()),
+                                tranche_priced_musd=("tranche_musd", lambda s: s[df.loc[s.index, "credit_cost_bp"].notna()].sum()))
     by["upb_weighted_cost_bp"] = 1e4 * by.annual_cost_musd / by.ref_upb_priced_musd
-    # Premium per dollar of protection sold, % per year. FHFA's cost assumes 100% of notes sold, so dividing by
-    # the bonds actually sold overstates the rate where the Enterprise retained part of a tranche (METHOD.md).
-    by["cost_per_sold_pct"] = 100 * by.annual_cost_musd / by.sold_priced_musd
+    # Annual cost per dollar of tranche, % a year, on FHFA's own 100%-sold basis (mkt-s17)
+    by["cost_per_tranche_pct"] = 100 * by.annual_cost_musd / by.tranche_priced_musd
+    # Sold share of the tranche (the Enterprises retained the rest), for context
+    by["sold_share_of_tranche"] = by.sold_priced_musd / by.tranche_priced_musd
     a2 = pd.read_csv(A2_CRT).set_index("year")
     by = by.join(a2[["annual_ref_upb_musd", "annual_rif_musd"]], how="left")
     # Priced deals cover part of each year's CRT (CIRT/ACIS insurance, unpriced and seasoned deals excluded):
@@ -176,16 +197,21 @@ def main() -> int:
         "multiple": {"zero_attach_median": float(zero_attach.multiple.median()),
                      "zero_attach_min": float(zero_attach.multiple.min()),
                      "zero_attach_max": float(zero_attach.multiple.max()),
+                     "zero_attach_median_original_basis": float(zero_attach.multiple_orig.median()),
                      "n_zero_attach": int(zero_attach.multiple.notna().sum()),
-                     "n_positive_attach_absent": int(pos.multiple.isna().sum())},
-        "gfee_bp": {"est_median_zero_attach": float(zero_attach.est_gfee_bp.median())},
-        "cost_share_of_est_gfee_median": float((zero_attach.credit_cost_bp / zero_attach.est_gfee_bp).median()),
-        "cost_per_sold_pct_range": [float(by.cost_per_sold_pct.min()), float(by.cost_per_sold_pct.max())],
+                     "n_positive_attach_absent": int(pos.multiple.isna().sum()),
+                     # every zero-attach slice absorbs the whole baseline loss, so EL is one number for all of them
+                     "zero_attach_el_unique": bool(zero_attach.el_bp.round(9).nunique() == 1)},
+        "zero_attach_el_bp": {"outstanding_basis": float(zero_attach.el_bp.iloc[0]), "original_basis": float(zero_attach.el_orig_bp.iloc[0])},
+        "credit_cost_bp_range_zero_attach": [float(zero_attach.credit_cost_bp.min()), float(zero_attach.credit_cost_bp.max())],
+        "gfee_identity_gaps_bp": sorted({int(x) for x in gap.round()}),
+        "cost_per_tranche_pct_range": [float(by.cost_per_tranche_pct.min()), float(by.cost_per_tranche_pct.max())],
+        "sold_share_of_tranche_range": [float(by.sold_share_of_tranche.min()), float(by.sold_share_of_tranche.max())],
         "by_year": {int(y): {k: (None if pd.isna(v) else float(v)) for k, v in r.items()} for y, r in by.iterrows()},
     }
     (HERE / "results.json").write_text(json.dumps(res, indent=2, allow_nan=False) + "\n")
-    print(json.dumps({k: res[k] for k in ["baseline", "n_deals_priced", "n_deals_with_el", "credit_cost_bp", "multiple",
-                                         "cost_share_of_est_gfee_median"]}, indent=1))
+    print(json.dumps({k: res[k] for k in ["baseline", "n_deals_priced", "multiple", "zero_attach_el_bp",
+                                         "cost_per_tranche_pct_range", "sold_share_of_tranche_range"]}, indent=1))
     print(by.round(3).to_string())
     return 0
 

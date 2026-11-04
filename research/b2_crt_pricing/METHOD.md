@@ -46,3 +46,9 @@ Date: 2026-11-04. PLAN task B2: "CRT spreads as the market's price for the risk 
   - The column after "sold" in Freddie Mac's table is "Insured via ACIS", not "retained". It is now labelled that way; B2 does not use it.
   - The two rows without a deal name are blank in FHFA's printed table itself.
 - **Positive-attach multiples.** For deals attaching at 30–100 bps the baseline cumulative loss (about 31 bps) barely reaches the slice, so the multiple is unstable or absent. Summary multiples are reported for zero-attach deals only.
+
+2026-11-04, after the skeptic's review (R-20261104-mkt-s16 to s22, `claims/tracks/markets-review-log.md`):
+- **Unit settled** (s18). In every row with both figures, FHFA's estimated guarantee fee equals the credit cost plus 21 or 30 bps. That is TCCA 10 + G&A 7 + residual risk 4 (low LTV) or 13 (high LTV), per FHFA's footnote. So the credit cost is in bps a year, on the guarantee-fee footing. The identity is asserted. The "cost as a share of the guarantee fee" figure is dropped, because it is an identity, not a finding.
+- **EL basis shown both ways** (s16). The main basis stays the average outstanding balance, because guarantee fees accrue on the outstanding balance. The original-UPB basis is reported beside it. The multiple's median is about 6.4 on the outstanding basis and about 10.4 on the original basis. Every zero-attach slice absorbs the whole baseline loss, so their EL is one number, and the multiple's range is just the cost's range scaled.
+- **Price per dollar of tranche, not per dollar sold** (s17). FHFA's cost assumes the whole [attach, detach] slice is sold. Annual cost is now divided by the tranche size, (detach − attach) × reference UPB. The sold share of the tranche (the Enterprises kept the rest) is reported for context.
+- **Nameless rows** (s21). The match now also asserts that the deal-table and cost-table dates agree.
