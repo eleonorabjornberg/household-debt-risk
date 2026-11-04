@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { build } from "@/content/build";
+import { Sourced } from "@/components/claims/SourceRef";
 
 export const metadata: Metadata = {
   title: "How it was built",
@@ -26,7 +27,7 @@ export default function HowItWasBuiltPage() {
         <div className="col">
           <p className="kicker">How it was built</p>
           <h1>Built with Claude Code</h1>
-          <p>{build.lede}</p>
+          <p><Sourced text={build.lede} /></p>
         </div>
       </header>
 
@@ -37,7 +38,7 @@ export default function HowItWasBuiltPage() {
             {build.flow.map((f) => (
               <li key={f.step}>
                 <strong>{f.step}</strong>
-                <span>{f.text}</span>
+                <span><Sourced text={f.text} /></span>
               </li>
             ))}
           </ol>

@@ -1,0 +1,101 @@
+name: ci
+
+# PLAN F2. On every push and pull request: the claims register, the offline test suites, the
+# validation suite against the current Z.1 release, and test + build of both sites with the F1
+# source-register link check. Free to run: no secrets are required and nothing is written anywhere.
+# Evals (E1-E4) join once E3 exists, on a schedule or by hand, never on every push (they cost money).
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: register + tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: |
+            pipeline/uv.lock
+            mcp/household-credit-mcp/uv.lock
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Claims register and F1 site copies are current
+        run: make ci-static
+      - name: Offline test suites (pipeline, claims, validation, research, skills, MCP)
+        run: make test
+
+  validation:
+    name: validation suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: pipeline/uv.lock
+      - name: Download the current Z.1 release
+        run: |
+          mkdir -p data/z1
+          curl -fsSL --retry 4 --retry-delay 5 -o data/z1/FRB_Z1_csv.zip \
+            https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip
+      - name: Run validation (fails on any FAIL check)
+        # DATABASE_URL_READONLY is optional: with it, check D also compares mart.public_share.
+        env:
+          DATABASE_URL_READONLY: ${{ secrets.DATABASE_URL_READONLY }}
+        run: uv run -q --project pipeline python validation/run.py --z1-zip data/z1/FRB_Z1_csv.zip
+      - name: Results still match the committed ones
+        # A new Z.1 vintage changes them legitimately; that is a signal to run the refresh, not a code bug.
+        run: python3 tools/repro_check.py --ref HEAD || echo "::warning title=Not reproduced::validation/results.json differs from the committed run (new Z.1 vintage?). See the log."
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation-report-${{ github.run_id }}
+          path: |
+            validation/REPORT.md
+            validation/results.json
+
+  sites:
+    name: ${{ matrix.site }} test + build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        site: [web, atlas]
+    defaults:
+      run:
+        working-directory: ${{ matrix.site }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ${{ matrix.site }}/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npx eslint .
+      # No Supabase secrets: the sites build from the committed JSON snapshots.
+      - run: npm run build
+      - name: Every register row is a link on the site (F1)
+        working-directory: .
+        run: node claims/site/check_html.mjs --site ${{ matrix.site }}
+      - name: Every chart has a text description (F4)
+        working-directory: .
+        run: node tools/check_chart_text.mjs --site ${{ matrix.site }}

@@ -1,8 +1,7 @@
 "use client";
 
-// The scrollytelling shell: sticky stage (canvas + HUD + scrubber) with story steps scrolling
-// over it. Scrolling to a step sets the target quarter; the scrubber and play button set it
-// directly. The canvas reports back which quarter it is actually showing, and the HUD follows.
+// The scrollytelling shell: sticky stage (canvas + HUD + scrubber) with story steps scrolling over it. Scrolling to a
+// step sets the target quarter; the scrubber and play button set it directly. The canvas reports the quarter it shows; the HUD follows.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DotStage, { type PileLabel } from "./DotStage";
 import { buildTimeline, DOLLAR_UNIT_MUSD, SHARE_DOTS, type Lens } from "@/lib/timeline";
@@ -10,6 +9,7 @@ import { fmtPct, fmtQuarter, fmtTrillions, nearestIndex, sumReal } from "@/lib/f
 import type { Series } from "@/lib/types";
 import { PILE_LONG, PILE_NAMES, steps } from "@/content/story";
 import Coda from "./Coda";
+import { Sourced } from "./claims/SourceRef";
 
 function useReducedMotion(): boolean {
   const [rm, setRm] = useState(false);
@@ -205,10 +205,10 @@ export default function Experience({ series }: { series: Series }) {
             {tip}
           </div>
 
-          <div className="legend" aria-hidden>
-            <span><i className="dot dot--solid" /> Mortgage</span>
-            <span><i className="dot dot--ring" /> Consumer credit</span>
-            <span>{lens === "dollars" ? "1 dot = $50B (2026 $)" : "1 dot = 0.1% of all debt"}</span>
+          <div className="legend claim-up">
+            <span><i className="dot dot--solid" aria-hidden /> Mortgage</span>
+            <span><i className="dot dot--ring" aria-hidden /> Consumer credit</span>
+            <span><Sourced text={lens === "dollars" ? "1 dot = $50B (2026 $)" : "1 dot = 0.1% of all debt"} /></span>
           </div>
 
           <div className="scrub">
@@ -266,7 +266,7 @@ export default function Experience({ series }: { series: Series }) {
               <div className="step__card">
                 <p className="step__kicker tag">{s.kicker}</p>
                 <h2>{s.title}</h2>
-                <p>{fill(s.body, stepIndex[i])}</p>
+                <p><Sourced text={fill(s.body, stepIndex[i])} /></p>
               </div>
             </article>
           ))}
