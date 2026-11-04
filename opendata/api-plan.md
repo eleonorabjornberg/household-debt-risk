@@ -1,7 +1,9 @@
 # Public read-only API: plan (F4)
 
-**Status: options for Eleonora. Nothing here is built or exposed.** PLAN.md and the track rules say any
-public API exposure needs her approval first.
+**Decision (Eleonora, 2026-11-04, F4-2): option A now, option B later, never option C.** A is built:
+`/downloads/v1/` with `index.json`, `latest/` and an archive of every Z.1 release (`vintages/`, F4-3),
+documented in `opendata/README.md` and `CHANGELOG.md`. B is not built. Exposing it still needs her
+approval when the time comes, with the design below as the starting point.
 
 ## What exists today
 
@@ -24,7 +26,7 @@ public API exposure needs her approval first.
 | Vintages | Current only, unless we keep old files | Can serve `?vintage=` from archived snapshots | Latest only |
 | Work | Small | ~1 day: handlers, OpenAPI file, tests, docs page | Docs only, but hard to take back |
 
-## Recommendation (Claude draft, for Eleonora to decide)
+## Recommendation (Claude's, accepted by Eleonora 2026-11-04)
 
 A now; B when there is a user for it, and only after she approves exposing it. Not C: it turns the
 production database into a public dependency and fixes the warehouse schema as a contract.
@@ -33,7 +35,8 @@ If she picks B: an OpenAPI 3.1 file in `opendata/openapi.yaml`, handlers under `
 JSON with the same licence fields as the downloads, `Cache-Control: public, s-maxage=86400`, no
 authentication, and a preview-deployment test in CI before anything reaches production.
 
-## Questions
+## Decisions
 
-- F4-2: Approve option A only, or A then B?
-- F4-3: Should old vintages stay downloadable (archive each Z.1 release under `/downloads/<z1 vintage>/`)?
+- F4-2 (2026-11-04): A then B, never C.
+- F4-3 (2026-11-04): keep old vintages downloadable. Each Z.1 release is archived under
+  `opendata/archive/z1-<date>/` and served at `/downloads/v1/vintages/z1-<date>/`.
