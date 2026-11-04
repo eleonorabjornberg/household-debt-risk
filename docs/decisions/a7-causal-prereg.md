@@ -1,8 +1,8 @@
 # Pre-registration: A7, causal evidence around the 2008 GSE conservatorship and the 2010 student-loan takeover (SAFRA)
 
-> **Claude draft, not the author's text.** Options for Eleonora to choose; nothing here is decided until she records it.
+> **Claude draft, not the author's text.** Claude drafted the options. Eleonora chose them on 2026-11-04 by accepting every recommended option; each choice carries a **Decided** line. The wording is still Claude's.
 
-Status: draft (2026-11-04). Not frozen. No A7 result exists: there is no `research/a7_*` folder, no A7 row in `claims/register.csv` and no A7 entry in the session log. No regression, fit or donor outcome path was computed or looked at to write this.
+Status: decided by Eleonora 2026-11-04; frozen in commit `prereg: A7 (frozen)` (hash recorded in PLAN.md and the build log). One precondition remains open (checklist item 3 at the end): it must be met in a dated addendum before any outcome is inspected. When frozen, no A7 result existed: there is no `research/a7_*` folder, no A7 row in `claims/register.csv` and no A7 entry in the session log. No regression, fit or donor outcome path was computed or looked at to write this.
 
 Depends on: A1 (done), B1 (spreads, in progress on `claude/track-markets`), and A5 (state panel) or A8 (international panel), both in progress on `claude/track-analysis`. Each design below says which of these it needs. Nothing here assumes data that is not yet in the repo.
 
@@ -15,7 +15,7 @@ Did the two federal actions change who bears US household credit risk, or its pr
 
 ### What A1 implies for the framing
 
-A1 found that the largest public piece of the 2007–11 rise was Ginnie Mae pools (FHA/VA), not Fannie and Freddie. Fannie and Freddie's contribution had mostly arrived by 2008Q3, before conservatorship, peaked in 2009Q4 and partly reversed by 2011Q4. Their balances barely grew. Conservatorship changed the backing behind debt they already held, not how much they held.
+A1 (Shapley split, `research/a1_gfc_decomposition/README.md`) found that the largest public piece of the 2007–11 rise was Ginnie Mae pools (FHA, VA, USDA loans), not Fannie and Freddie. Fannie and Freddie had contributed 1.1 pp by 2008Q2, the last quarter-end before the conservatorship; they peaked at 2.3 pp in 2009Q4 and fell back after that. Their balances grew $278B over the window. A1 counts the GSEs as public at every date, so it cannot say whether the conservatorship changed how much they held; that is a question for this file.
 
 So conservatorship is a weak candidate treatment for the public *holdings share*. It is a stronger candidate for *price* (if investors saw GSE debt as closer to Treasury-backed) and for *private-label volume* (if a backed competitor crowds it out).
 
@@ -23,6 +23,7 @@ CHOICE 1 (what Event G is a treatment for):
 - (a) Public holdings share (Z.1, quarterly). Directly the project's headline series. But A1 suggests little to find, and a null would be expected by construction.
 - (b) Pricing: mortgage spread over Treasuries from B1 (Claude recommends). The event changed backing, and price is where backing should show. Weekly data allow narrow windows. Needs B1 first.
 - (c) Both, with (b) primary and (a) secondary and descriptive. Most complete, but more tests (see Multiple testing).
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 ## Hypotheses
 
@@ -50,7 +51,7 @@ Vintages: Z.1 2026-09-11 for all Z.1 series; ALFRED vintages are not needed beca
 
 The verified dates (A1 `sources.md`): Economic Stimulus Act 13 Feb 2008 (loan limits); ECASLA 7 May 2008 (Treasury authority to buy FFEL loans); HERA 30 Jul 2008; conservatorship 6–7 Sep 2008; ARRA 17 Feb 2009 (loan limits); FAS 166/167 effective in Z.1 almost all in 2010Q1; SAFRA approved 30 Mar 2010, effective for loans first disbursed after 30 Jun 2010.
 
-**Not yet verified:** the Fed's agency-MBS purchase programme (announced late 2008, purchases from early 2009 per the task brief). These dates must be checked with `source-provenance` and added to a `sources.md` before this file is frozen. `WSHOMCB` can date the first purchases from data but not the announcement.
+**Verified 2026-11-04** (`prereg-fact-checks.md` §1, federalreserve.gov): the Fed's agency-MBS purchase programme was announced 25 Nov 2008 (2008Q4); purchases began 5 Jan 2009 (H.4.1 of 15 Jan 2009); it was expanded to up to $1.25 trillion on 18 Mar 2009. `WSHOMCB` first shows holdings on 14 Jan 2009, a settlement date, so it dates settlement, not the first purchase. These rows go into the A7 `sources.md` when the folder is created.
 
 Consequences:
 - **HERA and conservatorship fall in the same quarter (2008Q3).** Quarterly Z.1 data cannot separate them. Only weekly spreads can.
@@ -61,6 +62,7 @@ CHOICE 2 (how to handle overlapping 2008–09 events):
 - (a) One bundled "federal backstop" episode, HERA to ARRA (30 Jul 2008 – 17 Feb 2009). Honest about what quarterly data can see. But the answer is about the bundle, not conservatorship.
 - (b) Separate narrow windows per event, weekly spreads only, with a dummy for each other event in the window (Claude recommends for H1). Isolates conservatorship as far as free data allow. Still cannot remove news that leaked before the weekend of 6–7 Sep.
 - (c) Both: (b) for pricing, (a) for quarterly holdings (H2, H3). Matches each outcome to what its frequency can resolve; more tests.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 ## Method
 
@@ -68,13 +70,15 @@ CHOICE 2 (how to handle overlapping 2008–09 events):
 
 CHOICE 3 (event window, weekly spreads):
 - (a) [−1, +1] weeks. Least contamination from other news. One PMMS observation each side is noisy.
-- (b) [−1, +4] weeks (Claude recommends). Allows for slow pass-through to quoted mortgage rates and still ends before the Fed MBS announcement (to be verified). Some other September–October 2008 news falls inside.
+- (b) [−1, +4] weeks (Claude recommends). Allows for slow pass-through to quoted mortgage rates and still ends before the Fed MBS announcement (25 Nov 2008, verified; the window ends in early October). Some other September–October 2008 news falls inside.
 - (c) [−4, +12] weeks. Captures the full adjustment. Overlaps the Fed programme and the wider crisis, so it is hard to attribute.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 CHOICE 4 (estimation window for "normal" spread behaviour):
 - (a) 52 weeks ending the week before the Economic Stimulus Act (13 Feb 2008). Clean of 2008 housing laws. Includes the 2007 credit turmoil, so "normal" is already stressed.
 - (b) 104 weeks ending the week before HERA (30 Jul 2008) (Claude recommends). Longer, so the variance estimate is steadier; contains ESA and ECASLA, which are dummied out.
 - (c) Several pre-crisis years (e.g. ending 2006). Calm baseline, but that makes 2008 look abnormal for reasons unrelated to the event.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 Abnormal change = actual minus a constant-mean (or AR(1), fixed now) prediction from the estimation window. Inference: rank of the event-window change among all same-length windows inside the estimation window (placebo in time), plus HAC standard errors as a secondary check.
 
@@ -86,6 +90,7 @@ CHOICE 5 (donor pool, conditional on what A5 / A8 deliver):
 - (a) Countries from A8 (Canada, Denmark, UK, Germany, plus any BIS/ECB series A8 makes comparable). Right unit: the event was national. But four or five donors means the smallest possible permutation p-value is about 1/(J+1), e.g. 0.2 with four donors, so a "significant" result is impossible at 5%. Donors had their own 2008–09 interventions, which A8 must list with sources; any donor with a housing-finance intervention in the window is dropped or flagged.
 - (b) US states from A5 (Claude recommends, *if* A5 finds a state-level outcome). Many units. But every state was treated at once, so this is not a US synthetic control. It only works as an intensity design: states with more GSE-eligible (or FFEL) exposure before the event against states with less. It is valid only if A5 finds a state series for the outcome. Note: as far as the repo shows, NY Fed state tables give balances by loan type, not by holder, so a state *public share* may not exist; A5's availability note decides.
 - (c) No donor panel: event study and pre-trend extrapolation only. Always available. Weakest counterfactual; stated as such.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 Rule: whichever of (a)/(b) A5 or A8 makes available first is not a reason to choose it. The choice is recorded before either panel's outcome paths are inspected.
 
@@ -93,14 +98,16 @@ CHOICE 6 (predictors and pre-period):
 - (a) Outcome lags only (e.g. 2000Q1, 2003Q1, 2005Q1, 2007Q4) over pre-period 2000Q1–2007Q4. Simple and transparent; risk of overfitting a short panel.
 - (b) Outcome lags plus house-price growth, unemployment and household debt to income, pre-period 2000Q1–2007Q4 (Claude recommends). Standard practice; the pre-period ends before ESA (13 Feb 2008), so no 2008 law is inside it. Needs these covariates for each donor.
 - (c) Longer pre-period from the 1990s. More fit data, but structural differences between housing-finance systems grow with distance.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 Holdout inside the pre-period: weights are fitted on 2000Q1–2005Q4 and checked on 2006Q1–2007Q4 before any post-period value is looked at.
 
 CHOICE 7 (pre-period fit criterion):
-- (a) Drop donors (in placebo runs) whose pre-period RMSPE is more than 5× the US's, and report the post/pre RMSPE ratio rank (Claude recommends). Follows the usual Abadie-Diamond-Hainmueller practice (citation to be checked before freezing); the ratio rank does not need a cutoff to be valid.
+- (a) Drop donors (in placebo runs) whose pre-period RMSPE is more than 5× the US's, and report the post/pre RMSPE ratio rank (Claude recommends). The 5× cutoff is this project's own choice: the claim that it follows Abadie, Diamond and Hainmueller (2010) could not be checked from here (`prereg-fact-checks.md` §3) and is not made. The ratio rank, the primary inference, does not need a cutoff.
 - (b) Cutoff 2×. Stricter; with few donors it may leave almost none.
 - (c) No cutoff, ratio rank only. Keeps every donor; poorly fitted placebos then dilute the test.
-- In all three: if the US's own pre-period RMSPE in the holdout is worse than a stated level (to be set by Eleonora, e.g. larger than the 2006–07 standard deviation of the outcome), no synthetic estimate is reported, only "fit failed".
+- In all three: if the US's own pre-period RMSPE in the holdout is worse than a stated level no synthetic estimate is reported, only "fit failed". Level: the US pre-period RMSPE in the holdout is larger than the standard deviation of the outcome over 2006–07 (the example level in the draft, adopted with the recommendations; Eleonora may revise it by a dated deviation before any fit is run).
+**Decided: (a).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 Inference: placebo in space (refit with each donor as if treated; p = rank of the US post/pre RMSPE ratio) and placebo in time (move the treatment date to each quarter of 2004Q1–2006Q4 and refit). Leave-one-donor-out is reported as a robustness check.
 
@@ -112,6 +119,7 @@ CHOICE 8 (outcome for Event S):
 - (a) Federal holdings share of student loans (Z.1), framed as a mechanical check: does the post-2010 rise match the end of new FFEL lending, with no extra effect? Answerable from data in the repo. It tests accounting, not behaviour; say so.
 - (b) Non-federal, non-guaranteed student lending (private student loans): the margin where SAFRA could change behaviour (Claude recommends, *if a free source exists*). Not separately visible in Z.1 holder lines, which mix FFEL and private loans. A free source must be found with `source-provenance` first; if none, fall back to (a).
 - (c) Drop Event S from causal testing; report it descriptively in A1/A2. Most honest given a 2006Q1 start, ECASLA contamination and no untreated donor (no other country has FFEL, and all states were treated at once).
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 Whatever is chosen, there is no valid synthetic control for Event S unless an intensity design (state FFEL exposure) is found by A5.
 
@@ -129,6 +137,7 @@ CHOICE 9:
 - (a) Holm correction across the primary family only; robustness runs descriptive (Claude recommends). Controls the family-wise error without needing independence; keeps robustness separate.
 - (b) One primary test per event (H1 for G, H4 for S), everything else descriptive. Simplest; loses H2/H3 as tests.
 - (c) No correction; all results descriptive with exact ranks. Honest when permutation p-values are coarse anyway (see CHOICE 5a).
+**Decided: (a).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 ## Decision rules
 
@@ -154,7 +163,7 @@ None yet.
 
 ## Before freezing (checklist)
 
-1. Eleonora records choices 1–9 here and in PLAN.md "Decisions taken", with her name and the date.
-2. Verify the Fed MBS purchase dates and the Abadie-Diamond-Hainmueller cutoff convention with primary sources.
-3. A5 or A8 availability note lists donor series, frequency and start date; B1 states which spread proxy is used. Neither panel's outcome paths are inspected before the freeze.
-4. Commit this file alone: `prereg: A7 (frozen)`.
+1. Done 2026-11-04: Eleonora's choices 1–9 are recorded here and in PLAN.md "Decisions taken".
+2. Done 2026-11-04: Fed MBS dates verified; the ADH attribution could not be verified and was removed (`prereg-fact-checks.md` §1, §3).
+3. **Open.** Before any outcome is inspected, a dated addendum under "Deviations" must state the donor series, frequency and start date from the A5 or A8 availability note, and the spread proxy B1 uses. The addendum is written from those notes alone; neither panel's outcome paths are looked at first.
+4. Done 2026-11-04: committed alone as `prereg: A7 (frozen)`.
