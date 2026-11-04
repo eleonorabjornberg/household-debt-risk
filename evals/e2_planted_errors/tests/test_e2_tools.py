@@ -60,9 +60,31 @@ def test_plant_is_deterministic_and_records_lines():
 def test_refuses_unless_frozen(tmp_path):
     src = tmp_path / "d.md"
     src.write_text(DATA_DOC)
-    assert not plant.is_frozen()  # the pre-registration is a draft
-    with pytest.raises(SystemExit):
-        plant.run([src], [], 1, 1, 0, 1, tmp_path / "run")
+    draft = tmp_path / "prereg.md"
+    draft.write_text("Status: **draft** (2026-11-04).\n")
+    frozen = tmp_path / "frozen.md"
+    frozen.write_text("Status: **frozen** (2026-11-04).\n")
+    assert not plant.is_frozen(draft) and plant.is_frozen(frozen)
+    old = plant.PREREG
+    plant.PREREG = draft
+    try:
+        with pytest.raises(SystemExit):
+            plant.run([src], [], 1, 1, 0, 1, tmp_path / "run")
+    finally:
+        plant.PREREG = old
+
+
+def test_per_agent_counts(tmp_path):
+    d, m = tmp_path / "d.md", tmp_path / "m.md"
+    d.write_text(DATA_DOC)
+    m.write_text(METHOD_DOC)
+    run = tmp_path / "run"
+    plant.run([d], [m], {"skeptic": 2, "quant-reviewer": 1}, 1,
+              {"skeptic": 1, "quant-reviewer": 1}, 5, run, rehearsal=True)
+    key = json.loads((run / "key.json").read_text())
+    planted = [(v["agent"], v["control"]) for v in key["variants"]]
+    assert sorted(planted) == sorted([("skeptic", False)] * 2 + [("quant-reviewer", False)] +
+                                     [("skeptic", True), ("quant-reviewer", True)])
 
 
 def _rehearse(tmp_path):
