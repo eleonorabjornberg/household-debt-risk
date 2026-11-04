@@ -29,7 +29,15 @@ How often do the project's reviewer subagents, `skeptic` (data: revisions, defin
 
   Cost: each reviewer run is one subagent call in a Claude Code session; no API key. (a) is about 40 runs per agent. Recommendation: (a) for a first run; E3 reruns it.
 
+- **CHOICE-10, category balance.** A rehearsal on six write-ups (2026-11-04, nothing reviewed) planted all 36 errors, but random placement left `period_shift` at 0 and `number_change` at 1. Options:
+  - (a) random placement, as rehearsed;
+  - (b) stratified: each category planted a fixed number of times, with documents chosen among those where it fits;
+  - (c) drop categories that rarely fit.
+
+  Recommendation: (b), so every category has enough cases for the per-category table.
+
 ## Planting and the hidden key
+- Tooling (built 2026-11-04, tested on synthetic documents only): `evals/e2_planted_errors/` (`catalogue.yaml`, `plant.py`, `score.py`). `plant.py` refuses to run until this file's Status line says frozen.
 - `plant.py` takes the frozen seed (**CHOICE-4**: a fixed integer chosen before running, or the first 8 hex digits of the freeze commit).
   - For each planted document, it applies the given number of catalogue transformations at random eligible lines.
   - It writes the variants to `evals/e2_planted_errors/run-<id>/docs/` and the key (document, line, category, original text, planted text) to `run-<id>/key.json`.
