@@ -8,6 +8,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
 | A3 | in progress: 1925–1952 built (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44, overlap gap 0.035 pp at 1945); policy timeline 1933–1970 checked against statutes; skeptic pending | `research/a3_pre1952/` |
+| A4 | run to the frozen prereg (02cc47f): one break at 1966Q1 (CI 1965Q1–1997Q4); no evidence at the five 2008–10 dates; vintage-robust; not confirmable without R; quant review pending | `research/a4_breaks/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
 ## Where the track stopped (2026-11-04, about 05:00 UTC)
