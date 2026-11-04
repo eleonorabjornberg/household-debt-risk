@@ -1,6 +1,8 @@
 # A1: What made up the 2007–11 jump?
 
-**PLAN task A1. Status: done, for Eleonora's review with Phase A.** The decomposition is exact, and every policy date below is checked against a primary source ([`sources.md`](sources.md)).
+> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+
+**PLAN task A1. Status: analysis done; write-up is a Claude draft for Eleonora to replace.** The decomposition is exact, and every policy date below is checked against a primary source ([`sources.md`](sources.md)).
 
 Data: Fed Z.1, `Z1.csv` dated 2026-09-11. Every number in this file has a row in [`claims/register.csv`](../../claims/register.csv), and `claims/check_register.py` scans this file.
 
