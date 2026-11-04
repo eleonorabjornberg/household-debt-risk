@@ -14,7 +14,7 @@ Nothing touched production or the database.
 | Task | Status | Notes |
 |---|---|---|
 | B1 | ready for review | `research/b1_market_pricing/`. Spec fixed in `METHOD.md` before results (commit b094579, before results a8fc3de). Verdict under the pre-set rule: no robust association in every variant; levels fits mostly fail Engle–Granger, the positive levels sign coincides with the period from 2022Q4 on (PMMS method change and other conditions), and the test has little power, so the README reads "inconclusive". quant-reviewer and skeptic run; 12 of 13 objections resolved, 1 open (g-fee control: a design extension, below). 46 register rows in `claims/tracks/markets.csv`. |
-| B2 | in progress | Method note `research/b2_crt_pricing/METHOD.md` committed before any number; FHFA Dec 2016 deal-level credit costs (2013–16). Method choices proposed for Eleonora (Q-B2). |
+| B2 | ready for review (pending skeptic) | `research/b2_crt_pricing/` (e63d889). FHFA Dec 2016 deal-level credit costs, 47 deals 2013–16; zero-attach median 32 bps a year, about 6.4× FHFA's own baseline expected loss. 2017+ prices chart-only; GSE/SEC deal data blocked. Method choices for Eleonora: Q-B2. |
 | C1 | ready for review (development sample); holdout run waits on Q-C1c | Spec `EVALUATION.md` (7ae4afb) before any score; deviations dated there. Real-time Z.1 from all 41 archived releases (2017-03-09 in folder 20170305). Development result (99d56cd): accounting bridge RMSE about 0.74 of no-change, not significant after Holm, biased downward (mostly 2020–21); bridge regression better on its own 2019Q3–2023Q2 targets, Holm-significant at k = 1 and 2 only. quant-reviewer (q11–q16) and skeptic (s9–s15) run and addressed; one minor stated limitation open (s12). |
 
 ## Log notes for the coordinator
@@ -76,6 +76,18 @@ The specification in `research/b1_market_pricing/METHOD.md` (proxies, controls, 
 9. **Definition of the quarterly change being nowcast** (mkt-q7). (a) first-release share of quarter q minus the share of q−1 *as published in the same Z.1*; (b) minus the q−1 share as previously published. **Recommendation: (a)**, so revisions to q−1 are not scored as nowcast error; the bridge growth rates use the same rule (same-vintage growth).
 7. **Share definition.** (a) the headline share (mortgages + consumer credit); (b) mortgage-only. **Recommendation: (a)**, the project's quantity.
 8. **Seasonal adjustment.** NSA throughout (Z.1 holder levels are NSA; `HMLBSHNO` and `CCLBSHNO` used rather than the SA `HHMSDODNS`). **Recommendation: NSA.**
+
+### Q-B2 (new). B2 method and scope
+1. **Price measure.**
+   (a) FHFA's estimated credit cost ÷ the baseline expected loss of the sold slice, under FHFA's own scenario (as built);
+   (b) cost ÷ a loss distribution (several scenarios), which needs assumptions FHFA does not publish;
+   (c) cost alone, with no multiple.
+   **Recommendation: (a)**, plus (c) alongside. The multiple is labelled as relative to FHFA's baseline only.
+2. **2017–2023 prices.**
+   (a) read issuance spreads off FHFA's Appendix D/E charts, with a stated reading error, labelled estimates;
+   (b) leave the gap;
+   (c) get deal data from crt.freddiemac.com (needs the host allowed) and EDGAR (needs `SEC_USER_AGENT` set in this environment).
+   **Recommendation: (c) if you can add the host and variable; otherwise (b).** Chart reading adds error that the register cannot verify.
 
 ### Q-C1c (new). When to run the C1 holdout
 C1 and C2 share the holdout 2023Q3–2026Q2, and C2's Family Z+C1 uses C1's indicators. Scoring C1 on the holdout now would show holdout outcomes before C2's candidates are frozen, which could steer C2's design.
