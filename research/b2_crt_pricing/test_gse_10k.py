@@ -27,3 +27,11 @@ def test_extraction_matches_committed_csv():
     assert got[(2019, "ce_expense")] == 693 and got[(2019, "crt_debt_interest")] == 1060
     csv = pd.read_csv(HERE / "freddie_crt_cost.csv").set_index("year")
     assert csv.loc[2023, "ce_expense"] == 2339 and csv.loc[2023, "scope"] == "consolidated"
+
+
+@pytest.mark.skipif(not (g.FNM / "fnma_10k_fy2019.htm").exists(), reason="Fannie 10-Ks not fetched (data/ absent)")
+def test_fannie_tables_and_cross_filing_agreement():
+    r = pd.DataFrame(g.fannie_rows(2019)).set_index(["year", "field"])["musd"]
+    assert r[(2019, "cas")] == 981 and r[(2018, "cirt")] == 286 and r[(2019, "lender_risk_sharing")] == 285
+    r17 = pd.DataFrame(g.fannie_rows(2017)).set_index(["year", "field"])["musd"]
+    assert r17[(2017, "cas")] == 770 and r17[(2016, "cirt")] == 110

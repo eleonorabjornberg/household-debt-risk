@@ -21,6 +21,20 @@ Freddie Mac 10-K PDFs from https://www.freddiemac.com/investors/financials/pdf/ 
 
 What differs by year, kept as printed: 2017–2020 single-family, with interest on CRT debt (STACR debt notes) and the reinvestment offset; 2021 single-family credit enhancement expense only (CRT-debt interest not printed); 2022–2023 consolidated credit enhancement expense only (includes a small multifamily part: $48M of $1,518M in 2021). Restated values (2018: 402 → 394; 2019: 693 → 734) are kept in `latest_*` columns.
 
+**Fannie Mae** 10-Ks from SEC EDGAR (CIK 0000310522), fetched 2026-11-04 ~21:22 UTC by `research/a2_net_exposure/fannie_10k.py`. The declared User-Agent was given per command only; per-request URL, status, bytes and SHA-256 are in `data/a2/fannie/fetch_log.json` (outside git, no User-Agent recorded). Every year printed by two filings agrees (checked by `gse_10k.py`). The FY2024 10-K does not print the table.
+
+| Filing | What is read | Bytes | SHA-256 |
+|---|---|---|---|
+| fnma_10k_fy2017.htm | sentence (2017, 2016) | 10188398 | `4d55f8935dc73ee57af98cfb5bf69c00f36411d912a74508290756c0c5fa18f6` |
+| fnma_10k_fy2018.htm | table "Credit Risk Transfer Transactions", cash paid or transferred (2018, 2017) | 12069724 | `0fe4fa81a0bae14ba1f6d5a5af9e8bd0c25d58a10331e12c06ba75624f39aac5` |
+| fnma_10k_fy2019.htm | table "Credit Risk Transfer Transactions", cash paid or transferred (2019, 2018) | 12044201 | `78f253668b397bac705937f7b639d15a8a10bd096392eeb34f03ec69632d81e7` |
+| fnma_10k_fy2020.htm | table "Credit Risk Transfer Transactions", cash paid or transferred (2020, 2019) | 9820122 | `b52b354ccefa04ca69b6c6d16914c6809adf2f6cca6bac258a69e94abd9206ab` |
+| fnma_10k_fy2021.htm | table "Credit Risk Transfer Transactions", cash paid or transferred (2021, 2020) | 9613994 | `7212a7974035135c25107ce10ae826917ab72be2b73cf65798358037a9f45152` |
+| fnma_10k_fy2022.htm | table "Credit Risk Transfer Transactions", cash paid or transferred (2022, 2021) | 9113995 | `45b10453011311d439777905ca84571c772b9769774f07d5fa1306c7dff18084` |
+| fnma_10k_fy2023.htm | table "Credit Risk Transfer Transactions", cash paid or transferred (2023, 2022) | 17363248 | `85d2732f262e60f02690c0195edce69edd58fdf1efde742f5e03f0dae5e5ca90` |
+
+Not like for like across the GSEs: Fannie's CAS cash is interest **net of LIBOR/SOFR** plus CAS REMIC and CLN payments; Freddie's 2017–2020 "interest expense related to CRT debt" is gross interest, with Freddie's own estimate of reinvestment income on the proceeds printed beside it.
+
 ## Checked and not used
 
 | Wanted | Host | Status 2026-11-04 |
