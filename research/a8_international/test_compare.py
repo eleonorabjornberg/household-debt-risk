@@ -32,3 +32,13 @@ def test_us_ordering_is_checked():
     bad = {**A2, "public_share_net_lower_pct_last": 57.0}  # low above high
     with pytest.raises(AssertionError):
         m.compare(m.load(), bad)
+
+
+def test_q7_third_category_is_separate_from_the_public_share():
+    # Eleonora, Q7 (c): publicly owned, not guaranteed is its own category, never folded into risk_b_*.
+    t = m.compare(m.load(), A2)
+    assert t.at["DE", "public_owned_not_guaranteed"] == pytest.approx(t.at["DE", "holder_a"])
+    assert t.at["DE", "public_owned_excl_promotional"] == pytest.approx((438448 + 13519) / 1551414)
+    assert t.at["DE", "promotional_banks_share"] == pytest.approx(17817 / 1551414)
+    assert pd.isna(t.at["DE", "risk_b_low"]) and pd.isna(t.at["DE", "risk_b_high"])
+    assert t["public_owned_not_guaranteed"].dropna().index.tolist() == ["DE"]

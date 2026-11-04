@@ -2,6 +2,8 @@
 
 > **Claude draft, not the author's text.** Evidence gathered for Eleonora's decision on Q7 (`tracks/analysis.md`). The choice is hers: this note sets each option against the evidence and does not pick one.
 
+**Decision (Eleonora, 2026-11-04, card q7-2): option (c), a third category "publicly owned, not guaranteed" on the risk-bearer measure.** Applied in `compare.py` (`public_owned_not_guaranteed`, with the promotional-bank part shown separately because no source here covers its guarantee status), `comparison.csv`, `results.json` and the README.
+
 Context: A8's holder measure counts savings banks (Sparkassen), Landesbanken and promotional banks as publicly owned lenders (30.3% of German bank lending to individuals, Q4 2025). The question is whether, on the headline risk-bearer measure, a credit loss at one of these banks is a *public* loss.
 
 ## What the primary sources say
