@@ -5,7 +5,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | in progress: bounds done, skeptic review pending; net series waits on Q1 | `research/a2_net_exposure/` |
+| A2 | ready for review (bounds; skeptic run, 6 objections, 5 fixed, see `tracks/analysis-review-log.md`); the net series itself waits on Q1 | `research/a2_net_exposure/` |
 | A5 | todo | |
 | A8 | todo | |
 
@@ -17,6 +17,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - Network on 2026-11-04: www.fhfa.gov, www.federalreserve.gov, www.ginniemae.gov, www.newyorkfed.org reachable. Refused by the proxy policy (403 on CONNECT): www.sec.gov, efts.sec.gov, www.freddiemac.com, crt.freddiemac.com, capitalmarkets.fanniemae.com, www.fanniemae.com, www.usmi.org; and for A8: www.cmhc-schl.gc.ca, www150.statcan.gc.ca, www.bankofengland.co.uk, www.ons.gov.uk, www.bundesbank.de, www.statbank.dk, api.statbank.dk, www.nationalbanken.dk, data.bis.org, stats.bis.org, data-api.ecb.europa.eu, www.huduser.gov. PLAN listed CMHC, BoE, Bundesbank, Statbank DK, BIS and ECB as reachable on 2026-11-03; they are not today.
 - A2 built (main model): FHFA CRT Progress Reports Dec 2016–4Q23 and Reports to Congress 2024–25 transcribed to `crt_fhfa.csv`; bounds on net Fannie/Freddie exposure 2013–2025 from Z.1 via A1's cells; asserts net ≤ gross, positive lower bound, transcription consistency (planted-typo test). A1 reproduces unchanged on the same Z.1 vintage.
 - Subagents: register-keeper (Sonnet), 12 rows in `claims/tracks/analysis.csv`, about 32k tokens; reviewed by the main session (one key name in its report was wrong, the CSV itself was right).
+- Skeptic (A2, 55k tokens): 6 objections, none blocking. Skeptic caught: the 55.2% "at least" was a floor only net of CRT, not of MI; the table subtracted RIF from UPB without saying so; FHFA's "majority" quote covers CRT and MI together, not CRT alone; an unsourced clause on where stress losses fall. All fixed.
 - Errors caught: Claude (main) caught its own method-note claim that 2023 Fannie attach points run 60–155 bp; the deal table shows 60–165 bp. Fixed before commit. The 4Q23 PMI cumulative box has no text layer; read from the image and checked that Fannie + Freddie add to the total and to FHFA's "$3.3 trillion".
 
 ## Questions for Eleonora

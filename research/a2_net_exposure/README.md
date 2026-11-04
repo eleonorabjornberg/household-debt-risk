@@ -10,16 +10,16 @@ Data: Fed Z.1, `Z1.csv` dated 2026-09-11; FHFA CRT Progress Reports (Dec 2016 to
 
 **What FHFA publishes is risk transferred at issuance, not risk still transferred.** From 2013 through 2025 Fannie Mae and Freddie Mac sold credit risk transfer (CRT) cover with a combined risk in force (RIF) of about $233B at issuance (FHFA, rounded). Outstanding cover is lower, because notes pay down and deals are called. That gives a bound, not a point:
 
-| End of 2025 | Gross | Net, lower bound (all issued CRT still in force) |
+| End of 2025: principal (UPB), less CRT loss capacity (RIF) for net | Gross | Net of CRT only, lower bound (all issued CRT still in force; mortgage insurance not netted) |
 |---|---|---|
 | Fannie Mae + Freddie Mac holdings, household share | $6.27T | $6.05T |
 | Public share of household mortgages and consumer credit | 56.4% | 55.2% |
 
 - Household-apportioned, the issued CRT RIF is $217B, at most 3.5% of the Enterprises' gross holdings.
-- **Measured as loss capacity against principal, CRT lowers the public share by at most 1.2 pp.** The bound holds in every year 2013–2025 (`net_exposure.csv`); net ≤ gross is asserted in the script.
-- **That is not the same as saying 3.5% of the risk was transferred.** RIF is the most investors can lose, set against the slice of losses where most stress losses fall. On expected or stress losses, the share transferred on covered loans is much larger (FHFA calls it "the majority" for the loans targeted for CRT). Measuring that needs a loss model; see `METHOD.md`, measure 3.
-- **Mortgage insurance is larger than CRT in RIF terms, but cannot be netted yet.** FHFA reports $835B of primary mortgage insurance RIF on loans the Enterprises acquired 2013–2023, measured at acquisition. That is 12.5% of 2023 gross holdings after apportioning, but it misses cover written before 2013 and keeps cover since cancelled, so it is neither a bound nor an estimate of outstanding cover. The Enterprises also keep the counterparty risk if an insurer fails.
-- **Cumulative reference-pool principal says nothing about coverage.** By 2025 it is 1.1× the Enterprises' whole household book, because refinanced loans are counted again in new pools.
+- **Measured as loss capacity against principal, CRT alone lowers the public share by at most 1.2 pp.** This is not a floor on the public share once mortgage insurance is netted (below). The bound holds in every year 2013–2025 (`net_exposure.csv`); net ≤ gross is asserted in the script.
+- **That is not the same as saying 3.5% of the risk was transferred.** RIF is the most investors can lose on a slice of the losses, not on the principal; the tranches sold sit above a retained first-loss slice (`METHOD.md`). How much of the expected or stress loss that slice carries is not measured here: it needs deal structures and a loss model (`METHOD.md`, measure 3). FHFA's own summary is that through CRT *and mortgage insurance together* "the majority of the underlying mortgage credit risk on mortgages targeted for CRT has been transferred" (4Q 2019 report).
+- **Mortgage insurance RIF is bigger in dollars than CRT RIF, but cannot be netted yet, and FHFA says the two RIF figures are "not strictly comparable"** (loan-level vs pool-level cover). FHFA reports $835B of primary mortgage insurance RIF on loans the Enterprises acquired 2013–2023, measured at acquisition. That is 12.5% of 2023 gross holdings after apportioning, but it misses cover written before 2013 and keeps cover since cancelled, so it is neither a bound nor an estimate of outstanding cover. The Enterprises also keep the counterparty risk if an insurer fails.
+- **Cumulative reference-pool principal says nothing about coverage.** By 2025 it is 1.1× the Enterprises' whole household book, because loans that paid off or refinanced are still counted at their issuance balance, and refinanced loans are counted again in new pools.
 
 ## Limits
 
