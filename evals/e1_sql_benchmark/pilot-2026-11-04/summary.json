@@ -1,0 +1,31 @@
+{
+ "cap_usd": 2.98,
+ "total_usd": 0.512394,
+ "stop": null,
+ "per_model": {
+  "claude-haiku-5-5": {
+   "loops_started": 10,
+   "loops_scored": 10,
+   "spent_usd": 0.008208,
+   "mean_per_loop_usd": 0.000821,
+   "assumed_per_loop_usd": 0.0033,
+   "pilot_correct": 10
+  },
+  "claude-sonnet-5-5": {
+   "loops_started": 10,
+   "loops_scored": 10,
+   "spent_usd": 0.101543,
+   "mean_per_loop_usd": 0.010154,
+   "assumed_per_loop_usd": 0.0645,
+   "pilot_correct": 9
+  },
+  "claude-opus-5-5": {
+   "loops_started": 10,
+   "loops_scored": 10,
+   "spent_usd": 0.402644,
+   "mean_per_loop_usd": 0.040264,
+   "assumed_per_loop_usd": 0.129,
+   "pilot_correct": 10
+  }
+ }
+}
