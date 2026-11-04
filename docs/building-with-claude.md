@@ -32,6 +32,7 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 | 0.4 download provenance | Sonnet | 92,274 | 6 | 1.9 min | 8 new tests; real run logged the 2026-09-11 Z.1 zip |
 | 0.3 validation suite | Sonnet | 125,418 | 21 | 5.8 min | 41 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 | 0.10 prompt archive | Haiku | 183,005 | 91 | 7.9 min | 67 prompts from 42 transcript pages; 2 credentials redacted |
+| 0.8 z1-release-update skill | Sonnet | 116,568 | 17 | 3.7 min | 11 tests pass; replay June → Sept 2026 matches validation C2, C3, F1 |
 
 - **Main model:** tokens not measured.
 - **Review by the main model:** reran validation independently (same result), checked it imports no pipeline code, rebuilt `web/`, spot-checked API-key redaction and immutability in the provenance code, checked production before and after the `research_reader` migration, ran Supabase's security advisor.
