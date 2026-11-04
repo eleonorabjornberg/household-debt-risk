@@ -1,7 +1,7 @@
 > **Claude draft.** Drafted by Claude; Eleonora's choices are recorded in the Decisions table. Not frozen: E2 must not be run until the frozen commit exists (`preregister` skill). Every choice now has her value; the freeze is held for one question (below).
 
 # Pre-registration: E2, planted-error test for the reviewer subagents
-Status: **draft, all choices decided, freeze held** (2026-11-04). Not frozen. No E2 result exists.
+Status: **draft, freeze held: smaller design to choose (CHOICE-11, -12)** (2026-11-04). Not frozen. No E2 result exists.
 
 ## Decisions (Eleonora, 2026-11-04, decision cards about 16:35–16:41 UTC; PLAN.md "Decisions taken" on `claude/sweet-gates-avwrcs`, `543d96a`: "accept all the recommendations for CHOICE-1 to CHOICE-9"; values for CHOICE-1, -2, -4 and -10 relayed by the coordinator session the same day)
 | Choice | Decided |
@@ -25,10 +25,29 @@ CHOICE-1 was recommended on the arithmetic "36 errors, about ±15 pp: 70% is sup
 | H1 skeptic | 24 | **22/24 (92%)**: lower bound 0.742; 21/24 gives 0.690 |
 | H2 quant-reviewer | 12 | **12/12 (100%)**; 11/12 gives 0.646 |
 
-These are Wilson bounds; the primary interval (CHOICE-8) is the cluster bootstrap over documents, which is usually wider, so the bar is if anything higher. The rehearsal used `research/c2_forecast/SPECS.md` as the second method document; the method list should name exact files at the freeze. So H2 can be supported only by a perfect score, and H1 needs 92%, not the 86% the recommendation quoted. The freeze is held so Eleonora can choose, knowing this:
-- (a) freeze as decided (H2 is then close to untestable; H1 strict);
-- (b) 12 planted documents per agent (12 data + 12 method, 36 errors each, the ±15 pp the recommendation assumed; at 70% then 31/36 is needed). This is CHOICE-3 (b)'s size, about twice the reviewer runs;
-- (c) keep the design and lower the threshold.
+These are Wilson bounds; the primary interval (CHOICE-8) is the cluster bootstrap over documents, which is usually wider, so the bar is if anything higher. The rehearsal used `research/c2_forecast/SPECS.md` as the second method document; the method list should name exact files at the freeze. So H2 can be supported only by a perfect score, and H1 needs 92%, not the 86% the recommendation quoted. E2-3 answer (Eleonora, 2026-11-04, PLAN.md "Decisions taken"): none of (a)–(c); her note: "Let's do way fewer errors instead." Taken as direction, not a decision. Claude drafted the smaller designs below for her to choose from.
+
+**CHOICE-11, a smaller design (replaces CHOICE-3 (a)).** Per reviewer agent. "70% point" is the fewest catches whose observed recall is at least 70%; intervals are Wilson 95% at that point. All three use seed 20261104 and need no API key (reviewer runs are subagent calls).
+
+| Option | `skeptic` (data) | `quant-reviewer` (method) | Controls | Documents reviewed (+ baseline) | Can H1/H2 be *supported* at 70% under the current rule? | 70% point and its interval |
+|---|---|---|---|---|---|---|
+| (a) one of each category | 4 docs × 2 = **8 errors**, every data category once | 3 docs × 2 = **6 errors**, every method category once | 2 (1 data, 1 method) | 9 (+5 baseline) | **No.** Even 8/8 gives a lower bound of 0.676; 6/6 gives 0.610 | 6/8 (75%): 0.41–0.93 · 5/6 (83%): 0.44–0.97 |
+| (b) twelve each | 6 docs × 2 = **12**: 4 categories twice, 4 once (picked by the seed) | 6 docs × 2 = **12**, every category twice | 2 | 14 (+7 baseline) | Only with **12/12** (0.757); 11/12 gives 0.646 | 9/12 (75%): 0.47–0.91 |
+| (c) one error per document | 6 docs × 1 = **6**, 6 of 8 categories | 6 docs × 1 = **6**, every category once | 2 | 14 (+7 baseline) | **No.** 6/6 gives 0.610 | 5/6 (83%): 0.44–0.97 |
+
+What each option buys:
+- (a) is the fewest runs that still give one case of every category (a per-category hit/miss table, nothing more).
+- (b) keeps a confirmatory test, but only a perfect score supports it.
+- (c) has no within-document clustering, so the Wilson interval is honest without the bootstrap; it is no cheaper than (b) in runs.
+
+With 3–6 documents per agent the cluster bootstrap (CHOICE-8 (b)) has too few clusters to be reliable; under any of these Claude would report Wilson as primary, with the clustering stated (a change to CHOICE-8 for her to confirm).
+
+**CHOICE-12, the decision rule if (a) or (c) is chosen.** H1/H2 cannot be supported at 70% under either, so the rule has to change:
+- (i) E2 becomes a **descriptive pilot**: recall with its interval and the per-category table, no "supported/against" statement. The confirmatory 70% test waits for a larger run (E3).
+- (ii) a **screening rule**: "meets the bar" if the point estimate is at least 70% (6/8 or 5/6), always written with its interval and labelled as not a statistical test.
+- (iii) lower the threshold to one the lower bound can reach (at most 67% for 8/8, 61% for 6/6).
+
+Claude's suggestion, for her to accept or change: (a) with (i). It fits "way fewer errors", covers every category, and does not present a 6–8 error result as a test. Its cost is that the 70% question stays unanswered until a larger run. Tooling: each option needs a small `plant.py` change before the freeze. Today it allocates planted documents by cycling over the sources, not by a count per agent. (b) and (c) also need an "as equal as possible" stratified mode, because 12 and 6 do not divide by 8 data categories.
 
 Once she answers, the file is frozen (`prereg: E2 (frozen)`); until then `plant.py` refuses to run.
 
