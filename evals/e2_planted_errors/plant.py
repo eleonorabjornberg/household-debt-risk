@@ -4,7 +4,7 @@
     uv run --project pipeline python evals/e2_planted_errors/plant.py \
         --data research/a1_gfc_decomposition/README.md analysis/findings.md \
         --method research/c1_nowcast/README.md \
-        --planted 12 --errors-per-doc 3 --controls 4 --seed 20261104 --out evals/e2_planted_errors/run-<id>
+        --planted 12 --errors-per-doc 3 --controls 4 --seed 20261104 --stratified --out evals/e2_planted_errors/run-<id>
 
 Writes into --out:
   docs/doc-<hex>.md   the variants reviewers see (planted and control copies, neutral names, shuffled)
@@ -25,6 +25,7 @@ import hashlib
 import json
 import random
 import re
+import itertools
 import subprocess
 import sys
 from pathlib import Path
@@ -83,12 +84,15 @@ def apply_error(lines: list[str], idx: int, err: dict) -> tuple[int, str, str] |
     raise ValueError(f"unknown kind {err['kind']}")
 
 
-def plant_doc(text: str, errors: list[dict], k: int, rng: random.Random) -> tuple[str, list[dict]]:
+def plant_doc(text: str, errors: list[dict], k: int, rng: random.Random,
+              ordered: bool = False) -> tuple[str, list[dict]]:
+    """Plant up to k of `errors`. ordered=True tries them in the given order (stratified mode)."""
     lines = text.split("\n")
     planted: list[dict] = []
     used_lines: set[int] = set()
     pool = errors[:]
-    rng.shuffle(pool)
+    if not ordered:
+        rng.shuffle(pool)
     for err in pool:
         if len(planted) == k:
             break
@@ -111,12 +115,64 @@ def plant_doc(text: str, errors: list[dict], k: int, rng: random.Random) -> tupl
     return "\n".join(lines), planted
 
 
+def stratify(docs: list[str], cats: list[dict], k: int, rng: random.Random) -> list[list[dict]]:
+    """CHOICE-10 (b): assign categories to the planted documents of one agent so that every category is
+    planted the same number of times (len(docs) * k / len(cats), which must be a whole number), no
+    document gets a category twice, and all k fit the document together. Seeded backtracking search,
+    so deterministic for a seed."""
+    if not docs:
+        return []
+    total = len(docs) * k
+    if total % len(cats):
+        raise SystemExit(f"stratified: {total} errors do not split evenly over {len(cats)} categories")
+    quota = {c["id"]: total // len(cats) for c in cats}
+    by_id = {c["id"]: c for c in cats}
+    fits = [{c["id"] for c in cats if plant_doc(d, [c], 1, random.Random(0))[1]} for d in docs]
+    combos = []
+    for i, d in enumerate(docs):
+        ids = sorted(fits[i])
+        cs = [list(t) for t in itertools.combinations(ids, k)]
+        rng.shuffle(cs)
+        combos.append(cs)
+    joint: dict[tuple[int, tuple], bool] = {}
+
+    def ok(i: int, combo: list[str]) -> bool:
+        key = (i, tuple(combo))
+        if key not in joint:
+            joint[key] = len(plant_doc(docs[i], [by_id[c] for c in combo], k, random.Random(0), ordered=True)[1]) == k
+        return joint[key]
+
+    out: list[list[str]] = []
+
+    def go(i: int) -> bool:
+        if i == len(docs):
+            return all(v == 0 for v in quota.values())
+        left = len(docs) - i - 1
+        for combo in combos[i]:
+            if any(quota[c] == 0 for c in combo) or not ok(i, combo):
+                continue
+            for c in combo:
+                quota[c] -= 1
+            # prune: what remains must still fit in the documents left
+            if sum(quota.values()) == left * k and all(
+                    quota[c] <= sum(c in fits[j] for j in range(i + 1, len(docs))) for c in quota) and go(i + 1):
+                out.insert(0, combo)
+                return True
+            for c in combo:
+                quota[c] += 1
+        return False
+
+    if not go(0):
+        raise SystemExit("stratified: no assignment fits every document; change the document set")
+    return [[by_id[c] for c in combo] for combo in out]
+
+
 def is_frozen(prereg: Path = PREREG) -> bool:
     return prereg.exists() and re.search(r"^Status:\s*\**frozen", prereg.read_text(), re.M | re.I) is not None
 
 
 def run(data: list[Path], method: list[Path], planted: int, k: int, controls: int, seed: int, out: Path,
-        rehearsal: bool = False) -> dict:
+        rehearsal: bool = False, stratified: bool = False) -> dict:
     if not rehearsal and not is_frozen():
         raise SystemExit("docs/decisions/e2-prereg.md is not frozen: E2 may not be run (use --rehearsal for a dry run)")
     cat = load_catalogue()
@@ -128,19 +184,29 @@ def run(data: list[Path], method: list[Path], planted: int, k: int, controls: in
            [("control", sources[i % len(sources)]) for i in range(controls)]
     rng.shuffle(jobs)
     (out / "docs").mkdir(parents=True, exist_ok=True)
-    key = {"seed": seed, "rehearsal": rehearsal, "errors_per_doc": k, "variants": []}
+    key = {"seed": seed, "rehearsal": rehearsal, "stratified": stratified, "errors_per_doc": k, "variants": []}
+    plan: dict[int, list[dict]] = {}
+    if stratified:
+        for agent in ("skeptic", "quant-reviewer"):
+            idx = [i for i, (role, (_, a)) in enumerate(jobs) if role == "planted" and a == agent]
+            groups = stratify([jobs[i][1][0].read_text(encoding="utf-8") for i in idx],
+                              [e for e in cat if e["agent"] == agent], k, rng)
+            plan.update(zip(idx, groups))
     try:
         key["source_commit"] = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
                                               text=True).stdout.strip()
     except OSError:
         key["source_commit"] = None
     names = []
-    for role, (src, agent) in jobs:
+    for j, (role, (src, agent)) in enumerate(jobs):
         name = f"doc-{rng.getrandbits(32):08x}.md"
         text = src.read_text(encoding="utf-8")
         errs: list[dict] = []
         if role == "planted":
-            text, errs = plant_doc(text, [e for e in cat if e["agent"] == agent], k, rng)
+            if stratified:
+                text, errs = plant_doc(text, plan[j], k, rng, ordered=True)
+            else:
+                text, errs = plant_doc(text, [e for e in cat if e["agent"] == agent], k, rng)
             if len(errs) < k:
                 print(f"warning: only {len(errs)} of {k} errors fit in {src}", file=sys.stderr)
         (out / "docs" / name).write_text(text, encoding="utf-8")
@@ -164,10 +230,12 @@ def main(argv=None) -> int:
     ap.add_argument("--controls", type=int, default=0)
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--stratified", action="store_true",
+                    help="CHOICE-10 (b): every category of an agent planted the same number of times")
     ap.add_argument("--rehearsal", action="store_true", help="dry run before the freeze; never a result")
     a = ap.parse_args(argv)
     r = run([p.resolve() for p in a.data], [p.resolve() for p in a.method], a.planted, a.errors_per_doc,
-            a.controls, a.seed, a.out, a.rehearsal)
+            a.controls, a.seed, a.out, a.rehearsal, a.stratified)
     print(f"{r['variants']} variants, {r['errors']} planted errors; key.sha256 {r['digest']}")
     print("Commit key.sha256 now, before any reviewer runs. Do not show key.json to reviewers.")
     return 0
