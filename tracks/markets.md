@@ -5,7 +5,7 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| B1 | next | |
+| B1 | in progress | Method note committed before results: `research/b1_market_pricing/METHOD.md` |
 | C1 | todo | |
 
 ## Log notes for the coordinator
