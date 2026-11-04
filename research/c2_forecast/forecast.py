@@ -499,7 +499,8 @@ def seasonality_check(share: pd.Series) -> dict:
 
 
 def placebo(share: pd.Series, seed: int = 0) -> dict:
-    """Leakage test 5 (outcome): Z-DIR trained on a time-shuffled target should show no skill over no-change."""
+    """Leakage test 5 (outcome): Z-DIR trained on a time-shuffled, demeaned target should show no skill over
+    no-change (option (a), decided by Eleonora 2026-11-04)."""
     rng = np.random.default_rng(seed)
     out = {}
     for h in HORIZONS:
@@ -508,7 +509,9 @@ def placebo(share: pd.Series, seed: int = 0) -> dict:
             if T < FIRST_ORIGIN or T + h > share.index[-1]:
                 continue
             X, y, _ = pairs(share, T, h, "expanding")
-            b = ols(X, rng.permutation(y))
+            # Option (a), decided by Eleonora 2026-11-04: demean the shuffled target, so the placebo cannot
+            # earn drift's gain from the target's mean (SPECS.md, accepted deviation)
+            b = ols(X, rng.permutation(y - y.mean()))
             x = lags(share.diff(), T)
             f.append(float(b[0] + x @ b[1:]))
             a.append(share[T + h] - share[T])

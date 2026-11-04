@@ -17,18 +17,18 @@
  },
  "placebo": {
   "1": {
-   "rel_rmse_vs_no_change": 0.9609464654265946,
-   "cw_p": 0.0002057754675693289,
-   "no_skill": false
+   "rel_rmse_vs_no_change": 1.004692091406793,
+   "cw_p": 0.25223439988441154,
+   "no_skill": true
   },
   "4": {
-   "rel_rmse_vs_no_change": 0.9643524056311541,
-   "cw_p": 0.042864946127631386,
-   "no_skill": false
+   "rel_rmse_vs_no_change": 1.0032834910552664,
+   "cw_p": 0.26877407847434864,
+   "no_skill": true
   },
   "8": {
-   "rel_rmse_vs_no_change": 0.9663408973070167,
-   "cw_p": 0.09130045394446534,
+   "rel_rmse_vs_no_change": 1.0186252305809906,
+   "cw_p": 0.8549379141014213,
    "no_skill": true
   }
  },
