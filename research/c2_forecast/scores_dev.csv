@@ -1,0 +1,94 @@
+design,comparison,h,model,n,first_T,last_T,rmse_pp,mae_pp,rel_rmse_vs_no_change,n_intervals,interval_score80_pp,interval_score95_pp,crps_pp
+latest-expanding,"Z family, all origins",1,Z-DIR,133,1990Q1,2023Q1,0.415915,0.317211,0.747642,89,1.44061,2.40738,0.227477
+latest-expanding,"Z family, all origins",1,Z-DAMP,133,1990Q1,2023Q1,0.404744,0.317327,0.72756,89,1.56599,2.26811,0.235379
+latest-expanding,"Z family, all origins",1,no_change,133,1990Q1,2023Q1,0.556302,0.427477,1,89,2.23726,3.81994,0.339173
+latest-expanding,"Z family, all origins",1,drift,133,1990Q1,2023Q1,0.535328,0.423517,0.962297,89,2.27222,3.9778,0.344506
+latest-expanding,"Z family, all origins",1,ar_bic,133,1990Q1,2023Q1,0.421335,0.320867,0.757386,89,1.47556,2.4079,0.231356
+latest-expanding,"Z family, all origins",1,seasonal_naive,133,1990Q1,2023Q1,0.513858,0.401702,0.923703,89,2.05041,2.80833,0.309222
+latest-expanding,"Z family, all origins",4,Z-DIR,130,1990Q1,2022Q2,1.3148,1.00063,0.704769,83,5.62217,9.87574,0.822867
+latest-expanding,"Z family, all origins",4,Z-DAMP,130,1990Q1,2022Q2,1.30485,0.987732,0.699437,83,5.86817,11.7225,0.837582
+latest-expanding,"Z family, all origins",4,no_change,130,1990Q1,2022Q2,1.86557,1.39698,1,83,9.13622,19.5482,1.22086
+latest-expanding,"Z family, all origins",4,drift,130,1990Q1,2022Q2,1.7742,1.31996,0.95102,83,9.44237,19.7542,1.25114
+latest-expanding,"Z family, all origins",4,ar_bic,130,1990Q1,2022Q2,1.31397,0.99165,0.704325,83,5.62977,10.6102,0.831025
+latest-expanding,"Z family, all origins",4,seasonal_naive,130,1990Q1,2022Q2,1.4157,1.10188,0.758854,83,6.3884,11.9389,0.914765
+latest-expanding,"Z family, all origins",8,Z-DIR,126,1990Q1,2021Q2,2.69955,1.98216,0.789959,75,16.2668,30.1971,1.98159
+latest-expanding,"Z family, all origins",8,Z-DAMP,126,1990Q1,2021Q2,2.75811,2.0162,0.807095,75,17.0309,39.9591,2.00585
+latest-expanding,"Z family, all origins",8,no_change,126,1990Q1,2021Q2,3.41733,2.53065,1,75,21.2926,45.632,2.49741
+latest-expanding,"Z family, all origins",8,drift,126,1990Q1,2021Q2,3.24501,2.37179,0.949574,75,21.8418,46.6693,2.59181
+latest-expanding,"Z family, all origins",8,ar_bic,126,1990Q1,2021Q2,2.70883,1.95174,0.792675,75,16.8109,32.3894,1.995
+latest-expanding,"Z family, all origins",8,seasonal_naive,126,1990Q1,2021Q2,3.63075,2.62603,1.06245,75,22.2168,54.5012,2.64199
+latest-rolling,"Z family, all origins",1,Z-DIR,133,1990Q1,2023Q1,0.427923,0.324031,0.769227,89,1.51264,2.33033,0.235844
+latest-rolling,"Z family, all origins",1,Z-DAMP,133,1990Q1,2023Q1,0.402583,0.314324,0.723676,89,1.5524,2.29528,0.233313
+latest-rolling,"Z family, all origins",1,no_change,133,1990Q1,2023Q1,0.556302,0.427477,1,89,2.23726,3.81994,0.339173
+latest-rolling,"Z family, all origins",1,drift,133,1990Q1,2023Q1,0.571847,0.462595,1.02794,89,2.45504,4.40081,0.376329
+latest-rolling,"Z family, all origins",1,ar_bic,133,1990Q1,2023Q1,0.436962,0.334388,0.785476,89,1.58263,2.58708,0.248379
+latest-rolling,"Z family, all origins",1,seasonal_naive,133,1990Q1,2023Q1,0.513858,0.401702,0.923703,89,2.05041,2.80833,0.309222
+latest-rolling,"Z family, all origins",4,Z-DIR,130,1990Q1,2022Q2,1.49664,1.13069,0.802242,83,6.78129,11.1805,0.947468
+latest-rolling,"Z family, all origins",4,Z-DAMP,130,1990Q1,2022Q2,1.38032,1.03183,0.739893,83,6.79432,13.2368,0.911276
+latest-rolling,"Z family, all origins",4,no_change,130,1990Q1,2022Q2,1.86557,1.39698,1,83,9.13622,19.5482,1.22086
+latest-rolling,"Z family, all origins",4,drift,130,1990Q1,2022Q2,1.96594,1.51382,1.0538,83,10.7724,22.0836,1.436
+latest-rolling,"Z family, all origins",4,ar_bic,130,1990Q1,2022Q2,1.53001,1.15452,0.820129,83,7.69032,13.7088,1.02184
+latest-rolling,"Z family, all origins",4,seasonal_naive,130,1990Q1,2022Q2,1.4157,1.10188,0.758854,83,6.3884,11.9389,0.914765
+latest-rolling,"Z family, all origins",8,Z-DIR,126,1990Q1,2021Q2,3.29976,2.64633,0.965596,75,16.4709,36.5549,2.50969
+latest-rolling,"Z family, all origins",8,Z-DAMP,126,1990Q1,2021Q2,2.78254,2.05011,0.814244,75,17.4486,40.4107,2.05272
+latest-rolling,"Z family, all origins",8,no_change,126,1990Q1,2021Q2,3.41733,2.53065,1,75,21.2926,45.632,2.49741
+latest-rolling,"Z family, all origins",8,drift,126,1990Q1,2021Q2,3.70778,2.83631,1.08499,75,24.6546,54.4286,3.13697
+latest-rolling,"Z family, all origins",8,ar_bic,126,1990Q1,2021Q2,3.22857,2.47653,0.944764,75,20.1057,42.4768,2.5532
+latest-rolling,"Z family, all origins",8,seasonal_naive,126,1990Q1,2021Q2,3.63075,2.62603,1.06245,75,22.2168,54.5012,2.64199
+latest-expanding,Z+C1 common origins,1,ZC1-DIR,18,2018Q4,2023Q1,0.399218,0.326442,0.795687,,,,
+latest-expanding,Z+C1 common origins,1,Z-DIR,18,2018Q4,2023Q1,0.519638,0.323503,1.0357,18,1.84745,3.94839,0.252602
+latest-expanding,Z+C1 common origins,1,no_change,18,2018Q4,2023Q1,0.501727,0.387445,1,18,1.83988,2.59465,0.28471
+latest-expanding,Z+C1 common origins,1,ar_bic,18,2018Q4,2023Q1,0.542751,0.355392,1.08176,18,1.96538,3.91036,0.272239
+latest-expanding,Z+C1 common origins,4,ZC1-DIR,12,2019Q3,2022Q2,1.81473,1.55437,1.39981,,,,
+latest-expanding,Z+C1 common origins,4,Z-DIR,12,2019Q3,2022Q2,1.60567,1.33746,1.23854,12,5.96097,6.15835,0.946681
+latest-expanding,Z+C1 common origins,4,no_change,12,2019Q3,2022Q2,1.29642,1.02494,1,12,4.29843,7.68471,0.78646
+latest-expanding,Z+C1 common origins,4,ar_bic,12,2019Q3,2022Q2,1.55809,1.33658,1.20185,12,5.17217,5.31544,0.924011
+latest-expanding,Z+C1 common origins,8,ZC1-DIR,4,2020Q3,2021Q2,1.05539,0.845948,0.959346,,,,
+latest-expanding,Z+C1 common origins,8,Z-DIR,4,2020Q3,2021Q2,3.84279,3.33197,3.49309,4,13.8655,11.8869,2.30366
+latest-expanding,Z+C1 common origins,8,no_change,4,2020Q3,2021Q2,1.10011,0.901265,1,4,8.27728,13.9808,1.40388
+latest-expanding,Z+C1 common origins,8,ar_bic,4,2020Q3,2021Q2,3.70817,3.13368,3.37072,4,12.9342,12.2359,2.15964
+realtime-vs-first,real-time check,1,Z-DIR,28,2016Q2,2023Q1,0.375779,0.292766,0.862327,,,,
+realtime-vs-first,real-time check,1,Z-DAMP,28,2016Q2,2023Q1,0.370286,0.303768,0.849722,,,,
+realtime-vs-first,real-time check,1,no_change,28,2016Q2,2023Q1,0.435773,0.323379,1,,,,
+realtime-vs-first,real-time check,1,drift,28,2016Q2,2023Q1,0.430635,0.327301,0.988209,,,,
+realtime-vs-first,real-time check,1,ar_bic,28,2016Q2,2023Q1,0.392598,0.305626,0.900923,,,,
+realtime-vs-first,real-time check,4,Z-DIR,25,2016Q2,2022Q2,1.01536,0.811659,0.865898,,,,
+realtime-vs-first,real-time check,4,Z-DAMP,25,2016Q2,2022Q2,1.1398,0.895182,0.97202,,,,
+realtime-vs-first,real-time check,4,no_change,25,2016Q2,2022Q2,1.17261,0.95933,1,,,,
+realtime-vs-first,real-time check,4,drift,25,2016Q2,2022Q2,0.982725,0.742582,0.838066,,,,
+realtime-vs-first,real-time check,4,ar_bic,25,2016Q2,2022Q2,0.991882,0.783624,0.845875,,,,
+realtime-vs-first,real-time check,8,Z-DIR,21,2016Q2,2021Q2,1.99516,1.55769,0.991274,,,,
+realtime-vs-first,real-time check,8,Z-DAMP,21,2016Q2,2021Q2,2.14322,1.67168,1.06484,,,,
+realtime-vs-first,real-time check,8,no_change,21,2016Q2,2021Q2,2.01272,1.78808,1,,,,
+realtime-vs-first,real-time check,8,drift,21,2016Q2,2021Q2,1.2721,0.958128,0.632029,,,,
+realtime-vs-first,real-time check,8,ar_bic,21,2016Q2,2021Q2,1.90619,1.47012,0.94707,,,,
+realtime-vs-latest,real-time check,1,Z-DIR,28,2016Q2,2023Q1,0.467153,0.308813,1.0809,,,,
+realtime-vs-latest,real-time check,1,Z-DAMP,28,2016Q2,2023Q1,0.455941,0.312813,1.05496,,,,
+realtime-vs-latest,real-time check,1,no_change,28,2016Q2,2023Q1,0.432189,0.3113,1,,,,
+realtime-vs-latest,real-time check,1,drift,28,2016Q2,2023Q1,0.429537,0.33977,0.993864,,,,
+realtime-vs-latest,real-time check,1,ar_bic,28,2016Q2,2023Q1,0.476329,0.317829,1.10213,,,,
+realtime-vs-latest,real-time check,4,Z-DIR,25,2016Q2,2022Q2,1.25654,0.991439,1.24248,,,,
+realtime-vs-latest,real-time check,4,Z-DAMP,25,2016Q2,2022Q2,1.27533,0.946305,1.26106,,,,
+realtime-vs-latest,real-time check,4,no_change,25,2016Q2,2022Q2,1.01132,0.781939,1,,,,
+realtime-vs-latest,real-time check,4,drift,25,2016Q2,2022Q2,0.957534,0.75744,0.946819,,,,
+realtime-vs-latest,real-time check,4,ar_bic,25,2016Q2,2022Q2,1.21743,0.939684,1.20381,,,,
+realtime-vs-latest,real-time check,8,Z-DIR,21,2016Q2,2021Q2,2.19327,1.66486,1.33494,,,,
+realtime-vs-latest,real-time check,8,Z-DAMP,21,2016Q2,2021Q2,2.11211,1.62736,1.28554,,,,
+realtime-vs-latest,real-time check,8,no_change,21,2016Q2,2021Q2,1.64297,1.43842,1,,,,
+realtime-vs-latest,real-time check,8,drift,21,2016Q2,2021Q2,1.29857,1.00921,0.790378,,,,
+realtime-vs-latest,real-time check,8,ar_bic,21,2016Q2,2021Q2,2.08428,1.58277,1.2686,,,,
+latest-on-realtime-origins,real-time check,1,Z-DIR,28,2016Q2,2023Q1,0.446841,0.283001,1.0339,28,1.55887,3.11632,0.221052
+latest-on-realtime-origins,real-time check,1,Z-DAMP,28,2016Q2,2023Q1,0.428792,0.282895,0.992139,28,1.51138,2.81179,0.214306
+latest-on-realtime-origins,real-time check,1,no_change,28,2016Q2,2023Q1,0.432189,0.3113,1,28,1.6871,2.41558,0.241763
+latest-on-realtime-origins,real-time check,1,drift,28,2016Q2,2023Q1,0.429328,0.33957,0.99338,28,1.70117,2.46107,0.242751
+latest-on-realtime-origins,real-time check,1,ar_bic,28,2016Q2,2023Q1,0.46764,0.30868,1.08203,28,1.63044,3.10646,0.23603
+latest-on-realtime-origins,real-time check,4,Z-DIR,25,2016Q2,2022Q2,1.20106,0.903306,1.18762,25,4.5354,5.8247,0.669495
+latest-on-realtime-origins,real-time check,4,Z-DAMP,25,2016Q2,2022Q2,1.09456,0.751403,1.08232,25,4.41108,6.01841,0.624045
+latest-on-realtime-origins,real-time check,4,no_change,25,2016Q2,2022Q2,1.01132,0.781939,1,25,4.45635,7.77157,0.596489
+latest-on-realtime-origins,real-time check,4,drift,25,2016Q2,2022Q2,0.959046,0.759775,0.948314,25,4.58197,7.94715,0.601402
+latest-on-realtime-origins,real-time check,4,ar_bic,25,2016Q2,2022Q2,1.15791,0.865362,1.14495,25,4.26907,5.3911,0.649287
+latest-on-realtime-origins,real-time check,8,Z-DIR,21,2016Q2,2021Q2,2.05838,1.55052,1.25284,21,8.39736,11.9423,1.15239
+latest-on-realtime-origins,real-time check,8,Z-DAMP,21,2016Q2,2021Q2,1.99233,1.51548,1.21264,21,9.17739,12.824,1.15332
+latest-on-realtime-origins,real-time check,8,no_change,21,2016Q2,2021Q2,1.64297,1.43842,1,21,8.87731,14.2287,0.917007
+latest-on-realtime-origins,real-time check,8,drift,21,2016Q2,2021Q2,1.30327,1.01357,0.793239,21,9.12748,14.6142,0.936474
+latest-on-realtime-origins,real-time check,8,ar_bic,21,2016Q2,2021Q2,1.95742,1.44982,1.19139,21,8.50282,12.3165,1.09662
