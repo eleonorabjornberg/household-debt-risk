@@ -80,6 +80,7 @@ TOKEN_RE = re.compile(
     re.VERBOSE,
 )
 
+TEMPLATE_RE = re.compile(r"\{\w+\}|\$\{facts\.|facts\.\w+|fmt\w*\(|pct\(")
 LOC_RE = re.compile(r"^(?P<path>[^:]+):(?P<line>\d+)$")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_]*$")
 VINTAGE_RE = re.compile(r"^(?:n/a|[a-z0-9]+:\d{4}-\d{2}-\d{2}(?: [a-z0-9]+:\d{4}-\d{2}-\d{2})*)$")
@@ -226,9 +227,17 @@ def validate_register(root: Path = ROOT, register: Path = REGISTER, results_path
             if not p.is_file():
                 errors.append(f"{tag}: location file {m['path']} does not exist")
                 continue
-            n_lines = len(p.read_text(encoding="utf-8", errors="replace").splitlines())
+            lines = p.read_text(encoding="utf-8", errors="replace").splitlines()
+            n_lines = len(lines)
             if not 1 <= int(m["line"]) <= n_lines:
                 errors.append(f"{tag}: {loc} is outside the file ({n_lines} lines)")
+                continue
+            # The line must show the number (any display spelling) or the template that renders it.
+            # Catches locations that drift when lines are inserted above them.
+            text = lines[int(m["line"]) - 1]
+            spellings = [d.strip() for d in r.get("display", "").split("|") if d.strip()]
+            if not any(d in text for d in spellings) and not TEMPLATE_RE.search(text):
+                errors.append(f"{tag}: {loc} does not show {r.get('display')!r} (line drifted?): {text.strip()[:80]!r}")
     return errors, rows
 
 

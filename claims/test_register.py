@@ -95,3 +95,22 @@ def test_duplicate_ids_and_status_disagreement(tmp_path):
     errors, _ = cr.validate_register(register=p)
     assert any("duplicate claim_id" in e for e in errors)
     assert any("row says FAIL but validation/results.json says C2 is PASS" in e for e in errors)
+
+
+def test_drifted_location_is_caught(tmp_path):
+    """A location whose line no longer shows the number fails (lines inserted above it)."""
+    import shutil
+    import check_register as cr
+    root = tmp_path
+    (root / "claims").mkdir()
+    (root / "doc.md").write_text("intro\nThe share is 56.4% now.\n")
+    reg = root / "claims" / "register.csv"
+    head = ",".join(cr.SCHEMA)
+    row = "x,c,56.4%,0.564,share,2026Q2,doc.md:{ln},calc,FL1,z1:2026-09-11,UNVERIFIED,,"
+    reg.write_text(head + "\n" + row.format(ln=2) + "\n")
+    shutil.copy(cr.VALIDATION_RESULTS, root / "results.json")
+    errs, _ = cr.validate_register(root=root, register=reg, results_path=root / "results.json")
+    assert not [e for e in errs if "drifted" in e]
+    reg.write_text(head + "\n" + row.format(ln=1) + "\n")
+    errs, _ = cr.validate_register(root=root, register=reg, results_path=root / "results.json")
+    assert [e for e in errs if "drifted" in e]
