@@ -20,6 +20,12 @@ Z1_ZIP := $(DATA)/z1/FRB_Z1_csv.zip
 Z1_CSV := $(DATA)/z1/Z1.csv
 SITES := web atlas
 LOAD ?= 0
+# FRED as-of date (decision F2-1): ALFRED data as they stood on this day, so reruns reproduce the
+# committed numbers. Defaults to the committed snapshot's vintage; a refresh moves it on purpose,
+# e.g. make all FRED_ASOF=2026-12-20
+FRED_ASOF ?= $(shell python3 -c "import json;print(json.load(open('web/public/data/meta.json'))['vintages']['fred'])" 2>/dev/null)
+export FRED_ASOF
+export HHDEBT_FRED_ASOF := $(FRED_ASOF)
 
 .PHONY: test-db ci-static all ingest validate models build check ci test site-test site-build site-copies f1-links repro clean-data help
 
@@ -72,7 +78,7 @@ test:  ## offline Python suites (pipeline, claims, validation, research, skills,
 	cd mcp/household-credit-mcp && $(OFFLINE) $(UV) run -q pytest -q
 
 test-db:  ## database tests (needs DATABASE_URL / DATABASE_URL_READONLY and a reachable host)
-	cd pipeline && $(UV) run -q pytest -q tests/test_snapshot_and_db.py
+	cd pipeline && HHDEBT_REQUIRE_DB=1 $(UV) run -q pytest -q tests/test_snapshot_and_db.py
 
 f1-links:  ## after build: every register row is a link (F1), every chart has a text description (F4)
 	@for s in $(SITES); do node claims/site/check_html.mjs --site $$s; node tools/check_chart_text.mjs --site $$s; done

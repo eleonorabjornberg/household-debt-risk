@@ -44,6 +44,10 @@ def diff(a, b, path: str, rtol: float, out: list[str]) -> None:
         return
     if isinstance(a, str) and isinstance(b, str) and path.endswith(".note") and (a.startswith("URLs tried") or b.startswith("URLs tried") or not a or not b):
         return
+    # The NY Fed vintage is the retrieval date (the HHDC file carries no release stamp), so it moves on
+    # every download even when nyfed_by_type.json, compared separately, is identical.
+    if path == ".vintages.nyfed":
+        return
     if isinstance(a, dict) and isinstance(b, dict):
         for k in sorted(set(a) | set(b)):
             if k in VOLATILE:
