@@ -9,11 +9,11 @@ The design must agree with the frozen C2 protocol (`docs/decisions/scoring-proto
 - **What is nowcast.** The change in the share from the last published quarter T to the next quarter q = T+1.
 - **Primary target: first release.** share(q) in the first Z.1 that contains q, minus share(T) in that same release (item 9a, same-vintage). Source: `first_release.csv` and `z1_share_vintages.csv` (Fed release archive, 2016-09-16 onward).
 - **Secondary target: latest vintage.** The same change, both quarters from the 2026-09-11 release.
-- **Missing release.** The 2017-03-09 release has no archived CSV. Its quarter (2016Q4) has no first-release target, and nowcasts that need it as their base are recorded as absent.
+- **Missing release.** A release with no archived CSV would leave its quarter without a first-release target, and its nowcasts recorded as absent. None is missing after the 2017-03-09 fix (see Deviations).
 
 ## Instants and information sets (items 2, 3)
 - **Instants.** The 15th of every month *[implementation: the fixed day]*. A nowcast "at t" uses everything published by the end of day t (`pit.as_of`).
-- **Base and target.** At t, R is the latest Z.1 release on or before t, T is R's last quarter, and the target is q = T+1. The instant index k = 1, 2, 3 counts instants since R. A fourth instant, when one occurs before the next release, is pooled with k = 3 *[implementation]*.
+- **Base and target.** At t, R is the latest Z.1 release on or before t, T is R's last quarter, and the target is q = T+1. The instant index k = 1, 2, 3 counts instants since R. A fourth instant, when one occurs before the next release, was pooled with k = 3 *[implementation]*; replaced, see Deviations.
 - **Indicator set 2b (primary).**
   - G.19: `TOTALGOV` (federal government), `TOTALDI` (depository institutions), `TOTALFC` (finance companies), `TOTALTCU` (credit unions), `TOTALNS` (total).
   - H.8: `RREACBW027NBOG` (bank residential real-estate loans).
@@ -40,7 +40,7 @@ The design must agree with the frozen C2 protocol (`docs/decisions/scoring-proto
 All benchmarks are computed from R only, so they use as-of data:
 - **No-change:** Δ = 0. This is the headline comparison.
 - **Drift:** the mean of R's last four quarterly changes.
-- **AR(1) on quarterly changes:** fitted by OLS on R's full history, 1952Q2 to T (expanding window, as in C2's primary design).
+- **AR(1) on quarterly changes:** fitted by OLS on R's full history, 1952Q2 to T (expanding window, as in C2's primary design; the order is fixed at 1, see Deviations).
 
 ## Metrics and tests (item 6, aligned with C2)
 - **Losses.** RMSE (primary) and MAE, in pp of share. Each is also reported relative to no-change. Sign accuracy of the change is reported too.
@@ -55,15 +55,13 @@ All benchmarks are computed from R only, so they use as-of data:
 ## Samples and holdout
 - **RT, real time (primary).**
   - Z.1 base from the release archive, indicators from ALFRED, target first release.
-  - Development targets run 2016Q3–2023Q2, 2016Q4 excepted.
+  - Development targets run 2016Q3–2023Q2.
 - **P2b, pseudo-real-time.**
   - Z.1 from the latest vintage, cut at T. This is *not real-time* for Z.1, and is labelled so as C2 requires.
   - Indicators are point-in-time; the target is the latest vintage.
   - Development targets run 2015Q1–2023Q2.
 - **P2a, pseudo-real-time.** As P2b, with indicator set 2a. Development targets run 2010Q2–2023Q2.
-- **Holdout.** Untouched by every script run until the holdout run. Targets after 2023Q2 are neither scored nor printed: the loader drops them unless `--holdout` is passed.
-  - The decided C1 holdout is 2024Q3–2026Q2. The frozen C2 holdout starts at 2023Q3.
-  - Until the coordinator rules on that conflict, both are kept untouched by cutting at 2023Q2.
+- **Holdout: 2023Q3–2026Q2** (see Deviations). Untouched by every script run until the holdout run. Targets after 2023Q2 are neither scored nor printed: the loader drops them unless `--holdout` is passed.
 
 ## Leakage guards (from C2's tests 1–4, applied to C1)
 - **Availability check.** Every datum carries `available_at` (ALFRED `realtime_start`, or the Z.1 release date). `nowcast.guard` raises if any datum used at t has `available_at > t`.
@@ -73,8 +71,20 @@ All benchmarks are computed from R only, so they use as-of data:
   - (3) a value is published one day after t.
 
 ## Open conflicts (reported to the coordinator 2026-11-04)
-- **Holdout start:** 2024Q3 (C1 decision) vs 2023Q3 (C2 frozen). Handled conservatively above.
+- **Holdout start:** resolved 2026-11-04 in C2's favour (2023Q3); see Deviations.
 - **Archive depth:** C2's fact check says releases before 2016-09 are HTML/PDF only. In fact `z1r-N.zip` text archives exist for 2010–2016; whether they carry the holder tables is unverified. RT therefore starts at 2016-09.
 
 ## Deviations
-None yet.
+- **2026-11-04, holdout ruling** (coordinator commit 66adeff; PLAN.md "Decisions taken": "C1's holdout follows the frozen C2 protocol (2023Q3–2026Q2), not 2024Q3", Eleonora's rule, Claude's application). The C1 holdout is now 2023Q3–2026Q2. No score changes: development already stopped at 2023Q2. The holdout run happens once, after review.
+- **2026-11-04, tests:** aligned exactly with C2 (DM with HLN, Clark–West for nested pairs, holdout descriptive only), as specified above. No change.
+- **2026-11-04, after the first development scores, in response to quant-reviewer (q11–q16) and skeptic (s9–s15).** Each changes the development scores. The original scores are in commit 58a93d8.
+  - *One row per target and k* (q11, s13). The spec said a fourth instant "is pooled with k = 3", which counted some targets twice and broke "one target per quarter". A fourth instant is now k = 4. It is kept in `nowcasts_dev.csv` but neither scored nor tested.
+  - *Missing release was not missing* (s9). The 2017-03-09 release is archived in folder `20170305`. `z1_vintages.FOLDER_OVERRIDE` maps it, and an assert checks that its last quarter is 2016Q4. 2016Q4 now has a first-release target, and the six instants based on that release are scored.
+  - *Like-for-like comparison* (q12, s11). The bridge is also scored on exactly the bridge regression's targets (`bridge_on_reg_targets`). Reported, not tested.
+  - *Post-hoc test sensitivity* (q14). DM with a Newey–West lag-1 variance (`posthoc_dm_hac1_p`), because errors at consecutive quarters are autocorrelated within each k. Reported beside the pre-specified lag-0 test. It is not used for wording.
+  - *Declared differences from C2* (q15).
+    - (i) The AR benchmark is a fixed AR(1), as Eleonora decided for C1 (Q-C1 item 5). C2 chooses the order by BIC, so "as in C2" above refers only to the expanding window.
+    - (ii) In the pseudo-real-time samples the bridge regression trains on latest-vintage (revised) targets, with no embargo. That is a further reason they are labelled *not real-time*.
+    - (iii) C2's leakage test 4 (fit window) is covered only by the assert that each benchmark's history ends at T. Test 5 (placebo on a shuffled target) and the outcome checks are not implemented for C1. C2 will implement them.
+  - *Deterministic column order* in `nowcasts_dev.csv` (q16).
+- **2026-11-04, archive depth:** the coordinator confirmed that `z1r-N.zip` archives exist before 2016-09 and recorded a factual correction in C2. The real-time window still starts 2016-09-16. Extending it would need a new deviation before any score.

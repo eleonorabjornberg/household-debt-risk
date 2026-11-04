@@ -18,16 +18,16 @@ Data: Fed Z.1 dated 2026-09-11; FRED retrieved 2026-11-04. Sample 1986Q1–2026Q
 | Levels, sample ends 2022Q3 | −0.33 | −1.12 to 0.46 | −4.46 |
 | First differences, main | −0.57 | −4.48 to 3.34 |  |
 | *Post-hoc:* levels, dummy for 2022Q4+ | −0.33 | −1.08 to 0.43 | −4.73 |
-| *Post-hoc:* levels, Fannie+Freddie share only | 0.50 | −1.92 to 2.92 | −3.63 |
+| *Post-hoc:* levels, Fannie+Freddie share only (built from Z.1 sub-series that overstate 1986Q1–Q3) | 0.50 | −1.92 to 2.92 | −3.63 |
 | *Post-hoc:* levels, HAC lag 8 | 1.18 | −0.03 to 2.39 |  |
 
 All coefficients and the first-differences version of every row are in `regressions.csv`.
 
 *Correction, 2026-11-04.* The share is now computed at catalog level, as `validation/run.py` does. The first version used A1's finer holder cells. In 1974Q3–1986Q3 the Z.1 pool sub-series add up to more than the pool total, so those cells overstated the share in the first three sample quarters and put an artificial step at 1986Q4. That mostly moved the first-differences estimate. The verdict is unchanged. The issue was found while cross-checking C1's vintages.
 
-- **Treat the positive levels coefficients as artefacts.** Every residual ADF statistic falls short of the Engle–Granger 5% critical value (about −5.10 for this many variables, and still −3.79 counting only the three series that look non-stationary). So the levels fits may be spurious and their intervals unreliable.
-- **The positive sign comes from the PMMS method change.** Freddie Mac switched PMMS from a lender survey to application data on 2022-11-17. Ending the sample at 2022Q3, or adding a dummy for the later quarters, turns the coefficient negative and insignificant. The dummy itself is 0.87 pp. That is far larger than the step the skeptic estimated against Optimal Blue rates, so the dummy also absorbs other 2023–26 conditions.
-- **The test has little power.** The first-differences interval, scaled by the rise in the share between 1986Q1–2008Q2 and 2020Q1–2026Q2, allows the spread to have moved by about 0.70 pp either way. That covers any plausible compression.
+- **Treat the positive levels coefficients as unreliable.** Compare each levels row's residual ADF statistic with the Engle–Granger 5% critical value for its own number of variables (statsmodels `mackinnoncrit`, 157 observations): −5.10 with all seven variables, and −5.38 for the dummy row, which has eight. No row reaches that. A looser bound counts only the three series that look non-stationary (spread, share, 10-year yield). It gives −3.80, and it assumes the other controls are stationary, which is not tested. Under that bound the rows that reject are the headline-share row (−3.87), the sample ending 2022Q3 (−4.46) and the post-hoc dummy row (−4.73). The main row (−3.77), the blend (−3.67) and the Fannie+Freddie row (−3.63) do not. So the rows with the best case for cointegration are the two that exclude or absorb 2022Q4 onward, and both have a negative, insignificant coefficient.
+- **The positive sign coincides with the period from 2022Q4 on.** That period starts with Freddie Mac's switch of PMMS from a lender survey to application data (2022-11-17) and also includes other 2023–26 conditions. Ending the sample at 2022Q3, or adding a dummy for the later quarters, turns the coefficient negative and insignificant. The dummy itself is 0.87 pp, far larger than the step the skeptic estimated against Optimal Blue rates, so it cannot be read as the method change alone. Both checks were chosen after the first result was seen.
+- **The test has little power.** At 5% size and 80% power, the first-differences regression could only detect a spread change of about 1.00 pp over the rise in the share between 1986Q1–2008Q2 and 2020Q1–2026Q2. That is larger than the whole 0.61 pp rise in the mean spread between those periods. The scaling also assumes the quarter-on-quarter response equals the long-run one, and the differences estimate is fragile: 1986Q4 is still the largest quarterly change in the share.
 
 **Descriptive means** (`spreads_summary.csv`):
 

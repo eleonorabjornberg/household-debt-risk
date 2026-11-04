@@ -1,0 +1,2 @@
+/home/user/household-debt-risk/.claude/skills/research-memo/examples/rates_strategist.md: PASS · 761/1000 words · claim-check {'MATCH': 17, 'AMBIGUOUS': 2} · 16 register rows
+  warn  Sources lists `gfc_half_private_retreat`, which no body number resolved to

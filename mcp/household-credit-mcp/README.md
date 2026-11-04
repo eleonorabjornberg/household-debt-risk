@@ -24,6 +24,7 @@ Quarters are written `2026Q2`. Tools also refuse future and pre-coverage quarter
 
 * Snapshot (default): `web/public/data/*.json` plus `meta.json` (vintages). Used when `DATABASE_URL_READONLY` is unset. Override the folder with `HOUSEHOLD_CREDIT_SNAPSHOT_DIR`.
 * Postgres: set `DATABASE_URL_READONLY` (the `research_reader` login). The server sets the transaction read-only, `statement_timeout` 15 s, and runs only the parameterised SELECTs in `backends.ALLOWED_SQL`; no SQL ever comes from the client. `research_reader` cannot read raw/core vintages, so vintages still come from `meta.json` and the result says so.
+* Unreachable database: the server probes the database once, at the first tool call. If it cannot connect (an unresolvable host, a refused connection or a timeout, as with the Supabase pooler from this project's cloud sandbox), it answers from the snapshots, with `backend: snapshot` and a `backend_note` giving the reason. Set `HOUSEHOLD_CREDIT_REQUIRE_DB=1` to fail instead. Tests: `tests/test_fallback.py`.
 
 `lookup_claim` and the series catalog always read the repository files (`claims/register.csv`, `pipeline/series_catalog.yaml`), on either backend.
 
