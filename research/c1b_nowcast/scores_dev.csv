@@ -1,0 +1,13 @@
+set,k,model,n,rmse_pp,mae_pp,mean_error_pp,rel_rmse_vs_no_change
+development,1,bridge_c1b,28,0.219103,0.168281,-0.129574,0.577185
+development,1,bridge_c1,28,0.277383,0.218717,-0.188948,0.730714
+development,1,no_change,28,0.379605,0.281002,-0.151394,1
+development,2,bridge_c1b,28,0.161284,0.126594,-0.118819,0.424873
+development,2,bridge_c1,28,0.274956,0.224546,-0.222101,0.72432
+development,2,no_change,28,0.379605,0.281002,-0.151394,1
+development,3,bridge_c1b,22,0.152039,0.126918,-0.126318,0.369363
+development,3,bridge_c1,22,0.313934,0.264409,-0.264409,0.762671
+development,3,no_change,22,0.411624,0.316491,-0.151536,1
+development,all,bridge_c1b,78,0.181908,0.14165,-0.124795,0.467746
+development,all,bridge_c1,78,0.287326,0.233697,-0.222133,0.738811
+development,all,no_change,78,0.388903,0.291012,-0.151434,1

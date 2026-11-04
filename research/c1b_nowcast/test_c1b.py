@@ -88,3 +88,27 @@ def test_paired_t_and_verdict():
     d = np.array([1.0, 2.0, 3.0, 4.0])
     stat, p = c1b.paired_t_hln(d)
     assert stat == pytest.approx(2.5 / np.sqrt(1.25 / 4) * np.sqrt(3 / 4)) and 0 < p < 1
+
+
+def _sc(c1b_rmse, c1_rmse):
+    rows = []
+    for k, (b, c) in enumerate(zip(c1b_rmse, c1_rmse), 1):
+        rows += [{"k": k, "model": "bridge_c1b", "rmse_pp": b}, {"k": k, "model": "bridge_c1", "rmse_pp": c}]
+    return pd.DataFrame(rows)
+
+
+TS_SIG = pd.DataFrame({"hypothesis": ["H1 RMSE"], "p_holm": [0.01]})
+
+
+def test_verdict_rules():
+    assert c1b.verdict(_sc([1, 1, 1], [2, 2, 2]), TS_SIG) == "improves on C1"
+    assert c1b.verdict(_sc([1, 3, 1], [2, 2, 2]), TS_SIG) == "does not improve"
+    assert c1b.verdict(_sc([1, 2, 1], [2, 2, 2]), TS_SIG) == "comparable"          # exact tie at k = 2
+    assert c1b.verdict(_sc([1, 1, 1], [2, 2, 2]), TS_SIG.assign(p_holm=0.2)) == "comparable"
+    ho = pd.DataFrame({"k": ["all", "all"], "model": ["bridge_c1b", "bridge_c1"], "rmse_pp": [2.0, 1.0]})
+    assert c1b.verdict(_sc([1, 1, 1], [2, 2, 2]), TS_SIG, ho).startswith("comparable")
+
+
+def test_mean_hac1():
+    me, se = c1b.mean_hac1(np.array([1.0, -1.0, 1.0, -1.0]))
+    assert me == 0.0 and se == pytest.approx(np.sqrt((4 - 3) / 4 / 4))
