@@ -1,0 +1,47 @@
+# Excerpt of Freddie Mac Form 10-K for FY2019 (10k_021320.pdf, freddiemac.com/investors/financials/pdf/), pdftotext -layout, lines verbatim. Test fixture only.
+Table 20 - Details of Credit Enhanced Loans in Our Single-Family Credit Guarantee Portfolio
+
+                                                                                  Outstanding as of December 31, 2019
+                                                                            Percentage of
+                                                          Protected      Single-Family Credit
+                                                            UPB(1)       Guarantee Portfolio                              Maximum Coverage(2)
+(Dollars in millions)                                       Total               Total                     First Loss(3)       Mezzanine             Total
+Primary mortgage insurance                                   $421,870                        21%               $107,690                $—             $107,690
+STACR                                                         824,359                        41                    5,874            19,238                25,112
+Insurance/reinsurance                                         863,149                        43                    2,483             7,674                10,157
+Subordination                                                  44,941                         2                    2,608             2,791                  5,399
+Lender risk-sharing                                            24,078                         1                    5,077               580                  5,657
+Other                                                            1,056                       —                     1,051                  —                 1,051
+Less: UPB with multiple CRT and/or other credit
+enhancements                                               (1,058,402)                       (52)                     —                   —                   —
+Single-family credit guarantee portfolio with
+credit enhancement                                          1,121,051                        56                 124,783             30,283              155,066
+Single-family credit guarantee portfolio without
+credit enhancement                                            873,398                        44                       —                   —                   —
+Total                                                      $1,994,449                    100%                  $124,783            $30,283            $155,066
+
+
+
+FREDDIE MAC | 2019 Form 10-K                                                                                                                                 72
+
+Management's Discussion and Analysis                                                         Risk Management | Single-Family Mortgage Credit Risk
+
+
+                                                                                                 Outstanding as of December 31, 2018
+                                                                                         Percentage of
+                                                                    Protected         Single-Family Credit
+                                                                      UPB(1)          Guarantee Portfolio                           Maximum Coverage(2)
+(Dollars in millions)                                                  Total                   Total                First Loss(3)         Mezzanine                   Total
+Primary mortgage insurance                                              $378,594                          20%              $96,996                    $—                $96,996
+STACR                                                                     766,415                         40                  3,777               18,845                 22,622
+Insurance/reinsurance                                                     808,484                         43                  1,706                 7,572                     9,278
+Subordination                                                              41,277                           2                 1,923                 2,046                     3,969
+Lender risk-sharing                                                        17,458                           1                 4,830                   340                     5,170
+Other                                                                        1,305                        —                   1,290                    —                      1,290
+Less: UPB with multiple CRT and/or other credit
+enhancements                                                             (991,109)                        (52)                   —                     —                        —
+Single-family credit guarantee portfolio with
+credit enhancement                                                      1,022,424                         54               110,522                28,803                139,325
+Single-family credit guarantee portfolio without
+credit enhancement                                                        873,762                         46                     —                     —                        —
+Total                                                                  $1,896,186                        100%             $110,522               $28,803               $139,325

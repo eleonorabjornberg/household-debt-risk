@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="587.939687pt" height="369.335648pt" viewBox="0 0 587.939687 369.335648" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-04T01:09:08.608261</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 369.335648 
+L 587.939687 369.335648 
+L 587.939687 0 
+L 0 0 
+z
+" style="fill: #f7f8f9"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 85.315765 64.582972 
+L 117.718814 64.582972 
+L 117.718814 32.179923 
+L 85.315765 32.179923 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 472.743529 64.582972 
+L 505.146579 64.582972 
+L 505.146579 32.179923 
+L 472.743529 32.179923 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 437.522824 99.803678 
+L 469.925873 99.803678 
+L 469.925873 67.400629 
+L 437.522824 67.400629 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 472.743529 99.803678 
+L 505.146579 99.803678 
+L 505.146579 67.400629 
+L 472.743529 67.400629 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 120.536471 135.024384 
+L 152.93952 135.024384 
+L 152.93952 102.621334 
+L 120.536471 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 155.757176 135.024384 
+L 188.160226 135.024384 
+L 188.160226 102.621334 
+L 155.757176 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 190.977882 135.024384 
+L 223.380932 135.024384 
+L 223.380932 102.621334 
+L 190.977882 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 226.198588 135.024384 
+L 258.601638 135.024384 
+L 258.601638 102.621334 
+L 226.198588 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 261.419294 135.024384 
+L 293.822344 135.024384 
+L 293.822344 102.621334 
+L 261.419294 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 296.64 135.024384 
+L 329.043049 135.024384 
+L 329.043049 102.621334 
+L 296.64 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 331.860706 135.024384 
+L 364.263755 135.024384 
+L 364.263755 102.621334 
+L 331.860706 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 367.081412 135.024384 
+L 399.484461 135.024384 
+L 399.484461 102.621334 
+L 367.081412 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 402.302118 135.024384 
+L 434.705167 135.024384 
+L 434.705167 102.621334 
+L 402.302118 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 437.522824 135.024384 
+L 469.925873 135.024384 
+L 469.925873 102.621334 
+L 437.522824 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 472.743529 135.024384 
+L 505.146579 135.024384 
+L 505.146579 102.621334 
+L 472.743529 102.621334 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 120.536471 170.24509 
+L 152.93952 170.24509 
+L 152.93952 137.84204 
+L 120.536471 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 155.757176 170.24509 
+L 188.160226 170.24509 
+L 188.160226 137.84204 
+L 155.757176 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 190.977882 170.24509 
+L 223.380932 170.24509 
+L 223.380932 137.84204 
+L 190.977882 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 226.198588 170.24509 
+L 258.601638 170.24509 
+L 258.601638 137.84204 
+L 226.198588 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 261.419294 170.24509 
+L 293.822344 170.24509 
+L 293.822344 137.84204 
+L 261.419294 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 296.64 170.24509 
+L 329.043049 170.24509 
+L 329.043049 137.84204 
+L 296.64 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 331.860706 170.24509 
+L 364.263755 170.24509 
+L 364.263755 137.84204 
+L 331.860706 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 367.081412 170.24509 
+L 399.484461 170.24509 
+L 399.484461 137.84204 
+L 367.081412 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_25">
+    <path d="M 402.302118 170.24509 
+L 434.705167 170.24509 
+L 434.705167 137.84204 
+L 402.302118 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 437.522824 170.24509 
+L 469.925873 170.24509 
+L 469.925873 137.84204 
+L 437.522824 137.84204 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 120.536471 205.465796 
+L 152.93952 205.465796 
+L 152.93952 173.062746 
+L 120.536471 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_28">
+    <path d="M 155.757176 205.465796 
+L 188.160226 205.465796 
+L 188.160226 173.062746 
+L 155.757176 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 190.977882 205.465796 
+L 223.380932 205.465796 
+L 223.380932 173.062746 
+L 190.977882 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 226.198588 205.465796 
+L 258.601638 205.465796 
+L 258.601638 173.062746 
+L 226.198588 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_31">
+    <path d="M 261.419294 205.465796 
+L 293.822344 205.465796 
+L 293.822344 173.062746 
+L 261.419294 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_32">
+    <path d="M 296.64 205.465796 
+L 329.043049 205.465796 
+L 329.043049 173.062746 
+L 296.64 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_33">
+    <path d="M 331.860706 205.465796 
+L 364.263755 205.465796 
+L 364.263755 173.062746 
+L 331.860706 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_34">
+    <path d="M 367.081412 205.465796 
+L 399.484461 205.465796 
+L 399.484461 173.062746 
+L 367.081412 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_35">
+    <path d="M 402.302118 205.465796 
+L 434.705167 205.465796 
+L 434.705167 173.062746 
+L 402.302118 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_36">
+    <path d="M 437.522824 205.465796 
+L 469.925873 205.465796 
+L 469.925873 173.062746 
+L 437.522824 173.062746 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_37">
+    <path d="M 155.757176 240.686501 
+L 188.160226 240.686501 
+L 188.160226 208.283452 
+L 155.757176 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_38">
+    <path d="M 190.977882 240.686501 
+L 223.380932 240.686501 
+L 223.380932 208.283452 
+L 190.977882 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_39">
+    <path d="M 226.198588 240.686501 
+L 258.601638 240.686501 
+L 258.601638 208.283452 
+L 226.198588 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_40">
+    <path d="M 261.419294 240.686501 
+L 293.822344 240.686501 
+L 293.822344 208.283452 
+L 261.419294 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_41">
+    <path d="M 296.64 240.686501 
+L 329.043049 240.686501 
+L 329.043049 208.283452 
+L 296.64 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_42">
+    <path d="M 331.860706 240.686501 
+L 364.263755 240.686501 
+L 364.263755 208.283452 
+L 331.860706 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_43">
+    <path d="M 367.081412 240.686501 
+L 399.484461 240.686501 
+L 399.484461 208.283452 
+L 367.081412 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_44">
+    <path d="M 402.302118 240.686501 
+L 434.705167 240.686501 
+L 434.705167 208.283452 
+L 402.302118 208.283452 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_45">
+    <path d="M 226.198588 275.907207 
+L 258.601638 275.907207 
+L 258.601638 243.504158 
+L 226.198588 243.504158 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_46">
+    <path d="M 261.419294 275.907207 
+L 293.822344 275.907207 
+L 293.822344 243.504158 
+L 261.419294 243.504158 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_47">
+    <path d="M 296.64 275.907207 
+L 329.043049 275.907207 
+L 329.043049 243.504158 
+L 296.64 243.504158 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_48">
+    <path d="M 331.860706 275.907207 
+L 364.263755 275.907207 
+L 364.263755 243.504158 
+L 331.860706 243.504158 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_49">
+    <path d="M 367.081412 275.907207 
+L 399.484461 275.907207 
+L 399.484461 243.504158 
+L 367.081412 243.504158 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_50">
+    <path d="M 85.315765 311.127913 
+L 117.718814 311.127913 
+L 117.718814 278.724864 
+L 85.315765 278.724864 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_51">
+    <path d="M 226.198588 311.127913 
+L 258.601638 311.127913 
+L 258.601638 278.724864 
+L 226.198588 278.724864 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_52">
+    <path d="M 367.081412 311.127913 
+L 399.484461 311.127913 
+L 399.484461 278.724864 
+L 367.081412 278.724864 
+z
+" clip-path="url(#p0fdb69f62e)" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="101.517289" y="46.233088" transform="rotate(-0 101.517289 46.233088)">AK</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="101.517289" y="56.409905" transform="rotate(-0 101.517289 56.409905)">$3.9k</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="488.945054" y="46.233088" transform="rotate(-0 488.945054 46.233088)">ME</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="488.945054" y="56.409905" transform="rotate(-0 488.945054 56.409905)">$5.3k</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="81.453794" transform="rotate(-0 453.724348 81.453794)">VT</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="91.630611" transform="rotate(-0 453.724348 91.630611)">$5.7k</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="488.945054" y="81.453794" transform="rotate(-0 488.945054 81.453794)">NH</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="488.945054" y="91.630611" transform="rotate(-0 488.945054 91.630611)">$6.0k</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="136.737995" y="116.674499" transform="rotate(-0 136.737995 116.674499)">WA</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="136.737995" y="126.851317" transform="rotate(-0 136.737995 126.851317)">$4.2k</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="116.674499" transform="rotate(-0 171.958701 116.674499)">ID</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="126.851317" transform="rotate(-0 171.958701 126.851317)">$4.5k</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="207.179407" y="116.674499" transform="rotate(-0 207.179407 116.674499)">MT</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="207.179407" y="126.851317" transform="rotate(-0 207.179407 126.851317)">$4.4k</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="116.674499" transform="rotate(-0 242.400113 116.674499)">ND</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="126.851317" transform="rotate(-0 242.400113 126.851317)">$4.9k</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="277.620819" y="116.674499" transform="rotate(-0 277.620819 116.674499)">MN</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="277.620819" y="126.851317" transform="rotate(-0 277.620819 126.851317)">$5.8k</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="312.841525" y="116.674499" transform="rotate(-0 312.841525 116.674499)">IL</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="312.841525" y="126.851317" transform="rotate(-0 312.841525 126.851317)">$5.9k</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="348.062231" y="116.674499" transform="rotate(-0 348.062231 116.674499)">WI</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="348.062231" y="126.851317" transform="rotate(-0 348.062231 126.851317)">$4.6k</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="116.674499" transform="rotate(-0 383.282936 116.674499)">MI</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="126.851317" transform="rotate(-0 383.282936 126.851317)">$5.7k</text>
+   </g>
+   <g id="text_25">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="116.674499" transform="rotate(-0 418.503642 116.674499)">NY</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="126.851317" transform="rotate(-0 418.503642 126.851317)">$6.1k</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="116.674499" transform="rotate(-0 453.724348 116.674499)">RI</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="126.851317" transform="rotate(-0 453.724348 126.851317)">$5.6k</text>
+   </g>
+   <g id="text_29">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="488.945054" y="116.674499" transform="rotate(-0 488.945054 116.674499)">MA</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="488.945054" y="126.851317" transform="rotate(-0 488.945054 126.851317)">$6.1k</text>
+   </g>
+   <g id="text_31">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="136.737995" y="151.895205" transform="rotate(-0 136.737995 151.895205)">OR</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="136.737995" y="162.072023" transform="rotate(-0 136.737995 162.072023)">$5.6k</text>
+   </g>
+   <g id="text_33">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="151.895205" transform="rotate(-0 171.958701 151.895205)">NV</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="162.072023" transform="rotate(-0 171.958701 162.072023)">$4.5k</text>
+   </g>
+   <g id="text_35">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="207.179407" y="151.895205" transform="rotate(-0 207.179407 151.895205)">WY</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="207.179407" y="162.072023" transform="rotate(-0 207.179407 162.072023)">$3.2k</text>
+   </g>
+   <g id="text_37">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="151.895205" transform="rotate(-0 242.400113 151.895205)">SD</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="162.072023" transform="rotate(-0 242.400113 162.072023)">$4.8k</text>
+   </g>
+   <g id="text_39">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="277.620819" y="151.895205" transform="rotate(-0 277.620819 151.895205)">IA</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="277.620819" y="162.072023" transform="rotate(-0 277.620819 162.072023)">$4.7k</text>
+   </g>
+   <g id="text_41">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="312.841525" y="151.895205" transform="rotate(-0 312.841525 151.895205)">IN</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="312.841525" y="162.072023" transform="rotate(-0 312.841525 162.072023)">$4.8k</text>
+   </g>
+   <g id="text_43">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="348.062231" y="151.895205" transform="rotate(-0 348.062231 151.895205)">OH</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="348.062231" y="162.072023" transform="rotate(-0 348.062231 162.072023)">$5.9k</text>
+   </g>
+   <g id="text_45">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="151.895205" transform="rotate(-0 383.282936 151.895205)">PA</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="162.072023" transform="rotate(-0 383.282936 162.072023)">$6.5k</text>
+   </g>
+   <g id="text_47">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="151.895205" transform="rotate(-0 418.503642 151.895205)">NJ</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="162.072023" transform="rotate(-0 418.503642 162.072023)">$6.5k</text>
+   </g>
+   <g id="text_49">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="151.895205" transform="rotate(-0 453.724348 151.895205)">CT</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="162.072023" transform="rotate(-0 453.724348 162.072023)">$6.5k</text>
+   </g>
+   <g id="text_51">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="136.737995" y="187.115911" transform="rotate(-0 136.737995 187.115911)">CA</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="136.737995" y="197.292728" transform="rotate(-0 136.737995 197.292728)">$4.7k</text>
+   </g>
+   <g id="text_53">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="187.115911" transform="rotate(-0 171.958701 187.115911)">UT</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="197.292728" transform="rotate(-0 171.958701 197.292728)">$4.0k</text>
+   </g>
+   <g id="text_55">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="207.179407" y="187.115911" transform="rotate(-0 207.179407 187.115911)">CO</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="207.179407" y="197.292728" transform="rotate(-0 207.179407 197.292728)">$5.8k</text>
+   </g>
+   <g id="text_57">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="187.115911" transform="rotate(-0 242.400113 187.115911)">NE</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="197.292728" transform="rotate(-0 242.400113 197.292728)">$5.0k</text>
+   </g>
+   <g id="text_59">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="277.620819" y="187.115911" transform="rotate(-0 277.620819 187.115911)">MO</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="277.620819" y="197.292728" transform="rotate(-0 277.620819 197.292728)">$5.2k</text>
+   </g>
+   <g id="text_61">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="312.841525" y="187.115911" transform="rotate(-0 312.841525 187.115911)">KY</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="312.841525" y="197.292728" transform="rotate(-0 312.841525 197.292728)">$5.3k</text>
+   </g>
+   <g id="text_63">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="348.062231" y="187.115911" transform="rotate(-0 348.062231 187.115911)">WV</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="348.062231" y="197.292728" transform="rotate(-0 348.062231 197.292728)">$4.2k</text>
+   </g>
+   <g id="text_65">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="187.115911" transform="rotate(-0 383.282936 187.115911)">VA</text>
+   </g>
+   <g id="text_66">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="197.292728" transform="rotate(-0 383.282936 197.292728)">$6.1k</text>
+   </g>
+   <g id="text_67">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="187.115911" transform="rotate(-0 418.503642 187.115911)">MD</text>
+   </g>
+   <g id="text_68">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="197.292728" transform="rotate(-0 418.503642 197.292728)">$6.8k</text>
+   </g>
+   <g id="text_69">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="187.115911" transform="rotate(-0 453.724348 187.115911)">DE</text>
+   </g>
+   <g id="text_70">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="453.724348" y="197.292728" transform="rotate(-0 453.724348 197.292728)">$6.3k</text>
+   </g>
+   <g id="text_71">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="222.336617" transform="rotate(-0 171.958701 222.336617)">AZ</text>
+   </g>
+   <g id="text_72">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="171.958701" y="232.513434" transform="rotate(-0 171.958701 232.513434)">$5.0k</text>
+   </g>
+   <g id="text_73">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="207.179407" y="222.336617" transform="rotate(-0 207.179407 222.336617)">NM</text>
+   </g>
+   <g id="text_74">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="207.179407" y="232.513434" transform="rotate(-0 207.179407 232.513434)">$3.9k</text>
+   </g>
+   <g id="text_75">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="222.336617" transform="rotate(-0 242.400113 222.336617)">KS</text>
+   </g>
+   <g id="text_76">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="232.513434" transform="rotate(-0 242.400113 232.513434)">$5.2k</text>
+   </g>
+   <g id="text_77">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="277.620819" y="222.336617" transform="rotate(-0 277.620819 222.336617)">AR</text>
+   </g>
+   <g id="text_78">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="277.620819" y="232.513434" transform="rotate(-0 277.620819 232.513434)">$4.9k</text>
+   </g>
+   <g id="text_79">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="312.841525" y="222.336617" transform="rotate(-0 312.841525 222.336617)">TN</text>
+   </g>
+   <g id="text_80">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="312.841525" y="232.513434" transform="rotate(-0 312.841525 232.513434)">$5.1k</text>
+   </g>
+   <g id="text_81">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="348.062231" y="222.336617" transform="rotate(-0 348.062231 222.336617)">NC</text>
+   </g>
+   <g id="text_82">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="348.062231" y="232.513434" transform="rotate(-0 348.062231 232.513434)">$5.6k</text>
+   </g>
+   <g id="text_83">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="222.336617" transform="rotate(-0 383.282936 222.336617)">SC</text>
+   </g>
+   <g id="text_84">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="232.513434" transform="rotate(-0 383.282936 232.513434)">$6.1k</text>
+   </g>
+   <g id="text_85">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="222.336617" transform="rotate(-0 418.503642 222.336617)">DC</text>
+   </g>
+   <g id="text_86">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="418.503642" y="232.513434" transform="rotate(-0 418.503642 232.513434)">$12.7k</text>
+   </g>
+   <g id="text_87">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="257.557323" transform="rotate(-0 242.400113 257.557323)">OK</text>
+   </g>
+   <g id="text_88">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="267.73414" transform="rotate(-0 242.400113 267.73414)">$4.5k</text>
+   </g>
+   <g id="text_89">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="277.620819" y="257.557323" transform="rotate(-0 277.620819 257.557323)">LA</text>
+   </g>
+   <g id="text_90">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="277.620819" y="267.73414" transform="rotate(-0 277.620819 267.73414)">$6.0k</text>
+   </g>
+   <g id="text_91">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="312.841525" y="257.557323" transform="rotate(-0 312.841525 257.557323)">MS</text>
+   </g>
+   <g id="text_92">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="312.841525" y="267.73414" transform="rotate(-0 312.841525 267.73414)">$6.1k</text>
+   </g>
+   <g id="text_93">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="348.062231" y="257.557323" transform="rotate(-0 348.062231 257.557323)">AL</text>
+   </g>
+   <g id="text_94">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="348.062231" y="267.73414" transform="rotate(-0 348.062231 267.73414)">$5.5k</text>
+   </g>
+   <g id="text_95">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="257.557323" transform="rotate(-0 383.282936 257.557323)">GA</text>
+   </g>
+   <g id="text_96">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="383.282936" y="267.73414" transform="rotate(-0 383.282936 267.73414)">$7.1k</text>
+   </g>
+   <g id="text_97">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="101.517289" y="292.778029" transform="rotate(-0 101.517289 292.778029)">HI</text>
+   </g>
+   <g id="text_98">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="101.517289" y="302.954846" transform="rotate(-0 101.517289 302.954846)">$3.8k</text>
+   </g>
+   <g id="text_99">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="292.778029" transform="rotate(-0 242.400113 292.778029)">TX</text>
+   </g>
+   <g id="text_100">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="242.400113" y="302.954846" transform="rotate(-0 242.400113 302.954846)">$5.1k</text>
+   </g>
+   <g id="text_101">
+    <text style="font-weight: 700; font-size: 8px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="383.282936" y="292.778029" transform="rotate(-0 383.282936 292.778029)">FL</text>
+   </g>
+   <g id="text_102">
+    <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #111418" x="383.282936" y="302.954846" transform="rotate(-0 383.282936 302.954846)">$5.1k</text>
+   </g>
+   <g id="text_103">
+    <text style="font-size: 12px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #111418" x="78.271624" y="16.318125" transform="rotate(-0 78.271624 16.318125)">Student loan debt per person with a credit file, Q4 2025</text>
+   </g>
+   <g id="legend_1">
+    <g id="text_104">
+     <text style="font-size: 7.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #111418" x="168.006467" y="316.541353" transform="rotate(-0 168.006467 316.541353)">USD (sextiles)</text>
+    </g>
+    <g id="patch_53">
+     <path d="M 84.571624 327.162017 
+L 98.571624 327.162017 
+L 98.571624 322.262018 
+L 84.571624 322.262018 
+z
+" style="fill: #dbe8f8; stroke: #dbe8f8; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_105">
+     <text style="font-size: 7px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #474e57" x="104.171624" y="327.162017" transform="rotate(-0 104.171624 327.162017)">$3.2k–$4.5k</text>
+    </g>
+    <g id="patch_54">
+     <path d="M 84.571624 337.662564 
+L 98.571624 337.662564 
+L 98.571624 332.762564 
+L 84.571624 332.762564 
+z
+" style="fill: #a9c9f0; stroke: #a9c9f0; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_106">
+     <text style="font-size: 7px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #474e57" x="104.171624" y="337.662564" transform="rotate(-0 104.171624 337.662564)">$4.5k–$4.9k</text>
+    </g>
+    <g id="patch_55">
+     <path d="M 160.950374 327.162017 
+L 174.950374 327.162017 
+L 174.950374 322.262018 
+L 160.950374 322.262018 
+z
+" style="fill: #6da7ec; stroke: #6da7ec; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_107">
+     <text style="font-size: 7px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #474e57" x="180.550374" y="327.162017" transform="rotate(-0 180.550374 327.162017)">$4.9k–$5.3k</text>
+    </g>
+    <g id="patch_56">
+     <path d="M 160.950374 337.662564 
+L 174.950374 337.662564 
+L 174.950374 332.762564 
+L 160.950374 332.762564 
+z
+" style="fill: #2a78d6; stroke: #2a78d6; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_108">
+     <text style="font-size: 7px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #474e57" x="180.550374" y="337.662564" transform="rotate(-0 180.550374 337.662564)">$5.3k–$5.8k</text>
+    </g>
+    <g id="patch_57">
+     <path d="M 237.329124 327.162017 
+L 251.329124 327.162017 
+L 251.329124 322.262018 
+L 237.329124 322.262018 
+z
+" style="fill: #1c5cab; stroke: #1c5cab; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_109">
+     <text style="font-size: 7px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #474e57" x="256.929124" y="327.162017" transform="rotate(-0 256.929124 327.162017)">$5.8k–$6.1k</text>
+    </g>
+    <g id="patch_58">
+     <path d="M 237.329124 337.662564 
+L 251.329124 337.662564 
+L 251.329124 332.762564 
+L 237.329124 332.762564 
+z
+" style="fill: #143f78; stroke: #143f78; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_110">
+     <text style="font-size: 7px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #474e57" x="256.929124" y="337.662564" transform="rotate(-0 256.929124 337.662564)">$6.1k–$12.7k</text>
+    </g>
+   </g>
+  </g>
+  <g id="text_111">
+   <text style="font-size: 6.5px; font-family: 'Public Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5b626c" x="7.2" y="360.574125" transform="rotate(-0 7.2 360.574125)">Source: FRBNY Consumer Credit Panel / Equifax, State Level Household Debt Statistics (NY Fed state statistics, Feb 2026 (Q4 2025)). 50 states + DC. chart: household-debt-risk</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p0fdb69f62e">
+   <rect x="78.271624" y="22.318125" width="436.736753" height="299.376"/>
+  </clipPath>
+ </defs>
+</svg>

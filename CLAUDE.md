@@ -36,7 +36,9 @@ Research platform on who holds America's household credit risk, how it is priced
 cd pipeline && uv sync && uv run pytest          # tests; data tests skip unless data/ exists
 uv run hhdebt run --export                       # full pipeline (needs network; DATABASE_URL to load)
 cd atlas && npm install && npm test && npm run dev
-cd web && npm install && npm run build
+cd web && npm install && npm test && npm run build
+make all                                         # everything from a fresh clone (make help lists steps)
+make ci                                          # what CI runs
 ```
 
 Local Postgres for schema tests:

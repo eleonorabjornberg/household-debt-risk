@@ -1,0 +1,64 @@
+# A2: Gross vs net public exposure (credit risk transfer and mortgage insurance)
+
+> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+
+**PLAN task A2. Status: Eleonora chose (2026-11-04) outstanding cover from the 10-K filings, with the issuance bounds below as the check; mortgage insurance as a separate line; Ginnie Mae pools at gross. Freddie Mac is done for 2013–2025; Fannie Mae waits for access to its filings** (`tracks/analysis.md`). Method: [`METHOD.md`](METHOD.md). Sources, with hashes and quotes: [`sources.md`](sources.md).
+
+Data: Fed Z.1, `Z1.csv` dated 2026-09-11; FHFA CRT Progress Reports (Dec 2016 to 4Q 2023) and FHFA Reports to Congress (2024, 2025), transcribed in [`crt_fhfa.csv`](crt_fhfa.csv). Every number below has a register row (`claims/tracks/analysis.csv`).
+
+## Result
+
+**What FHFA publishes is risk transferred at issuance, not risk still transferred.** From 2013 through 2025 Fannie Mae and Freddie Mac sold credit risk transfer (CRT) cover with a combined risk in force (RIF) of about $233B at issuance (FHFA, rounded). Outstanding cover is lower, because notes pay down and deals are called. That gives a bound, not a point:
+
+| End of 2025: principal (UPB), less CRT loss capacity (RIF) for net | Gross | Net of CRT only, lower bound (all issued CRT still in force; mortgage insurance not netted) |
+|---|---|---|
+| Fannie Mae + Freddie Mac holdings, household share | $6.27T | $6.05T |
+| Public share of household mortgages and consumer credit | 56.4% | 55.2% |
+
+- Household-apportioned, the issued CRT RIF is $217B, at most 3.5% of the Enterprises' gross holdings.
+- **Measured as loss capacity against principal, CRT alone lowers the public share by at most 1.2 pp.** This is not a floor on the public share once mortgage insurance is netted (below). The bound holds in every year 2013–2025 (`net_exposure.csv`); net ≤ gross is asserted in the script.
+- **That is not the same as saying 3.5% of the risk was transferred.** RIF is the most investors can lose on a slice of the losses, not on the principal; the tranches sold sit above a retained first-loss slice (`METHOD.md`). How much of the expected or stress loss that slice carries is not measured here: it needs deal structures and a loss model (`METHOD.md`, measure 3). FHFA's own summary is that through CRT *and mortgage insurance together* "the majority of the underlying mortgage credit risk on mortgages targeted for CRT has been transferred" (4Q 2019 report).
+- **Mortgage insurance RIF is bigger in dollars than CRT RIF, but cannot be netted yet, and FHFA says the two RIF figures are "not strictly comparable"** (loan-level vs pool-level cover). FHFA reports $835B of primary mortgage insurance RIF on loans the Enterprises acquired 2013–2023, measured at acquisition. That is 12.5% of 2023 gross holdings after apportioning, but it misses cover written before 2013 and keeps cover since cancelled, so it is neither a bound nor an estimate of outstanding cover. The Enterprises also keep the counterparty risk if an insurer fails.
+- **Cumulative reference-pool principal says nothing about coverage.** By 2025 it is 1.1× the Enterprises' whole household book, because loans that paid off or refinanced are still counted at their issuance balance, and refinanced loans are counted again in new pools.
+
+## Outstanding cover: Freddie Mac 10-K filings, 2013–2025
+
+Freddie's 10-Ks report, at each year end, the maximum coverage still in force on its single-family book by type of credit enhancement ([`freddie_ce_outstanding.csv`](freddie_ce_outstanding.csv), parsed by `tenk.py`; every table reconciles to its own total).
+
+| End of 2025, Freddie Mac | $ |
+|---|---|
+| Gross holdings, household share (Z.1) | $2.93T |
+| CRT cover still in force (STACR and ACIS), maximum coverage | $40.0B |
+| Net of CRT, household share | $2.90T |
+| Mortgage insurance in force, maximum coverage (separate line) | $181.5B |
+| Other cover (lender recourse, subordination and other) | $10.4B |
+
+- **Outstanding CRT cover is 1.3% of Freddie's gross holdings at end 2025**, down from 1.8% in 2022, when it peaked at $54.9B. Cover runs off as notes pay down and Freddie has issued less since 2022.
+- **It sits well inside the issuance bound.** At end 2023 Freddie had $48.9B of CRT cover in force against $110.5B issued since 2013 (FHFA).
+- **Mortgage insurance in force is 5.8% of gross, more than four times the CRT cover**, measured the same way (maximum coverage). Per Eleonora's choice it is a separate line, not netted: the insurer pays first, but Freddie keeps the risk that the insurer fails.
+- **Public share net of CRT, end 2025: between 55.2% and 56.2%.** The lower end nets every CRT dollar ever issued by both Enterprises (FHFA); the upper end nets Freddie's outstanding cover only. Fannie's outstanding cover will narrow the range from above once its filings can be read.
+- **Cross-check of the gross side.** Z.1's Freddie holdings are 99.4% to 99.6% of the single-family portfolio UPB in Freddie's own 10-K, 2017–2025.
+- **Ginnie Mae pools stay at gross** (Eleonora, 2026-11-04): FHA insures in full; the VA guaranty is partial, which this series does not adjust for.
+
+## Limits
+
+- **Fannie Mae not yet in the net series.** Its 10-Ks are on `www.fanniemae.com` (403 from this environment) and SEC EDGAR, which is not fetched until the SEC's fair-access User-Agent contact is settled. The parser (`tenk.py`) is fixed against Freddie's real tables only; Fannie's layout will be added from a real filing, not guessed.
+- **Freddie's categories shift slightly over time.** From FY2021 Freddie reports only STACR, ACIS and "Other"; later filings moved some coverage between them (`restated_*` columns). Each year end uses its own 10-K.
+- **Ginnie Mae pools and federal student loans stay at gross.** FHA insures in full; the VA guaranty is partial, but VA data are not yet sourced.
+- **Apportioning.** CRT and mortgage-insurance amounts are scaled to households with the Z.1 ratio used for the holdings.
+- **FHFA data.** 2013–2016 cumulative RIF is the sum of FHFA's annual totals, 2017 is derived from the 4Q 2018 report, and 2024–2025 are rounded to $1 billion. Year-to-year consistency is asserted.
+- **Revisions.** Z.1 vintage 2026-09-11; rerun after each Z.1 release.
+
+## Files and how to rerun
+
+```bash
+uv run --project pipeline python validation/run.py        # downloads the Z.1 zip if absent
+uv run --project pipeline python research/a2_net_exposure/net_exposure.py
+```
+
+- `net_exposure.py`: the bounds. Reuses A1's household-apportioned cells; asserts net ≤ gross, a positive lower bound and a consistent FHFA transcription.
+- `crt_fhfa.csv`: FHFA CRT and PMI figures by year, with the report and page for each.
+- `net_exposure.csv`: one row per year end, 2013–2025.
+- `results.json`: headline numbers for the register.
+- `METHOD.md`: what "transferred" can mean, and what each option needs.
+- `sources.md`: the FHFA reports, with hashes and quotes.

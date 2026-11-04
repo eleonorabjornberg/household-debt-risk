@@ -1,0 +1,34 @@
+{
+  "name": "dfa_mortgage_share_by_wealth",
+  "kind": "area",
+  "title": "Who owes the mortgages: share of home mortgage debt by wealth group",
+  "source_line": "Source: Fed Distributional Financial Accounts, dfa-networth-shares.csv (vintage DFA 2026-09-15 (through 2026Q2)); chart: household-debt-risk",
+  "vintage": "DFA 2026-09-15 (through 2026Q2)",
+  "data_source": {
+    "file": "data/a5/dfa.zip:dfa-networth-shares.csv"
+  },
+  "row_count": 148,
+  "x": "quarter",
+  "y": [
+    "TopPt1",
+    "RemainingTop1",
+    "Next9",
+    "Next40",
+    "Bottom50"
+  ],
+  "group": null,
+  "units": "Percent of all home mortgages (%)",
+  "scale_applied": 1.0,
+  "recession_shading": false,
+  "modes": [
+    "light"
+  ],
+  "files": [
+    "dfa_mortgage_share_by_wealth.png",
+    "dfa_mortgage_share_by_wealth.svg",
+    "dfa_mortgage_share_by_wealth.alt.txt",
+    "dfa_mortgage_share_by_wealth.json"
+  ],
+  "alt_text": "Stacked area chart titled \"Who owes the mortgages: share of home mortgage debt by wealth group\": Top 0.1%, Next 0.9%, Next 9%, Next 40%, Bottom 50% (Percent of all home mortgages (%)) by quarter, 1989Q3 to 2026Q2, 148 observations. Top 0.1% rose from 0.70% in 1989Q3 to 0.80% in 2026Q2 (high 0.80% in 1992Q2; low 0.30% in 2001Q4). Next 0.9% rose from 3.00% in 1989Q3 to 3.20% in 2026Q2 (high 5.00% in 2003Q1). Next 9% rose from 16.9% in 1989Q3 to 24.4% in 2026Q2 (high 24.4% in 2026Q1). Next 40% fell from 52.0% in 1989Q3 to 48.9% in 2026Q2 (low 41.1% in 2010Q3). Bottom 50% fell from 27.5% in 1989Q3 to 22.6% in 2026Q2 (high 34.6% in 2010Q3; low 22.1% in 2021Q1). The stacked total fell from 100.1% in 1989Q3 to 99.9% in 2026Q2 (high 100.1% in 1992Q2; low 99.9% in 1994Q1).",
+  "generator": "chart-from-sql"
+}
