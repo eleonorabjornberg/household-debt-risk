@@ -27,9 +27,9 @@ def test_refuses_without_approval():
 
 
 def test_refuses_approval_commit_without_eleonora_go():
-    # HEAD's PLAN.md records no go for the holdout run (as of the freeze)
+    # The freeze commit's PLAN.md records no go for the holdout run (HEAD may, once she approves)
     with pytest.raises(SystemExit, match="no Eleonora decision row|cannot read"):
-        hr.check_approval("HEAD")
+        hr.check_approval("949acec")
 
 
 def test_freeze_detects_a_changed_file(tmp_path, monkeypatch):
