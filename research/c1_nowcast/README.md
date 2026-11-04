@@ -6,27 +6,33 @@
 
 ## Results: development sample only (targets to 2023Q2; holdout not run)
 
-> **Claude draft, not the author's text.** The scores below follow [`EVALUATION.md`](EVALUATION.md), which was committed before any score existed (7ae4afb). The holdout is untouched: the C1 and C2 holdout starts are still being reconciled by the coordinator. So under C2's wording rule, nothing here can yet be called "beats".
+> **Claude draft, not the author's text.** The scores below follow [`EVALUATION.md`](EVALUATION.md), which was committed before any score existed (7ae4afb). Changes made after the first scores, in response to the quant-reviewer and skeptic, are listed there under "Deviations"; the first scores are in commit 58a93d8. The holdout (2023Q3–2026Q2, as frozen in C2) is untouched. So under C2's wording rule, nothing here can yet be called "beats".
 
-**Real time (RT)** means: the Z.1 base is read from the Fed's release archive, the indicators from ALFRED as of each instant, and the target is the first release. There are monthly instants from October 2016, and targets run 2016Q3–2023Q2. The three instants whose base release (2017-03-09) has no archived CSV are absent. RMSE relative to no-change (below 1 is better), by instant index k (k = 1 is the first monthly instant after a Z.1 release):
+**Real time (RT)** means: the Z.1 base comes from the Fed's release archive (all 41 releases from 2016-09-16), the indicators from ALFRED as of each instant, and the target is the first release. Monthly instants run from October 2016; targets run 2016Q3–2023Q2. Each target is scored once per instant index k (k = 1 is the first monthly instant after a Z.1 release). A rare fourth instant before the next release is kept but not scored. RMSE relative to no-change (below 1 is better):
 
-| k | n | Accounting bridge | DM-HLN p / Holm p | n (regression) | Bridge regression | Clark–West p / Holm p | AR(1) | Drift |
-|---|---|---|---|---|---|---|---|---|
-| 1 | 26 | 0.74 | 0.02 / 0.16 | 14 | 0.43 | <0.01 / 0.01 | 0.97 | 0.87 |
-| 2 | 26 | 0.74 | 0.06 / 0.46 | 14 | 0.45 | <0.01 / 0.02 | 0.97 | 0.87 |
-| 3 | 25 | 0.80 | 0.15 / 0.47 | 13 | 0.52 | <0.01 / 0.03 | 1.09 | 0.91 |
+| k | n | Accounting bridge | DM-HLN p / Holm p | n (regression) | Bridge regression | Bridge on the regression's targets | Clark–West p / Holm p | AR(1) | Drift |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 28 | 0.73 | 0.01 / 0.11 | 16 | 0.43 | 0.72 | <0.01 / 0.02 | 0.94 | 0.87 |
+| 2 | 28 | 0.72 | 0.04 / 0.30 | 16 | 0.44 | 0.73 | <0.01 / 0.02 | 0.94 | 0.87 |
+| 3 | 22 | 0.76 | 0.10 / 0.51 | 10 | 0.54 | 0.86 | 0.02 / 0.16 | 0.97 | 0.86 |
 
-- **The accounting bridge** has an RMSE of 0.29 pp, against 0.38 pp for no-change, pooled over k: about a quarter lower. After the Holm correction the difference is not significant at any k. Under C2's wording it is so far "comparable to the benchmark".
-- **The bridge is biased downward.** Its mean error is −0.22 pp, and the bias does not shrink as more monthly data arrive (−0.18 at k = 1, −0.26 at k = 3). One likely reason, not tested: the public mortgage holders (agency pools, GSEs) have no monthly indicator in set 2b and are carried flat. Banks' mortgages and consumer credit, by contrast, move with H.8 and G.19.
-- **The bridge regression** fits its intercept to past errors, which removes most of that bias. Its RMSE is about half of no-change's, and it is significant after Holm at every k. It has only 13–14 forecasts per k, because it needs 12 past first-release pairs before it starts.
-- **AR(1)** does no better than no-change (0.97–1.09). **Drift** is slightly better (0.87–0.91), but worse than the bridge.
-- **Against the latest vintage instead of the first release** (RT-latest), the bridge's relative RMSE is 0.77.
+- **The accounting bridge** has an RMSE of 0.29 pp, against 0.39 pp for no-change, pooled over k: about a quarter lower. After the Holm correction the difference is not significant at any k. Under C2's wording it is so far "comparable to the benchmark". Errors at consecutive quarters are autocorrelated within each k, so the lag-0 p-values are, if anything, too small. A post-hoc lag-1 version is in `tests_dev.csv`.
+- **The bridge is biased downward.** Its mean error is −0.22 pp. The bias is concentrated in 2020–21 (−0.40, against −0.18 to 2019 and −0.09 in 2022–23, in pp), and it does not shrink as more monthly data arrive (−0.19 at k = 1, −0.26 at k = 3). Two explanations are open, and neither is tested:
+  - The public mortgage holders (agency pools, GSEs) have no monthly indicator in set 2b and are carried flat, while banks' mortgages and consumer credit move with H.8 and G.19.
+  - All cells are NSA, so carrying any cell flat across a quarter ignores its seasonal pattern.
+- **The bridge regression** fits its intercept to past errors. It is scored only on 2019Q3–2023Q2, because it needs 12 past first-release pairs. Those years include the 2020–21 period in which the bias was largest, and the regression carries the earlier bias forward.
+  - On its own targets it is about half of no-change.
+  - The bridge itself, on the same targets, is 0.72–0.86.
+  - After Holm the regression is significant at k = 1 and 2 only. These are the same targets read at different instants, so they are not independent confirmations.
+- **AR(1)** is close to no-change (0.94–0.97). **Drift** is slightly better (0.86–0.87), but worse than the bridge.
+- **Against the latest vintage instead of the first release** (RT-latest), the bridge's relative RMSE is 0.76.
 
-**Pseudo-real-time comparisons** use latest-vintage Z.1, cut at each release's last quarter, so they are *not real-time* for Z.1. The indicators are still point-in-time. With indicator set 2b, targets 2015Q1–2023Q2, the bridge's relative RMSE is 0.77. With set 2a (G.19 federal and total only), targets 2010Q2–2023Q2, it is 0.76. All scores are in `scores_dev.csv`, all tests in `tests_dev.csv`, and every nowcast in `nowcasts_dev.csv`.
+**Pseudo-real-time comparisons** use latest-vintage Z.1, cut at each release's last quarter, so they are *not real-time* for Z.1. Their bridge regression also trains on revised targets. The indicators are still point-in-time. With indicator set 2b, targets 2015Q1–2023Q2, the bridge's relative RMSE is 0.77. With set 2a (G.19 federal and total only), targets 2010Q2–2023Q2, it is 0.76. All scores are in `scores_dev.csv`, all tests in `tests_dev.csv`, and every nowcast in `nowcasts_dev.csv`.
 
 **What this does not show.**
 - It does not show accuracy on unseen data: the holdout has not been run.
-- The samples are small (25–26 targets per k in RT). All p-values are descriptive.
+- The samples are small (about 20–28 targets per k in RT). All p-values are descriptive.
+- C2's placebo and outcome leakage checks are not implemented for C1 (see Deviations).
 - The bias finding suggests adding the agency monthly summaries (indicator set 2c), but that would be a new, separately pre-registered run. It must not be a change to this one.
 
 ## How "what was public on day t" is answered
@@ -48,7 +54,7 @@ So, partway between two Z.1 releases, roughly one to two months of G.19 data and
 
 ## Gaps that limit the design
 
-- **Target vintages.** ALFRED has real-time vintages of the household liability totals from 2010 (`HMLBSHNO`, `CCLBSHNO`). It has the holder-side Z.1 series (agency pools, GSEs, scope total) only from 2019. Older vintages of the full public share would have to come from the Fed's own release archive: CSV from 2017, fixed-width .prn tables before that, back to 2010 (see `sources.md`). That archive is not parsed yet.
+- **Target vintages.** ALFRED has real-time vintages of the household liability totals from 2010 (`HMLBSHNO`, `CCLBSHNO`). It has the holder-side Z.1 series (agency pools, GSEs, scope total) only from 2019. Vintages of the full public share therefore come from the Fed's own release archive. `z1_vintages.py` parses all 41 CSV releases from 2016-09-16 on. Before that, `z1r-N` text archives exist back to 2010; they are not parsed, and the real-time window starts at 2016-09-16.
 - **The mortgage side is thin.** No free, monthly, real-time series covers the public mortgage holders (agency pools, GSE portfolios). Ginnie Mae's monthly reports are reachable but not parsed, and they carry no vintages. Freddie Mac's and Fannie Mae's monthly summaries are blocked by the network policy (their hosts would need adding). H.8 covers only banks' residential loans, a private holder.
 - **The Fed's MBS holdings are not a holder of household mortgages in Z.1's sense.** The pools are the holder, so `WSHOMCB` can only be an auxiliary signal.
 

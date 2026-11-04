@@ -36,13 +36,19 @@ import zparse  # noqa: E402
 ARCH = ROOT / "data" / "z1_archive"
 OUT = ROOT / "data" / "c1"
 FIRST_CSV_RELEASE = "2016-09-16"
+# Archive folders not named after the release date (skeptic R-20261104-mkt-s9): the 2017-03-09 release
+# (2016Q4) sits in folder 20170305. Checked by the last quarter in the zip (asserted in main).
+FOLDER_OVERRIDE = {"2017-03-09": "20170305"}
+EXPECTED_LAST_Q = {"2017-03-09": "2016Q4"}
 KEEP_FROM = "1952Q1"
 
 
-# Cells built from codes present in every layout since 2016 (aliases: the 2016 tables used older codes for
-# two consumer-credit holders). Mortgage cells are apportioned to households with FL153165105 / FL893065105,
+# Cells built from codes present in every layout since 2016 (aliases: older releases used an older code for
+# the depository consumer-credit holder). Mortgage cells are apportioned to households with FL153165105 / FL893065105,
 # as validation and A1 do. Private holdings without a named cell are the residual of each liability total,
 # so the share never depends on private holder codes that were renamed between layouts.
+# (Alias note, skeptic s10: the depository consumer-credit code changed from FL763066000 to FL763066005
+# with the 2025-09-11 release; earlier releases, 2016 to mid-2025, use FL763066000.)
 CELLS = {
     # name: (loan, side, [alias codes, first found wins])
     "mort_federal": ("mortgages", "public", ["FL313065105"]),
@@ -67,9 +73,10 @@ def fetch(release: str) -> Path | None:
     ARCH.mkdir(parents=True, exist_ok=True)
     d = release.replace("-", "")
     path = ARCH / f"{d}.zip"
+    folder = FOLDER_OVERRIDE.get(release, d)
     if path.exists():
         return path
-    url = f"https://www.federalreserve.gov/releases/z1/{d}/z1_csv_files.zip"
+    url = f"https://www.federalreserve.gov/releases/z1/{folder}/z1_csv_files.zip"
     import requests  # same client and defaults as validation/run.py ensure_zip
     for attempt in range(4):
         try:
@@ -139,6 +146,8 @@ def main() -> int:
         c, used, conflicts = vintage_cells(path, ids)
         sh = c.xs("public", level="side", axis=1).sum(axis=1) / c.sum(axis=1)
         q = [str(pd.Period(t, "Q")) for t in sh.index]
+        if r in EXPECTED_LAST_Q:
+            assert q[-1] == EXPECTED_LAST_Q[r], (r, q[-1])
         shares.append(pd.DataFrame({"release": r, "quarter": q, "share": sh.values}))
         s = c.stack(level=[0, 1, 2], future_stack=True).rename("usd_m").reset_index()
         s.columns = ["date", "loan", "side", "holder", "usd_m"]

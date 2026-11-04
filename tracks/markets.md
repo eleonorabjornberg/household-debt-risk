@@ -3,13 +3,18 @@
 Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Parallel tracks".
 
 ## Summary at stop (2026-11-04)
-B1 is ready for the coordinator's review. Under the rule fixed in advance, every variant shows no robust association between mortgage spreads and the public share. The levels fits are possibly spurious, and the positive sign comes from the 2022-11 PMMS method change. The test has little power, so the honest reading is "inconclusive". C1's point-in-time plumbing is built and was reviewed for look-ahead (none found). C1 is blocked on Eleonora's choice of evaluation design (Q-C1, nine items with recommendations). Her answer to Q-B1 would close B1. Nothing touched production or the database.
+**B1** is ready for the coordinator's review. Under the rule fixed in advance, every variant shows no robust association. The honest reading is "inconclusive, low power". Eleonora accepted it as specified (Q-B1 (a)).
+**C1** has its development-sample evaluation done, under Eleonora's design, with a spec committed before any score. Results so far:
+- The accounting bridge has about a quarter lower RMSE than no-change, but the difference is not significant after Holm, and the bridge is biased downward. Under C2's wording that is "comparable", not "beats".
+- The bridge regression does better, on few forecasts.
+- The holdout has not been run. It waits on the coordinator's ruling on the C1/C2 holdout conflict.
+Nothing touched production or the database.
 
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| B1 | ready for review | `research/b1_market_pricing/`. Spec fixed in `METHOD.md` before results (commit b094579, before results a8fc3de). Verdict under the pre-set rule: no robust association in every variant; levels fits fail Engle–Granger, the positive levels sign comes from the 2022-11 PMMS method change, and the test has little power, so the README reads "inconclusive". quant-reviewer and skeptic run; 12 of 13 objections resolved, 1 open (g-fee control: a design extension, below). 46 register rows in `claims/tracks/markets.csv`. |
-| C1 | blocked (Eleonora: evaluation design, Q-C1 below) | Plumbing done and look-ahead-reviewed (quant-reviewer: no leak): `research/c1_nowcast/` point-in-time panel `pit.panel(t)`, `release_lags.csv`, `z1_calendar.csv`, candidate inputs, sources with hashes, offline no-look-ahead tests. No nowcast computed or evaluated. |
+| B1 | ready for review | `research/b1_market_pricing/`. Spec fixed in `METHOD.md` before results (commit b094579, before results a8fc3de). Verdict under the pre-set rule: no robust association in every variant; levels fits mostly fail Engle–Granger, the positive levels sign coincides with the period from 2022Q4 on (PMMS method change and other conditions), and the test has little power, so the README reads "inconclusive". quant-reviewer and skeptic run; 12 of 13 objections resolved, 1 open (g-fee control: a design extension, below). 46 register rows in `claims/tracks/markets.csv`. |
+| C1 | ready for review (development sample); holdout run waits on Q-C1c | Spec `EVALUATION.md` (7ae4afb) before any score; deviations dated there. Real-time Z.1 from all 41 archived releases (2017-03-09 in folder 20170305). Development result (99d56cd): accounting bridge RMSE about 0.74 of no-change, not significant after Holm, biased downward (mostly 2020–21); bridge regression better on its own 2019Q3–2023Q2 targets, Holm-significant at k = 1 and 2 only. quant-reviewer (q11–q16) and skeptic (s9–s15) run and addressed; one minor stated limitation open (s12). |
 
 ## Log notes for the coordinator
 **Session 2026-11-04 (markets track).**
@@ -26,20 +31,31 @@ B1 is ready for the coordinator's review. Under the rule fixed in advance, every
   6. Both reviewers numbered their entries R-20261104-1…, colliding with each other and potentially with other tracks. *Caught by Claude (main session)*. Renumbered R-20261104-mkt-q*/s*.
   7. C1: ALFRED's units label switches from billions to millions mid-history (G.19 2025-02-07, Z.1 on FRED 2026-01-09), which made every revision look like 99.9%. *Caught by Claude (main session)* from the revision column of the first lag table. Fixed by rescaling each row by the units label in force when it was published (no look-ahead), with a test.
   8. C1: back-filled history (old dates added when a series is extended) showed up as lags of decades. *Caught by Claude (main session)*. Lags now count only observations that were the newest date in their first vintage, with a test.
-  10. B1 (and any use of A1's holder cells before 1987): in 1974Q3–1986Q3 the Z.1 pool sub-series (FL413065110/123/133/143) sum to more than the pool total FL413065105 (by about $14.6B in 1980Q4), so cell-based shares are overstated there and step at 1986Q4. B1's first three sample quarters were affected; its first-differences estimate moved from −0.08 to −0.57 (verdict unchanged). *Caught by Claude (main session)* when C1's vintage test compared the archived share with the A1-cell share over 1952–2026. B1 now uses catalog-level shares as validation does. A1's own 2007–11 results are not affected.
   9. C1 draft attributed the late 2026-01-09 Z.1 release to the 2025 shutdown without a source. *Caught by Claude (main session)* on reread. Reworded to the observed date only.
+  10. B1 (and any use of A1's holder cells before 1987): in 1974Q3–1986Q3 the Z.1 pool sub-series (FL413065110/123/133/143) sum to more than the pool total FL413065105 (by about $14.6B in 1980Q4), so cell-based shares are overstated there and step at 1986Q4. B1's first three sample quarters were affected; its first-differences estimate moved from −0.08 to −0.57 (verdict unchanged). *Caught by Claude (main session)* when C1's vintage test compared the archived share with the A1-cell share over 1952–2026. B1 now uses catalog-level shares as validation does. A1's own 2007–11 results are not affected.
+
+**Session 2026-11-04, continued (after Eleonora's decisions).**
+- Verified the coordinator's message against PLAN.md "Decisions taken" at a590475 before acting.
+- Reported to the coordinator (send_message), not resolved here: (1) holdout conflict, C1 2024Q3+ vs frozen C2 2023Q3+; handled by cutting at 2023Q2; (2) C2's fact check says pre-2016-09 releases are HTML/PDF only, but `z1r-N.zip` text archives exist 2010–2016 (holder-table coverage unverified); (3) the A1 pool sub-series issue (item 10).
+- Fed archive downloads: Python's urllib got 403 from www.federalreserve.gov, while plain curl and `requests` (the client `validation/run.py` already uses) got 200; switched to `requests`, no user-agent change. The 2017-03-09 release has no CSV zip: recorded as absent.
+- Precision bug: z1_cells.csv was first written with 6 significant digits, which broke the base-share identity by about 1e-7. *Caught by Claude (main session)* through the assert in `nowcast.run`. Fixed (12 digits).
+- Subagents this part: quant-reviewer on C1 (about 72k tokens, 21 tool calls; 6 objections, 2 major), skeptic on C1 (about 113k tokens, 38 tool calls; 7 objections, 2 major). Errors they caught: double-counted targets at k = 3 (quant-reviewer q11); the bridge regression compared on different targets from the bridge (q12, s11); the '2017-03-09 release missing' claim, which was wrong: it is in folder 20170305 (skeptic s9); wrong dates in sources.md (s14).
+- Coordinator's quant review of B1 (coord-q1..q4) caught: a false 'every row fails EG' sentence (major), a 95% half-width presented as power, a causal attribution from post-hoc variants, and the correction missing from METHOD.md. All fixed (dc68eb7).
+- Merge of the coordinator branch (1c51735): its folded register rows for b1/c1 were stale; c1 rows replaced in place, b1 rows moved back to `claims/tracks/markets.csv` (flagged to the coordinator).
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
 
 ### Q-B1. Accept B1 as specified, and whether to extend it
+**Answered 2026-11-04 by Eleonora: (a)**, with a g-fee control only if B1 feeds A6 (PLAN.md "Decisions taken", a590475).
 The specification in `research/b1_market_pricing/METHOD.md` (proxies, controls, levels and differences, reading rule) was Claude's proposal, fixed before results so that the result could not steer it.
 - (a) Accept as is; B1 closes as "inconclusive, low power".
 - (b) Add a guarantee-fee control from FHFA's annual g-fee reports (free, 2009+), as a new pre-specified variant (open objection mkt-q4).
 - (c) Add a pre-2017 jumbo proxy backed out of FHFA MIRS (assumption-heavy).
 - **Recommendation: (a), with (b) as a small follow-up if B1 numbers will feed A6.** (c) adds assumptions faster than evidence.
 
-### Q-C1. Nowcast evaluation design (nothing is computed until you choose)
+### Q-C1. Nowcast evaluation design
+**Answered 2026-11-04 by Eleonora: the recommendation on items 1–9** (a590475). Item 6 must agree with the frozen C2 protocol; the holdout conflict is with the coordinator. Implemented in `research/c1_nowcast/EVALUATION.md`.
 1. **Target vintage** (what the nowcast is scored against).
    (a) the first-release share, as first published in Z.1 for that quarter; (b) the latest vintage (Z.1 of 2026-09-11); (c) both, one primary.
    **Recommendation: (c) with (a) primary.** The nowcast stands in for the first release, and holder series revise. Needs the Fed archive parsed for 2010–2018 releases (ALFRED holder series start 2019).
@@ -59,6 +75,17 @@ The specification in `research/b1_market_pricing/METHOD.md` (proxies, controls, 
 9. **Definition of the quarterly change being nowcast** (mkt-q7). (a) first-release share of quarter q minus the share of q−1 *as published in the same Z.1*; (b) minus the q−1 share as previously published. **Recommendation: (a)**, so revisions to q−1 are not scored as nowcast error; the bridge growth rates use the same rule (same-vintage growth).
 7. **Share definition.** (a) the headline share (mortgages + consumer credit); (b) mortgage-only. **Recommendation: (a)**, the project's quantity.
 8. **Seasonal adjustment.** NSA throughout (Z.1 holder levels are NSA; `HMLBSHNO` and `CCLBSHNO` used rather than the SA `HHMSDODNS`). **Recommendation: NSA.**
+
+### Q-C1c (new). When to run the C1 holdout
+C1 and C2 share the holdout 2023Q3–2026Q2, and C2's Family Z+C1 uses C1's indicators. Scoring C1 on the holdout now would show holdout outcomes before C2's candidates are frozen, which could steer C2's design.
+- **Options:** (a) run the C1 holdout now; (b) run it in the same single run as C2's holdout, after C2's candidates are frozen; (c) keep it unrun until C3.
+- **Recommendation: (b).** Both holdouts are then seen once, by frozen models. Until then C1 reports development results only.
+
+### Q-C1b (new, for later). Indicator set 2c as a second pre-registered run
+The development results show the bridge biased downward. A likely cause is that public mortgage holders have no monthly indicator in 2b.
+- **Hosts now reachable:** `www.freddiemac.com` (per the coordinator) and ginniemae.gov. Fannie Mae still returns 403.
+- **Options:** (a) pre-register a 2c run with the Freddie Mac and Ginnie Mae monthly summaries, Fannie carried flat; (b) wait until Fannie is reachable; (c) no 2c run.
+- **Recommendation: (a)**, frozen before it is scored. It must not modify the current run.
 
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
