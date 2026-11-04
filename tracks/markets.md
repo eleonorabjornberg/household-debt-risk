@@ -20,7 +20,11 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 | Q-B2.2 | (c), deal data from crt.freddiemac.com and EDGAR | crt.freddiemac.com still blocked (not worked around). No EDGAR requests from this track: the request list is below for the coordinator to route |
 | Q-B3 | (c), both preset families, DFAST first (labelled a proxy), then the 2008–12 replay; then B4 | in progress |
 
-### EDGAR request list for B2 (for the coordinator to route; no requests made from this track)
+**Later decisions (PLAN.md "Decisions taken", rows recorded by the coordinator):**
+- SEC access for markets decided by Eleonora 2026-11-04 ("Markets gets access", chat ~16:50 UTC). The User-Agent is passed as a per-command prefix only and never written to a file; `git grep` is checked before each commit.
+- Holdout unseal approved by Eleonora 2026-11-04 (PLAN.md at cba74f9, "Go ahead", chat ~16:55 UTC). **The run is on HOLD** at the coordinator's request (17:06 UTC): the C1b CHOICE on whether C1b enters the joint run is still open for her, and running now would remove that option. The freeze (949acec) still matches.
+
+### EDGAR request list for B2 (now run by this track: SEC access decided 2026-11-04)
 *To confirm before relying on it:* STACR (Freddie Mac) and CAS (Fannie Mae) notes have been issued as exempt or Rule 144A offerings, the later ones through trusts, so their offering circulars and pricing are probably **not** on EDGAR. What EDGAR certainly holds is the GSEs' own periodic reports.
 1. **Freddie Mac (CIK 0001026214, to confirm):** forms 10-K for FY2017–FY2023, and 10-Q for each quarter of 2017–2023. What B2 needs: the CRT programme tables (STACR and ACIS issuance by year, protection purchased, and the annual cost of CRT, often reported as "credit enhancement expense" or similar), plus reference-pool UPB covered.
 2. **Fannie Mae (CIK 0000310522, to confirm):** forms 10-K FY2017–FY2023 and 10-Q 2017–2023. Same items for CAS and CIRT: issuance, risk in force, and annual credit-enhancement or CRT expense.
