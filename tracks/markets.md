@@ -14,6 +14,10 @@ Nothing touched production or the database.
 | Task | Status | Notes |
 |---|---|---|
 | B1 | ready for review | `research/b1_market_pricing/`. Spec fixed in `METHOD.md` before results (commit b094579, before results a8fc3de). Verdict under the pre-set rule: no robust association in every variant; levels fits mostly fail Engle–Granger, the positive levels sign coincides with the period from 2022Q4 on (PMMS method change and other conditions), and the test has little power, so the README reads "inconclusive". quant-reviewer and skeptic run; 12 of 13 objections resolved, 1 open (g-fee control: a design extension, below). 46 register rows in `claims/tracks/markets.csv`. |
+| B2 | ready for review | `research/b2_crt_pricing/`. FHFA Dec 2016 deal-level credit costs, 47 deals 2013–16; zero-attach median 32 bps a year, a multiple of about 6.4 (outstanding basis) or 10.4 (original basis) of FHFA's own baseline expected loss; 3.3–6.9% a year per dollar of tranche. Skeptic (s16–s22, 4 major) addressed. 2017+ prices chart-only; GSE/SEC deal data blocked. Method choices: Q-B2. |
+| B3 | ready for review (core); presets and app blocked (Q-B3; app is coordinator site work) | `research/b3_scenarios/`: Python engine + JS twin, invariant tests, JS matches Python on fixed cases (ee9df53, 4b33458). No preset scenario values until sourced. |
+| B4 | blocked (needs B3 presets: Q-B3) | Policy-regime scenarios run on B3 presets; nothing built. |
+| C2 | in progress | Spec registry `research/c2_forecast/SPECS.md` opened before any score; implements frozen protocol 192d60c. |
 | C1 | ready for review (development sample); holdout run waits on Q-C1c | Spec `EVALUATION.md` (7ae4afb) before any score; deviations dated there. Real-time Z.1 from all 41 archived releases (2017-03-09 in folder 20170305). Development result (99d56cd): accounting bridge RMSE about 0.74 of no-change, not significant after Holm, biased downward (mostly 2020–21); bridge regression better on its own 2019Q3–2023Q2 targets, Holm-significant at k = 1 and 2 only. quant-reviewer (q11–q16) and skeptic (s9–s15) run and addressed; one minor stated limitation open (s12). |
 
 ## Log notes for the coordinator
@@ -76,6 +80,27 @@ The specification in `research/b1_market_pricing/METHOD.md` (proxies, controls, 
 7. **Share definition.** (a) the headline share (mortgages + consumer credit); (b) mortgage-only. **Recommendation: (a)**, the project's quantity.
 8. **Seasonal adjustment.** NSA throughout (Z.1 holder levels are NSA; `HMLBSHNO` and `CCLBSHNO` used rather than the SA `HHMSDODNS`). **Recommendation: NSA.**
 
+### Q-B2 (new). B2 method and scope
+1. **Price measure.**
+   (a) FHFA's estimated credit cost ÷ the baseline expected loss of the sold slice, under FHFA's own scenario (as built);
+   (b) cost ÷ a loss distribution (several scenarios), which needs assumptions FHFA does not publish;
+   (c) cost alone, with no multiple.
+   **Recommendation: (a)**, plus (c) alongside. The multiple is labelled as relative to FHFA's baseline only.
+2. **2017–2023 prices.**
+   (a) read issuance spreads off FHFA's Appendix D/E charts, with a stated reading error, labelled estimates;
+   (b) leave the gap;
+   (c) get deal data from crt.freddiemac.com (needs the host allowed) and EDGAR (needs `SEC_USER_AGENT` set in this environment).
+   **Recommendation: (c) if you can add the host and variable; otherwise (b).** Chart reading adds error that the register cannot verify.
+
+### Q-B3 (new). Where B3's scenario values come from
+The engine has no built-in loss parameters. Each preset needs a primary source.
+- **Options.**
+  - (a) A recession case from the Fed's stress test (DFAST): projected loss rates by loan type for the largest banks under the severely adverse scenario, free on federalreserve.gov (reachable 2026-11-04). These are bank portfolios, so the result would be labelled a proxy for GSE and federal books.
+  - (b) A 2008–12 replay from realised losses: Freddie Mac 10-Ks (freddiemac.com reachable; A2 already parses them), FHA actuarial reviews (hud.gov blocked), federal student-loan default data (studentaid.gov blocked).
+  - (c) Both, each dated and sourced.
+  - (d) No presets: the user enters values, and the app says so.
+- **Recommendation: (c)**, starting with (a), whose source is reachable. (b) is partial until hud.gov and studentaid.gov are allowed. Every preset value gets a register row.
+
 ### Q-C1c (new). When to run the C1 holdout
 C1 and C2 share the holdout 2023Q3–2026Q2, and C2's Family Z+C1 uses C1's indicators. Scoring C1 on the holdout now would show holdout outcomes before C2's candidates are frozen, which could steer C2's design.
 - **Options:** (a) run the C1 holdout now; (b) run it in the same single run as C2's holdout, after C2's candidates are frozen; (c) keep it unrun until C3.
@@ -89,6 +114,8 @@ The development results show the bridge biased downward. A likely cause is that 
 
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
+- **B3 in the app.** Add an atlas page or panel that imports `research/b3_scenarios/engine.mjs` (or a copy under `atlas/lib/`) and `exposures.json`. Show sliders for default rate, severity and timing per loan class, plus the transfer share and cap. Show bars for public versus private losses. Preview deployment only. Wait for Q-B3 before shipping any preset.
+- **Register.** The b1_* rows are back in `claims/tracks/markets.csv` (dc68eb7) for re-folding, together with the new b2_* rows. The c1_* rows in `register.csv` were replaced in place with their current versions during the merge (1c51735).
 1. **PLAN.md B1 row → done** once the coordinator's review agrees: "inconclusive, low power; no robust association under the pre-set rule; `research/b1_market_pricing/`".
 2. **PLAN.md C1 row → blocked (Eleonora: evaluation design)**, with the plumbing noted.
 3. **PLAN.md Environment prerequisites:** add `www.freddiemac.com` and `www.fanniemae.com` as not reachable on 2026-11-04 (needed for C1 option 2c); note `alfred.stlouisfed.org` blocked but `api.stlouisfed.org` sufficient.
