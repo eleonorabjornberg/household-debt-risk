@@ -39,6 +39,8 @@ def ok(backend, tool: str, data: Any, *, units: dict | str, series_ids: list[str
         "vintage": {"source_vintage": v.get(source if source in v else "z1"), "all": v},
         "units": units, "series_ids": series_ids, "caveats": caveats, "data": data,
     }
+    if getattr(backend, "note", None):
+        out["backend_note"] = backend.note
     if extra:
         out.update(extra)
     return out
