@@ -173,6 +173,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | E2 intervals (card e2-8, changes CHOICE-8): **Wilson 95% intervals primary**, with the within-document clustering stated. | Eleonora |
 | 2026-11-04 | API pilot plan (card pilot-plan): **go**. E1 only: build and verify 10 questions (no API cost), then 10 questions × 3 models × 1 run = 30 runs, estimate $1.99, hard cap $2.98; stop if any model's cost per run exceeds 1.5× its estimate; re-check live prices first. | Eleonora |
 | 2026-11-04 | Q7 scope (card q7-promo): **(iii)**, look for a primary source on whether promotional banks (1.1%, e.g. KfW) carry a state guarantee before deciding whether they belong in "publicly owned, not guaranteed"; the question then comes back to her. | Eleonora |
+| 2026-11-04 | Q7 promotional banks (card q7-promo-2): **(c)**, leave the 1.1% (Bundesbank category of banks with special, development and other central support tasks) unclassified until the Länder promotional-bank statutes can be reached. KfW's funding-side guarantee (KfW law Art. 1a) is on file. Reaching the statute hosts (EUR-Lex, gesetze-im-internet.de, Länder law sites) needs her separate OK; none is added. | Eleonora |
+| 2026-11-04 | Review round 5: E2 pre-registration as frozen at 5986353 (with infra's [implementation] choices) and the 10 E1 pilot questions, both accepted. | Eleonora |
 | 2026-11-04 | Review queue round 4 (17:31 UTC): A8 Q7 (c) application (Germany's third category, 30.3%) accepted as is. | Eleonora |
 
 ## Environment prerequisites
@@ -281,8 +283,8 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 
 | ID | Task | Depends | Acceptance criteria | Status |
 |---|---|---|---|---|
-| E1 | **Question-to-SQL benchmark**: about 100 questions with verified answers; Haiku vs Sonnet vs Opus on accuracy, cost and latency | D5, `ANTHROPIC_API_KEY` | Answers verified independently of any model; scoring rules fixed before the run; cost estimated and approved before running | in progress: pilot approved (E1 only, cap $2.98); 10 pilot questions verified 10/10 with no model (7eb7a20), in review; the run waits on the API key (401); the full benchmark needs its own prereg and spend approval |
-| E2 | **Planted-error test**: deliberate errors; catch rate and misses for `skeptic` and `quant-reviewer` | D4 | Errors planted by a script with a hidden key; catch rate with confidence intervals; every miss analysed | in progress: prereg frozen at 5986353 with her round-5 design (CHOICE-11 (a), CHOICE-12 (i), Wilson primary), in review; not yet run |
+| E1 | **Question-to-SQL benchmark**: about 100 questions with verified answers; Haiku vs Sonnet vs Opus on accuracy, cost and latency | D5, `ANTHROPIC_API_KEY` | Answers verified independently of any model; scoring rules fixed before the run; cost estimated and approved before running | in progress: pilot approved (E1 only, cap $2.98); 10 pilot questions verified 10/10 with no model (7eb7a20), accepted; the run waits on the API key (401); the full benchmark needs its own prereg and spend approval |
+| E2 | **Planted-error test**: deliberate errors; catch rate and misses for `skeptic` and `quant-reviewer` | D4 | Errors planted by a script with a hidden key; catch rate with confidence intervals; every miss analysed | in progress: prereg frozen at 5986353 with her round-5 design (CHOICE-11 (a), CHOICE-12 (i), Wilson primary), accepted; not yet run |
 | E3 | **Regression suite**: rerun E1–E2 when prompts or models change; chart results over time | E1, E2 | One command; results appended, never overwritten; chart via `chart-from-sql` | in progress (`make evals` status and fingerprints built; waits on E1, E2) |
 | E4 | **Red-team "Ask Hot Potato"**: try to get misleading answers or unsupported forecasts | D6 | Attack catalogue, results, guardrails added and remaining failures documented | todo (needs D6) |
 
