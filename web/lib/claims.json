@@ -948,7 +948,8 @@
    "claim": "The public share fell 5.0 pp between 1999Q4 and 2007Q4.",
    "display": [
     "−5.0 pts",
-    "5.0 points"
+    "5.0 points",
+    "5.0 pts"
    ],
    "value": "-4.96",
    "unit": "pp",
