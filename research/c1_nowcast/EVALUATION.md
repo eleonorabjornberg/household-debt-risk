@@ -87,4 +87,5 @@ All benchmarks are computed from R only, so they use as-of data:
     - (ii) In the pseudo-real-time samples the bridge regression trains on latest-vintage (revised) targets, with no embargo. That is a further reason they are labelled *not real-time*.
     - (iii) C2's leakage test 4 (fit window) is covered only by the assert that each benchmark's history ends at T. Test 5 (placebo on a shuffled target) and the outcome checks are not implemented for C1. C2 will implement them.
   - *Deterministic column order* in `nowcasts_dev.csv` (q16).
+- **2026-11-04, joint holdout** (Q-C1c (b), decided by Eleonora): the C1 holdout is scored in the same single run as C2's, after C2 is frozen, by `research/c2_forecast/holdout_run.py` (sealed until she gives an explicit go).
 - **2026-11-04, archive depth:** the coordinator confirmed that `z1r-N.zip` archives exist before 2016-09 and recorded a factual correction in C2. The real-time window still starts 2016-09-16. Extending it would need a new deviation before any score.
