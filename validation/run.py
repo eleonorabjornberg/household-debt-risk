@@ -486,7 +486,7 @@ def check_revisions(df_now, res_now, groups, public, prev_arg, urls_log):
     out = []
     out.append(Check("F1", f"Scope total FL154104015 revisions, {q(common[0])}-{q(last_prev)} ({len(common)} qtrs)",
                      "report", f"{n_rev} quarters revised > $0.5M; max |rev| ${dscope.abs().max():,.0f}M in {q(dscope.abs().idxmax())}",
-                     "report only", "WARN" if n_rev else "PASS", f"prev vintage {ts.date()} [{fmt}]" + (f"; duplicate-column conflicts {conflicts}" if conflicts else "")))
+                     "report only", "WARN" if n_rev else "PASS", f"prev vintage {pd.Timestamp(PREV_RELEASE).date()} release (zip built {ts.date()}) [{fmt}]" + (f"; duplicate-column conflicts {conflicts}" if conflicts else "")))
     out.append(Check("F2", "Public share revisions across common quarters", "report",
                      f"max |rev| {dshare.abs().max():.3f} pp in {q(dshare.abs().idxmax())}; mean {dshare.mean():+.4f} pp; "
                      f"public $ max |rev| ${dpub.abs().max():,.0f}M",
