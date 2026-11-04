@@ -1,0 +1,125 @@
+{
+ "prereg": "docs/decisions/a7-causal-prereg.md (206e126) + addenda 0f9aaff, 8b09d7c",
+ "vintages": {
+  "z1": "2026-09-11",
+  "fred": "retrieved 2026-11-04 (data/a7/*.json)"
+ },
+ "H1": {
+  "week0": "2008-09-11",
+  "window": [
+   "2008-09-04",
+   "2008-10-09"
+  ],
+  "estimation": [
+   "2006-08-03",
+   "2008-07-24"
+  ],
+  "n_est_changes": 102,
+  "dummied": [
+   "2008-02-14",
+   "2008-05-08"
+  ],
+  "actual_change_pp": -0.3483,
+  "mean_weekly_change_pp": 0.00904,
+  "abnormal_constant_mean_pp": -0.3936,
+  "abnormal_ar1_pp": -0.3857,
+  "ar1": {
+   "c": 0.00863,
+   "phi": -0.0849
+  },
+  "placebo_n": 90,
+  "p_rank_one_sided": 0.022,
+  "hac_t": -2.493,
+  "hac_p_one_sided": 0.0063,
+  "t_exact_5week_variance": -2.371,
+  "week0_change_pp": -0.3658,
+  "placebo_as_low_or_lower": 1
+ },
+ "H2": {
+  "holdout_rmspe": 657.3021,
+  "holdout_sd_2006_07": 170.1927,
+  "fit_ok": false,
+  "p_rank": 0.7692,
+  "mean_post_deviation": -869.8254,
+  "diagnostics_not_an_effect_estimate": {
+   "post_pre_rmspe_ratio": 3.72,
+   "mean_post_deviation": -869.8254,
+   "post_deviations": [
+    -440.7223,
+    -623.5437,
+    -789.5702,
+    -965.7687,
+    -1124.9411,
+    -1274.4066
+   ],
+   "placebo_ratios": [
+    15.7857,
+    14.8724,
+    12.8941,
+    10.6056,
+    8.7739,
+    7.4138,
+    6.2205,
+    5.1869,
+    4.3236,
+    3.5122,
+    2.7194,
+    1.9848
+   ]
+  }
+ },
+ "H3": {
+  "holdout_rmspe": 2.2266,
+  "holdout_sd_2006_07": 0.8073,
+  "fit_ok": false,
+  "p_rank": 0.5385,
+  "mean_post_deviation": 8.2181,
+  "diagnostics_not_an_effect_estimate": {
+   "post_pre_rmspe_ratio": 4.6388,
+   "mean_post_deviation": 8.2181,
+   "post_deviations": [
+    4.9685,
+    6.1674,
+    7.4214,
+    8.7638,
+    10.318,
+    11.6693
+   ],
+   "placebo_ratios": [
+    10.4009,
+    11.6973,
+    10.0283,
+    7.7616,
+    5.8934,
+    4.7859,
+    3.8367,
+    2.9838,
+    2.2577,
+    1.6693,
+    1.1249,
+    0.8449
+   ]
+  }
+ },
+ "H4": {
+  "mean_change_pre_bn": 10.322,
+  "mean_change_post_bn": -11.404,
+  "difference_bn": -21.726,
+  "hac_t": -4.667,
+  "p_one_sided": 2e-06,
+  "n_pre": 17,
+  "n_post": 10
+ },
+ "holm_reject": {
+  "H4": true,
+  "H1": false,
+  "H3": false,
+  "H2": false
+ },
+ "verdict": {
+  "H1": "null",
+  "H2": "fit failed",
+  "H3": "fit failed",
+  "H4": "mechanics as expected"
+ }
+}

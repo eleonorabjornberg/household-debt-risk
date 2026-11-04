@@ -11,8 +11,8 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 | F3 | ready for review, 2 questions (F3-1, F3-2) | `.github/workflows/z1-release.yml` + `tools/z1_release.py` (3 tests). Rehearsed locally on the 2026-06-11 → 2026-09-11 release (what moved, stale claims, PR body). Not run on GitHub: scheduled runs only fire from the default branch, so nothing runs before merge |
 | D3 | ready for review | `.claude/skills/research-memo` (SKILL, audiences, `facts.py`, `memo_check.py` gate, 5 tests) and three logged example memos (MBS desk, rates strategist, bank treasury), all PASS; review fixes logged in `examples/README.md` |
 | E2 | needs-approval | Pre-registration drafted (`docs/decisions/e2-prereg.md`) with 9 choices for Eleonora (question E2-1); not frozen, not run |
-| E3 | blocked (E1 needs Eleonora's cost approval and an API key; E2 needs the frozen pre-registration) | E2's `score.py` already appends results and never overwrites them, which E3 will reuse |
-| D7 | ready for review | `plugin/fed-data-desk`: 6 skills, 4 commands, 6 agents and the household-credit MCP server; local marketplace at `plugin/`; `plugin/sync.py` (+ `--check` in `make ci-static`). Validates, and installs cleanly in a throwaway config. The MCP server answers. Before/after for 3 routine jobs in `examples/` |
+| E3 | partly built; blocked on E1 (cost approved, key not added) and the E2 freeze | `evals/regression.py` + `make evals`: fingerprints the reviewer prompts, models, catalogue, code and prereg; reports NEVER RUN / UP TO DATE / RERUN NEEDED per eval (E1 reported NOT BUILT); charts E2 recall over time through chart-from-sql (smoke-tested on synthetic data in the scratchpad only); results stay append-only. 3 tests |
+| D7 | ready for review | `plugin/fed-data-desk`: 6 skills, 4 commands, 6 agents and the household-credit MCP server; local marketplace at `plugin/`; `plugin/sync.py` (+ `--check` in `make ci-static`). Validates, and installs cleanly in a throwaway config. The MCP server answers. Before/after for 3 routine jobs in `examples/`. Two icon candidates in `assets/icon-candidates/` for Eleonora's pick (D7-1); none active, nothing submitted |
 
 Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 
@@ -33,6 +33,7 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-04 ~17:00 UTC, after Eleonora's decision cards (`543d96a`, merged). F3-1 and F3-2 applied (`7126688`). Cost estimates written. The E2 prereg records her six decided choices; it is not frozen, because CHOICE-1, -2 and -4 have no recommended value and CHOICE-10 is outside 1–9 (E2-2). D7 icon candidates (`e766d1e`). E3 runner (`make evals`). Errors caught by Claude: I first wrote CHOICE-4 (seed) as decided, but its draft had no recommendation, so I reverted it to open before committing; `regression.py chart` called chart-from-sql without matplotlib, caught by the smoke test, and now uses `--with matplotlib` as the skill says. Main model, no subagents.
 - 2026-11-04 ~05:05 UTC, D5 fallback fix (coordinator's request). Merged `0c05fd1` first. `get_backend()` now probes the database once and falls back to the snapshots with a `backend_note` when it cannot connect; `HOUSEHOLD_CREDIT_REQUIRE_DB=1` keeps the hard failure. New `tests/test_fallback.py` (4 tests; the main one uses a real unresolvable `.invalid` host). `tests/test_guard.py::test_get_backend_default_is_snapshot` asserted the old lazy, non-connecting behaviour, so I changed it to inject a reachable fake connection. MCP suite: 37 passed, 1 skipped. Live check with the sandbox's real `DATABASE_URL_READONLY`: `public_share` answers from the snapshots in 0.5 s, with the note. Main model, no subagents.
 - 2026-11-04 ~05:40 UTC, E2 tooling and D7. Main model, no subagents (0 subagent tokens). E2: catalogue (14 error types), `plant.py` (refuses until the pre-registration is frozen; hidden key with a SHA-256 commitment), `score.py` (location match, then a human same-fix call, then Wilson and cluster-bootstrap intervals; appends only), 6 tests; a rehearsal on six write-ups planted 36 errors with uneven categories (now CHOICE-10). D7: `claude plugin validate` passes (icon warning only), and the install was tested with `CLAUDE_CONFIG_DIR` pointing at the scratchpad, so the user's config was not touched. Errors caught by Claude: in the before/after work, the MCP server errors instead of falling back to snapshots when `DATABASE_URL_READONLY` is set but the host is unreachable (finding below); an unverified sentence I had written in an example ("took the whole 0.8 session") was removed before commit.
 - 2026-11-04 ~05:10 UTC, D3. Three subagents (one per audience, sonnet tier) drafted the memos in parallel (95.8k + 86.9k + 95.9k subagent tokens). The main model built the skill and gate and reviewed each memo. Errors: the gate (memo_check / claim-check) caught UNTRACED spellings, 4 NOT RECOMPUTABLE rows and a MISMATCH on the ESTIMATE row `uncoll_break_2005q4`. The **main session** caught a definition error in 2 of 3 memos (the Fed counted as a public holder; state and local left out) and a wrong mechanism (Fed runoff said to move the public share), both now in SKILL.md hard rules. E2: pre-registration drafted, choices open.
@@ -50,24 +51,59 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 - Register: F1–F4 publish no new numbers. The `/sources` summary counts register rows; `/data` shows source vintages from `meta.json`. So `claims/tracks/infra.csv` is not needed.
 
 ## Questions for Eleonora
-- **D7-1. Plugin icon and distribution.** The validator wants a 512–2048 px square PNG icon, and I did not make one. Should the plugin be listed anywhere beyond the repo's own marketplace (`plugin/.claude-plugin/marketplace.json`)? Recommendation: repo marketplace only for now; an icon only if you want a listing.
-- **E2-1. Pre-registration choices** (`docs/decisions/e2-prereg.md`, CHOICE-1 to CHOICE-9): recall thresholds, false-alarm ceiling, size (recommend 12 docs × 3 errors + 4 controls), seed, isolation (recommend a separate worktree, so reviewers cannot diff against the originals), whether reviewers are told (recommend not), who scores (recommend a script for location plus a human for category, with 20% double-scored), interval method (recommend a cluster bootstrap over documents), baseline reviewer (recommend for data documents). E2 is not run until she chooses and the file is frozen. E3 (regression suite) depends on E1 and E2 results, so it is blocked too.
-- **F3-1. The existing `refresh.yml` loads the production database on a schedule** (20 Mar/Jun/Sep/Dec, `load` defaulting to true). The sites read Supabase live, so that publishes new data before anyone reviews it, which breaks F3's "nothing publishes without her merge". Options:
-  - (a) Drop `refresh.yml`'s schedule and set `load` to default false: z1-release opens the PR, and after merging you run refresh-data by hand with load = true.
-  - (b) Same as (a), plus an automatic load when a `data/z1-*` PR is merged into main.
-  - (c) Keep both.
+- **E2-2. Four E2 choices still have no value (blocks the freeze).** "Accept all the recommendations for CHOICE-1 to CHOICE-9" covers six of them. My draft gave no recommended value for CHOICE-1 (the recall threshold for H1/H2), CHOICE-2 (the false-alarm ceiling for H4) or CHOICE-4 (the seed), and CHOICE-10 (category balance) is outside 1–9. Freezing would mean Claude picking the thresholds the test is judged against, so it is **not frozen**. Proposed values, for you to accept or change:
+  - **CHOICE-1, recall threshold** (the same for skeptic and quant-reviewer): (a) 50%, (b) **70%**, (c) 80%. Support needs the lower bound of the 95% interval at or above it. With 36 errors the interval is about ±15 pp, so (b) is supported only by an observed recall of 31/36 (86%) or more (Wilson lower bound 0.713); (c) would need 34/36 (94%). Recommendation: (b).
+  - **CHOICE-2, false-alarm ceiling** (share of blocker/major objections on controls that are not real problems): (a) 10%, (b) **25%**, (c) 40%. There will be few objections on 4 controls, so the interval is wide; (b) keeps H4 informative. Recommendation: (b).
+  - **CHOICE-4, seed:** (a) **the fixed integer 20261104**, written into the file before freezing; (b) the first 8 hex digits of the freeze commit. (b) is circular: the commit cannot contain its own hash. Recommendation: (a).
+  - **CHOICE-10, category balance:** (a) random, (b) **stratified** (each category planted a fixed number of times), (c) drop rare categories. Recommendation: (b), as in the draft.
 
-  **Recommendation: (a)** (patch below); (b) later if the manual step proves a chore. I have not changed `refresh.yml`.
-- **F3-2. Who drafts the reader-facing release notes?** The PR carries the deterministic "what moved" note and the stale-numbers list. PLAN F3 says "Claude drafts release notes". Options:
-  - (a) A Claude session runs the `z1-release-update` skill on the PR branch and adds a "Claude draft" notes file (no new cost or secret; someone opens the session).
-  - (b) `anthropics/claude-code-action` drafts them inside the workflow (needs an `ANTHROPIC_API_KEY` Actions secret and a small cost each quarter).
+  The other six choices are applied in the file (decided by Eleonora 2026-11-04). It freezes as soon as these three have values.
 
-  **Recommendation: (a) now.** (b) is a cost decision like D6 and E1.
-- **Settings Eleonora must change for F3** (no secret values pass through chat):
-  - Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests".
-  - Confirm the `FRED_API_KEY` repository secret exists; `refresh.yml` already uses it.
-  - Note: a PR opened with the workflow's token does not trigger `ci.yml` (GitHub's rule). Re-run CI from the PR, or push an empty-change commit by hand.
-- ~~Q-scope~~ **Resolved by PLAN.md `cc74d76`** (coordinator branch). That commit records Eleonora's approval to continue Phases B–F overnight in her words, and the Parallel tracks table now gives infra F3, D3, E2 (pre-registered first), E3, D7. I verified it there before starting. D6, E1 and E4 stay hers (cost or API key).
+### Decided by Eleonora 2026-11-04 (decision cards, about 16:35–16:41 UTC; PLAN.md "Decisions taken", coordinator commit `543d96a`)
+- **F3-1: (a).** Drop the `refresh.yml` schedule and default `load` to false; load by hand after merging. Done in `7126688` (workflow file only; nothing run).
+- **F3-2: (a).** A Claude session runs the z1-release-update skill to draft release notes. Documented in the `z1-release.yml` header and the PR body (`7126688`).
+- **E2-1:** accept all the recommendations for CHOICE-1 to CHOICE-9. Applied, except where no recommendation existed (E2-2 above).
+- **D7-1:** list the plugin more widely; it needs a 512–2048 px icon. Icon candidates are drafted for her pick; nothing is submitted to any listing.
+- **D6, E1, E4:** approved, with a cost estimate first (below). No key added and nothing spent.
+- **Copy review:** she approved the 2008 copy revision, the nav links and the /sources and /data intros. `public_share_2001q1` / `_2005q1` and their F1 exceptions stay.
+- **Still open:** the `FRED_API_KEY` repository secret (later), and F2-2 (the coordinator is answering her directly).
+- Settings she must change for F3: Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests". Also note that a PR opened with the workflow's token does not trigger `ci.yml`; re-run CI from the PR.
+
+### Cost estimates for D6, E1, E4 (for Eleonora's approval; all are estimates)
+**Prices:** list prices per million tokens, from the `claude-api` skill's model table (cached 2026-10-06) and its prompt-caching notes. **Re-check the live pricing page before any spend.**
+
+| Model | Input | Output | Cache read | Cache write (5 min) |
+|---|---|---|---|---|
+| Claude Opus 5.5 | $4.00 | $20.00 | $0.20 | $5.00 |
+| Claude Sonnet 5.5 | $2.00 | $10.00 | $0.20 | $2.50 |
+| Claude Haiku 5.5 | $0.10 | $0.50 | $0.01 | $0.125 |
+
+- Batch API: 50% off every token, cache included.
+- Haiku 5.5 rates are for prompts up to 100K tokens; every call here is far below that.
+
+**Assumptions, the same for all three tasks (to be replaced by measured `usage` after a pilot):**
+- Each call is a tool-use loop against the household-credit MCP tools.
+- 60% of input tokens are cache reads, from a stable cached prefix of system prompt and tool definitions; cache writes are negligible next to reads.
+- Output tokens include thinking.
+- No LLM grader in E1: answers are scored by a script against independently verified values.
+
+| Task | Calls | Tokens per call (input / output) | Model(s) | Estimate |
+|---|---|---|---|---|
+| **E1** question-to-SQL benchmark | 100 questions × 3 models × 3 repetitions = 900 loops | 4 turns, about 37.8k input (6k prefix + 2.3k per turn, summed over turns) / 3.2k output | Opus 5.5, Sonnet 5.5, Haiku 5.5 | Opus $38.70 + Sonnet $20.03 + Haiku $1.00 = **$59.74** |
+| **D6** "Ask Hot Potato" | per reader question | 3 turns, about 21k input / 2.1k output | one model (her choice) | Per question: Opus $0.078, Sonnet $0.040, Haiku $0.002 |
+| | development and tests, about 400 questions | as above | | Opus $31.25 / Sonnet $16.13 / Haiku $0.81 |
+| | running: 1,000 questions/month | as above | | Opus $78 / Sonnet $40 / Haiku $2 per month |
+| | running: 10,000 questions/month | as above | | Opus $781 / Sonnet $403 / Haiku $20 per month |
+| **E4** red-team of D6 | 60 attacks × 3 repetitions × 2 rounds (before and after guardrails) = 360 transcripts | 1.5× a D6 question | the D6 model, plus a Sonnet 5.5 judge (4k in / 0.5k out per transcript) | Opus target $46.86 / Sonnet target $26.45 / Haiku target $5.77 (judge $4.68 included) |
+
+**Totals.** Build-out spend (E1 + D6 development + E4) is about $138 if D6 runs on Opus, $96 on Sonnet, or $67 on Haiku; E1 is the same in each case. The running cost of D6 then scales with readers, as above.
+
+**Recommended safeguards:**
+- A workspace spend limit at 1.5× the estimate.
+- A pilot of 10 items per task first; stop and re-estimate if measured cost per item is more than 1.5× the assumption.
+- D6 in production only behind a per-IP rate limit and a monthly cap (PLAN D6 acceptance).
+
+E1 could use the Batch API for a further 50% off only if the loop is restructured to one batched turn at a time; I did not assume it.
 
 Answered 2026-11-04: Eleonora accepted the recommendations (PLAN.md "Decisions taken", coordinator commit `a590475`). What was done:
 - **F2-1 (a), pin FRED via ALFRED** (`8bf5d88`). `HHDEBT_FRED_ASOF` (pipeline) and `FRED_ASOF` (notebook) read FRED as it stood on one day (ALFRED `realtime_start` = `realtime_end`). The day defaults to the committed `web/public/data/meta.json` `vintages.fred` (2026-10-27), and `make` passes it; a refresh moves it on purpose (`make all FRED_ASOF=2026-12-20`, say). Verified: a pinned ingest plus the notebook reproduce every committed results file and table byte for byte, so `findings.md:15` ($1.90T, $845B) no longer drifts. ALFRED writes some whole numbers as `1721271.0` and missing weeks as `.`; both are normalised so the tables match the fredgraph format exactly.

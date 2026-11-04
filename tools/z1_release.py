@@ -60,7 +60,12 @@ Z.1 vintage {meta['vintages'].get('z1')} · FRED as-of {meta['vintages'].get('fr
 Validation gate: **{gate}** ({', '.join(f'{k} {v}' for k, v in summary.items())}).
 
 The numbers and copy have not been edited. The register rows and copy listed under "Stale published numbers"
-need a human decision; the release notes for readers are a separate draft (Claude drafts, Eleonora approves).
+need a human decision.
+
+**Release notes (decision F3-2):** open a Claude Code session on this PR's branch and run the `z1-release-update`
+skill from step 5; it turns the note below into reader-facing release notes marked "Claude draft" and stops at its
+approval gates. Eleonora edits and approves them before merging.
+
 After merging: the database is loaded by hand (Actions → refresh-data → Run workflow, load = true).
 
 ## What moved
