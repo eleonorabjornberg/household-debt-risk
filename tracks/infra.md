@@ -2,6 +2,27 @@
 
 Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "Parallel tracks".
 
+## Handoff (2026-11-04 ~17:30 UTC, from the session that ended at this commit's parent)
+**State.** Branch `claude/track-infra`. Last commits: `6c03d52` (Eleonora's CHOICE-1/2/4/10 values; `plant.py --stratified`), `3852ee5` (CHOICE-11/12 drafts), both merged by the coordinator into `claude/sweet-gates-avwrcs`. `make test` passes (163 passed, 3 skipped; MCP 37 passed, 1 skipped). `make evals` reports E2 NEVER RUN and E1 NOT BUILT. Nothing has been run against the API, and the E2 prereg is **not frozen**.
+
+**Open items (all wait for Eleonora's round-5 answers, relayed by the coordinator; do nothing on them before then):**
+- E2: CHOICE-11 (design (a)/(b)/(c)), CHOICE-12 (decision rule if (a) or (c)), and CHOICE-8 changed to Wilson primary (too few clusters for the bootstrap). Also fix the exact method-document list at the freeze; the rehearsal used `research/c1_nowcast/README.md` and `research/c2_forecast/SPECS.md`.
+- Spend pilot: E1 only, 30 loops, cap $2.98. Do not build the E1 questions or spend anything until she says so.
+- `ANTHROPIC_API_KEY`: set as a network secret. In the old session the free check `curl -sS -o /dev/null -w "%{http_code}\n" https://api.anthropic.com/v1/models -H "anthropic-version: 2023-06-01"` returned 401. Run it first in the new session: 200 means the key arrives.
+
+**`plant.py` changes still needed, per CHOICE-11 option** (make them, with tests, before the freeze commit):
+- All options: allocate planted documents by a **count per agent** (e.g. `--planted-data N --planted-method M`, or `--planted` per agent). `run()` currently cycles `sources[i % len(sources)]`, so the data/method split follows the source list. Controls likewise: 1 data + 1 method.
+- (a) 4 data docs × 2 and 3 method docs × 2: the existing `stratify()` works once allocation is fixed (8/8 and 6/6 divide evenly).
+- (b) 6 × 2 per agent: skeptic 12 over 8 categories needs an **"as equal as possible"** mode: quotas of ⌊n/c⌋ plus one extra for n mod c categories chosen by the seeded RNG, recorded in `key.json`. Today `stratify()` refuses uneven splits (a test asserts this; keep that test for the strict mode).
+- (c) 6 × 1 per agent: also "as equal as possible" for skeptic (6 of 8 categories); `--errors-per-doc 1`.
+- Then write the chosen values into the prereg, set `Status: **frozen**` (the line `plant.py` `is_frozen()` matches), commit as `prereg: E2 (frozen)`, and put that hash in the prereg ("Frozen at") and in this file. Update the test `test_refuses_unless_frozen` (it asserts the prereg is a draft). `make evals` already fingerprints the prereg, `plant.py` and the catalogue.
+
+**Pilot procedure (only after her go-ahead):**
+1. Re-check live pricing: fetch the Anthropic pricing page (or the `claude-api` skill, then the page) and compare with the table in "Cost estimates" above (cached 2026-10-06). If any price differs, recompute the $1.99 estimate and the $2.98 cap and send them to the coordinator before spending.
+2. Build 10 E1 questions with answers verified independently of any model (from `analysis/results.json`, committed tables or the register), and the scoring script, with no API calls.
+3. Run 10 questions × Opus/Sonnet/Haiku 5.5 × 1 repetition = 30 loops. Log the `usage` of every call. Keep a running dollar total; stop at $2.98, or as soon as any model's measured cost per loop is more than 1.5× its assumption (Opus $0.129, Sonnet $0.067, Haiku $0.0033).
+4. Report the measured cost per loop and the re-estimated build-out to the coordinator. The pilot does not approve the build-out.
+
 ## Status
 | Task | Status | Notes |
 |---|---|---|
