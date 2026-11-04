@@ -13,6 +13,7 @@ Research platform on who holds America's household credit risk, how it is priced
 - Never fabricate data. Check a source is available (and free) before building on it; propose a free proxy for paywalled series.
 - Every published number needs a row in `claims/register.csv` (query or code path, series IDs, vintage, validation status).
 - Don't touch the production Vercel deployment or the production database without asking. Branch pushes and preview deployments are fine.
+- Anything waiting on Eleonora (a decision, an approval, or finished work to review) goes onto a card page with the `decision-cards` skill, not only into chat or a status file: decisions on the decision docket, finished work on the review queue (`docs/review-queue.html`). Tracks send such items to the coordinator, who adds the cards.
 - Secrets never go through the chat; they live in the cloud environment settings.
 - Commit after each task with a clear message.
 - Token discipline: read excerpts, not whole files; no data dumps in chat; cheaper models or subagents for routine work.
