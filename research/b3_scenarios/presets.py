@@ -117,6 +117,10 @@ def main() -> int:
     print(json.dumps(out_r, indent=1))
     pub_hold = sum(e["balance"] for e in ex["exposures"] if e["side"] == "public")
     out["public_share_of_holdings"] = pub_hold / sum(e["balance"] for e in ex["exposures"])
+    # Same holding share without federal student loans, which carry no loss in the main preset (skeptic mkt-s23)
+    ex_nf = [e for e in ex["exposures"] if e["class"] != "student_federal"]
+    out["public_share_of_holdings_ex_federal_student"] = (sum(e["balance"] for e in ex_nf if e["side"] == "public")
+                                                          / sum(e["balance"] for e in ex_nf))
     (HERE / "results_dfast2026.json").write_text(json.dumps(out, indent=1) + "\n")
     print(json.dumps(out, indent=1))
     return 0
