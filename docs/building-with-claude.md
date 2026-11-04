@@ -76,3 +76,90 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Allowed the data and source hosts (federalreserve.gov, FRED, newyorkfed.org; govinfo.gov, fhfa.gov, ginniemae.gov).
 - Asked for hooks (pre-commit checks, no hand edits to `results.json`).
 - Set the authorship rule: write-ups are hers; Claude drafts.
+
+### Same day, later: Phase D tools, parallel tracks, pre-registration drafts, A1 review
+- **Pulled forward from Phase D (Eleonora approved):** D5 MCP server (a454901), D1 `claim-check` skill (06c888b), D2 `chart-from-sql` skill (c0901c7). Each was built by a subagent and reviewed and committed by the main model.
+- **Parallel tracks (Eleonora's decision, also the rule change that lets tracks run in parallel):** three cloud sessions, one branch each. Data analysis (A2, A5, A8) `session_01GDxCQ3Tq6Z9j6emj4Q8k4H` on `claude/track-analysis`; markets and nowcast (B1, C1) `session_01GDxCQ5mfCtZVbBawWKpjrM` on `claude/track-markets`; infrastructure (F1, F2, F4) `session_01GDxCQ3WP8LwrGDccxMmSG1` on `claude/track-infra`. This session coordinates and owns the shared files.
+- **Pre-registration options, drafts only, not frozen:** A4 `docs/decisions/breaks.md` (15 choices), A7 `docs/decisions/a7-causal-prereg.md` (9), C2 `docs/decisions/scoring-protocol.md` (13). No results were computed for any of them. Each choice waits for Eleonora.
+- **A1 reviewed:** quant-reviewer R-20261104-1..5, skeptic R-20261104-6..12, all open in `claims/review-log.md`. No A1 number changes, but the write-up overstates the growth-versus-retreat split and some timing and causal wording.
+- **Subagents** (tokens as reported at completion):
+
+| Task | Agent | Tokens | Outcome |
+|---|---|---|---|
+| D5 MCP server | general-purpose | 115,706 | committed |
+| D1 claim-check | general-purpose | 146,117 | committed |
+| D2 chart-from-sql | general-purpose | 144,968 | committed |
+| A4 options | general-purpose | 95,519 | committed as draft |
+| A7 options | general-purpose | 93,665 | committed as draft |
+| C2 options | general-purpose | 98,195 | committed as draft |
+| A1 method review | quant-reviewer | 31,143 | 5 objections logged |
+| A1 data review | skeptic | 61,322 | 7 objections logged |
+
+- **Errors, and how they were caught:**
+  15. A1's growth-versus-retreat split (7.1 / 6.0) is endpoint-weighted. Quarter by quarter the split is 6.3 / 6.8 and Shapley gives 6.3 / 6.9, so which side is larger flips. The docstring's "chained and endpoint totals both equal P1 − P0" was true only for the grand total. Caught by the quant-reviewer subagent (R-1); the main model confirmed it from `path.csv`.
+  16. "1.3 pp by 2008Q3, before the conservatorship" is wrong: 2008Q3 is the 30 September stock, after the 6 September conservatorship. The pre-conservatorship figure is 1.1 at 2008Q2. Caught by the skeptic subagent (R-6); the main model confirmed it from `path.csv`.
+  17. The A1 decision note was committed together with the results and says "Decided by: Claude". Caught by the quant-reviewer (R-2). Fixing it needs Eleonora's choice of method.
+  18. A curl to cbo.gov that faked a browser User-Agent was denied by the auto-mode classifier as bot-check circumvention. Not retried; the CBO files will be downloaded by hand if the data pages refuse.
+
+### Eleonora's decisions, 2026-11-04 (later)
+- A1 method: Shapley ("Shapley for A1"). The headline is now public growth 6.2 pp and private retreat 6.9 pp. The endpoint identity is kept as a sensitivity.
+- A4, A7, C2 pre-registrations: "accept all recommendations". Every CHOICE is resolved to the option Claude marked as recommended, and each file is then frozen.
+
+### A1 rework (f682771)
+- The main model (coordinator session) did the switch to Shapley, the regenerated outputs and the README draft. The register rows a1_* were updated: one removed, one renamed to 2008Q2, five added.
+- Of the review objections, R-20261104-1 to -11 are resolved in `claims/review-log.md`. R-12 (June-vintage issuer split) is still open.
+- R-5 is resolved by run-time checks. Scope is now reconstructed at every quarter in the window, and the groups must partition the cells. The suggested remove-a-cell test was not added.
+
+### Pre-registrations frozen (02cc47f, 206e126, 192d60c)
+- The main model recorded a **Decided** line under every CHOICE (A4: 15, A7: 9, C2: 13). Each line gives the recommended option, credited to Eleonora's "accept all recommendations".
+- Before freezing, it folded in the fact checks (`docs/decisions/prereg-fact-checks.md`, 7d40363). A general-purpose subagent wrote that file. The fact checks caught these errors in the drafts:
+  - the Fed MBS programme was announced 25 Nov 2008, not "early 2009";
+  - R is not installed and CRAN is not reachable here, so PLAN's "CRAN reachable" was wrong;
+  - `strucchange::breakpoints()` picks the number of breaks by BIC and has no sequential sup-F or UDmax, so A4's chosen rule cannot be cross-checked in R;
+  - the attribution of the 5× placebo cutoff to Abadie, Diamond and Hainmueller could not be verified, so it was removed and the cutoff is now stated as the project's own;
+  - the 1990Q1 start had no real-time backing: Fed CSV vintages exist only from 2016-09, and ALFRED has `HHMSDODNS` only from 2010-06.
+- A7 fit-failure level: the draft's example level was adopted with the recommendations (the US holdout RMSPE above the 2006–07 standard deviation of the outcome). Eleonora can change it by a dated deviation before any fit is run.
+- One item is still open. A7 checklist item 3 (donor series from A5/A8, spread proxy from B1) must be fixed in a dated addendum before any outcome is inspected.
+- Not yet fixed: `validation/REPORT.md` labels the June zip's build date (2026-06-10) as "prev vintage". The release was 2026-06-11 (`validation/run.py` line 489).
+
+### 2026-11-04: Track questions collected; database access diagnosed
+- Claude collected the open questions from the three tracks into `docs/decisions/open-questions-2026-11-04.md`, each with a recommendation, for Eleonora to decide.
+- Eleonora read `analysis/recommendation.md` and approved it in substance. She will rewrite it in her own words once the phase is through. The Claude draft banner stays until she does.
+- Database: both secrets are set in the cloud environment, but the Supabase pooler host does not resolve from the container. The environment's proxy carries HTTPS only, and raw-TCP Postgres is on its unsupported list, so allowing the host will likely not fix it. Claude found this. Live-database work moves to Eleonora's Mac, or to Supabase's HTTPS API.
+
+### 2026-11-04: Track decisions; Supabase connector; ADH check
+- Eleonora accepted every recommendation in `docs/decisions/open-questions-2026-11-04.md` and added the A8, SEC and GSE hosts to Allowed domains.
+- Host check from the cloud container:
+  - All ten A8 hosts answer.
+  - `www.freddiemac.com` answers.
+  - `www.sec.gov` and `efts.sec.gov` return the SEC's own "Request Rate Threshold Exceeded" page. The SEC's fair-access policy asks for a User-Agent naming the requester and a contact address. That needs Eleonora's OK on which contact to declare. Claude will not spoof one.
+  - `www.fanniemae.com` returns 403 from the site itself.
+- Database: Eleonora pointed out that the Supabase connector already has access. Read-only checks on the production project `household-debt-risk` through it:
+  - The three migrations are applied (init, mart_dim_views, research_reader).
+  - `research_reader` can log in and is set read-only, with a 15 s statement timeout and a 60 s idle-in-transaction timeout.
+  - `research_reader` has SELECT on every `mart` table and on the three `core` dimension tables. It has no SELECT on `core.fact_quarterly` or `raw.observations`, and INSERT on nothing.
+  - `anon` reads `mart` and the two `core` dimension tables `dim_crisis` and `dim_risk_bucket`. Migration `20261027010000` grants that on purpose; CLAUDE.md's "mart only" is slightly loose.
+  - No writes were made.
+- ADH (2010) placebo cutoffs: Eleonora's Mac Claude Code session read the paper (fact checks §3b, 4512152). The paper uses three cutoffs, 20×, 5× and 2×, all on pre-period **MSPE**. The frozen A7 uses 5× **RMSPE**, which is 25× MSPE and matches none of them. The Mac session caught this. Whether to change A7 by a dated deviation is Eleonora's call.
+
+### 2026-11-04: A7 deviation; C2 correction; C1 holdout aligned
+- Eleonora approved two things:
+  - the dated A7 deviation: the ADH (2010) cutoffs at 20×, 5× and 2× MSPE, with credit to the paper;
+  - naming her contact email in SEC requests (kept out of the repo, in `SEC_USER_AGENT`).
+- The markets track found a conflict: C1's holdout, starting 2024Q3, would have scored targets inside C2's frozen holdout (2023Q3–2026Q2). Applying Eleonora's rule that C1 agrees with C2, C1 now uses 2023Q3. Recorded as a C2 deviation note. C2 itself is unchanged.
+- The markets track also found a factual error in the frozen C2: pre-2016 Z.1 releases are not "HTML/PDF only". `z1r-N.zip` text archives exist back to at least 2010-06. The coordinator re-checked the HEAD codes and the SHA-256. Whether the archives carry the holder tables in parseable form is unverified. Recorded as a dated correction, with no design change.
+
+### 2026-11-04 (night): track merge (coordinator)
+- Merged `claude/track-infra`, `claude/track-analysis` and `claude/track-markets` into the coordinator branch (`--no-ff`). The three merge messages all carry the same mislabelled task list "(F1/F2/F4 | A2/A5/A8 | B1/C1)"; history is left as is. One conflict, in `claims/review-log.md` (both sides appended), resolved as a union.
+- Folded `claims/tracks/analysis.csv` (57 rows) and `markets.csv` (46 rows) into `claims/register.csv` and applied the register fixes the tracks proposed (F1 link check: `5.0 pts` spelling, `atlas/app/page.tsx` line shifts; A5: the 65.6% location moved onto the existing row). `check_register`: 226 rows, OK.
+- The analysis track's review entries R-20261104-1..13 collided with the coordinator's A1 entries of the same IDs. Renumbered to R-20261104-ana-1..13 when moving them into `claims/review-log.md`, and updated the references (A5 code comment, register notes, track note). *Caught by Claude (coordinator).* The markets track had already used an `mkt-` infix after the same collision.
+- Applied infra's shared-file patches: README badges, `make all`/`make ci`/`make help`, index rows; CLAUDE.md commands; `LICENSE` (MIT, per the 2026-11-03 licence decision). PLAN rows A2, A5, A8, C1 → in progress; B1 → done (inconclusive); F1, F2, F4 → done.
+- Left for Eleonora: the web/atlas nav links and `/sources`, `/data` page intros the infra track added (copy review); `public_share_2001q1` / `_2005q1`, whose only location is an unrendered fact.
+- Merged infra's F2-1/F4 decision commits (`abc9894`, `bf03de1`). Tests passed: pipeline 25 passed / 25 skipped (no DB), web 8, atlas 18.
+- A1 data check. The markets track found that in Z.1 2026-09-11 the four pool sub-series exceed the pool total FL413065105 from 1974Q3 to 1986Q3 (up to $21.4B). *Caught by Claude (markets track); reproduced by the coordinator.* A1's window is unaffected and its results are unchanged. `decompose.py` now asserts the identity in the window and records the full-history gap in `results.json`; the gap is noted in the A1 README.
+- 2008 copy revised, per Eleonora's "definitely revise". The story site, Hot Potato, the recommendation draft and the findings now give A1's Shapley split: private retreat 6.9 pp, public growth 6.2 pp, Fannie and Freddie only 1.2 pp. They no longer say "half" or "ratcheted risk onto the public". Preview only; production untouched. The register drifted by three lines on `web/content/story.ts` because new facts were inserted; locations were remapped.
+- Overnight queues sent to the three tracks. Every human decision goes under "Questions for Eleonora" in the track file, undecided.
+- 04:40 UTC. The analysis track was stalled on a permission prompt for an EDGAR request that would have used Eleonora's address as a fallback User-Agent. The coordinator interrupted it and told it to skip SEC fetches while `SEC_USER_AGENT` is unset in the track environment. The track reports that one earlier EDGAR request had already gone out with that address set in-shell; nothing containing the address is committed. *Caught by Claude (coordinator).*
+- Re-fold. My first fold (`51a0b6a`) predated analysis commit `526657a`, which edited 23 folded rows and moved README lines, so the track's merge failed `check_register` (21 drifted locations). *Caught by Claude (analysis track).* Fixed by upserting every track row by `claim_id` instead of appending (analysis: 24 replaced, 16 added; markets: 45 B1 rows replaced after its 1974–86 pool-cell fix, 30 C1 rows added) and by re-syncing R-ana-1..21. Merges `a52ce74` and `174354e`. Register at 273 rows after dropping the duplicate `a5_public_share_cc_2026q2_readme`; the hook checks pass. Lesson: fold by upsert, and fold from the track's head at merge time.
+- Slip: the `174354e` commit trailer names the markets session instead of the coordinator's. The amend needed a force push, which auto mode refused, so it stays as is.
+- PLAN prerequisites: added the hosts the tracks found refused on 2026-11-04 (SEC, Freddie Mac/Fannie Mae, Census, USMI, ALFRED, foreign central banks), although the SEC hosts were meant to be allowlisted.

@@ -70,6 +70,7 @@ SCAN_FILES = ["README.md", "atlas/content/story.ts", "web/content/story.ts", "an
 # normalised token), reason. Keep this short; prefer registering a row.
 ALLOWLIST = [
     {"file": "README.md", "pattern": r"20th", "reason": "day of month in the refresh-workflow schedule (the 20th of Mar/Jun/Sep/Dec)"},
+    {"file": "README.md", "pattern": r"(?:20)?4\.0", "reason": "CC BY 4.0 licence name in the data-licence badge (and its URL-encoded form)"},
 ]
 
 TOKEN_RE = re.compile(

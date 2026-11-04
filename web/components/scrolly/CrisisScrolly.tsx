@@ -9,6 +9,7 @@ import type { RiskBucket } from "@/lib/types";
 import { pct, pts, quarterLabel, quarterToYear } from "@/lib/format";
 import { CRISIS_FOCUS_EVENT, crisisStepId } from "@/lib/crisisFocus";
 import { RatchetChart } from "@/components/charts/RatchetChart";
+import { Sourced } from "@/components/claims/SourceRef";
 
 export interface ScrollyCopy {
   intro: string;
@@ -279,7 +280,7 @@ export function CrisisScrolly({ steps, data, crises, title, copy, holderNotes }:
                   <strong>{pts(card.delta)}</strong> {copy.cardSince} the {card.prev.name} {copy.cardBegan} ({quarterLabel(card.prev.start)})
                 </p>
               )}
-              <p className="holdercard__note">{card.note}</p>
+              <p className="holdercard__note"><Sourced text={card.note} /></p>
             </section>
           )}
         </div>
@@ -307,7 +308,7 @@ export function CrisisScrolly({ steps, data, crises, title, copy, holderNotes }:
                 Public share <strong>{pts(delta)}</strong>: {pct(s.shareStart, 1)} in {quarterLabel(s.start)}
                 {s.endDate ? ` → ${pct(s.shareEnd, 1)} in ${quarterLabel(s.endDate)}` : ""}
               </p>
-              {s.note && <p className="scrolly__note">{s.note}</p>}
+              {s.note && <p className="scrolly__note"><Sourced text={s.note} /></p>}
               <button type="button" className="scrolly__show" aria-pressed={on} onClick={() => goTo(s.id, false)}>
                 {copy.stepCta}
               </button>

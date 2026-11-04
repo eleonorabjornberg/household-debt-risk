@@ -1,6 +1,7 @@
 import { fmtPct, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
 import { BUCKETS, type Series } from "@/lib/types";
 import { coda, meaning, PILE_LONG, site } from "@/content/story";
+import { ClaimRef, Sourced } from "./claims/SourceRef";
 
 export default function Coda({ series }: { series: Series }) {
   const firstYear = Number(series.dates[0].slice(0, 4)) + 1;
@@ -21,16 +22,23 @@ export default function Coda({ series }: { series: Series }) {
         <ol className="meaning">
           {meaning.points.map((p) => (
             <li key={p.title}>
-              <span className="meaning__n">{fill(p.stat)}</span>
+              <span className="meaning__n">
+                {/* The {share} tile is the latest public share; other stats are literals the register cites. */}
+                {p.stat === "{share}" ? (
+                  <ClaimRef id="public_share_2026q2">{fill(p.stat)}</ClaimRef>
+                ) : (
+                  <Sourced text={fill(p.stat)} context={p.body} />
+                )}
+              </span>
               <h3>{p.title}</h3>
-              <p>{fill(p.body)}</p>
+              <p><Sourced text={fill(p.body)} /></p>
             </li>
           ))}
         </ol>
 
         <h2>{coda.sourcesTitle}</h2>
         <ul className="sources">
-          {coda.sources.map((s) => <li key={s}>{s}</li>)}
+          {coda.sources.map((s) => <li key={s}><Sourced text={s} /></li>)}
         </ul>
 
         <details className="table">
@@ -65,7 +73,8 @@ export default function Coda({ series }: { series: Series }) {
 
         <p className="coda__more">
           The code, the data pipeline and the full analysis (methods, caveats and the crisis-by-crisis test) are on{" "}
-          <a href={site.repo}>GitHub</a>.{" "}
+          <a href={site.repo}>GitHub</a>. Every number on this page links to its row in the{" "}
+          <a href="/sources">claims register</a>.{" "}
           {series.cpiBase ? `CPI base: ${series.cpiBase}. ` : ""}
           Data loaded from {series.source === "supabase" ? "Supabase" : "the pipeline's snapshot"}.
         </p>

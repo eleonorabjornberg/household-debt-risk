@@ -1,0 +1,12 @@
+{
+ "title": "Mortgage balances 90+ days delinquent, Q4 2025",
+ "source_line": "FRBNY CCP/Equifax (NY Fed state statistics, Feb 2026 (Q4 2025))",
+ "vintage": "NY Fed state statistics, Feb 2026 (Q4 2025)",
+ "data_source": {
+  "file": "research/a5_distribution/state_2025.csv",
+  "column": "mortgage_delinq_2025"
+ },
+ "rows": 51,
+ "unit": "% of balance",
+ "alt": "Mortgage balances 90+ days delinquent, Q4 2025. Tile map of the 50 states and DC, one square per state, shaded in six quantile bands. Highest: LA (1.83%); lowest: WI (0.47%); median 0.89%."
+}

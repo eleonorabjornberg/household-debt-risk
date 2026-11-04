@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Sourced } from "@/components/claims/SourceRef";
 
 interface Props {
   id: string;
@@ -16,7 +17,7 @@ export function Figure({ id, label, title, caption, source, children }: Props) {
       <header className="figure__head">
         <p className="figure__label">{label}</p>
         <h3 className="figure__title" id={`${id}-title`}>{title}</h3>
-        <p className="figure__caption">{caption}</p>
+        <p className="figure__caption"><Sourced text={caption} /></p>
       </header>
       {children}
       <p className="figure__source">

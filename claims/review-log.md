@@ -17,6 +17,101 @@ Resolutions are written by the main session or Eleonora, never by the reviewer t
 
 ---
 
+### R-20261104-1 · quant-reviewer · research/a1_gfc_decomposition/README.md (growth vs retreat split)
+- **Objection:** The headline "public growth 7.1 pp, private retreat 6.0 pp" depends on the chosen weighting and the ordering reverses under the alternatives. The endpoint identity weights by the start share P0 (36.1%), which favours the public term while P rises. Chaining the same identity by quarter (the script's own path.csv) gives public 6.27 pp, private 6.83 pp; a Shapley split of the two counterfactuals gives public 6.25, private 6.87. The README says the split "is exact" but does not mention that it depends on the path. The docstring says "chained and endpoint totals both equal P1 - P0", which holds only for the grand total, not for groups. The results.json groups and the 2011Q4 row of path.csv disagree with no note: Ginnie 3.81 vs 3.29, PLS/mREITs 4.93 vs 5.71, student loans 1.94 vs 1.62. The decision doc rejected Shapley for "no gain", but here it changes the headline.
+- **Severity:** major
+- **Evidence:** Reran in the scratchpad by importing decompose.py; no repo files were written. Endpoint public/private 7.127/5.979; chained 6.274/6.832; the Shapley public term is 6.245. path.csv 2011Q4 row: ginnie_pools 3.2879, private_label_and_mreits 5.7088.
+- **Proposed resolution:** Report endpoint, chained and Shapley side by side, or call the split "roughly even (6.0-6.9 pp private, by method)". State that group totals depend on the path, and fix the docstring.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session, on Eleonora's decision): Eleonora chose Shapley (2026-11-04). README headline is now Shapley public 6.2 / private 6.9 pp, with the endpoint identity (7.1/6.0) and chained Shapley (6.2/6.9) reported in results.json `sensitivity` and named in the README. Docstring fixed.
+
+### R-20261104-2 · quant-reviewer · docs/decisions/a1-decomposition.md
+- **Objection:** The design was not set before the results. The decision doc was added in the same commit as decompose.py, results.json and the CSVs (f8b7ddc, 2026-11-04T00:30:57Z). It quotes the result (+13.1 pp) and is "Decided by: Claude", so it is not Eleonora's design (the authorship rule). The README cites it as "Method decision" and declares neither point.
+- **Severity:** major
+- **Evidence:** `git log --name-status -- docs/decisions research/a1_gfc_decomposition`.
+- **Proposed resolution:** Say in the README that the method was chosen at the same time as the results, by Claude, and is awaiting Eleonora's decision. Record her choice in PLAN.md "Decisions taken".
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session, on Eleonora's decision): Decision note rewritten: decided by Eleonora, 2026-11-04 (Shapley); notes the first draft was Claude's choice made alongside the results. Decision added to PLAN.md "Decisions taken".
+
+### R-20261104-3 · quant-reviewer · research/a1_gfc_decomposition/README.md (counterfactual comparison)
+- **Objection:** The comparison with findings.md item 4 is not like for like. The 6.1 pp counterfactual (private held at 2007Q4) measures the public-growth side; it reproduces at 6.11. Under it, private retreat is the remaining 6.99 pp, not 6.0. The README puts 6.1 right after the 6.0 private figure, which invites reading the two as the same quantity. "Both say about half" holds only loosely (46% vs 53%).
+- **Severity:** minor
+- **Evidence:** pub_t1/(pub_t1+priv_t0) - P0 = 6.115 pp; residual 6.991 pp.
+- **Proposed resolution:** State that 6.1 pp is the counterpart of the 7.1 pp public term, and give the counterfactual's private piece (7.0 pp).
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): README Limits item now says 6.1 pp is the public side of a private-held-fixed split and both views put about half on private retreat.
+
+### R-20261104-4 · quant-reviewer · research/a1_gfc_decomposition/README.md (causal wording)
+- **Objection:** An accounting split cannot carry causal or counterfactual statements, but the README makes some. "Conservatorship ... didn't change how much they held" and "doesn't fit these data" need a counterfactual (the GSEs' holdings without conservatorship), which this method cannot supply and the README itself defers to A7. "Their share rose mostly because private holders shrank around them" is the own-share view (3.9 pp vs 1.4 pp growth term) restated as a cause. The README's limit "accounting, not a causal estimate" is contradicted in "What this changes".
+- **Severity:** major
+- **Evidence:** README "What this changes", bullets 2-3.
+- **Proposed resolution:** Rephrase descriptively. For example: "GSE balances rose $278B; most of their own-share gain is arithmetic from a shrinking denominator; whether conservatorship changed holdings is A7."
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): Reworded: conservatorship bullet now says the data cannot test the claim; GSE balances (+$278B) and the chained path are stated descriptively.
+
+### R-20261104-5 · quant-reviewer · research/a1_gfc_decomposition/test_decompose.py, decompose.py
+- **Objection:** The tests would not catch a missing holder. They exercise contrib() only, on synthetic data, and do catch a flipped sign through the exact-sum check. cells(), the PUBLIC_* lists, the group partition and the own-share view are untested. The README says the script "asserts ... that the cells reproduce the scope total", but scope_gap is only recorded, not asserted. A dropped public holder would move the share with no error. The gap is in fact about 0, at most 4e-9 $M across the window.
+- **Severity:** minor
+- **Evidence:** decompose.py main(): `scope_gap = ...` with no assert; tests cover contrib() only. Both tests pass.
+- **Proposed resolution:** Assert scope_gap < tolerance at every quarter in [t0, t1]. Add a test that the groups partition the cell columns, and one that removing a cell trips the scope check.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): decompose.py now asserts the scope reconstruction at every quarter in [t0, t1] and that the groups partition the cells; two Shapley tests added. The remove-a-cell test is not added (the per-quarter scope assert covers it at run time).
+
+### R-20261104-6 · skeptic · a1_ff_chained_2008q3 (research/a1_gfc_decomposition/README.md, "What this changes" bullet 2)
+- **Objection:** "Fannie and Freddie had contributed 1.3 pp by 2008Q3, before the September 2008 conservatorship" gets the timing wrong. 2008Q3 is the 30 Sep 2008 stock, more than three weeks after the 6 Sep conservatorship and 7 Sep PSPAs. The last quarter-end before conservatorship is 2008Q2, at 1.1 pp. The conclusion ("came early") survives, but the sentence and the register row both attach a post-event number to a pre-event label.
+- **Severity:** major
+- **Evidence:** path.csv: 2008Q2 fannie_freddie 1.0971; 2008Q3 1.3412. sources.md FHFA row: conservatorship 6 Sep 2008.
+- **Proposed resolution:** Say "1.1 pp by 2008Q2, the last quarter-end before conservatorship". Update the register row, and note that quarterly stocks cannot place within-quarter events.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): README and register now say 1.1 pp by 2008Q2, the last quarter-end before conservatorship (row a1_ff_chained_2008q2).
+
+### R-20261104-7 · skeptic · a1_pls_change_usd, a1_pls_pp (README "Which private holders shrank")
+- **Objection:** The Result section presents "private-label securitization and mortgage REITs held $1.71T less ... 4.9 pp" with no qualifier, but a large part is FAS 166/167 consolidation onto banks and finance companies, not a retreat. The README's own Limits bullet says the split between private lines around 2010Q1 is accounting. The headline sentence and both register rows ignore that bullet. Only the private total (6.0 pp under this weighting) is robust to the reclassification.
+- **Severity:** major
+- **Evidence:** path.csv 2009Q4 to 2010Q1: private_label_and_mreits 2.236 to 4.330 (+2.09 pp in one quarter), banks_and_credit_unions 0.869 to -0.064, other_private 0.679 to 0.278. decomposition.csv: consumer-credit ABS issuers 652.5 to 46.2 $bn (-606), while bank consumer credit rose +298 and finance-company consumer credit +110.
+- **Proposed resolution:** Report only the private total as a finding. If the PLS line is kept, give it net of the 2010Q1 step, or caveat it in the same sentence. Re-word the register claim text.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): PLS sentence now carries the FAS 166/167 caveat in place and says the private total is unaffected; register claim text reworded.
+
+### R-20261104-8 · skeptic · README "The largest public piece is FHA/VA, not the GSEs"
+- **Objection:** This treats holdings in Ginnie pools as federal risk, and "largest" is ambiguous. (a) "Largest" holds only for the change in the share. In stock terms, Fannie+Freddie held $4.34T in 2011Q4 against Ginnie's $1.13T. (b) "Explicitly federal" overstates the risk transfer. VA and USDA guarantees are partial, and Ginnie issuers/servicers bear losses beyond them. FHA/VA loans held directly by banks, including delinquent loans bought out of Ginnie pools, are federally insured but sit in "private", so Ginnie pool holdings are not the federal FHA/VA exposure.
+- **Severity:** major
+- **Evidence:** decomposition.csv 2011Q4: Fannie 2680.3 + Freddie 1658.9 vs Ginnie 1129.0 $bn. README Limits bullet 1 concedes the bank-held FHA/VA point, but bullet "What this changes" 1 does not.
+- **Proposed resolution:** "The largest public contribution to the change came from Ginnie Mae pools." Drop "explicitly federal", or qualify it (FHA full insurance; VA/USDA partial). Point to A2 for exposure.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): README: "the largest public increase was in Ginnie Mae pools", with 2011Q4 holdings ($4.34T GSEs vs $1.13T Ginnie) and the partial VA/USDA guarantee caveat.
+
+### R-20261104-9 · skeptic · README conservatorship bullet ("doesn't fit these data")
+- **Objection:** The measure cannot test the claim, which is separate from the causal-wording point in R-20261104-4. The catalog classes GSEs and their pools as public at every date (`risk_buckets.gse_agency.public: true`), so a holdings share cannot register a move of GSE credit risk from shareholders and an implicit guarantee to Treasury under the PSPAs. "Doesn't fit these data" should be "these data cannot speak to it". Also, the PSPAs backed the GSEs' guarantees on about $4T of MBS pools, not only "debt the GSEs already held". The bullet misstates what conservatorship changed.
+- **Severity:** major
+- **Evidence:** pipeline/series_catalog.yaml:17 (gse_agency public: true) and :50-51 (FL403065105, FL413065105 both gse_agency). README "What this changes" bullet 3.
+- **Proposed resolution:** Recast as a definitional limit: "Because GSEs count as public throughout, this decomposition cannot detect a conservatorship ratchet; that is a question about who bears GSE losses (A2/A7)."
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): Recast as a definitional limit ("the data are silent, not contrary"); counterfactual left to A7.
+
+### R-20261104-10 · skeptic · README "Dated policy events" table
+- **Objection:** The "lines up with" column is assigned by subject, not by any observed change in the path, and some rows do not align. Federal student loans had moved 0.03 pp by 2008Q2 (ECASLA, May 2008) and 0.09 pp by 2008Q4. Most of the component (0.66 to 1.62 pp) came after SAFRA's 30 Jun 2010 cutoff, and the Z.1 line cannot separate ECASLA purchases from Direct Loan originations. Ginnie rises roughly steadily all window, so any date "lines up". Fannie/Freddie rose before HERA and peaked in 2009Q4, after both acts.
+- **Severity:** minor
+- **Evidence:** path.csv federal_student_loans: 2008Q2 0.0322, 2008Q4 0.0917, 2009Q4 0.5229, 2010Q2 0.6618, 2011Q4 1.6222. ginnie_pools increments roughly 0.15-0.37 pp per quarter throughout.
+- **Proposed resolution:** Rename the column "related component". For each component, give the quarters of its largest steps, and state that quarterly stocks cannot date effects within a quarter.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): Table intro says events are matched by topic, not by breaks, with the student-loan example (0.03 pp by 2008Q2); column renamed "Component it lines up with".
+
+### R-20261104-11 · skeptic · decompose.py PUBLIC_MORT "Ginnie Mae pools (FHA, VA, USDA)"
+- **Objection:** FL413065133 is the Z.1 "FmHA pool, including ... mortgages held by the Federal Financing Bank" line, not a Ginnie Mae pool. It is grouped under the Ginnie label. It is 0 in 2007Q4 and 2011Q4, so no number moves, but the label misdescribes the series if it is ever non-zero.
+- **Severity:** minor
+- **Evidence:** `unzip -p data/validation/FRB_Z1_csv.zip Z1.csv | grep FL413065133`: "one-to-four-family residential mortgages held in a Federal Farmers Home Administration (FmHA) pool, including ... held by the Federal Financing Bank". Value 0.0 at both endpoints.
+- **Proposed resolution:** Relabel the cell "Ginnie Mae and FmHA pools", or split FmHA out.
+- **Status:** open
+- **Resolution:** resolved (2026-11-04, by main session): Label is now "Ginnie Mae pools (FHA, VA, USDA) and FmHA pools"; README Limits notes FmHA is zero at both endpoints.
+
+### R-20261104-12 · skeptic · research/a1_gfc_decomposition (vintage coverage)
+- **Objection:** The issuer-level split (Ginnie vs Fannie vs Freddie vs FHLB vs Other GSEs) cannot be checked against the June 2026 vintage. The committed previous file is the per-table zip, which lacks FL403065110/120/130 and FL413065110/123/133/143. The README "Revisions" bullet does not say this. At bucket level nothing moves: total, growth/private split, gse_agency, student loans, PLS and the dollar changes are identical to 3 d.p. across vintages. So the risk is low but unverified.
+- **Severity:** minor
+- **Evidence:** Scratchpad rerun, nothing written to the repo. Sep vs Jun vintages: P0 36.115/36.115, P1 49.221/49.221, pub 7.127/7.127, gse_agency 5.003/5.003, PLS $-1706.7bn both. load_table_zip reported those 7 issuer ids as missing in prev_z1_csv_files.zip.
+- **Proposed resolution:** State in Revisions that the issuer split is checked only at bucket level, or obtain the June Z1.csv long file.
+- **Status:** open
+
 ### R-20261104-mkt-q1 · quant-reviewer · research/b1_market_pricing
 - **Objection:** The levels (L) regressions do not pass the cointegration test, so their HAC intervals cannot be trusted. The README never reports the residual ADF result and still presents the significant positive L coefficient as a finding ("a higher public share goes with a *wider* spread").
 - **Severity:** major
@@ -143,93 +238,208 @@ Resolutions are written by the main session or Eleonora, never by the reviewer t
 - **Proposed resolution:** Add these to Q-C1 before Eleonora chooses.
 - **Status:** open (design, for Eleonora): Clark–West for nested benchmarks, as-of benchmarks and a pre-registered holdout added to Q-C1 item 6; pre-2019 target vintages stated as needing the Fed archive.
 
-### R-20261104-mkt-q11 · quant-reviewer · research/c1_nowcast
-- **Objection:** Pooling the fourth instant with k = 3 duplicates targets, so the k = 3 tests break the spec's own premise ("one target per quarter, HAC lag 0"). Every Q2 target (June release to late-September release: instants on 15 Jun, Jul, Aug and Sep) enters k = 3 twice, with near-identical forecasts and the same actual. In RT, k = 3 has 25 scored rows but 20 distinct targets. The bridge regression at k = 3 has 13 rows but 11 targets. P2b has 34 rows and 27 targets; P2a has 53 rows and 41 targets. The duplicates also give Q2 pairs double weight in the k = 3 regression's training set. README reports n = 25 and n = 13, and says "25–26 targets per k".
+<!-- Analysis-track entries (A2, A5), merged 2026-11-04 from tracks/analysis-review-log.md; renumbered with an ana- infix because the track's R-20261104-1..13 collided with the coordinator's A1 entries. -->
+
+Review entries from the analysis track; the coordinator moves them into `claims/review-log.md` on merge (renumbering if ids collide).
+
+### R-20261104-ana-1 · skeptic · research/a2_net_exposure/README.md:16 (a2_public_share_net_lower_2025q4, a2_net_ff_lower_hh)
+- **Objection:** The table labels G − cumulative CRT RIF as "Net, lower bound" and the public share as "at least 55.2%". That is a lower bound only on net-of-CRT exposure. Once mortgage insurance is netted (FHFA PMI RIF is 12.5% of 2023 gross by the same method), true net exposure can be well below $6.05T and 55.2%. Read alone, the table row says the public share cannot be below 55.2%.
 - **Severity:** major
-- **Evidence:** nowcast.py `k = min(k_of[q], 3)`; nowcasts_dev.csv, e.g. RT 2019Q2 at t = 2019-08-15 and 2019-09-15, both k = 3; groupby(sample, k, q) counts.
-- **Proposed resolution:** Keep one instant per (q, k) in the tests (e.g. the last before the next release), or score the fourth instant as k = 4, descriptive only. Record this as a dated deviation before the holdout run, re-run, and correct the n in the README.
-- **Status:** resolved (2026-11-04, by Claude, markets track): one row per target and k; a 4th instant is k=4, kept in nowcasts_dev.csv, not scored or tested. Declared in EVALUATION.md Deviations; the k=3 n is now 22 (RT, with the 2017-03-09 release restored).
+- **Evidence:** README.md:13-16 table header "Net, lower bound (all issued CRT still in force)"; README.md:21 and net_exposure.csv 2023 pmi_issued_pct_of_gross = 12.5191; register rows 4 and 8 say "at least".
+- **Proposed resolution:** Relabel as "net of CRT only, before mortgage insurance" in the table and in register claims 4 and 8, and add one sentence saying PMI could lower net further.
+- **Status:** open
 
-### R-20261104-mkt-q12 · quant-reviewer · research/c1_nowcast (README Results)
-- **Objection:** The README overclaims the bridge regression. (a) Its scored forecasts are 2020Q1–2023Q2 only (14 quarters, 11 at k = 3). That is one regime (COVID, then rate shock), and it is not the 26-quarter window the bridge is scored on. No-change RMSE there is 0.47 pp, against 0.37 over the full sample. (b) The table puts the regression's 0.43–0.52 (n = 14) beside the bridge's 0.74–0.80 (n = 26). C2 requires the common set of origins. On those 14 quarters, the bridge's relative RMSE is 0.71, 0.72 and 0.82. (c) "Significant after Holm at every k" is one result on the same targets, not three confirmations. (d) The regression's edge comes from carrying the 2017–19 bias into 2020–21. In 2023 its RMSE (0.22) is worse than the bridge's (0.09), because the bias had gone. (e) The Holm family mixes one-sided normal CW p-values with two-sided t(n−1) DM p-values. The result survives CW on t(n−1) (p < 0.01), but the README should say which was used.
+### R-20261104-ana-2 · skeptic · research/a2_net_exposure/README.md:16,19 (a2_public_share_gap_pp)
+- **Objection:** "Public share net" is (public principal − RIF)/S. That mixes loss capacity with principal and treats $1 of RIF as $1 of principal moved to the private side, so 55.2% is not a share of anything observable. Line 19 adds a caveat, but the table cell at line 16 (and register row 8) carries the number without it.
 - **Severity:** major
-- **Evidence:** nowcasts_dev.csv recomputed by year and on the common subset; tests_dev.csv RT rows; scoring-protocol.md "common set of origins".
-- **Proposed resolution:** Report every pair on common origins and give the regression's scoring window. Describe the result as one development-period finding on about 14 quarters, descriptive. Drop "at every k" as if it were independent evidence. Add per-year errors.
-- **Status:** resolved (2026-11-04, by Claude, markets track): README adds the bridge scored on the regression's own targets (0.72–0.86), states the 2019Q3–2023Q2 span and that it includes the 2020–21 bias, and says the per-k results are the same targets, not independent. After the q11 fix the regression is Holm-significant at k=1 and 2 only.
+- **Evidence:** net_exposure.py:85 `100 * (pub - crt["cum_rif_musd"] * a) / s`; METHOD.md:15.
+- **Proposed resolution:** Put the "loss capacity against principal" caveat in the table and in the register claim text, or report the gap as RIF/S rather than as a "share".
+- **Status:** open
 
-### R-20261104-mkt-q13 · quant-reviewer · research/c1_nowcast (README bias)
-- **Objection:** The bias statement and its explanation are incomplete. The bias is robust to autocorrelation (Newey–West, 3 lags: t = −3.0, −4.1, −4.5 at k = 1, 2, 3). It is not stable over time, though. At k = 1 it is −0.13 to −0.19 pp in 2017–19, −0.43 in 2020, −0.33 in 2021, and about 0 in 2022–23. By quarter of year it is −0.33 (Q1), −0.05 (Q2), −0.24 (Q3) and −0.11 (Q4). That pattern also fits a second explanation: NSA cells carried flat through seasonal swings. The "agency pools carried flat" story has a rival, and the bias's disappearance from 2022 matters for any intercept-corrected model in a 2023Q3+ holdout.
-- **Severity:** moderate
-- **Evidence:** nowcasts_dev.csv, RT, bridge minus first-release actual, grouped by year and by quarter.
-- **Proposed resolution:** Report the bias by year and by quarter of year. Run an ex-post decomposition of the bridge error by cell on development data (first-release growth of the carried cells), which is cheap and needs no new data. Present both explanations as untested.
-- **Status:** resolved (2026-11-04, by Claude, markets track): bias by period reported (2020–21 −0.40 pp; to 2019 −0.18; 2022–23 −0.09) and the NSA-seasonality rival named; neither explanation tested.
-
-### R-20261104-mkt-q14 · quant-reviewer · research/c1_nowcast
-- **Objection:** The lag-0 variance in DM-HLN and Clark–West rests on h = 1 errors being serially uncorrelated within k. They are not. The bridge's first-order error autocorrelation is 0.38, 0.65 and 0.72 at k = 1, 2, 3. The loss differential against no-change has ρ1 ≈ 0.21 at k = 1, the k with the smallest raw p (0.018). The CW adjusted term has ρ1 ≈ 0.24 at k = 1. With the persistent bias, lag 0 understates the standard errors.
-- **Severity:** moderate
-- **Evidence:** nowcast.py dm_hln and clark_west (formulas otherwise correct: HLN factor √((n−1)/n), t(n−1); CW adjustment e_s² − (e_b² − (f_s − f_b)²)); recomputed autocorrelations.
-- **Proposed resolution:** Keep lag 0 as pre-registered, and add a declared sensitivity with Newey–West lag 1–2 (or a block bootstrap). State that the p-values are descriptive.
-- **Status:** resolved (2026-11-04, by Claude, markets track): post-hoc DM with Newey–West lag-1 variance added (tests_dev.csv posthoc_dm_hac1_p), declared, not used for wording; README notes lag-0 p-values are, if anything, too small.
-
-### R-20261104-mkt-q15 · quant-reviewer · research/c1_nowcast (agreement with C2)
-- **Objection:** Some departures from the frozen C2 protocol are undeclared. (a) In P2a and P2b, the bridge regression trains on latest-vintage (2026-09-11) actuals, dated as published at their first release. That builds revisions into the training pairs. C2 sets an embargo of e = 4 for latest-vintage training. EVALUATION.md waives the embargo "since real-time vintages make an embargo unnecessary", which is true only for RT. (b) C2 decision (c) requires guard tests 1–4 plus outcome checks 1 and 5 (in-sample error collapse with the guard off; a placebo on a shuffled target). C1 has only guard tests 1–3, though its heading says "tests 1–4". (c) EVALUATION.md calls AR(1) "as in C2's primary design". C2's AR order is chosen by BIC over 0–4. AR(1) is Eleonora's C1 item 5, so this is a C1/C2 difference to declare.
-- **Severity:** moderate
-- **Evidence:** EVALUATION.md "Bridge regression", "Leakage guards", "Benchmarks"; scoring-protocol.md purge/embargo, leakage tests, AR order.
-- **Proposed resolution:** Either apply e = 4 to the P2 regression or label it as using revised targets. Add the fit-window, outcome and placebo tests. Record (a)–(c) as dated deviations before the holdout run.
-- **Status:** resolved (2026-11-04, by Claude, markets track): declared in EVALUATION.md Deviations: fixed AR(1) per Eleonora's Q-C1 item 5 (C2 uses BIC); pseudo-real-time regressions train on revised targets; C2 tests 4–5 and outcome checks not implemented for C1 (left to C2).
-
-### R-20261104-mkt-q16 · quant-reviewer · research/c1_nowcast
-- **Objection:** Minor reproduction and wording issues. (a) A re-run reproduces scores_dev.csv, tests_dev.csv and results_dev.json byte for byte. nowcasts_dev.csv changes column order between runs, because the `latest_*` columns come from iterating a set (string hash randomisation), so every regeneration shows a spurious diff. (b) EVALUATION.md lists only 2016Q4 as excepted from the RT development targets. 2017Q1 is lost too, because its base release (2017-03-09) has no CSV. The README states this correctly.
-- **Severity:** minor
-- **Evidence:** Re-run on 2026-11-04 compared against commit 58a93d8. nowcast.py `for sid in set(mapping.values()) | {CC_TOTAL}`.
-- **Proposed resolution:** Iterate in sorted order. Note 2017Q1 in EVALUATION.md (as a deviation).
-- **Status:** resolved (2026-11-04, by Claude, markets track): column order made deterministic (sorted indicators, commit 1e095be); EVALUATION.md updated for the 2017 release (now not lost, see mkt-s9).
-
-### R-20261104-mkt-s9 · skeptic · research/c1_nowcast
-- **Objection:** The 2016Q4 Z.1 release (2017-03-09) is not missing from the Fed archive. It sits in a folder named for a different date: `/releases/z1/20170305/z1_csv_files.zip`, which is linked from `release-dates.htm`. `z1_vintages.fetch` builds the URL from the release date, so it got a 404 and recorded the release as absent. The RT sample therefore loses its three instants based on that release and the 2016Q4 first-release target. The README line "has no archived CSV", the EVALUATION.md "Missing release" rule, `z1_vintage_notes.csv` and `test_first_release_has_no_quarter_from_missing_release` all rest on a false premise.
+### R-20261104-ana-3 · skeptic · research/a2_net_exposure/README.md:20
+- **Objection:** The FHFA "majority" quote is attributed to CRT ("the share transferred on covered loans is much larger"). FHFA says "Through CRT **and mortgage insurance**, the majority…". The claim that the CRT slice is "where most stress losses fall" is unsourced.
 - **Severity:** major
-- **Evidence:** `curl -I .../z1/20170309/z1_csv_files.zip` → 404; `.../z1/20170305/z1_csv_files.zip` → 200 (6,249,231 bytes, members dated 2017-03-08, l222 ends 2016:Q4). `z1_vintages.vintage_cells(<that zip>)` parses with the same codes (cc_depository=FL763066000) and gives a 2016Q4 share of 0.532866. Every other calendar date matches its Fed folder name.
-- **Proposed resolution:** Take each release's folder from `release-dates.htm` instead of its date. Add 2017-03-09 and rerun z1_vintages.py. Because the absence was pre-registered, record the fix as a dated deviation in EVALUATION.md before re-scoring, and report the RT numbers both ways.
-- **Status:** resolved (2026-11-04, by Claude, markets track): confirmed: folder 20170305 holds the 2017-03-09 release (last quarter 2016Q4, share 0.5329; 6249231 bytes, sha256 1b730b3a…). z1_vintages.FOLDER_OVERRIDE with an assert on the last quarter; test changed to require 2016Q4 from that release; all 41 releases parse; RT rescored. Declared in Deviations.
+- **Evidence:** sources.md:9 (4Q2019 quote); same wording in the Dec 2016 extract, line 38.
+- **Proposed resolution:** Quote FHFA in full, including "and mortgage insurance", and source the stress-loss statement or label it as an assumption.
+- **Status:** open
 
-### R-20261104-mkt-s10 · skeptic · research/c1_nowcast/z1_vintages.py
-- **Objection:** The alias description is wrong, though the alias itself is sound. The old code FL763066000 is not a "2016 table" code: it is used in every parsed release from 2016-09-16 to 2025-06-12. FL763066005 replaces it only from 2025-09-11. Only one holder in CELLS has an alias, not "two". The other code change at that release (FL103066005 → FL103066003, nonfinancial corporate business) falls in the residual.
+### R-20261104-ana-4 · skeptic · research/a2_net_exposure/README.md:21 (a2_pmi_cum_rif)
+- **Objection:** "Mortgage insurance is larger than CRT in RIF terms" contradicts the project's own source: FHFA 4Q23 p.8 says "the RIF figures for these two categories are not strictly comparable".
 - **Severity:** minor
-- **Evidence:** In the data dictionaries of 20250612 and 20250911, both codes are labelled "U.S.-chartered depository institutions; consumer credit; asset" on L.222 line 7. Values agree where the two releases overlap: 2023Q2 is 2,033,983 under both codes, and 2025Q1 is 1,949,773 vs 1,949,329 (an ordinary revision). See `z1_vintage_notes.csv` lines 2–37.
-- **Proposed resolution:** Correct the docstring and the CELLS comment to "code renamed at 2025-09-11; label and line unchanged; values checked equal on overlap".
-- **Status:** resolved (2026-11-04, by Claude, markets track): docstring corrected: the depository consumer-credit code changed to FL763066005 with the 2025-09-11 release.
+- **Evidence:** sources.md:13 quote.
+- **Proposed resolution:** Drop the comparison or carry FHFA's caveat next to it.
+- **Status:** open
 
-### R-20261104-mkt-s11 · skeptic · research/c1_nowcast/README.md (Results; c1_rt_k*_relrmse_bridge_reg)
-- **Objection:** The table and bullets compare the bridge regression (0.43, 0.45, 0.52) with the bridge (0.74, 0.74, 0.80) as if both were scored on the same targets. They are not. The regression is scored only on targets 2020Q1–2023Q2 (2020Q2 for k=3), where no-change errors are about 2.5 times larger. On those same targets the bridge's relative RMSE is 0.71, 0.72 and 0.82. "About half of no-change's" holds for a COVID-era subsample, not for the 2016–2023 sample the table header implies.
+### R-20261104-ana-5 · skeptic · research/a2_net_exposure/README.md:22, METHOD.md:14 (a2_crt_ref_upb_over_gross)
+- **Objection:** The 1.1× is explained only "because refinanced loans are counted again". FHFA's own footnote says the same reference UPB may back both a STACR and an ACIS deal, and cumulative UPB also keeps loans that have paid off without refinancing.
+- **Severity:** minor
+- **Evidence:** CRT-Progress-Report-4Q22 extract, Freddie table footnote 5: "The same reference pool UPB may back STACR and ACIS transactions."
+- **Proposed resolution:** List all three causes; drop "because".
+- **Status:** open
+
+### R-20261104-ana-6 · skeptic · research/a2_net_exposure/crt_fhfa.csv:7-8
+- **Objection:** The PMI UPB for 2018 and 2019 uses the rounded text figures ($1.2T, $1.6T). The chart boxes in the same reports give $1,231B and $1,570B, and 2020 onward uses the boxes. The column is not used in any output; RIF values match.
+- **Severity:** minor
+- **Evidence:** 4Q18 extract line 611 "Total $1,231"; 4Q2019 extract shows "Total $1,570".
+- **Proposed resolution:** Use the box values, or document the mixed basis.
+- **Status:** open
+
+### Responses (analysis track, 2026-11-04)
+- R-20261104-ana-1: accepted. Table header and register rows now say "net of CRT only, mortgage insurance not netted"; README states 55.2% is not a floor once MI is netted.
+- R-20261104-ana-2: accepted. Table header now says principal less CRT loss capacity; register claims say "RIF subtracted from principal".
+- R-20261104-ana-3: accepted. The FHFA "majority" quote is now attributed to CRT and mortgage insurance together; the unsourced "most stress losses fall" clause is removed.
+- R-20261104-ana-4: accepted. README quotes FHFA's "not strictly comparable".
+- R-20261104-ana-5: accepted. README and METHOD now give all three reasons (paid-off loans kept at issuance balance, refinanced loans counted again, STACR/ACIS sharing a pool).
+- R-20261104-ana-6: noted, not changed. The column is unused; the basis column already says the 2018–19 PMI UPB is the rounded text figure.
+
+### R-20261104-ana-7 · skeptic · research/a5_distribution/README.md:15 (a5_top10_mortgage_2026q2)
+- **Objection:** The top 10% share of home mortgages is the sum of three rounded shares (0.8 + 3.2 + 24.4 = 28.4). Computed from the levels file it is 28.48%, which displays as 28.5%. The printed number is wrong at display precision. The same rounding is why the table's mortgage column sums to 99.9.
+- **Severity:** blocker
+- **Evidence:** distribution.py:165,180 sums `dfa-networth-shares.csv` (published to 0.1). Recompute from `dfa-networth-levels.csv` 2026:Q2: (117243+453093+3410241)/13976937 = 0.28480. Top 10% net worth by the same method is 0.68918, so 68.9% is unaffected.
+- **Proposed resolution:** Compute group sums from the levels (or from shares-detail) and not from rounded shares, then rerun and update README:15, results.json and the register row. Apply the same fix to `top20_mortgages`, which happens to be right (0.53159, so 53.2%).
+- **Status:** open
+
+### R-20261104-ana-8 · skeptic · research/a5_distribution/AVAILABILITY.md:13
+- **Objection:** The row label "Who holds (and so carries) the risk by loan type" treats holding as bearing risk. Holding and risk differ in both directions: GSE pools shed part of the risk through CRT and private MI (A2), and privately held FFEL student loans are federally guaranteed. The 65.6% and 31.3% public shares (README:23) are shares of holdings, not of risk.
 - **Severity:** major
-- **Evidence:** On nowcasts_dev.csv RT rows, at k=1: no-change RMSE is 0.47 pp on the regression's targets and 0.19 pp on the earlier ones. The bridge's relative RMSE is 0.706 on the regression's subset and 0.933 on the rest. The bridge's mean error on that subset is −0.21/−0.27/−0.34 pp, against −0.00/−0.07/−0.11 for the regression.
-- **Proposed resolution:** State the regression's target window in the table. Add the bridge's relative RMSE on the same targets, or footnote that the two columns cover different periods.
-- **Status:** resolved (2026-11-04, by Claude, markets track): see mkt-q12.
+- **Evidence:** AVAILABILITY.md:13. A2 shows net-of-CRT and MI exposure below gross. The README:23 wording ("hold") is correct; the availability note is not.
+- **Proposed resolution:** Change it to "Who holds the loans, by loan type". Add one README sentence saying holding is not bearing risk and pointing to A2.
+- **Status:** open
 
-### R-20261104-mkt-s12 · skeptic · research/c1_nowcast/nowcast.py MAP_2B (mort_banks → RREACBW027NBOG)
-- **Objection:** The H.8 indicator measures a different population from its Z.1 cell. It covers all commercial banks, including foreign-related ones, and excludes savings institutions. FL763065105 covers U.S.-chartered depository institutions, thrifts included. H.8 levels are also not adjusted for structure breaks such as charter conversions, and the series is read at the last Wednesday on or before quarter end rather than at quarter end. The share error this causes is small (about 0.03 pp), but README line 20 presents the mapping as clean. The other mappings checked out: there is no SA/NSA mixing (all six indicators are NSA), H.8 weekly values are Wednesday levels, not averages, and the G.19 cells equal their Z.1 cells exactly.
-- **Severity:** minor
-- **Evidence:** In the latest vintages, 2015Q1–2023Q2, H.8 minus Z.1 (household-apportioned) quarterly log growth has a mean of +0.11 pp, an RMSE of 0.33 pp and a correlation of 0.96. The largest gaps are 0.88 (2017Q4), 0.74 (2015Q3) and 0.64 (2015Q4). The weekly H.8 series jumps 1.24% on 2015-11-04 and 1.12% on 2018-05-16. TOTALGOV, TOTALDI, TOTALFC, TOTALTCU and TOTALNS against their Z.1 cells give a level ratio of 1.000 and a growth RMSE of 0.00 pp.
-- **Proposed resolution:** Add a caveat on the coverage difference and the unadjusted breaks. If it is pre-registered, consider the H.8 break-adjusted flows.
-- **Status:** open (minor, accepted as a stated limitation): H.8 all-commercial-bank coverage and structure breaks differ from the Z.1 U.S.-chartered depository cell; effect on the share estimated by the skeptic at about 0.03 pp; not adjusted.
+### R-20261104-ana-9 · skeptic · research/a5_distribution/README.md:17-19
+- **Objection:** The groups are ranked by net worth, and debt lowers net worth. So "the bottom half owes half the consumer credit" and its high leverage partly restate how the bottom 50% is defined. Membership also changes with house prices. The bottom-50 mortgage share was 34.6% in 2010Q3 and 22.1% in 2021Q1: underwater owners fell into the bottom half and then rose out of it. The 1989-vs-2026 endpoint comparison hides this. Read as "who borrows", it suggests a fixed population that changed its borrowing.
+- **Severity:** major
+- **Evidence:** figures/dfa_bottom50_shares.alt.txt (high 34.6% in 2010Q3; low 22.1% in 2021Q1). README:19 already notes the house-price effect on the ratios but not on group membership.
+- **Proposed resolution:** Add a caveat that wealth groups are re-ranked each quarter and that debt enters the ranking. Show income groups (less endogenous) next to them, or say the 1989 comparison runs between different populations.
+- **Status:** open
 
-### R-20261104-mkt-s13 · skeptic · research/c1_nowcast/README.md (bias by k)
-- **Objection:** k=3 is not "the third instant" for every target. In 2016–2021 the Q3 Z.1 release came after the 15th of September. Six Q3 targets therefore have no k=3 row, while five Q2 targets have two k=3 rows, one of them six days before the release. As a result, "−0.18 at k=1, −0.26 at k=3" compares different sets of targets, and the k=3 tests carry duplicate, dependent pairs. The pooling is documented in EVALUATION.md, but the README does not mention it. The conclusion holds on matched targets.
+### R-20261104-ana-10 · skeptic · research/a5_distribution/README.md:19 (a5_b50_leverage_2007q4)
+- **Objection:** "Lower than in 2007" uses 2007Q4 as the reference. Bottom-50 liabilities/assets peaked at 95.3% in 2010Q4, not in 2007. The sentence is true, but readers will take 81.5% as the peak.
 - **Severity:** minor
-- **Evidence:** RT k=3 has 25 scored rows: 20 true third instants and 5 fourth instants. On the 20 targets that have k=1, 2 and 3, the mean error is −0.15, −0.20 and −0.26 pp, and the relative RMSE is 0.65, 0.65 and 0.78.
-- **Proposed resolution:** Add one sentence to the README, and add a matched-target row as a descriptive check.
-- **Status:** resolved (2026-11-04, by Claude, markets track): see mkt-q11; bias by k now uses one row per target and k.
+- **Evidence:** From dfa-networth-levels.csv, the Bottom50 Liabilities/Assets maximum is 2010:Q4 = 0.9530 (2007:Q4 = 0.8149, 2026:Q2 = 0.5836).
+- **Proposed resolution:** Either state the 2010Q4 peak as well (it needs a register row) or say "down from 81.5% on the eve of the crisis".
+- **Status:** open
 
-### R-20261104-mkt-s14 · skeptic · research/c1_nowcast/sources.md
-- **Objection:** The archive-depth table rests partly on date errors. 2011-09-28 is not a Z.1 release date: the calendar and the Fed archive both give 2011-09-16, and `20110916/z1r-1.zip` returns 200, so the "to recheck" 404 is explained. "CSV from 2017" should read "from 2016-09-16". The 2017-03 release folder is 20170305 (see mkt-s9).
+### R-20261104-ana-11 · skeptic · research/a5_distribution/README.md:27; figures/state_mortgage_pc_2025.*
+- **Objection:** The "3.8× spread" across states comes from DC, a city-jurisdiction outlier. Among the 50 states the spread is CO/WV = 3.5×. DC is also the maximum for student loans (12,650 against GA 7,120 next). On the sextile maps DC sits in the same top bin as every state from $55.6k up ($6.1k up for student loans), so the map understates DC while the text headline leans on it.
 - **Severity:** minor
-- **Evidence:** `curl -I .../z1/20110916/z1r-1.zip` → 200; the folder list in `release-dates.htm`.
-- **Proposed resolution:** Correct the dates and the table row.
-- **Status:** resolved (2026-11-04, by Claude, markets track): sources.md: CSV archive from 2016-09-16 (not 2017); the 2011-09-28 probe date explained (an HHMSDODNS ALFRED vintage, not a Z.1 release; release is 2011-09-16); archive manifest section added.
+- **Evidence:** state_2025.csv: 72210/20770 = 3.48; mortgage sextile breaks [20770, 30540, 33813, 40310, 46350, 55600, 78140].
+- **Proposed resolution:** Give the 50-state spread next to the figure that includes DC, or footnote that DC is a city. Optionally mark DC as an outlier in the map legend.
+- **Status:** open
 
-### R-20261104-mkt-s15 · skeptic · claims/tracks/markets.csv (c1_*)
-- **Objection:** The `series_ids` column omits cells that the bridge moves or that feed the residuals: FL763065105, FL763066000/FL763066005, FL613066005 and FL473066000. The P2a rows list the indicators of set 2b, although P2a uses only TOTALGOV and TOTALNS. Displays and values match results_dev.json at display precision in all 29 rows.
+### R-20261104-ana-12 · skeptic · research/a5_distribution/README.md:27-28, 34
+- **Objection:** The extremes are single sample-based values with no stated uncertainty. WY's student-loan minimum comes from a 1% sample (about 5k people) and fell 10% in one year (3,530 to 3,180), which suggests noise. Separately, README:27 says "mortgage debt" without "excluding HELOC". The DFA and Z.1 home mortgages used two sections earlier include HELOCs, so the three mortgage measures in the README are not the same object.
 - **Severity:** minor
-- **Evidence:** `grep '^c1_' claims/tracks/markets.csv`, compared with z1_vintages.py CELLS and nowcast.py MAP_2A.
-- **Proposed resolution:** Complete `series_ids`, and give the P2a rows their own list.
-- **Status:** resolved (2026-11-04, by Claude, markets track): C1 register rows regenerated with the full cell code list (FL763065105, FL763066005/FL763066000, FL613066005, FL473066000 added); signs checked by script.
+- **Evidence:** area_report_by_year.xlsx Info sheet: "Mortgage Debt Balance per Capita (excluding HELOC)", "Student Loan ... 1% of the population". The studentloan sheet row WY reads Q4_2024 3530, Q4_2025 3180. HI 3,810 is next lowest.
+- **Proposed resolution:** Write "mortgage debt (excluding HELOCs)" at README:27 and in the map title. Add "single-year sample estimates; rankings near the extremes may not be significant".
+- **Status:** open
+
+### R-20261104-ana-13 · skeptic · claims/tracks/analysis.csv (a5_ rows); README.md:23
+- **Objection:** Two register gaps. (1) README:23 prints 65.6%, but no a5 row covers it, and the main row `public_share_mortgage_2026q2` lists only analysis/findings.md and recommendation.md as locations. (2) The NY Fed rows give vintage `nyfedstate:2026-02-01`, but the workbook gives only "February 2026", so the day is invented.
+- **Severity:** minor
+- **Evidence:** `grep 0.6555 claims/tracks/analysis.csv` finds nothing. claims/register.csv:11 has the locations. The Info sheet citation reads "...Federal Reserve Bank of New York, February 2026".
+- **Proposed resolution:** Add README:23 as a location for public_share_mortgage_2026q2 on merge, like the CC fold note. Use `nyfedstate:2026-02` or the file's Last-Modified date, with its source stated.
+- **Status:** open
+
+### Responses to R-20261104-ana-7 to -ana-13 (analysis track, 2026-11-04)
+- R-ana-7 (blocker): accepted. Group sums now come from DFA levels in `distribution.py`; the top 10% share reads 28.5%; register row corrected.
+- R-ana-8: accepted. AVAILABILITY.md now says holding is not bearing the risk, with CRT, mortgage insurance and FFEL as examples.
+- R-ana-9: accepted. README says groups are ranked by net worth (debt lowers it), that membership moves with house prices, and gives the 2010Q3 peak.
+- R-ana-10: accepted. README gives the 2010Q4 leverage peak next to the 2007Q4 figure.
+- R-ana-11: accepted. README gives the spread across the 50 states alone (3.5×, Colorado) and notes that DC shares the top map band.
+- R-ana-12: accepted. README says the extremes are single sample estimates and that the NY Fed mortgage series excludes HELOCs.
+- R-ana-13: partly. The vintage day is a placeholder the checker's format requires; register notes now say so. The 65.6% location belongs on the existing register row for the public share of mortgages (claims/register.csv, coordinator-owned); listed under "Proposed changes to shared files".
+
+### R-20261104-ana-14 · skeptic · research/a2_net_exposure/tenk.py:18-23; README.md:31,34,39; METHOD.md:34
+- **Objection:** "CRT" is coded as STACR + ACIS (insurance/reinsurance) only, but Freddie's own FY2025 10-K lists "Other" under "CRT transactions" (Table 22), and in FY2017-FY2020 the "other" bucket is mostly senior/subordinate and lender risk sharing, which FHFA's CRT totals (the issuance bound) also count as CRT. The Freddie "net of CRT" ($2.90T, 1.3%, 56.2%) therefore uses a narrower CRT definition than the bound it is checked against; up to $10.4B of 2025 CRT-type cover sits in "other".
+- **Severity:** major
+- **Evidence:** data/a2/freddie/10k_021226.txt:2455-2461 ("CRT transactions: STACR ... ACIS ... Other ... Total CRT issuance"); 10k_021121.txt FY2020 Table 20: Subordination 6,182 + Lender risk sharing 4,831 + Other 371 = 11,384 = csv other_maxcov 2020. (40.0+10.4)/40.0 = 1.26x the netted cover.
+- **Proposed resolution:** say in README/METHOD that the bucket is narrower than FHFA's CRT and Freddie's own; report the share with "other" netted as a sensitivity (56.2% stays a valid upper bound either way).
+- **Status:** open
+
+### R-20261104-ana-15 · skeptic · research/a2_net_exposure/README.md:20 vs 10-K first-loss columns
+- **Objection:** README says the tranches sold "sit above a retained first-loss slice". Freddie's FY2018-19 tables show third parties holding first-loss coverage (2019: STACR $5.9B, insurance/reinsurance $2.5B), and the FY2025 10-K says Freddie has recently moved to retaining more initial loss, so "benefits ... may be lower ... even if the maximum coverage ... is similar". Maximum coverage is therefore not comparable over time as protection, which affects the 1.8% to 1.3% reading.
+- **Severity:** major
+- **Evidence:** research/a2_net_exposure/fixtures/freddie_10k_fy2019_excerpt.txt (First Loss column); data/a2/freddie/10k_021226.txt:2444-2448.
+- **Proposed resolution:** correct line 20; add the 10-K caveat beside line 36 that a fall (or a flat line) in maximum coverage does not mean a fall (or no change) in risk transferred.
+- **Status:** open
+
+### R-20261104-ana-16 · skeptic · research/a2_net_exposure/README.md:28-34
+- **Objection:** The table mixes bases without saying so. Gross and net are household-apportioned, but CRT ($40.0B), mortgage insurance ($181.5B) and other ($10.4B) are not. A reader computing $2.93T - $40.0B gets $2.89T, not the $2.90T shown (apportioned CRT is $37.3B).
+- **Severity:** minor
+- **Evidence:** results.json freddie_10k: crt_out_bn_unapportioned_last 40.0, crt_out_hh_bn_last 37.3, net 2895.4.
+- **Proposed resolution:** label those rows "all borrowers, not apportioned", or show the $37.3B household figure.
+- **Status:** open
+
+### R-20261104-ana-17 · skeptic · research/a2_net_exposure/README.md:36-38; claims/tracks/analysis.csv
+- **Objection:** Line 36 ("cover runs off as notes pay down and Freddie has issued less since 2022") explains the fall with no decomposition and no registered source for Freddie's 2024-25 issuance (crt_fhfa.csv has no Freddie figure after 2023). Also unregistered: "more than four times" (l.38) and the 55.2% at l.39 (its row's locations do not include README:39).
+- **Severity:** minor
+- **Evidence:** crt_fhfa.csv fre_cum_rif_musd empty for 2024-2025; `grep "README.md:39" claims/tracks/analysis.csv` returns only a2_share_net_freddie_crt_2025.
+- **Proposed resolution:** cite 10-K FY2025 Table 22 (issuance 2023-25: $4.2B, $6.0B, $5.7B) or drop the explanation; add the register locations.
+- **Status:** open
+
+### R-20261104-ana-18 · skeptic · research/a5_distribution/README.md:37
+- **Objection:** "By either method the public sector holds about half or more of every wealth group's debt" is presented as a finding, but it follows from the uniform-mortgage-share assumption: each group's percentage is just its own mortgage/consumer-credit mix weighted by 65.6% and 31.3%. The assumption also biases the top, not only the bottom. Jumbo loans are not GSE-eligible and are held mostly by banks, so the top 1% figure (51-58%) is probably overstated. Line 27 mentions only the bottom-side bias.
+- **Severity:** major
+- **Evidence:** public_by_group.py:108-109 (public_b = M*p_M + CC*p_CC); results_public_by_group.json Top1 public_b_pct_of_debt 0.5793.
+- **Proposed resolution:** reword as an implication of the assumption, and add the top-end (jumbo) bias to the caveat at l.27.
+- **Status:** open
+
+### R-20261104-ana-19 · skeptic · research/a5_distribution/README.md:27-29 (assumptions of option c)
+- **Objection:** The README leaves out several assumptions that (c) depends on: (i) the federal share of student loans is the same in every group (only the docstring says so); (ii) the SCF captures about $1.15T of education loans against Z.1's $1.86T, so the missing 38% is assumed to be distributed like the reported part; (iii) SCF NETWORTH excludes DB pension entitlements, which the DFA includes, so SCF and DFA wealth groups are different households. The script's own plausibility check shows the gap: consumer-credit shares are SCF 5.9% vs DFA 10.3% for the Next 9%, and 1.2% vs 3.2% for the Top 1%. That check is not reported in the README.
+- **Severity:** major
+- **Evidence:** my run on data/a5/scfp2025excel.zip: weighted EDN_INST total $1.15T; sum of imputed_student_loans_musd = $1.858T; public_by_group.csv scf_cc_share vs dfa_cc_share columns.
+- **Proposed resolution:** state (i)-(iii) and the SCF/DFA gap in the README caveat box.
+- **Status:** open
+
+### R-20261104-ana-20 · skeptic · research/a5_distribution/public_by_group.py:59-71 (income cuts)
+- **Objection:** SCF INCOME is heaped at round values, so the weighted cut points give income "quintiles" with population shares of 19.3/20.4/19.0/21.0/19.2/1.0%, not 20% each. These are applied to DFA quintile levels. The non-monotonic student shares (20-40th: 19.8%, 40-60th: 16.2%) partly reflect this. Wealth cuts are fine (49.98/40.02/9.0/1.0). SCF INCOME is also 2024 income.
+- **Severity:** minor
+- **Evidence:** scratchpad check: INCOME pop shares [0.1932 0.2038 0.1904 0.2102 0.1924 0.0101].
+- **Proposed resolution:** split ties at the cut points by weight (or report the pop shares), and note the income year.
+- **Status:** open
+
+### R-20261104-ana-21 · skeptic · claims/tracks/analysis.csv a5_federal_share_student_loans; README.md:23,36
+- **Objection:** "86.4% ... are federal" counts federally *held* loans (plus GSE FL403066005). It leaves out commercially held FFEL loans, which carry a federal guarantee, so as a measure of public risk it understates. README l.23 still says the tables "are shown side by side and not multiplied", which the new estimate section below it contradicts.
+- **Severity:** minor
+- **Evidence:** public_by_group.py:96; README.md:23 vs :25-38.
+- **Proposed resolution:** say "federally held" in the claim; update l.23.
+- **Status:** open
+
+### Responses to R-20261104-ana-14 to -ana-21 (analysis track, 2026-11-04)
+- R-ana-14: accepted in part. CRT stays STACR + ACIS (the only CRT rows Freddie reports consistently since FY2021); README now says "Other" may include CRT-type cover (up to $10.4B at end 2025) and that the 56.2% upper bound holds whatever part of "Other" is counted.
+- R-ana-15: accepted. The "retained first-loss slice" sentence is replaced by Freddie's own FY2025 caveat (retaining "higher levels of initial losses"; benefits may be lower at similar maximum coverage) and the 2018–19 first-loss sales.
+- R-ana-16: accepted. Table now labels cover rows as unapportioned and adds the household-share CRT ($37.3B) actually subtracted.
+- R-ana-17: accepted. Unsourced runoff explanation removed ("not decomposed"); "more than four times" removed; 55.2% location added to its row.
+- R-ana-18: accepted. "About half or more" now framed as following from the assumption, with the jumbo-loan bias stated.
+- R-ana-19: accepted. Assumptions and gaps listed in the README. The skeptic's SCF total ($1.15T) also exposed a bug: a first version divided SCF weighted sums by five although the weights already sum to households; fixed and asserted (shares were unaffected).
+- R-ana-20: accepted as a note (income groups are not exact fifths; sizes in results_public_by_group.json).
+- R-ana-21: accepted. 86.4% now says "held by the federal government", excluding guaranteed FFEL; stale line 23 rewritten.
+
+### R-20261104-coord-q1 · quant-reviewer · research/b1_market_pricing/METHOD.md "Changes after results"; b1.py:6-8
+- **Objection:** The verdict follows the pre-set rule (no variant has b<0 with the 95% HAC interval excluding 0 in both L and D; main, headline and blend have L>0 significant with D insignificant, so "no robust association"). But the 6a161c7 correction changed how the regressor is built after results existed, and METHOD.md "Changes after results" does not list it. The README notes it; the pre-registration record does not. METHOD.md still says the share is apportioned "exactly as validation/run.py and A1 do", and those two now differ. The b1.py docstring still says the share comes "through A1's holder cells".
+- **Severity:** minor
+- **Evidence:** git log: METHOD.md b094579 00:53:54Z, results a8fc3de 00:58:51Z, correction 6a161c7 04:30:39Z; b1.py:6-8 vs public_shares() docstring.
+- **Proposed resolution:** Add the catalog-level correction, with its date and effect (D -0.08 to -0.57), to METHOD.md "Changes after results". Fix the stale docstring.
+- **Status:** open
+
+### R-20261104-coord-q2 · quant-reviewer · research/b1_market_pricing/README.md (first bullet under Result)
+- **Objection:** The EG constants are right (statsmodels mackinnoncrit, constant, T≈157: N=7 -5.10, N=3 -3.80; N=8 for the dummy row -5.38). The sentence "Every residual ADF statistic falls short of ... and still -3.79 counting only the three series" is false. Headline L (-3.87), ends-2022Q3 L (-4.46) and the post-hoc dummy L (-4.73) are all below -3.79. In addition, the N=3 bound has no stated basis: the regression has 6 regressors, and the README gives no unit-root evidence that vol10, slope, BAA10Y and refi are I(0). The verdict does not change. The rows that may cointegrate (pre-2022, dummy) have b<0 and are insignificant.
+- **Severity:** major
+- **Evidence:** regressions.csv adf_resid; mackinnoncrit(N, 'c', nobs=157).
+- **Proposed resolution:** Report the row-by-row comparison. Say that pre-2022 and dummy reject only under the N=3 heuristic, or drop N=3. Name N=8 for the dummy row.
+- **Status:** open
+
+### R-20261104-coord-q3 · quant-reviewer · research/b1_market_pricing/README.md (power bullet); results.json D_halfwidth_over_rise_pp
+- **Objection:** The arithmetic is right: 1.96·1.993·0.179 = 0.70 pp. But this is a 95% CI half-width, not a minimum detectable effect. At 80% power and 5% size the MDE is 2.8·SE·0.179 ≈ 1.0 pp. "Covers any plausible compression" has no benchmark. Scaling a quarter-on-quarter D coefficient to an 18-pp long-run rise also assumes the short-run and long-run responses are equal. D is fragile too: correcting three 1986 quarters moved it by 0.25 SE, and 1986Q4 is still the largest |Δshare| (2.03 pp, about 3.3 SD).
+- **Severity:** minor
+- **Evidence:** my offline recompute of public_shares() from data/validation/FRB_Z1_csv.zip: sd Δmort_share 0.61 pp, top value 1986Q4.
+- **Proposed resolution:** State the MDE (about 1.0 pp) and set it against a benchmark such as the g-fee level. Replace "any plausible" with that benchmark. Note the short-run/long-run assumption.
+- **Status:** open
+
+### R-20261104-coord-q4 · quant-reviewer · research/b1_market_pricing/README.md (second bullet); b1.py public_shares gse_share
+- **Objection:** "The positive sign comes from the PMMS method change" is a causal attribution based on post-hoc variants chosen after seeing the result. The README itself says the dummy (0.87 pp, against a ~0.17 pp method step) absorbs other 2023-26 conditions. Nothing is wrong in the multiple-testing sense: 4 pre-set variants × 2 forms, and the verdict is a null, so there is no inflated false-positive claim. No look-ahead problem either: the analysis is descriptive, latest vintage is declared, and refi is trailing. Separately, the post-hoc Fannie+Freddie share is still built from the sub-series cells that the docstring says are overstated in 1974Q3-1986Q3, so its first three quarters carry the bug fixed in 6a161c7.
+- **Severity:** minor
+- **Evidence:** README Result bullets; b1.py public_shares() docstring and gse line.
+- **Proposed resolution:** Change to "coincides with the 2022Q4+ period (method change and other conditions)". Either start the GSE variant at 1986Q4 or caveat it.
+- **Status:** open
