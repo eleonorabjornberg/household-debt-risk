@@ -1,7 +1,8 @@
 {
  "prereg_commit": "02cc47f",
  "deviations": [
-  "Critical values simulated (tables not available offline); see module docstring."
+  "Critical values simulated (tables not available offline); see module docstring.",
+  "Bai (1997) interval sign corrected after the first run (bug fix, quant-reviewer R-20261104-ana-35)."
  ],
  "critical_values_simulated": {
   "supF": {
@@ -57,8 +58,8 @@
    {
     "quarter": "1966Q1",
     "ci95": [
-     "1965Q1",
-     "1997Q4"
+     "1952Q2",
+     "1967Q1"
     ]
    }
   ],
@@ -167,8 +168,8 @@
    {
     "quarter": "1966Q1",
     "ci95": [
-     "1963Q1",
-     "2019Q4"
+     "1952Q2",
+     "1969Q1"
     ]
    }
   ],
@@ -216,15 +217,15 @@
    {
     "quarter": "2009Q1",
     "ci95": [
-     "2008Q3",
-     "2010Q2"
+     "2007Q4",
+     "2009Q3"
     ]
    },
    {
     "quarter": "2016Q2",
     "ci95": [
-     "2014Q4",
-     "2017Q3"
+     "2015Q1",
+     "2017Q4"
     ]
    }
   ],
