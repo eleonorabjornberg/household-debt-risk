@@ -1,0 +1,98 @@
+{
+ "label": "ESTIMATE (imputed across DFA, SCF 2025 and Z.1; see public_by_group.py)",
+ "sha256_scf_zip": "7f1600daefd9caa6fef32e74977c4aa3e362172f3c5f91ba6d122c64c805e494",
+ "vintage_scf": "SCF 2025 summary extract (scfp2025excel.zip)",
+ "p_M": 0.6555,
+ "p_CC": 0.3135,
+ "federal_share_of_student_loans": 0.8638,
+ "scf_education_debt_bn": 1150.0,
+ "z1_student_loans_bn": 1858.2,
+ "scf_pop_share_wealth": {
+  "Bottom50": 0.4998,
+  "Next40": 0.4002,
+  "Next9": 0.09,
+  "Top1": 0.01
+ },
+ "wealth": {
+  "Bottom50": {
+   "public_b_share": 0.2694,
+   "public_c_share": 0.2945,
+   "public_b_pct_of_debt": 0.4997,
+   "public_c_pct_of_debt": 0.5464,
+   "scf_student_share": 0.6849
+  },
+  "Next40": {
+   "public_b_share": 0.4682,
+   "public_c_share": 0.4569,
+   "public_b_pct_of_debt": 0.5846,
+   "public_c_pct_of_debt": 0.5705,
+   "scf_student_share": 0.273
+  },
+  "Next9": {
+   "public_b_share": 0.2229,
+   "public_c_share": 0.2138,
+   "public_b_pct_of_debt": 0.6099,
+   "public_c_pct_of_debt": 0.5851,
+   "scf_student_share": 0.0418
+  },
+  "Top1": {
+   "public_b_share": 0.0395,
+   "public_c_share": 0.0348,
+   "public_b_pct_of_debt": 0.5793,
+   "public_c_pct_of_debt": 0.51,
+   "scf_student_share": 0.0002
+  }
+ },
+ "scf_pop_share_income": {
+  "pct00to20": 0.1932,
+  "pct20to40": 0.2038,
+  "pct40to60": 0.1904,
+  "pct60to80": 0.2102,
+  "pct80to99": 0.1924,
+  "pct99to100": 0.0101
+ },
+ "income": {
+  "pct00to20": {
+   "public_b_share": 0.0383,
+   "public_c_share": 0.0401,
+   "public_b_pct_of_debt": 0.5044,
+   "public_c_pct_of_debt": 0.5288,
+   "scf_student_share": 0.0829
+  },
+  "pct20to40": {
+   "public_b_share": 0.0693,
+   "public_c_share": 0.0793,
+   "public_b_pct_of_debt": 0.5018,
+   "public_c_pct_of_debt": 0.5747,
+   "scf_student_share": 0.1979
+  },
+  "pct40to60": {
+   "public_b_share": 0.1465,
+   "public_c_share": 0.1426,
+   "public_b_pct_of_debt": 0.5424,
+   "public_c_pct_of_debt": 0.5279,
+   "scf_student_share": 0.1616
+  },
+  "pct60to80": {
+   "public_b_share": 0.2411,
+   "public_c_share": 0.2468,
+   "public_b_pct_of_debt": 0.5579,
+   "public_c_pct_of_debt": 0.571,
+   "scf_student_share": 0.2975
+  },
+  "pct80to99": {
+   "public_b_share": 0.4345,
+   "public_c_share": 0.4258,
+   "public_b_pct_of_debt": 0.586,
+   "public_c_pct_of_debt": 0.5743,
+   "scf_student_share": 0.259
+  },
+  "pct99to100": {
+   "public_b_share": 0.0703,
+   "public_c_share": 0.0653,
+   "public_b_pct_of_debt": 0.6071,
+   "public_c_pct_of_debt": 0.5642,
+   "scf_student_share": 0.0012
+  }
+ }
+}
