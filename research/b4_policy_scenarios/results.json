@@ -15,6 +15,101 @@
   ],
   "transfer": "none (cap 0); A2 bounds not yet an input"
  },
- "gse_release": "pending Q-B4 (status 2026-11-04: in conservatorship, sources.md)",
+ "gse_release": {
+  "decision": "Eleonora, card b4-gse (a), 2026-11-04: 0-100% of GSE-book losses turn private, points at 25/50/75%",
+  "status": "in conservatorship per FHFA's page retrieved 2026-11-04 (sources.md)",
+  "released_book": "Fannie Mae and Freddie Mac, portfolio + pools (Z.1 FL403065110+FL413065143, FL403065120+FL413065123)",
+  "stays_public": "Ginnie Mae and FmHA pools (FL413065110+FL413065133); FHLBs and other GSEs (FL403065105 less Fannie and Freddie)",
+  "balances_musd": {
+   "as_of": "2026-06-30",
+   "released_total": 6276880.99163018,
+   "Fannie Mae (portfolio + pools)": 3328881.05760125,
+   "Freddie Mac (portfolio + pools)": 2947999.9340289305,
+   "Ginnie Mae and FmHA pools": 2610654.6114858384,
+   "FHLBs and other GSEs": 89794.51357104896,
+   "bucket_total": 8977330.116687069
+  },
+  "transfer": "none (cap 0), as the recession range",
+  "by_preset": {
+   "dfast2026_proxy": [
+    {
+     "share_private": 0.0,
+     "public_musd": 137436.9017226215,
+     "private_musd": 457100.8682773784,
+     "total_musd": 594537.7699999998,
+     "public_share_of_losses": 0.23116597238661818
+    },
+    {
+     "share_private": 0.25,
+     "public_musd": 113898.59800400831,
+     "private_musd": 480639.1719959915,
+     "total_musd": 594537.7699999998,
+     "public_share_of_losses": 0.19157504157222568
+    },
+    {
+     "share_private": 0.5,
+     "public_musd": 90360.29428539515,
+     "private_musd": 504177.47571460466,
+     "total_musd": 594537.7699999998,
+     "public_share_of_losses": 0.15198411075783325
+    },
+    {
+     "share_private": 0.75,
+     "public_musd": 66821.99056678198,
+     "private_musd": 527715.779433218,
+     "total_musd": 594537.7699999998,
+     "public_share_of_losses": 0.11239317994344078
+    },
+    {
+     "share_private": 1.0,
+     "public_musd": 43283.686848168814,
+     "private_musd": 551254.0831518311,
+     "total_musd": 594537.7699999998,
+     "public_share_of_losses": 0.07280224912904831
+    }
+   ],
+   "replay_2008_2012_proxy": [
+    {
+     "share_private": 0.0,
+     "public_musd": 800569.9525342702,
+     "private_musd": 1085038.1022157297,
+     "total_musd": 1885608.05475,
+     "public_share_of_losses": 0.424568589701115
+    },
+    {
+     "share_private": 0.25,
+     "public_musd": 663459.3333733485,
+     "private_musd": 1222148.7213766514,
+     "total_musd": 1885608.05475,
+     "public_share_of_losses": 0.35185431654369553
+    },
+    {
+     "share_private": 0.5,
+     "public_musd": 526348.7142124268,
+     "private_musd": 1359259.340537573,
+     "total_musd": 1885608.05475,
+     "public_share_of_losses": 0.2791400433862762
+    },
+    {
+     "share_private": 0.75,
+     "public_musd": 389238.0950515051,
+     "private_musd": 1496369.9596984948,
+     "total_musd": 1885608.05475,
+     "public_share_of_losses": 0.20642577022885678
+    },
+    {
+     "share_private": 1.0,
+     "public_musd": 252127.47589058333,
+     "private_musd": 1633480.5788594165,
+     "total_musd": 1885608.05475,
+     "public_share_of_losses": 0.13371149707143737
+    }
+   ]
+  },
+  "public_share_of_losses_range": [
+   0.07280224912904831,
+   0.424568589701115
+  ]
+ },
  "student_loan_reform": "pending Q-B4 (status: P.L. 119-21 approved 2025-07-04, sources.md)"
 }
