@@ -5,9 +5,12 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | in progress: Q1(b) built for Freddie Mac 2013–2025 (outstanding cover from 10-Ks, inside the FHFA bound); Fannie Mae waits for its filings (fanniemae.com 403; SEC User-Agent contact pending) | `research/a2_net_exposure/` |
-| A5 | in progress: Q4(c) estimate with (b) beside it built (SCF 2025 student-loan shares; labelled ESTIMATE); second skeptic pass pending | `research/a5_distribution/` |
+| A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
+| A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
+
+## Where the track stopped (2026-11-04, about 05:00 UTC)
+A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 open. Every task had a skeptic pass and every objection is answered in the review logs. The later-phase queue the coordinator sent (A3, A4 code, A7 addendum and A7, A6) has not been started: this session's context is long, and a fresh session per task is cheaper and safer.
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
