@@ -12,10 +12,10 @@
 | **Canada** | not computable; CMHC states it insures 19.8% of Canadian *residential* mortgages (31 Dec 2025) | not sourced |
 | **Denmark** | not computable: state student loans not sourced; no public loss on mortgage-bank loans (Nationalbank, 2013) | not computable (student loans) |
 | **UK** | not computable: student loans, Help to Buy equity loans and the Mortgage Guarantee Scheme not sourced | same |
-| **Germany**, Q4 2025 | not computable: BAföG not sourced; losses at publicly owned banks unclassified (Q7) | 30.3% (savings banks, Landesbanken and promotional banks) |
+| **Germany**, Q4 2025 | public share not computable: BAföG not sourced. Third category, *publicly owned, not guaranteed* (Eleonora, Q7): 30.3%, reported apart from the public share | 30.3% (savings banks, Landesbanken and promotional banks) |
 
 - **No ranking yet.** Only the US has a headline share, and every gap elsewhere (student loans in all four countries; private insurers' federally backed cover in Canada; UK schemes) can only raise the other countries' shares. The evidence so far is qualitative: in Denmark "the credit risk is initially borne by the mortgage bank" (Danmarks Nationalbank, 2013), on mortgage-bank loans that make up 80.4% of Danish bank and mortgage-bank loans to households; in KfW's home-ownership programme 124/134 the on-lending bank takes the liability ("die Haftung", KfW programme sheet, 2023); Canada's public exposure runs through mortgage insurance (CMHC's 19.8% is a share of residential mortgages, which include multi-unit rental, not of household credit).
-- **The two measures diverge most in Germany.** Publicly owned banks hold 30.3% of bank lending to individuals. Whether their losses count as public is a classification question, not settled by a source here (Q7, `tracks/analysis.md`).
+- **The two measures diverge most in Germany.** Publicly owned banks hold 30.3% of bank lending to individuals. On the risk-bearer measure Eleonora classed this lending as a third category, *publicly owned, not guaranteed* (Q7, 2026-11-04): no legal guarantee since July 2005, but public owners and the federal fund SoFFin absorbed Landesbank losses in 2008–12 (Bundesbank; [`Q7_EVIDENCE.md`](Q7_EVIDENCE.md)). It is neither added to nor subtracted from a public share, so Germany still has no single headline number.
 
 ## Limits
 
