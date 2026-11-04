@@ -5,18 +5,47 @@
  "public_share_t0": 0.361155,
  "public_share_t1": 0.492211,
  "total_pp": 13.105589,
- "sum_of_cells_minus_total_pp": 0.0,
- "scope_reconstruction_max_abs_musd": 1.862645149230957e-09,
- "from_public_growth_pp": 7.126829,
- "from_private_change_pp": 5.97876,
+ "sum_of_cells_minus_total_pp": 1.7763568394002505e-15,
+ "scope_reconstruction_max_abs_musd": 3.725290298461914e-09,
+ "from_public_growth_pp": 6.245344,
+ "from_private_change_pp": 6.860245,
  "groups_pp": {
-  "fannie_freddie": 1.421405,
-  "ginnie_pools": 3.808975,
-  "federal_student_loans": 1.935771,
-  "other_public": -0.039321,
-  "private_label_and_mreits": 4.926664,
-  "banks_and_credit_unions": 0.470014,
-  "other_private": 0.582082
+  "fannie_freddie": 1.245598,
+  "ginnie_pools": 3.33786,
+  "federal_student_loans": 1.696344,
+  "other_public": -0.034458,
+  "private_label_and_mreits": 5.653033,
+  "banks_and_credit_unions": 0.539311,
+  "other_private": 0.667901
+ },
+ "method": "shapley (public vs private totals; pro rata within each side)",
+ "sensitivity": {
+  "endpoint_identity": {
+   "public_pp": 7.126829,
+   "private_pp": 5.97876,
+   "groups_pp": {
+    "fannie_freddie": 1.421405,
+    "ginnie_pools": 3.808975,
+    "federal_student_loans": 1.935771,
+    "other_public": -0.039321,
+    "private_label_and_mreits": 4.926664,
+    "banks_and_credit_unions": 0.470014,
+    "other_private": 0.582082
+   }
+  },
+  "chained_quarterly_shapley": {
+   "public_pp": 6.212288,
+   "private_pp": 6.893301,
+   "groups_pp": {
+    "fannie_freddie": 1.383395,
+    "ginnie_pools": 3.256198,
+    "federal_student_loans": 1.607751,
+    "other_public": -0.035057,
+    "private_label_and_mreits": 5.745587,
+    "banks_and_credit_unions": 0.507361,
+    "other_private": 0.640354
+   }
+  }
  },
  "own_share_change_pp": {
   "fannie_freddie": 3.887502,

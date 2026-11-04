@@ -8,12 +8,20 @@ validation/zparse.py, and the holder -> bucket mapping from pipeline/series_cata
 exactly as validation/run.py `compute` does (mortgage holders apportioned to the household liability with
 FL153165105 / FL893065105), so the total reproduces validation check C5.
 
-Identity used (exact, no residual). With public P = Pub/S, scope S = Pub + Priv:
+Method (decided by Eleonora, 2026-11-04): Shapley. With public P = Pub/S, scope S = Pub + Priv, and
+f(a, b) = a / (a + b), the public side's contribution is the average of its two possible orderings:
+    C_pub  = 1/2 * [ (f(Pub1, Priv0) - f(Pub0, Priv0)) + (f(Pub1, Priv1) - f(Pub0, Priv1)) ]
+    C_priv = (P1 - P0) - C_pub        (the same formula with the roles swapped)
+Exact, and independent of which side is counted first. Within each side, the share depends on the cells only
+through the side's total, so each cell gets the side's contribution in proportion to its change in holdings
+(dx_i / dPub or dx_j / dPriv; the Aumann-Shapley allocation for a function of a sum). A private retreat
+raises the share.
+Sensitivity (results.json "sensitivity"): the endpoint-weighted identity
     P1 - P0 = (1 - P0) * dPub / S1  -  P0 * dPriv / S1
-Each public cell i contributes (1 - P0) * dPub_i / S1; each private cell j contributes -P0 * dPriv_j / S1.
-The first term is "public growth", the second "private change" (a private retreat raises the share).
-Per-quarter paths chain the same identity quarter by quarter, so each component's timing can be read
-against policy dates; chained and endpoint totals both equal P1 - P0 exactly.
+and the quarterly-chained Shapley path. All are exact for the total; they split it differently (review-log
+R-20261104-1), which is why the method was fixed before the write-up.
+Per-quarter paths chain the Shapley split quarter by quarter, so each component's timing can be read against
+policy dates. Group totals in path.csv at t1 differ from the endpoint figures in results.json.
 
 Outputs (next to this file): decomposition.csv (endpoint, one row per cell), path.csv (cumulative chained
 contributions by quarter), results.json (headline numbers for the claims register).
@@ -40,7 +48,7 @@ import zparse  # noqa: E402
 PUBLIC_MORT = {
     "Fannie Mae (portfolio + pools)": ["+FL403065110", "+FL413065143"],
     "Freddie Mac (portfolio + pools)": ["+FL403065120", "+FL413065123"],
-    "Ginnie Mae pools (FHA, VA, USDA)": ["+FL413065110", "+FL413065133"],
+    "Ginnie Mae pools (FHA, VA, USDA) and FmHA pools": ["+FL413065110", "+FL413065133"],
     "Federal Home Loan Banks": ["+FL403065130"],
     "Other GSEs (Farm Credit System and unallocated)": ["+FL403065105", "-FL403065110", "-FL403065120", "-FL403065130"],
     "Federal government (direct)": ["+FL313065105"],
@@ -106,14 +114,38 @@ def cells(df, mh, ch, public, labels) -> pd.DataFrame:
     return c
 
 
-def contrib(c0: pd.Series, c1: pd.Series) -> pd.Series:
-    """Exact contributions (pp) of each cell to P1 - P0 between two dates."""
+def identity(c0: pd.Series, c1: pd.Series) -> pd.Series:
+    """Endpoint-weighted identity (sensitivity only): exact contributions (pp) to P1 - P0."""
     pub0 = c0.xs("public", level="side").sum()
     s0, s1 = c0.sum(), c1.sum()
     p0 = pub0 / s0
     d = c1 - c0
     w = pd.Series([(1 - p0) if side == "public" else -p0 for side in d.index.get_level_values("side")], index=d.index)
     return 100 * w * d / s1
+
+
+def shapley(c0: pd.Series, c1: pd.Series) -> pd.Series:
+    """Shapley contributions (pp) of each cell to P1 - P0: two-player Shapley between the public and private
+    totals, then pro rata within each side by the change in holdings."""
+    side = c0.index.get_level_values("side")
+    pub0, priv0 = c0[side == "public"].sum(), c0[side == "private"].sum()
+    pub1, priv1 = c1[side == "public"].sum(), c1[side == "private"].sum()
+    f = lambda a, b: a / (a + b)  # noqa: E731
+    total = f(pub1, priv1) - f(pub0, priv0)
+    c_pub = 0.5 * ((f(pub1, priv0) - f(pub0, priv0)) + (f(pub1, priv1) - f(pub0, priv1)))
+    c_priv = total - c_pub
+    d = c1 - c0
+    out = pd.Series(0.0, index=d.index)
+    for name, c_side, d_side in (("public", c_pub, pub1 - pub0), ("private", c_priv, priv1 - priv0)):
+        m = side == name
+        if d_side != 0:
+            out[m] = c_side * d[m] / d_side
+        else:
+            assert abs(c_side) < 1e-15
+    return 100 * out
+
+
+contrib = shapley  # the method used for every headline figure
 
 
 def main(argv=None) -> int:
@@ -131,10 +163,11 @@ def main(argv=None) -> int:
     t0, t1 = q_end(a.t0), q_end(a.t1)
 
     # Checks: cells reproduce scope and the public share exactly as validation computes them.
-    scope_gap = (c.sum(axis=1) - df["FL154104015"]).loc[[t0, t1]].abs().max()
+    scope_gap = (c.sum(axis=1) - df["FL154104015"]).loc[t0:t1].abs().max()  # every quarter in the window
     share = c.xs("public", level="side", axis=1).sum(axis=1) / c.sum(axis=1)
     p0, p1 = share.loc[t0], share.loc[t1]
     total_pp = 100 * (p1 - p0)
+    assert scope_gap < 1e-3, f"cells do not reproduce the scope total: {scope_gap} $M"
 
     con = contrib(c.loc[t0], c.loc[t1])
     gap = abs(con.sum() - total_pp)
@@ -164,6 +197,8 @@ def main(argv=None) -> int:
         "banks_and_credit_unions": [k for k in path.columns if k[1] == "private" and "Banks" in k[2]],
         "other_private": [k for k in path.columns if k[1] == "private" and "Private securitization" not in k[2] and "Banks" not in k[2]],
     }
+    flat = [k for cols in groups.values() for k in cols]
+    assert len(flat) == len(set(flat)) == len(path.columns), "groups must partition the cells"
     gpath = pd.DataFrame({g: path[cols].sum(axis=1) for g, cols in groups.items()})
     gpath["total"] = gpath.sum(axis=1)
     gpath["public_share_pct"] = [100 * share.loc[t] for t in idx[1:]]
@@ -180,6 +215,11 @@ def main(argv=None) -> int:
     tab_own.round(4).to_csv(HERE / "own_share_change.csv", index=False)
 
     endpoint_groups = {g: float(con[cols].sum()) for g, cols in groups.items()}
+    ident = identity(c.loc[t0], c.loc[t1])
+    assert abs(ident.sum() - total_pp) < 1e-9
+    sides = lambda s_: {"public_pp": round(float(s_.xs("public", level="side").sum()), 6),  # noqa: E731
+                        "private_pp": round(float(s_.xs("private", level="side").sum()), 6)}
+    chained_end = path.iloc[-1]
     res = {
         "vintage_z1_csv": vintage[0].isoformat(sep=" "),
         "t0": a.t0, "t1": a.t1,
@@ -190,6 +230,13 @@ def main(argv=None) -> int:
         "from_public_growth_pp": round(float(con.xs("public", level="side").sum()), 6),
         "from_private_change_pp": round(float(con.xs("private", level="side").sum()), 6),
         "groups_pp": {k: round(v, 6) for k, v in endpoint_groups.items()},
+        "method": "shapley (public vs private totals; pro rata within each side)",
+        "sensitivity": {
+            "endpoint_identity": {**sides(ident),
+                                  "groups_pp": {g: round(float(ident[cols].sum()), 6) for g, cols in groups.items()}},
+            "chained_quarterly_shapley": {**sides(chained_end),
+                                          "groups_pp": {g: round(float(chained_end[cols].sum()), 6) for g, cols in groups.items()}},
+        },
         "own_share_change_pp": {k: round(float(own_pub[cols].sum()), 6) for k, cols in groups.items() if k in
                                 ("fannie_freddie", "ginnie_pools", "federal_student_loans", "other_public")},
         "change_usd_bn": {

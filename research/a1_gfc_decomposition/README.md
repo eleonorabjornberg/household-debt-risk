@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
 
-**PLAN task A1. Status: analysis done; write-up is a Claude draft for Eleonora to replace.** The decomposition is exact, and every policy date below is checked against a primary source ([`sources.md`](sources.md)).
+**PLAN task A1. Status: analysis done, method decided by Eleonora (Shapley, 2026-11-04); write-up is a Claude draft for Eleonora to replace.** Reviewed by the skeptic and quant-reviewer agents (`claims/review-log.md`, R-20261104-1 to -12). The decomposition is exact, and every policy date below is checked against a primary source ([`sources.md`](sources.md)).
 
 Data: Fed Z.1, `Z1.csv` dated 2026-09-11. Every number in this file has a row in [`claims/register.csv`](../../claims/register.csv), and `claims/check_register.py` scans this file.
 
@@ -10,30 +10,32 @@ Data: Fed Z.1, `Z1.csv` dated 2026-09-11. Every number in this file has a row in
 
 From 2007Q4 to 2011Q4 the public share of household mortgages and consumer credit rose from 36.1% to 49.2%, +13.1 pp. That total matches validation check C5. The parts below add up to it exactly.
 
-**Growth versus retreat.** Public holdings growing explains 7.1 pp. Private holdings shrinking explains 6.0 pp. The split is exact: ΔP = (1 − P₀)·ΔPub / S₁ − P₀·ΔPriv / S₁.
+**Method: Shapley (Eleonora's decision, 2026-11-04).** The public side's contribution is the average of counting it first and counting it last; the private side gets the rest. Within each side, each holder gets a share in proportion to its change in holdings. The split does not depend on which side is counted first.
+
+**Growth versus retreat.** Public holdings growing explains 6.2 pp. Private holdings shrinking explains 6.9 pp. So a little over half came from private retreat. Other exact methods split the total differently: the endpoint-weighted identity used in the first draft gave public 7.1 pp and private 6.0 pp, which reverses the order. The quarter-by-quarter Shapley path gives the same split as the Shapley endpoints to one decimal. All three are in `results.json` (`sensitivity`).
 
 **Which public holders grew:**
 
 | Component | Change in holdings | Contribution |
 |---|---|---|
-| Ginnie Mae pools (FHA, VA, USDA loans) | +$746B | 3.8 pp |
-| Federal student loans | +$379B | 1.9 pp |
-| Fannie Mae and Freddie Mac (portfolio + pools) | +$278B | 1.4 pp |
+| Ginnie Mae pools (FHA, VA, USDA loans) | +$746B | 3.3 pp |
+| Federal student loans | +$379B | 1.7 pp |
+| Fannie Mae and Freddie Mac (portfolio + pools) | +$278B | 1.2 pp |
 
 All other public holders combined (FHLBs, other GSEs, federal direct mortgages, state and local) were net zero to one decimal.
 
-**Which private holders shrank.** Private-label securitization and mortgage REITs held $1.71T less, which contributed 4.9 pp. Banks, credit unions and other private holders contributed the rest of the 6.0 pp.
+**Which private holders shrank.** Private-label securitization and mortgage REITs held $1.71T less, which contributed 5.7 pp. Part of that is accounting, not retreat: FAS 166/167 moved securitized loans, mostly card ABS, onto bank balance sheets in 2010Q1, so the private-label line jumps and the bank line falls in that quarter (`path.csv`). The private total is unaffected. Banks, credit unions and other private holders contributed the rest of the 6.9 pp.
 
-**Own-share view.** Here each public holder's own share of the total changes, so the private retreat is spread across them. Ginnie pools +6.1 pp, Fannie and Freddie +3.9 pp, federal student loans +3.1 pp. Summed into the catalog's buckets, this view reproduces `analysis/results.json` `gfc_window_split_pp` exactly (GSE & agency, federal student loans, state and local).
+**Own-share view.** Here each public holder's own share of the total changes, so the private retreat is spread across them. Ginnie pools +6.1 pp, Fannie and Freddie +3.9 pp, federal student loans +3.1 pp. Summed into the catalog's buckets, this view reproduces `analysis/results.json` `gfc_window_split_pp` exactly (GSE & agency, federal student loans, state and local). It describes composition; it does not say what caused the change.
 
 **What this changes.**
-- **The largest public piece is FHA/VA, not the GSEs.** That part is explicitly federal: FHA and VA insure the loans, and Ginnie Mae guarantees the securities.
-- **Fannie and Freddie's piece came early and partly reversed.** Quarter by quarter (`path.csv`), Fannie and Freddie had contributed 1.3 pp by 2008Q3, before the September 2008 conservatorship. They peaked at 2.3 pp in 2009Q4 and were back to 1.4 pp by 2011Q4. Their balances barely grew. Their share rose mostly because private holders shrank around them.
-- **"The GSE conservatorship ratcheted risk onto the public" doesn't fit these data.** Conservatorship changed the backing behind debt the GSEs already held. Within this window, it didn't change how much they held.
+- **The largest public increase was in Ginnie Mae pools (FHA/VA/USDA loans), not the GSEs.** That is a statement about the change: Fannie and Freddie still held far more, $4.34T against Ginnie pools' $1.13T in 2011Q4. And holding is not guaranteeing: VA and USDA guarantees are partial, and FHA loans held by banks, or bought out of Ginnie pools, count as private here.
+- **Fannie and Freddie's piece came early and partly reversed.** Quarter by quarter (`path.csv`), they had contributed 1.1 pp by 2008Q2, the last quarter-end before the September 2008 conservatorship. They peaked at 2.3 pp in 2009Q4 and fell back after that. Their balances grew $278B over the window.
+- **These data cannot test whether the conservatorship ratcheted risk onto the public.** The GSEs count as public at every date, so the conservatorship changes nothing in this accounting; the data are silent, not contrary. Whether it changed how much the GSEs held, or what their debt cost, is a counterfactual question for A7.
 
 ## Dated policy events
 
-The decomposition is an accounting, not a causal estimate (that is A7). The events below line up in time with the components; that does not show they caused them. Each date and citation was checked on 2026-11-04 against the official text (GovInfo for statutes, FHFA, the Fed's Z.1 release); URLs, file hashes and quoted sections are in [`sources.md`](sources.md).
+The decomposition is an accounting, not a causal estimate (that is A7). The events below are matched to components by topic, not by breaks in the path: federal student loans, for example, had moved only 0.03 pp by 2008Q2 and grew most after mid-2010. That they line up does not show they caused anything. Each date and citation was checked on 2026-11-04 against the official text (GovInfo for statutes, FHFA, the Fed's Z.1 release); URLs, file hashes and quoted sections are in [`sources.md`](sources.md).
 
 | Date | Event | Component it lines up with |
 |---|---|---|
@@ -48,10 +50,11 @@ The decomposition is an accounting, not a causal estimate (that is A7). The even
 ## Limits
 
 - **Holding is not guaranteeing.** Most FFEL loans held by banks before 2010 already carried a federal guarantee, so the student-loan component overstates the shift in credit risk. FHA and VA loans held directly by banks are federally insured but count as private here. Net exposure is task A2.
-- **FAS 166/167 reshuffled private holders in 2010Q1.** Card ABS moved onto bank balance sheets, so the private-label line jumps and the bank line falls in that quarter (`path.csv`). Every private holder has the same weight in the identity, so reclassifications between private holders cancel. The private total is unaffected, but the split between private lines around 2010Q1 is accounting, not behaviour. The same consolidation moved GSE pool MBS from sector 41 to sector 40, which is why Fannie and Freddie are shown as portfolio plus pools.
+- **FAS 166/167 reshuffled private holders in 2010Q1.** Card ABS moved onto bank balance sheets, so the private-label line jumps and the bank line falls in that quarter (`path.csv`). The private side's contribution depends only on the private total, so reclassifications between private holders cancel. The private total is unaffected, but the split between private lines around 2010Q1 is accounting, not behaviour. The same consolidation moved GSE pool MBS from sector 41 to sector 40, which is why Fannie and Freddie are shown as portfolio plus pools.
+- **Ginnie label.** The Ginnie line also includes the small FmHA pool line (FL413065133), which is zero at both endpoints.
 - **Apportioning.** Mortgage holders are scaled to the household liability, as in the rest of the project, assuming the same holder mix for household and business 1–4 family mortgages.
 - **"Other GSEs" is partly a residual.** It is FL403065105 minus the Fannie, Freddie and FHLB lines. It is small (under $20B) and is reported, not hidden.
-- **A different counterfactual gives different words.** `analysis/findings.md` says that had private debt stayed at its 2007Q4 level, the share would have risen 6.1 pp. That holds private debt fixed. The identity here instead splits the actual change. Both say about half of the jump came from private retreat.
+- **A different counterfactual gives different words.** `analysis/findings.md` says that had private debt stayed at its 2007Q4 level, the share would have risen 6.1 pp. That figure is the public-growth side of a split that holds private debt fixed, and it leaves the remainder to private retreat. The Shapley split here averages over both orders. Both say about half of the jump came from private retreat.
 - **Revisions.** The figures are from the 2026-09-11 vintage. Rerun after each Z.1 release.
 
 ## Files and how to rerun
@@ -61,7 +64,8 @@ uv run --project pipeline python validation/run.py        # downloads the Z.1 zi
 uv run --project pipeline python research/a1_gfc_decomposition/decompose.py
 ```
 
-- `decompose.py`: the decomposition. It asserts that the parts sum to the total and that the cells reproduce the scope total.
+- `decompose.py`: the decomposition (Shapley; the endpoint identity as a sensitivity). It asserts that the parts sum to the total and that the cells reproduce the scope total.
+- `test_decompose.py`: synthetic tests of both methods.
 - `decomposition.csv`: endpoint contributions by loan type × holder (all holders).
 - `own_share_change.csv`: the own-share view (public holders).
 - `path.csv`: cumulative chained contributions by quarter, grouped.
