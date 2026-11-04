@@ -11,8 +11,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A4 | ready for review: run to the frozen prereg (02cc47f); one break at 1966Q1 (CI 1952Q2–1967Q1); no evidence at the five 2008–10 dates; vintage-robust; quant review done (interval bug fixed); not confirmable without R | `research/a4_breaks/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
-## Where the track stopped (2026-11-04, about 05:00 UTC)
-A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 open. Every task had a skeptic pass and every objection is answered in the review logs. The later-phase queue the coordinator sent (A3, A4 code, A7 addendum and A7, A6) has not been started: this session's context is long, and a fresh session per task is cheaper and safer.
+## Where the track stopped (2026-11-04, about 05:45 UTC)
+Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is committed (0f9aaff) before any A7 outcome was inspected; no A7 test has been run, because H2–H4 need Eleonora's answer on the donor design (Q8a) and H1 uses two details she has not yet confirmed (Q8b, Q8c). A6 not started: it needs A2's Fannie figures (Q6) and replication of a CBO fair-value figure first (cbo.gov root answered 403 earlier). Open questions: Q6, Q7, Q8.
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
