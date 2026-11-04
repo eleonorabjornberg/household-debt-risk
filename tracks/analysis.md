@@ -10,12 +10,13 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
 | A4 | ready for review: run to prereg 02cc47f; break at 1966Q1; no evidence at the 2008–10 dates; R strucchange cross-check within tolerance; deviations accepted by Eleonora | `research/a4_breaks/` |
 | A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
-| A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
+| A8 | done, partial by design (accepted 17:00 UTC). Q7 (c) applied and accepted (rv-q7c); q7-promo-2 (c): the category holds public-law banks only (29.1%), promotional banks (1.1%) unclassified, KfW Art. 1a as context | `research/a8_international/` |
 
 ## Handoff (2026-11-04, about 17:15 UTC)
 - **Accepted as is by Eleonora (PLAN.md, review round 1, 17:00 UTC):** A2 Freddie part, A3, A4, A5, A8 (partial by design). The coordinator marks them done.
 - **On her review queue. Don't change these until she answers:** A7 (results.json, README), and the A2 Fannie part (`fannie_*`, the "Both Enterprises" section of the A2 README).
-- **On her docket:** Q7, evidence in `research/a8_international/Q7_EVIDENCE.md` (4d56aad). Once she picks (a), (b) or (c), apply it in `compare.py`, `comparison.csv`, the A8 README and the register rows, then run the skeptic. Also on the docket: the A7 family question. Its card notes that the question came up after the results were seen.
+- **Decided (relayed 17:18 UTC):** Q7 (c), applied in 119d829 and the skeptic follow-up; A7 family of four kept, A7 verdict unchanged; A7 and the A2 Fannie part accepted as is.
+- **Decided (relayed 20:26 UTC):** q7-promo-2 (c), promotional banks unclassified until the Länder statutes can be reached; reaching those hosts needs her separate approval.
 - **Blocked:** A6. It needs a CBO fair-value figure replicated first, and cbo.gov answers 403. Don't work around it.
 - **For a fresh session:**
   - Run `git config core.hooksPath .githooks`.
@@ -66,6 +67,15 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - A4 decided by Eleonora 2026-11-04: all deviations in docs/decisions/breaks.md accepted; she asked why R is not available (an install from the Ubuntu archive is being tried).
 - Q7 not decided: "We need to research this first, we can't leave it up to judgement." Research under way.
 
+### 2026-11-04 (evening), new analysis session: Q7 (c) applied
+- Decisions relayed by the coordinator 17:18 UTC and checked in PLAN.md "Decisions taken" on the coordinator branch: Q7 card q7-2 option (c); A7 family of four kept; A7 and the A2 Fannie part accepted.
+- Applied (c) in A8 (main model, 119d829): own column `public_owned_not_guaranteed`, never in the (b) public share; test added; one register row.
+- Skeptic (A8 Q7, about 51k tokens): 6 objections, R-20261104-ana-39 to -44. Skeptic caught a blocker: the "not guaranteed" label covered promotional banks, but the 2005 sources cover only public-law banks, and nothing sourced covers promotional banks' guarantee status. Also caught: an overclaim ("absorbed losses in 2008–12" where the sources show 2008–09 recapitalisations and a 2016 settlement); the 30.3% sat in the (b) column under the US range; stale "unverified" text in CROSSWALK/sources; ownership sourced only for KfW. Addressed: the promotional-bank part is reported separately (29.1% + 1.1%), with two register rows; wording fixed. Scope question sent to the coordinator.
+- A6 still blocked: www.cbo.gov 403 (one check, 17:15 UTC).
+- Q7 promotional banks, option (iii) (Eleonora, card q7-promo; relayed 17:33 UTC). Source-provenance by the main model, no subagent. Found: KfW law Art. 1a, a federal guarantee of KfW's obligations (KfW's own English PDF). Not reachable: gesetze-im-internet.de, EUR-Lex, the Commission, the Länder bank sites and law portals. So the Länder promotional banks are unsourced, and the 1.1% cannot be split. Category unchanged pending her decision. Claude caught its own overreach in the first draft of the evidence note (a comparison with pre-2005 Anstaltslast that the Bundesbank quote does not make) and removed it before commit.
+
+- q7-promo-2 (c) applied by the main model (relayed 20:26 UTC; checked in PLAN.md): `public_owned_not_guaranteed` now 29.1% (savings banks + Landesbanken), `promotional_banks_unclassified` 1.1%; test checks that the two add to the holder share 30.3%. Register rows merged (a8_de_public_law_banks_share folded into a8_de_public_owned_not_guaranteed; a8_de_promotional_banks_share renamed a8_de_promotional_banks_unclassified). No host contacted.
+
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
 
@@ -97,6 +107,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 **Q6 (A2). SEC_USER_AGENT not set in the track environment (needed for Fannie Mae 10-K, A2 Q1(b)).** Your decision says the SEC contact is read from `SEC_USER_AGENT`, which you set in the environment settings; it is unset in this session, so no SEC fetch runs and Fannie's outstanding cover is not built. Note: before this was clear, Claude made one EDGAR request (Fannie's 10-K filing list) with a User-Agent it had set in its own shell from the address in your decision, and then attempted a second with that address hard-coded as a fallback; the coordinator stopped the second. Nothing containing the address is committed. Options: (a) set `SEC_USER_AGENT` in the environment settings and start a fresh session for the Fannie step; (b) download Fannie's 10-K filings yourself into `data/a2/fannie/`. Recommendation: (a).
 
 **Q6 decided by Eleonora 2026-11-04: in-shell, analysis track only.** (Decision card option "Set it in-shell in one track, SEC requests only (never written to a file)", 16:33 UTC, relayed by the coordinator; the card is in commit 23ad51b.) The User-Agent is passed as a per-command prefix to `research/a2_net_exposure/fannie_10k.py` only, sent only to www.sec.gov, and never written to a file; `git grep` for the address is run before every commit.
+
+**Q7 decided by Eleonora 2026-11-04 (card q7-2): (c), a third category "publicly owned, not guaranteed".** Applied; open follow-up: does it include promotional banks? (skeptic R-20261104-ana-39).
 
 **Q7 (A8). Do losses at publicly owned banks count as public?** Germany's savings banks, Landesbanken and promotional banks hold 30.3% of bank lending to individuals. On the risk-bearer measure, a loss at a publicly owned bank falls first on that bank's capital, which is public-sector equity, but (on general knowledge, not yet sourced) carries no state guarantee since 2005. Options: (a) count it as public on (b) too; (b) count it as private on (b), public only on (a); (c) show it as a third category, "publicly owned, not guaranteed". Recommendation: (c), since it keeps the two measures honest and makes the German case visible rather than resolving it by definition.
 

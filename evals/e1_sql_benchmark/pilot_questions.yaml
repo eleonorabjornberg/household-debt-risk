@@ -1,0 +1,88 @@
+# E1 pilot: 10 questions with answers verified independently of any model (PLAN E1).
+# Purpose: the cost pilot Eleonora approved on 2026-11-04 (PLAN.md "Decisions taken", b7f1158):
+# 10 questions x Opus/Sonnet/Haiku 5.5 x 1 run, hard cap $2.98. Pilot accuracy is NOT an E1 result;
+# the full benchmark (about 100 questions) needs its own pre-registration of scoring rules first.
+#
+# Verification (verify.py, no model involved), two independent paths per answer:
+#   1. recomputed from the snapshot the MCP server serves (web/public/data/*.json, Z.1 vintage in meta.json);
+#   2. the claims/register.csv row named in `register`, all validation PASS (pipeline checks on raw Z.1 series).
+# Both must agree to the register's stated precision. They share the upstream Z.1 release, so this verifies
+# the export and the arithmetic, not Z.1 itself.
+#
+# Pilot scoring rule (fixed here before any model run): a model answer is correct if its number, read as the
+# stated unit, is within `tolerance` of `gold` (and, where `quarter` is given, names that quarter).
+# Answers that refuse or give no number are wrong. Limitation: 9 of 10 use the public_share tool; the NY Fed
+# and collateral tools have no PASS register rows yet, so they are left to the full benchmark.
+questions:
+  - id: q01
+    question: "What share of US household mortgages and consumer credit was held by public holders in 2026Q2?"
+    tool: public_share
+    register: public_share_2026q2
+    check: {table: public_share, date: "2026-06-30", field: public_share}
+    unit: share
+    tolerance: 0.0005
+  - id: q02
+    question: "What was the public share of household mortgages and consumer credit in the first quarter of 1952?"
+    tool: public_share
+    register: public_share_1952q1
+    check: {table: public_share, date: "1952-03-31", field: public_share}
+    unit: share
+    tolerance: 0.0005
+  - id: q03
+    question: "In which quarter did the public share of household mortgages and consumer credit peak, and what was it?"
+    tool: public_share
+    register: public_share_peak
+    check: {table: public_share, op: argmax, field: public_share}
+    unit: share
+    tolerance: 0.0005
+    quarter: 2021Q1
+  - id: q04
+    question: "What share of household 1-4 family mortgages alone was held by public holders in 2026Q2?"
+    tool: public_share
+    register: public_share_mortgage_2026q2
+    check: {table: public_share, date: "2026-06-30", field: public_share_mortgage}
+    unit: share
+    tolerance: 0.0005
+  - id: q05
+    question: "What share of household consumer credit was held by public holders in 2026Q2?"
+    tool: public_share
+    register: public_share_cc_2026q2
+    check: {table: public_share, date: "2026-06-30", field: public_share_cc}
+    unit: share
+    tolerance: 0.0005
+  - id: q06
+    question: "How many trillion dollars of household mortgages and consumer credit did public holders hold in 2026Q2?"
+    tool: public_share
+    register: public_usd_2026q2
+    check: {table: public_share, date: "2026-06-30", field: public_musd, scale: 1.0e-6}
+    unit: usd_tn
+    tolerance: 0.01
+  - id: q07
+    question: "What was the total of household 1-4 family mortgages plus consumer credit, in trillions of dollars, in 2026Q2?"
+    tool: public_share
+    register: scope_usd_2026q2
+    check: {table: public_share, date: "2026-06-30", field: scope_total_musd, scale: 1.0e-6}
+    unit: usd_tn
+    tolerance: 0.01
+  - id: q08
+    question: "What was the public share of household mortgages and consumer credit at the 2007Q4 business-cycle peak?"
+    tool: public_share
+    register: public_share_2007q4
+    check: {table: public_share, date: "2007-12-31", field: public_share}
+    unit: share
+    tolerance: 0.0005
+  - id: q09
+    question: "By how many percentage points did the public share of household mortgages and consumer credit change from 2007Q4 to 2011Q4?"
+    tool: public_share or crisis_windows
+    register: gfc_jump_pp
+    check: {table: public_share, op: diff_pp, from: "2007-12-31", to: "2011-12-31", field: public_share}
+    unit: pp
+    tolerance: 0.05
+  - id: q10
+    question: "After 2011Q4, in which quarter was the public share of household mortgages and consumer credit lowest, and what was it?"
+    tool: public_share
+    register: public_share_min_after_2011q4
+    check: {table: public_share, op: argmin_after, after: "2011-12-31", field: public_share}
+    unit: share
+    tolerance: 0.0005
+    quarter: 2012Q1
