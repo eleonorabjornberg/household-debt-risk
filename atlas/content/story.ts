@@ -81,18 +81,18 @@ export const steps: Step[] = [
       "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to {share}, a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back.",
   },
   {
-    date: "2021-12-31",
-    kicker: "2020–2021",
+    date: "2023-12-31",
+    kicker: "2020–2023",
     title: "COVID barely moves the dots",
     body:
-      "The sharpest jump in unemployment since the 1930s, and the share goes from 55.2% to {share} in two years. Across all eleven recessions, the shift after a crisis looks like any other period's. 2007–11 is the exception, not the rule.",
+      "The sharpest jump in unemployment since the 1930s, and four years after the 2019 peak the share has gone from 55.2% to {share}, about one point. Across all eleven recessions, the shift after a crisis looks like any other period's. 2007–11 is the exception, not the rule.",
   },
   {
     date: "2026-06-30",
     kicker: "Today",
     title: "Most of it is public now",
     body:
-      "{public} of {total}, or {share}, sits with the public sector. It mostly got there slowly. One crisis made it permanent.",
+      "{public} of {total} in 2026 dollars, or {share}, sits with the public sector. It mostly got there slowly. One crisis made it permanent.",
   },
   {
     date: "2026-06-30",
