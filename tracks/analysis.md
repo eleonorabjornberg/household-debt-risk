@@ -5,9 +5,12 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | in progress: Q1(b) built for Freddie Mac 2013–2025 (outstanding cover from 10-Ks, inside the FHFA bound); Fannie Mae waits for its filings (fanniemae.com 403; SEC User-Agent contact pending) | `research/a2_net_exposure/` |
-| A5 | in progress: Q4(c) estimate with (b) beside it built (SCF 2025 student-loan shares; labelled ESTIMATE); second skeptic pass pending | `research/a5_distribution/` |
-| A8 | blocked (network: every national source refused by the proxy; see `research/a8_international/AVAILABILITY.md`); availability note and unverified crosswalk draft done; metric choice is Q5 | `research/a8_international/` |
+| A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
+| A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
+| A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
+
+## Where the track stopped (2026-11-04, about 05:00 UTC)
+A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 open. Every task had a skeptic pass and every objection is answered in the review logs. The later-phase queue the coordinator sent (A3, A4 code, A7 addendum and A7, A6) has not been started: this session's context is long, and a fresh session per task is cheaper and safer.
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
@@ -30,6 +33,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - A5 Q4(c): `public_by_group.py` imputes public exposure by wealth and income group from DFA, SCF 2025 and Z.1; both methods add up to the Z.1 public total; 12 register rows (10 ESTIMATE) by hand.
 - Skeptic (A2 10-K + A5 estimate, 82k tokens): 8 objections, none blocking, all addressed. Skeptic caught: CRT definition narrower than the FHFA bound; an unsupported "retained first loss" claim; mixed apportioned/unapportioned rows; unstated estimate assumptions. Its SCF total also exposed a Claude bug (SCF weighted sums divided by five twice; shares unaffected).
 - A8 source scouts (4 × Sonnet, about 440k tokens in total): Canada, Denmark, UK, Germany findings in the scratchpad; to be reviewed by the main session before any number is used.
+- A8 (main model, from the scouts' leads): every non-US figure re-checked against the downloaded official file; the German table re-fetched by the main session so all three German figures come from one Bundesbank file. Claude caught two of its own slips before commit: a KfW URL with a guessed file name (replaced by the recorded URL) and a German row pairing one PDF's URL with another's hash (fixed by re-fetching).
+- Skeptic (A8, 63k tokens): 7 objections. Skeptic caught a blocker: the US 56.4% "holder" share counted guaranteed GSE/agency pools held by private investors, so it was not comparable with Germany's ownership share. Also: an "outlier" claim the gaps could not support, an unsourced "private risk" label for Sparkassen, a stale crosswalk, an omitted promotional-bank block (29.1% → 30.3%). Claude then caught its own first fix (subtracting the pool sector) as wrong, because after FAS 166/167 most investor-held GSE MBS sit in the Enterprises' own lines; US holder share recorded as not computable.
 - Errors caught by Claude (main) through the reconciliation check while building the parser: a wrapped label turned a subtotal into a component (FY2018–20, doubled sums); "Total $" rows were missed so the parse ran past the table (FY2015); a wrapped "STACR ... / transactions" label would have been filed as "other". All caught by the table-total assert before any number was used.
 
 ## Questions for Eleonora
@@ -60,6 +65,10 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - (c) Report both (a) and (b), with the gaps stated.
 - Recommendation: (c), with (b) as the headline, since the project's question is who carries the risk. Either way A8 needs the hosts in `research/a8_international/AVAILABILITY.md` ("What would unblock A8") added to Allowed domains, or the national tables downloaded by hand into `data/a8/`.
 
+**Q6 (A2). SEC_USER_AGENT not set in the track environment (needed for Fannie Mae 10-K, A2 Q1(b)).** Your decision says the SEC contact is read from `SEC_USER_AGENT`, which you set in the environment settings; it is unset in this session, so no SEC fetch runs and Fannie's outstanding cover is not built. Note: before this was clear, Claude made one EDGAR request (Fannie's 10-K filing list) with a User-Agent it had set in its own shell from the address in your decision, and then attempted a second with that address hard-coded as a fallback; the coordinator stopped the second. Nothing containing the address is committed. Options: (a) set `SEC_USER_AGENT` in the environment settings and start a fresh session for the Fannie step; (b) download Fannie's 10-K filings yourself into `data/a2/fannie/`. Recommendation: (a).
+
+**Q7 (A8). Do losses at publicly owned banks count as public?** Germany's savings banks, Landesbanken and promotional banks hold 30.3% of bank lending to individuals. On the risk-bearer measure, a loss at a publicly owned bank falls first on that bank's capital, which is public-sector equity, but (on general knowledge, not yet sourced) carries no state guarantee since 2005. Options: (a) count it as public on (b) too; (b) count it as private on (b), public only on (a); (c) show it as a third category, "publicly owned, not guaranteed". Recommendation: (c), since it keeps the two measures honest and makes the German case visible rather than resolving it by definition.
+
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
 
@@ -68,3 +77,4 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - claims/register.csv: on merge, fold `a5_public_share_cc_2026q2_readme` into `public_share_cc_2026q2` as an extra location (same claim, C8).
 - `tracks/analysis-review-log.md` → `claims/review-log.md` on merge.
 - claims/register.csv: add `research/a5_distribution/README.md:23` as a location on the existing row for the public share of mortgages at 2026Q2 (65.6%), per R-20261104-ana-13.
+- Re-fold of rows through 526657a: done by the coordinator (174354e).
