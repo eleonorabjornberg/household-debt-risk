@@ -77,18 +77,18 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Household debt risk, round 6, 2026-11-04 evening. Round 5 is recorded in PLAN.md. Tap to record; notes save on their own. Nothing is acted on until you choose.</p>
+      <p class="sub">Household debt risk, round 7, 2026-11-04 evening. Round 6 is recorded in PLAN.md. Tap to record; notes save on their own. Nothing is acted on until you choose.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>Rec marks a recommendation drafted by Claude (the analysis track). The choices are yours. &#x27;Open&#x27; shows the file on GitHub.</footer>
+  <footer>No recommendation on this card: the analysis track left the choice open. &#x27;Open&#x27; shows the file on GitHub.</footer>
 </div>
 
 <script>
-const DECISIONS = [{"id": "q7-promo", "group": "A8 Germany", "tag": "Q7-3", "title": "Do promotional banks (1.1%, e.g. KfW) belong in 'publicly owned, not guaranteed'?", "ctx": "The sources show that state guarantees ended in 2005 for savings banks and Landesbanken (29.1%). No source here says whether promotional banks carry a state guarantee, so neither (i) nor (ii) is backed by a source yet.", "opts": [["iii", "Look for a primary source on promotional-bank guarantees first, then ask me again", true], ["i", "Keep them in: the category stays at 30.3%"], ["ii", "Leave them out: 29.1%, with promotional banks unclassified"]], "where": "research/a8_international/README.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/research/a8_international/README.md"}];
+const DECISIONS = [{"id": "q7-promo-2", "group": "A8 Germany", "tag": "Q7-4", "title": "Promotional banks (1.1%): where do they go, now that the KfW source is in?", "ctx": "Found: KfW's own law (Art. 1a) says the Federal Republic guarantees KfW's obligations, meaning its funding and its creditors. It does not guarantee the households that borrow from KfW, and on programme loans the bank that passes the loan on carries the risk. Not found: the Länder promotional banks (NRW.BANK, L-Bank and others), because none of the hosts with their statutes answered. The 1.1% is one Bundesbank category, and no source splits KfW out of it.", "flag": "Option (c) means letting this environment reach new hosts (EUR-Lex, gesetze-im-internet.de, the Länder law sites). That is a separate OK from you.", "opts": [["a", "Take them out: the category is public-law banks only (29.1%), and promotional banks are shown on their own with KfW's funding-side guarantee noted"], ["b", "Keep them in (30.3%) with a footnote on KfW's guarantee"], ["c", "Leave the 1.1% unclassified until the Länder statutes can be reached (needs new hosts allowed)"]], "where": "research/a8_international/Q7_EVIDENCE.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/research/a8_international/Q7_EVIDENCE.md"}];
 
 const GROUPS = ["A8 Germany"];
 const answers = {};          // id -> {choice, note}
