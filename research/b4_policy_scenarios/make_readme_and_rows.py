@@ -26,8 +26,8 @@ txt = f"""# B4: Policy-regime scenarios
 
 | Scenario | Status of the debate (as looked up, 2026-11-04) | Result |
 |---|---|---|
-| Recession | — | Losses from {bn(REC['total_musd'][0])} to {bn(REC['total_musd'][1])} on 2026Q2 balances. The public share of losses is {pc(REC['public_share_of_losses'][0])} to {pc(REC['public_share_of_losses'][1])}. The range runs from B3's DFAST proxy to its 2008–12 replay; both are proxies. |
-| GSEs released from conservatorship | FHFA's conservatorship page, retrieved 2026-11-04, says "Fannie Mae and Freddie Mac continue to operate under conservatorship, as they have since 2008". The page carries no date of its own and cites the 2025 Scorecard, so it may lag. Only the first page of FHFA news releases (10 items) was checked, and none concerned an exit. So the status is **unconfirmed beyond those two pages**. | Public share of losses from {pc(lo)} to {pc(hi)} across both recession proxies and 0–100% of the Fannie and Freddie book turning private (below). |
+| Recession | — | Losses from {bn(REC['total_musd'][0])} to {bn(REC['total_musd'][1])} on 2026Q2 balances. The public share of losses is {pc(REC['public_share_of_losses'][0])} to {pc(REC['public_share_of_losses'][1])} (federal student loans excluded: no loss rate in either preset). The range runs from B3's DFAST proxy to its 2008–12 replay; both are proxies. |
+| GSEs released from conservatorship | FHFA's conservatorship page, retrieved 2026-11-04, says "Fannie Mae and Freddie Mac continue to operate under conservatorship, as they have since 2008". The page carries no date of its own and cites the 2025 Scorecard, so it may lag. Only the first page of FHFA news releases (10 items) was checked, and none concerned an exit. So the status is **unconfirmed beyond those two pages**. | Public share of mortgage and other consumer-credit losses (federal student loans excluded) from {pc(lo)} to {pc(hi)} across both recession proxies and 0–100% of the Fannie and Freddie book turning private (below). |
 | Student-loan reform | P.L. 119-21, approved July 4, 2025: no Federal Direct PLUS loans for graduate and professional students for periods from July 1, 2026, subject to the statute's transition exception ("Subject to paragraph (8)"); new limits; a Repayment Assistance Plan. | Waits for a sourced estimate of the lending shift (card b4-student (c)) |
 
 - **No transfer.** Neither range applies a CRT or mortgage-insurance transfer. With A2's cover as an input, the public figures would be lower.
@@ -35,14 +35,14 @@ txt = f"""# B4: Policy-regime scenarios
 
 ## GSE release: who bears the losses (card b4-gse (a))
 
-**What moves.** On release, a share of the losses on Fannie Mae's and Freddie Mac's books (portfolio and pools) turns private: 0% (the implicit guarantee holds), then 25%, 50%, 75% and 100% (fully private, no backstop). These are scenario points, not forecasts of release terms. Balances and loss rates stay as in B3; only the side of the losses changes.
+**What moves.** On release, a share of the losses on Fannie Mae's and Freddie Mac's books (portfolio and pools) turns private: 0% (losses stay on the GSEs' and Treasury's side, as under conservatorship), then 25%, 50%, 75% and 100% (fully private, no backstop). These are scenario points, not forecasts of release terms. Balances and loss rates stay as in B3; only the side of the losses changes.
 
-**What stays public.** Ginnie Mae and FmHA pools (an explicit federal guarantee), the FHLBs and the other GSEs. The split of B3's "GSEs & agency pools" mortgage book ({bn(B['bucket_total'])}, household-apportioned, 2026Q2, from the 2026-09-11 Z.1 release):
+**What stays public.** Ginnie Mae and FmHA pools, the FHLBs and the other GSEs. The Ginnie pools are federally insured or guaranteed loans (FHA, VA, USDA); VA and USDA guaranties are partial and issuers bear part of the loss, so counting the whole pool as public is a holder-based simplification (see A1's caveat). The split of B3's "GSEs & agency pools" mortgage book ({bn(B['bucket_total'])}, household-apportioned, 2026Q2, from the 2026-09-11 Z.1 release):
 - Fannie Mae and Freddie Mac, the book that is released: {bn(B['released_total'])} (Fannie {bn(B['Fannie Mae (portfolio + pools)'])}, Freddie {bn(B['Freddie Mac (portfolio + pools)'])}).
 - Ginnie Mae and FmHA pools: {bn(B['Ginnie Mae and FmHA pools'])}.
 - FHLBs and other GSEs: {bn(B['FHLBs and other GSEs'])}.
 
-**Result.** Public losses and the public share of all household-credit losses, by share of the Fannie/Freddie book's losses that turns private:
+**Result.** Public losses and the public share of losses on mortgages and other consumer credit, by share of the Fannie/Freddie book's losses that turns private. Federal student loans are excluded: neither B3 preset gives them a loss rate, so they add no loss.
 
 | Share turning private | DFAST 2026 proxy: public losses | Public share of losses | 2008–12 replay proxy: public losses | Public share of losses |
 |---|---|---|---|---|
@@ -51,9 +51,11 @@ txt = f"""# B4: Policy-regime scenarios
 Total losses do not change with the share: {bn(D[0]['total_musd'])} under the DFAST proxy and {bn(P[0]['total_musd'])} under the replay. At 0% the figures equal the recession range above.
 
 **Caveats.**
+- **What "public" means here.** Losses on the books of the GSEs, the federal government and other public holders. Under conservatorship the GSEs' own capital takes losses first and Treasury's Senior Preferred Stock Purchase Agreements stand behind them, so "public" is not the same as taxpayer outlay.
+- **Gross of existing risk transfer.** The shares are measured before CRT and mortgage insurance. Fannie and Freddie already pass part of their losses to private investors and insurers today (A2, `research/a2_net_exposure/`), so on a net basis today's arrangement already sits above 0%.
 - **One loss rate per class.** B3 applies one mortgage loss rate to every holder, so Fannie and Freddie lose at the same rate as Ginnie's FHA and VA pools. If Ginnie's pools lose more per dollar than the GSE book, the public share at each point is understated, and overstated if they lose less. Relative loss rates are not estimated here.
 - **Proxies.** Both loss paths are bank-portfolio proxies (B3).
-- **Release is not the same as loss-bearing.** A released GSE would hold capital and buy CRT. The share turning private stands in for those terms, which are not known (option (c) of the card, a specific proposal, was not chosen).
+- **Release is not the same as loss-bearing.** A released GSE would hold more capital and could buy more CRT. The share turning private stands in for those terms, which are not known (option (c) of the card, a specific proposal, was not chosen).
 
 ## Reproduce
 
@@ -82,11 +84,11 @@ GSER = "FL403065110 FL413065143 FL403065120 FL413065123 FL413065110 FL413065133 
 rows = []
 
 
-def add(cid, claim, display, value, unit, comp, series, note, start=0, val="ESTIMATE"):
+def add(cid, claim, display, value, unit, comp, series, note, start=0, val="ESTIMATE", vintage=V):
     rows.append({"claim_id": cid, "claim": claim, "display": display, "value": f"{value:.6g}", "unit": unit,
                  "period": "2026Q2 balances", "locations": loc(display.split(" | ")[0], start),
                  "computation": f"research/b4_policy_scenarios/b4.py -> results.json {comp}", "series_ids": series,
-                 "vintage": V, "validation": val, "check_id": "", "notes": note})
+                 "vintage": vintage, "validation": val, "check_id": "", "notes": note})
 
 
 rec_line = next(i for i, l in enumerate(lines) if l.startswith("| Recession"))
@@ -98,7 +100,7 @@ for i, nm in [(0, "lo"), (1, "hi")]:
         f"recession.public_share_of_losses[{i}]", SRC, "Range from two B3 proxy presets.", rec_line)
 gse_line = next(i for i, l in enumerate(lines) if l.startswith("| GSEs released"))
 for i, (nm, x) in enumerate([("lo", lo), ("hi", hi)]):
-    add(f"b4_gse_pubshare_{nm}", f"B4 GSE release: public share of losses, range bound {pc(x)}.", pc(x), x, "share",
+    add(f"b4_gse_pubshare_{nm}", f"B4 GSE release: public share of mortgage and other consumer-credit losses (federal student loans excluded), range bound {pc(x)}.", pc(x), x, "share",
         f"gse_release.public_share_of_losses_range[{i}]", SRC + "; " + GSER,
         "Over both B3 proxy presets and 0-100% of the Fannie/Freddie book's losses turning private (card b4-gse (a)).", gse_line)
 sec = next(i for i, l in enumerate(lines) if l.startswith("**What stays public.**"))
@@ -107,7 +109,7 @@ for key, cid in [("bucket_total", "bucket"), ("released_total", "released"), ("F
                  ("FHLBs and other GSEs", "fhlb_other")]:
     add(f"b4_gse_bal_{cid}", f"B4 GSE release: {key} mortgage balance, household-apportioned, {bn(B[key])}.", bn(B[key]),
         B[key], "usd_m", f"gse_release.balances_musd['{key}']", GSER,
-        "Z.1 2026-09-11, 2026Q2, apportioned with FL153165105/FL893065105 as B3.", sec, val="UNVERIFIED")
+        "Z.1 2026-09-11, 2026Q2, apportioned with FL153165105/FL893065105 as B3. Recomputed independently from Z1.csv by the skeptic (R-20261104-mkt-s26).", sec, val="UNVERIFIED", vintage="z1:2026-09-11")
 tab = next(i for i, l in enumerate(lines) if l.startswith("| Share turning private"))
 for j, (d, p) in enumerate(zip(D, P)):
     x = int(round(100 * d["share_private"]))
@@ -120,7 +122,7 @@ for j, (d, p) in enumerate(zip(D, P)):
         add(f"b4_gse_{nm}_{x}_public", f"B4 GSE release, {nm} proxy, {x}% private: public losses {bn(r['public_musd'])}.",
             bn(r["public_musd"]), r["public_musd"], "usd_m", f"gse_release.by_preset[{nm}][{j}].public_musd", SRC + "; " + GSER,
             "Proxy loss rates (B3); scenario share.", tab)
-        add(f"b4_gse_{nm}_{x}_pubshare", f"B4 GSE release, {nm} proxy, {x}% private: public share of losses {pc(r['public_share_of_losses'])}.",
+        add(f"b4_gse_{nm}_{x}_pubshare", f"B4 GSE release, {nm} proxy, {x}% private: public share of losses {pc(r['public_share_of_losses'])} (federal student loans excluded).",
             pc(r["public_share_of_losses"]), r["public_share_of_losses"], "share",
             f"gse_release.by_preset[{nm}][{j}].public_share_of_losses", SRC + "; " + GSER, "Proxy loss rates (B3); scenario share.", tab)
 tot = next(i for i, l in enumerate(lines) if l.startswith("Total losses do not change"))

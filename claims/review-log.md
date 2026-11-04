@@ -847,3 +847,38 @@ Resolutions are written by the main session or Eleonora, never by the reviewer t
 - **Evidence:** freddie_mvs_reports.csv, freddie_mvs_rows.csv, nowcasts_dev.csv, tests_dev.csv (reproduced from nowcasts_dev.csv with tests()); pytest 8 passed.
 - **Proposed resolution:** State (1)-(3) as descriptive robustness in the C1b README, and report the lag-1 Holm values next to the lag-0 values.
 - **Status:** resolved (2026-11-04, by main session): `results_dev.json` `robustness_reissued` reports it (ratio 0.67 on the 17 instants that used a re-issued report, 0.63 on the rest); to be stated in the C1b README.
+
+### R-20261104-mkt-s23 · skeptic · research/b4_policy_scenarios/README.md:10,25 (b4_gse_pubshare_lo/hi, b4_gse_*_pubshare)
+- **Objection:** The GSE section calls the result "the public share of all household-credit losses", and the 7%–42% range is presented without qualification. In both B3 presets federal student loans ($1,605B, public) carry no loss rate, so they add zero loss. The range is a share of mortgage + other-consumer losses only. B3's README says this (its variant with student loans at 7.3% moves the DFAST public share from 23% to 36%); B4's README does not.
+- **Severity:** major
+- **Evidence:** presets/dfast2026.json and replay_2008_2012.json classes = {mortgage, consumer_other} only; exposures.json student_federal/federal_direct balance 1605134; research/b3_scenarios/README.md:22,26-27.
+- **Proposed resolution:** Say "of mortgage and other consumer credit losses (federal student loans excluded, as in B3's main presets)" in the scenario table, the Result line and the register claim text. Optionally add the B3 student-loan variant as a sensitivity row.
+- **Status:** resolved (2026-11-04, by main session): README and register text now say mortgage and other consumer-credit losses, federal student loans excluded (also on the recession row). B3's student-loan variant not added (not part of the card).
+
+### R-20261104-mkt-s24 · skeptic · research/b4_policy_scenarios/README.md:18,42 (0% point; "Release is not the same as loss-bearing")
+- **Objection:** The README reads as if CRT and capital would arrive only with release ("A released GSE would hold capital and buy CRT"). In fact, Fannie and Freddie already transfer part of their credit losses today through CRT, and through private MI on loans above 80% LTV (A2). So "0% = the implicit guarantee holds" is not the status quo: part of the 0–100% axis has already happened, and the 0% public figures overstate today's public loss-bearing. The general "No transfer" bullet does not link this to the GSE axis.
+- **Severity:** major
+- **Evidence:** README.md:18 "0% (the implicit guarantee holds)"; README.md:42; research/a2_net_exposure (net-of-CRT and MI exposure below gross; R-20261104-ana-1..16).
+- **Proposed resolution:** State that the share turning private is measured gross of existing CRT and MI. Today's arrangement already sits at some share above 0%. Point to A2 for the size.
+- **Status:** resolved (2026-11-04, by main session): 0% relabelled (losses stay on the GSEs' and Treasury's side); caveat added that shares are gross of CRT and mortgage insurance, so today's arrangement sits above 0% net, pointing to A2.
+
+### R-20261104-mkt-s25 · skeptic · research/b4_policy_scenarios/README.md:20, METHOD.md section 2 ("Ginnie ... explicit federal guarantee", "stay public in every case")
+- **Objection:** The Ginnie guarantee is explicit to MBS investors. It does not make every credit loss on the underlying loans public. VA and USDA guaranties are partial, and Ginnie issuers and servicers bear losses beyond them. That is the same holder-vs-risk point as R-20261104-8, which was fixed in A1's README but is repeated here. FmHA pools are $0 at 2026Q2, so naming them has no effect.
+- **Severity:** minor
+- **Evidence:** Z1.csv 2026-06-30: FL413065110 = 2,798,659; FL413065133 = 0. R-20261104-8 resolution text.
+- **Proposed resolution:** "Ginnie Mae pools (federal guarantee to investors; FHA insurance full, VA/USDA partial, with issuers bearing the remainder)". Note that the public share at each point is therefore an upper bound on that count.
+- **Status:** resolved (2026-11-04, by main session): Ginnie wording qualified (VA and USDA guaranties partial; holder-based simplification, A1's caveat).
+
+### R-20261104-mkt-s26 · skeptic · claims/tracks/markets.csv rows b4_gse_bal_* (29-34)
+- **Objection:** The balance rows carry vintage "z1:2026-09-11 fred:2026-11-04", but they use only Z.1. They are also left UNVERIFIED although they reproduce independently. I recomputed all of them from the raw Z1.csv: a = 13,976,938/14,983,477 = 0.932823; released 6,728,906×a = 6,276,881; Ginnie 2,610,655; FHLB+other 89,795 (FHLB 83,106 + FCS 7,915 + 5,240 unallocated, ×a); total 8,977,330 = B3 bucket. The series labels match the Z.1 descriptions: FL413065143 is Fannie pools, FL413065133 is FmHA pools, and the post-2010 consolidated trusts sit in FL403065110/120. No double count with the pools sector.
+- **Severity:** minor
+- **Evidence:** grep of Z1.csv descriptions and 2026-06-30 values (scratchpad); split identical to A1 decompose.py PUBLIC_MORT.
+- **Proposed resolution:** Drop "fred:" from the vintage of rows 29-34 and record this independent recompute in their validation/notes.
+- **Status:** resolved (2026-11-04, by main session): b4_gse_bal_* vintage now z1:2026-09-11 only; note records the skeptic's independent recompute (status stays UNVERIFIED: no validation check id).
+
+### R-20261104-mkt-s27 · skeptic · research/b4_policy_scenarios/README.md:18 ("0% (the implicit guarantee holds)")
+- **Objection:** Under conservatorship the backstop is the explicit Treasury PSPA commitment, not an implicit guarantee. Losses also hit the GSEs' own retained capital before any Treasury draw. Counting all 0%-point losses as "public" therefore means "on the GSEs' or Treasury's books", not taxpayer outlay. Under the DFAST proxy the released book loses $94B (1.5% × $6,277B), which may sit within the GSEs' own capital (not sourced here).
+- **Severity:** note
+- **Evidence:** presets/dfast2026.json mortgage pd 0.015, lgd 1.0; results.json dfast 0% minus 100% public = 137.4 - 43.3 = 94.2 $B.
+- **Proposed resolution:** Reword to "0% (losses stay with the GSEs and Treasury, as in conservatorship)" and define "public" this way in the caveats. Option (b) stays unchosen.
+- **Status:** resolved (2026-11-04, by main session): Caveat 'What "public" means here' added: GSE capital first, PSPA behind; public is not taxpayer outlay.
