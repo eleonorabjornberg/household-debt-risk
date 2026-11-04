@@ -52,4 +52,8 @@ Diagnostics: Engle–Granger-style ADF statistic on the L residuals (no lag sele
 B1 is descriptive, so it uses the latest vintage of every series (Z.1 of 2026-09-11; FRED as retrieved). Vintages are recorded in `results.json`. Real-time data are a C1 matter.
 
 ## Changes after results
-None yet.
+2026-11-04, after the first results and the quant-reviewer and skeptic reviews (`claims/review-log.md`, R-20261104-mkt-q1 to q5 and s1 to s8). Nothing above was changed. Three **post-hoc** checks were added. They are reported in `regressions.csv` under variants starting "post-hoc:", and the reading rule is not applied to them:
+- the main specification with HAC lag 8 (q1: lag sensitivity);
+- the main specification with a Fannie Mae + Freddie Mac share in place of the full mortgage public share, because PMMS prices conforming loans and the full share also counts Ginnie Mae pools of FHA/VA loans (s2);
+- the main specification with a dummy for 2022Q4 onward, the quarters after the PMMS method change (q2, s1).
+The README now also reports the residual ADF statistics next to Engle–Granger 5% critical values (q1).
