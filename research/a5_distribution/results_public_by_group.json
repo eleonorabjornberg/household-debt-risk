@@ -5,6 +5,14 @@
  "p_M": 0.6555,
  "p_CC": 0.3135,
  "federal_share_of_student_loans": 0.8638,
+ "scf_education_debt_bn": 1150.0,
+ "z1_student_loans_bn": 1858.2,
+ "scf_pop_share_wealth": {
+  "Bottom50": 0.4998,
+  "Next40": 0.4002,
+  "Next9": 0.09,
+  "Top1": 0.01
+ },
  "wealth": {
   "Bottom50": {
    "public_b_share": 0.2694,
@@ -34,6 +42,14 @@
    "public_c_pct_of_debt": 0.51,
    "scf_student_share": 0.0002
   }
+ },
+ "scf_pop_share_income": {
+  "pct00to20": 0.1932,
+  "pct20to40": 0.2038,
+  "pct40to60": 0.1904,
+  "pct60to80": 0.2102,
+  "pct80to99": 0.1924,
+  "pct99to100": 0.0101
  },
  "income": {
   "pct00to20": {

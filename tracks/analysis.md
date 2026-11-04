@@ -28,6 +28,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - Host check from this session: newly allowed hosts answer except `www150.statcan.gc.ca` and `data-api.ecb.europa.eu` (no answer) and `www.fanniemae.com` (403). Reported to the coordinator.
 - A2 Q1(b): Freddie Mac 10-Ks FY2013–FY2025 from freddiemac.com (not SEC); `tenk.py` parses four table layouts, every table reconciles to its own total, overlapping year ends agree across filings. Z.1 Freddie holdings are 99.4–99.6% of the 10-K portfolio UPB (independent check of the gross side). 14 register rows written by hand.
 - A5 Q4(c): `public_by_group.py` imputes public exposure by wealth and income group from DFA, SCF 2025 and Z.1; both methods add up to the Z.1 public total; 12 register rows (10 ESTIMATE) by hand.
+- Skeptic (A2 10-K + A5 estimate, 82k tokens): 8 objections, none blocking, all addressed. Skeptic caught: CRT definition narrower than the FHFA bound; an unsupported "retained first loss" claim; mixed apportioned/unapportioned rows; unstated estimate assumptions. Its SCF total also exposed a Claude bug (SCF weighted sums divided by five twice; shares unaffected).
+- A8 source scouts (4 × Sonnet, about 440k tokens in total): Canada, Denmark, UK, Germany findings in the scratchpad; to be reviewed by the main session before any number is used.
 - Errors caught by Claude (main) through the reconciliation check while building the parser: a wrapped label turned a subtotal into a component (FY2018–20, doubled sums); "Total $" rows were missed so the parse ran past the table (FY2015); a wrapped "STACR ... / transactions" label would have been filed as "other". All caught by the table-total assert before any number was used.
 
 ## Questions for Eleonora

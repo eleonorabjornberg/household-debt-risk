@@ -137,8 +137,15 @@ def main(argv=None) -> int:
                        "sha256_scf_zip": sha256(scf_zip), "vintage_scf": "SCF 2025 summary extract (scfp2025excel.zip)",
                        "p_M": round(float(z["p_M"]), 4), "p_CC": round(float(z["p_CC"]), 4),
                        "federal_share_of_student_loans": round(float(z["SL_public"] / z["SL"]), 4)}
+    # The summary extract stacks five implicates whose weights already sum to the household count across all rows
+    # (each implicate carries one fifth), so weighted sums over all rows are population totals. (A first version
+    # divided by five again; the skeptic's R-20261104-19 figure exposed it.)
+    assert 120e6 < scf["WGT"].sum() < 150e6, "SCF weights do not sum to the US household count"
+    res["scf_education_debt_bn"] = round(float((scf["EDN_INST"] * scf["WGT"]).sum() / 1e9), 1)
+    res["z1_student_loans_bn"] = round(float(z["SL"] / 1e3), 1)
     for grouping, (stem, var, groups) in GROUPS.items():
         st = scf_shares(scf, var, groups)
+        res[f"scf_pop_share_{grouping}"] = {g: round(float(st.at[g, "pop"]), 4) for g in st.index}
         t = estimate(read_dfa(dfa_zip, f"dfa-{stem}-levels.csv"), st, groups, z)
         check(t, z)
         dfa_cc_share = t["consumer_credit_musd"] / t["consumer_credit_musd"].sum()
