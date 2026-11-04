@@ -51,6 +51,11 @@ Opened 2026-11-04, before `forecast.py` produced any score.
 ## Specification registry
 | ID | Status | Commit | Development scores |
 |---|---|---|---|
-| `Z-DIR` | registered | (this file) | — |
-| `Z-DAMP` | registered | (this file) | — |
-| `ZC1-DIR` | registered | (this file) | — |
+| `Z-DIR` | candidate | first scored in the commit after 92fed89 | Relative RMSE vs no-change, latest-vintage expanding: h=1: 0.75, h=4: 0.70, h=8: 0.79. `scores_dev.csv`, `tests_dev.csv` |
+| `Z-DAMP` | candidate | same | h=1: 0.73, h=4: 0.70, h=8: 0.81 |
+| `ZC1-DIR` | candidate (few origins) | same | On its common origins: h=1: 0.80 (n=18), h=4: 1.40 (n=12), h=8: 0.96 (n=4) |
+
+## Process notes and issues for the coordinator (dated)
+- **2026-11-04, ordering.** The first development scoring run happened before the leakage tests were written. The protocol says those tests run "before any scoring". The tests were written straight after; all 14 pass and needed no code change, so the scores are unchanged. Recorded here, and reported to the coordinator as a candidate dated deviation, since they own the protocol.
+- **2026-11-04, seasonality.** The pre-scoring check (`seasonality.json`, F-test of quarter dummies on quarterly changes, 1952Q2–2023Q2) gives p ≈ 7e-5. Under the protocol, seasonal naive therefore enters the decision rules. The protocol's family definition lists only (no-change, AR). Candidate-versus-seasonal-naive comparisons (DM-HLN) were added to the Holm family, the stricter reading, and this is flagged to the coordinator.
+- **2026-11-04, placebo (leakage test 5).** Z-DIR trained on a time-shuffled target "beats" no-change by Clark–West at h = 1 (p = 0.0002) and h = 4 (p = 0.04), with relative RMSE about 0.96. Shuffling keeps the target's mean, so the placebo is close to a drift forecast, and drift is slightly better than no-change. That is not a leak, but the protocol says C2 is not done until the placebo shows no skill. The fix would be to redefine the placebo (demeaned target, or skill measured against drift). That is a protocol question for the coordinator and Eleonora, not changed here.
