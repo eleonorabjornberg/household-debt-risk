@@ -1,0 +1,32 @@
+{
+  "name": "dfa_bottom50_shares",
+  "kind": "line",
+  "title": "The bottom half by wealth owes half the consumer credit and a fifth of mortgages",
+  "source_line": "Source: Fed Distributional Financial Accounts, dfa-networth-shares.csv (vintage DFA 2026-09-15 (through 2026Q2)); chart: household-debt-risk",
+  "vintage": "DFA 2026-09-15 (through 2026Q2)",
+  "data_source": {
+    "file": "data/a5/dfa.zip:dfa-networth-shares.csv"
+  },
+  "row_count": 148,
+  "x": "quarter",
+  "y": [
+    "mortgages",
+    "consumer_credit",
+    "net_worth"
+  ],
+  "group": null,
+  "units": "Bottom 50% by wealth: percent of aggregate (%)",
+  "scale_applied": 1.0,
+  "recession_shading": true,
+  "modes": [
+    "light"
+  ],
+  "files": [
+    "dfa_bottom50_shares.png",
+    "dfa_bottom50_shares.svg",
+    "dfa_bottom50_shares.alt.txt",
+    "dfa_bottom50_shares.json"
+  ],
+  "alt_text": "Line chart titled \"The bottom half by wealth owes half the consumer credit and a fifth of mortgages\": Home mortgages, Consumer credit, Net worth (Bottom 50% by wealth: percent of aggregate (%)) by quarter, 1989Q3 to 2026Q2, 148 observations. Home mortgages fell from 27.5% in 1989Q3 to 22.6% in 2026Q2 (high 34.6% in 2010Q3; low 22.1% in 2021Q1). Consumer credit rose from 43.8% in 1989Q3 to 51.6% in 2026Q2 (high 58.1% in 2013Q1). Net worth fell from 3.50% in 1989Q3 to 2.30% in 2026Q2 (high 4.10% in 1992Q3; low 0.40% in 2010Q4). Shaded bands mark 4 NBER recessions (1990Q3 to 2020Q2).",
+  "generator": "chart-from-sql"
+}

@@ -1,0 +1,1 @@
+Mortgage debt per person with a credit file, Q4 2025. Tile map of the 50 states and DC, one square per state, shaded in six quantile bands. Highest: DC ($78.1k); lowest: WV ($20.8k); median $40.3k.
