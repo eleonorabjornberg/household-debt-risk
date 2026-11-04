@@ -144,6 +144,11 @@ def summarise(run: Path) -> dict:
     fa = sum(o["real_problem"].strip().lower() == "no" for o in ctrl)
     res["false_alarms"] = {"false": fa, "objections_on_controls": len(ctrl), "wilson95": wilson(fa, len(ctrl))}
     res["misses"] = [r["error"] for r in rows if not r["caught"]]
+    # E3: what this result measured (reviewer prompts, models, catalogue, code, prereg), so regression.py
+    # can tell when a rerun is needed.
+    sys.path.insert(0, str(HERE.parent))
+    from regression import EVALS, fingerprint  # noqa: E402
+    res["fingerprint"] = fingerprint(EVALS["E2"]["inputs"])
     if key["rehearsal"]:  # a dry run before the freeze is never a result
         (run / "rehearsal_summary.json").write_text(json.dumps(res, indent=1) + "\n")
         return res
