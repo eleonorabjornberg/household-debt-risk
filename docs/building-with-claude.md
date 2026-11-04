@@ -109,3 +109,15 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - The main model (coordinator session) did the switch to Shapley, the regenerated outputs and the README draft. The register rows a1_* were updated: one removed, one renamed to 2008Q2, five added.
 - Of the review objections, R-20261104-1 to -11 are resolved in `claims/review-log.md`. R-12 (June-vintage issuer split) is still open.
 - R-5 is resolved by run-time checks. Scope is now reconstructed at every quarter in the window, and the groups must partition the cells. The suggested remove-a-cell test was not added.
+
+### Pre-registrations frozen (02cc47f, 206e126, 192d60c)
+- The main model recorded a **Decided** line under every CHOICE (A4: 15, A7: 9, C2: 13). Each line gives the recommended option, credited to Eleonora's "accept all recommendations".
+- Before freezing, it folded in the fact checks (`docs/decisions/prereg-fact-checks.md`, 7d40363). A general-purpose subagent wrote that file. The fact checks caught these errors in the drafts:
+  - the Fed MBS programme was announced 25 Nov 2008, not "early 2009";
+  - R is not installed and CRAN is not reachable here, so PLAN's "CRAN reachable" was wrong;
+  - `strucchange::breakpoints()` picks the number of breaks by BIC and has no sequential sup-F or UDmax, so A4's chosen rule cannot be cross-checked in R;
+  - the attribution of the 5× placebo cutoff to Abadie, Diamond and Hainmueller could not be verified, so it was removed and the cutoff is now stated as the project's own;
+  - the 1990Q1 start had no real-time backing: Fed CSV vintages exist only from 2016-09, and ALFRED has `HHMSDODNS` only from 2010-06.
+- A7 fit-failure level: the draft's example level was adopted with the recommendations (the US holdout RMSPE above the 2006–07 standard deviation of the outcome). Eleonora can change it by a dated deviation before any fit is run.
+- One item is still open. A7 checklist item 3 (donor series from A5/A8, spread proxy from B1) must be fixed in a dated addendum before any outcome is inspected.
+- Not yet fixed: `validation/REPORT.md` labels the June zip's build date (2026-06-10) as "prev vintage". The release was 2026-06-11 (`validation/run.py` line 489).
