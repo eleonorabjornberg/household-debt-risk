@@ -10,7 +10,7 @@ Checked 2026-11-04, about 01:00 UTC, from this environment. Hashes and quotes: [
 | County level | NY Fed databank lists "County level" under the 2018 state statistics, but with no download link (2026-11-04) | — | no file found | — | **not used**: every geographic claim stays at state level (PLAN A5) |
 | CCP microdata | NY Fed Consumer Credit Panel | no (not public) | — | — | not used |
 | Income by state | Census ACS | yes | `www.census.gov` answers 200; `api.census.gov` and `www2.census.gov` are refused by the network policy | — | not used yet; state per-capita debt is shown without an income denominator |
-| Who holds (and so carries) the risk by loan type | Fed Z.1 (have, vintage 2026-09-11) | yes | yes | national, by holder and loan type | public share by loan type |
+| Who holds the loans, by loan type (holding is not bearing the risk: CRT, mortgage insurance and federally guaranteed FFEL loans move risk away from the holder; see A2) | Fed Z.1 (have, vintage 2026-09-11) | yes | yes | national, by holder and loan type | public share by loan type |
 
 **What is not available anywhere free:** a table that crosses borrower group (wealth, income, state) with the holder of the loan. The DFA splits liabilities by borrower but not by holder; Z.1 splits by holder but not by borrower; the NY Fed state data split by loan type but not by holder. Any "public exposure by borrower group" is therefore an **imputation** across sources, and the assumption it rests on is a design choice for Eleonora (`tracks/analysis.md`, Q4).
 

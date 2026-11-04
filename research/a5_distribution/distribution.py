@@ -162,7 +162,18 @@ def main(argv=None) -> int:
         assert len(r) == 1
         return float(r[col].iloc[0])
 
-    top10 = lambda col, d="2026:Q2": sh("wealth", "TopPt1", col, d) + sh("wealth", "RemainingTop1", col, d) + sh("wealth", "Next9", col, d)  # noqa: E731
+    # Group sums are computed from DFA levels, not by adding rounded published shares (skeptic R-20261104-7).
+    wl = read_dfa(dfa_zip, "dfa-networth-levels.csv")
+
+    def top10(col, d="2026:Q2"):
+        x = wl[wl["Date"] == d].set_index("Category")[col]
+        return 100 * x[["TopPt1", "RemainingTop1", "Next9"]].sum() / x.sum()
+
+    b50 = wl[wl["Category"] == "Bottom50"].set_index("Date")
+    tot = wl.groupby("Date")[["Home mortgages"]].sum()
+    b50_mort_share = 100 * b50["Home mortgages"] / tot["Home mortgages"]
+    b50_lev = b50["Liabilities"] / b50["Assets"]
+    pc_states = st["mortgage_pc_2025"].drop(index="DC")
     pc = st["mortgage_pc_2025"]
     sl = st["studentloan_pc_2025"]
     res = {
@@ -181,6 +192,8 @@ def main(argv=None) -> int:
             "top10_net_worth": round(top10("Net worth"), 2),
             "bottom50_mortgages_1989q3": sh("wealth", "Bottom50", "Home mortgages", "1989:Q3"),
             "bottom50_consumer_credit_1989q3": sh("wealth", "Bottom50", "Consumer credit", "1989:Q3"),
+            "bottom50_mortgages_peak_from_levels": round(float(b50_mort_share.max()), 2),
+            "bottom50_mortgages_peak_quarter": str(b50_mort_share.idxmax()),
         },
         "income_2026q2_pct": {
             "bottom20_consumer_credit": sh("income", "pct00to20", "Consumer credit"),
@@ -192,11 +205,15 @@ def main(argv=None) -> int:
             "top1_liabilities_to_assets": round(lv("wealth", "TopPt1", "liabilities_to_assets"), 4),
             "bottom50_mortgages_to_real_estate": round(lv("wealth", "Bottom50", "mortgages_to_real_estate"), 4),
             "bottom50_liabilities_to_assets_2007q4": round(lv("wealth", "Bottom50", "liabilities_to_assets", "2007:Q4"), 4),
+            "bottom50_liabilities_to_assets_peak": round(float(b50_lev.max()), 4),
+            "bottom50_liabilities_to_assets_peak_quarter": str(b50_lev.idxmax()),
         },
         "state_2025": {
             "mortgage_pc_max_state": pc.idxmax(), "mortgage_pc_max": int(pc.max()),
             "mortgage_pc_min_state": pc.idxmin(), "mortgage_pc_min": int(pc.min()),
             "mortgage_pc_max_over_min": round(float(pc.max() / pc.min()), 2),
+            "mortgage_pc_max_state_ex_dc": pc_states.idxmax(), "mortgage_pc_max_ex_dc": int(pc_states.max()),
+            "mortgage_pc_max_over_min_ex_dc": round(float(pc_states.max() / pc_states.min()), 2),
             "studentloan_pc_max_state": sl.idxmax(), "studentloan_pc_max": int(sl.max()),
             "studentloan_pc_min_state": sl.idxmin(), "studentloan_pc_min": int(sl.min()),
             "studentloan_pc_max_over_min": round(float(sl.max() / sl.min()), 2),

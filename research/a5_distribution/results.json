@@ -10,10 +10,12 @@
   "bottom50_net_worth": 2.3,
   "next40_mortgages": 48.9,
   "next40_consumer_credit": 34.9,
-  "top10_mortgages": 28.4,
-  "top10_net_worth": 68.9,
+  "top10_mortgages": 28.48,
+  "top10_net_worth": 68.92,
   "bottom50_mortgages_1989q3": 27.5,
-  "bottom50_consumer_credit_1989q3": 43.8
+  "bottom50_consumer_credit_1989q3": 43.8,
+  "bottom50_mortgages_peak_from_levels": 34.57,
+  "bottom50_mortgages_peak_quarter": "2010:Q3"
  },
  "income_2026q2_pct": {
   "bottom20_consumer_credit": 7.1,
@@ -24,7 +26,9 @@
   "bottom50_liabilities_to_assets": 0.5836,
   "top1_liabilities_to_assets": 0.0107,
   "bottom50_mortgages_to_real_estate": 0.6555,
-  "bottom50_liabilities_to_assets_2007q4": 0.8149
+  "bottom50_liabilities_to_assets_2007q4": 0.8149,
+  "bottom50_liabilities_to_assets_peak": 0.953,
+  "bottom50_liabilities_to_assets_peak_quarter": "2010:Q4"
  },
  "state_2025": {
   "mortgage_pc_max_state": "DC",
@@ -32,6 +36,9 @@
   "mortgage_pc_min_state": "WV",
   "mortgage_pc_min": 20770,
   "mortgage_pc_max_over_min": 3.76,
+  "mortgage_pc_max_state_ex_dc": "CO",
+  "mortgage_pc_max_ex_dc": 72210,
+  "mortgage_pc_max_over_min_ex_dc": 3.48,
   "studentloan_pc_max_state": "DC",
   "studentloan_pc_max": 12650,
   "studentloan_pc_min_state": "WY",

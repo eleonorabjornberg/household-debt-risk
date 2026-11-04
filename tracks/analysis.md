@@ -6,7 +6,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | Task | Status | Notes |
 |---|---|---|
 | A2 | ready for review (bounds; skeptic run, 6 objections, 5 fixed, see `tracks/analysis-review-log.md`); the net series itself waits on Q1 | `research/a2_net_exposure/` |
-| A5 | in progress: availability note, borrower tables, state maps done; register rows and skeptic pending; borrower-to-holder link waits on Q4 | `research/a5_distribution/` |
+| A5 | ready for review (descriptive part; skeptic run, 7 objections incl. 1 blocker, all addressed, see `tracks/analysis-review-log.md`); borrower-to-holder link waits on Q4 | `research/a5_distribution/` |
 | A8 | blocked (network: every national source refused by the proxy; see `research/a8_international/AVAILABILITY.md`); availability note and unverified crosswalk draft done; metric choice is Q5 | `research/a8_international/` |
 
 ## Log notes for the coordinator
@@ -19,6 +19,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - Subagents: register-keeper (Sonnet), 12 rows in `claims/tracks/analysis.csv`, about 32k tokens; reviewed by the main session (one key name in its report was wrong, the CSV itself was right).
 - Skeptic (A2, 55k tokens): 6 objections, none blocking. Skeptic caught: the 55.2% "at least" was a floor only net of CRT, not of MI; the table subtracted RIF from UPB without saying so; FHFA's "majority" quote covers CRT and MI together, not CRT alone; an unsourced clause on where stress losses fall. All fixed.
 - A5 built (main model): DFA borrower shares and leverage, NY Fed state per-capita tables and three tile maps, Z.1 loan-type public shares; no county file exists, so state level only. register-keeper (Sonnet), 26 rows, about 32k tokens.
+- Skeptic (A5, 59k tokens): 7 objections. Skeptic caught a blocker: the top-10% mortgage share was the sum of three rounded shares (28.4%); from DFA levels it is 28.5%. Also: holding treated as bearing risk in AVAILABILITY.md; net-worth ranking makes bottom-50% debt shares partly definitional; leverage peak was 2010Q4, not 2007Q4; DC drives the state spread. All fixed.
 - Error caught by register-keeper (A5): the README printed 31.4% for the public share of consumer credit; the source is 0.31349 (31.3%, same as the existing C8 row). Claude had rounded twice. Fixed.
 - Error caught by Claude (main, A5 figures): the tile-map legend rendered "$...$" as mathtext (italic, no dollar signs); escaped and re-rendered after looking at the PNG.
 - Errors caught: Claude (main) caught its own method-note claim that 2023 Fannie attach points run 60–155 bp; the deal table shows 60–165 bp. Fixed before commit. The 4Q23 PMI cumulative box has no text layer; read from the image and checked that Fannie + Freddie add to the total and to FHFA's "$3.3 trillion".
@@ -58,3 +59,4 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - PLAN.md row A2: suggested status "bounds done (net series waits on Q1/Q2)"; row A5: "descriptive part done (borrower-to-holder link waits on Q4)"; row A8: "blocked (network; Q5)".
 - claims/register.csv: on merge, fold `a5_public_share_cc_2026q2_readme` into `public_share_cc_2026q2` as an extra location (same claim, C8).
 - `tracks/analysis-review-log.md` → `claims/review-log.md` on merge.
+- claims/register.csv: add `research/a5_distribution/README.md:23` as a location on the existing row for the public share of mortgages at 2026Q2 (65.6%), per R-20261104-13.
