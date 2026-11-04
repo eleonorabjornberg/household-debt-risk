@@ -39,6 +39,7 @@ help:
 ingest:  ## pipeline: extract -> transform [-> load] -> export snapshots
 	cd pipeline && $(UV) sync -q && \
 	  if [ "$(LOAD)" = "1" ]; then $(UV) run hhdebt run --export; else env -u DATABASE_URL $(UV) run hhdebt run --no-load --export; fi
+	node opendata/archive.mjs  # F4-3: keep every published Z.1 vintage downloadable (fails if one changed)
 
 $(Z1_ZIP):
 	cd pipeline && $(UV) run hhdebt extract --sources z1
@@ -97,6 +98,7 @@ ci-static:  ## register check and stale-copy check (before any build rewrites th
 	$(PY) claims/check_register.py
 	node claims/site/sync.mjs --check
 	node web/scripts/make-downloads.mjs --check
+	node opendata/archive.mjs --check
 
 clean-data:  ## remove downloaded data (data/ is gitignored)
 	rm -rf $(DATA) analysis/.cache
