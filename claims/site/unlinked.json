@@ -1,0 +1,11 @@
+{
+  "_doc": "Register rows located on a site that are expected NOT to appear as a link in the prerendered HTML, with the reason. check_html.mjs fails on any other unlinked row, and on a row listed here that is in fact linked (so the list cannot go stale).",
+  "web": {
+    "public_share_2001q1": "Defined in web/content/story.ts facts (dotcomFrom) but never rendered; proposed: drop the fact or the location (tracks/infra.md).",
+    "public_share_2005q1": "Defined in web/content/story.ts facts (dotcomTo) but never rendered; same proposal."
+  },
+  "atlas": {
+    "atlas_share_dots": "Shown only in the Shares lens legend, which renders after the reader switches lens (client state); linked there.",
+    "scope_usd_2026q2_atlas_headline": "In site.description, which is the page's meta description, not body text; a meta tag cannot carry a link."
+  }
+}

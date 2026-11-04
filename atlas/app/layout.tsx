@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
 import { site } from "@/content/story";
 import "./globals.css";
+import "./claims.css";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", axes: ["opsz", "SOFT", "WONK"], style: ["normal", "italic"], display: "swap" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-text", display: "swap" });

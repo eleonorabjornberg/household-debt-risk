@@ -1,0 +1,971 @@
+{
+ "site": "atlas",
+ "generatedFrom": [
+  "claims/register.csv"
+ ],
+ "claims": [
+  {
+   "id": "atlas_dot_unit",
+   "claim": "In the atlas, each dot is $50 billion of debt in 2026 dollars.",
+   "display": [
+    "$50 billion",
+    "$50B",
+    "1 dot = $50B"
+   ],
+   "value": "50",
+   "unit": "usd_bn",
+   "period": "n/a",
+   "locations": [
+    "atlas/content/story.ts:44",
+    "atlas/app/page.tsx:28",
+    "atlas/content/story.ts:11",
+    "atlas/components/Experience.tsx:211"
+   ],
+   "computation": "atlas/lib/timeline.ts:DOLLAR_UNIT_MUSD (50_000 $M)",
+   "series": [
+    "n/a"
+   ],
+   "vintage": "n/a",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Design constant, not a data claim. Tested for dot conservation in atlas/lib/timeline.test.ts.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Every dot is $50 billion of debt",
+    "atlas_dot_unit",
+    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
+    "1 dot = $50B (2026 $)",
+    "1 dot = 0.1% of all debt"
+   ],
+   "exact": []
+  },
+  {
+   "id": "atlas_share_dots",
+   "claim": "In the Shares lens, 1,000 dots each represent 0.1% of all debt.",
+   "display": [
+    "0.1%",
+    "0.1% of all debt",
+    "1,000 dots"
+   ],
+   "value": "0.001",
+   "unit": "share",
+   "period": "n/a",
+   "locations": [
+    "atlas/components/Experience.tsx:211"
+   ],
+   "computation": "atlas/lib/timeline.ts:SHARE_DOTS (1000)",
+   "series": [
+    "n/a"
+   ],
+   "vintage": "n/a",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Design constant, not a data claim.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "1 dot = $50B (2026 $)",
+    "1 dot = 0.1% of all debt"
+   ],
+   "exact": []
+  },
+  {
+   "id": "covid_16q_pp",
+   "claim": "The 2019Q4 (COVID) window added about 1 pp.",
+   "display": [
+    "+1.0 pts",
+    "1 pp",
+    "about one point"
+   ],
+   "value": "1.03",
+   "unit": "pp",
+   "period": "2019Q4-2023Q4",
+   "locations": [
+    "atlas/content/story.ts:88"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/ratchet_windows.csv fwd16_pp (2019Q4)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "web/content/story.ts defines covidDelta but no copy line uses facts.covidDelta today. Atlas COVID step moved to 2023Q4 (16 quarters) on 2026-11-04; web fact covidDelta removed.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The sharpest jump in unemployment since the 1930s, and four years after the 2019 peak the share has gone from 55.2% to",
+    ", about one point. Across all eleven recessions, the shift after a crisis looks like any other period's. 2007–11 is the exception, not the rule."
+   ],
+   "exact": []
+  },
+  {
+   "id": "gfc_jump_pp",
+   "claim": "The public share rose 13.1 percentage points from 2007Q4 to 2011Q4.",
+   "display": [
+    "+13.1 pp",
+    "+13.1 pts",
+    "13.1 points",
+    "+13.1 points",
+    "13 points"
+   ],
+   "value": "13.11",
+   "unit": "pp",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "atlas/content/story.ts:119"
+   ],
+   "computation": "C5",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C5",
+   "notes": "Atlas rounds to '13 points'. Findings also gives the same gap as 'largest change of any crisis'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to",
+    "today, in 2026 dollars."
+   ],
+   "exact": []
+  },
+  {
+   "id": "gfc_percentile",
+   "claim": "The 2007Q4-2011Q4 change ranks in the 98th percentile of all 16-quarter windows since 1952.",
+   "display": [
+    "98th percentile",
+    "98th",
+    "98% of all four-year windows"
+   ],
+   "value": "98.2",
+   "unit": "pct_rank",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "atlas/content/story.ts:81"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json ratchet_windows[2007Q4].percentile_among_all_windows (0.982); analysis/tables/ratchet_windows.csv",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
+   ],
+   "exact": []
+  },
+  {
+   "id": "home_coverage_2026q2",
+   "claim": "Home collateral coverage (real estate value / mortgage debt) was 3.56x in 2026Q2.",
+   "display": [
+    "3.56×",
+    "3.56x"
+   ],
+   "value": "3.562",
+   "unit": "ratio",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:114"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.home_cov_latest; mart.collateral_coverage where collateral_class='home_backed' and date='2026-06-30'",
+   "series": [
+    "FL155035015",
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The public sector holds most household debt, but holding a loan is not the same as losing on it. Most of the public book is mortgages, and in aggregate homes are worth 3.56× the mortgages against them. Borrowers' equity, private mortgage insurance and the GSEs' risk-transfer deals stand in front of the taxpayer; this site does not measure how much they absorb. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008."
+   ],
+   "exact": []
+  },
+  {
+   "id": "private_label_2006_real",
+   "claim": "The private-label pile was about $4.6T in 2006 (2026 dollars).",
+   "display": [
+    "$4.6T"
+   ],
+   "value": "4.61",
+   "unit": "usd_tn",
+   "period": "2006Q4",
+   "locations": [
+    "atlas/content/story.ts:67",
+    "atlas/content/story.ts:119"
+   ],
+   "computation": "web/public/data/debt_by_risk_holder.json: sum(real_musd) where risk_bucket='private_securitization' and date='2006-12-31' (4.608e6 $M); mart.debt_by_risk_holder",
+   "series": [
+    "FL673065105",
+    "FL643065173",
+    "FL673066000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Real 2026 dollars.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Wall Street securitization grows fast enough to take market share from the agencies. From the 2001 recession to 2006 the public share falls to",
+    ", while the private-label pile swells to about $4.6T in today's dollars.",
+    "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to",
+    "today, in 2026 dollars."
+   ],
+   "exact": []
+  },
+  {
+   "id": "private_label_2007q4_real",
+   "claim": "The private-label pile was $4.5T at the end of 2007 (2026 dollars).",
+   "display": [
+    "$4.5T"
+   ],
+   "value": "4.51",
+   "unit": "usd_tn",
+   "period": "2007Q4",
+   "locations": [
+    "atlas/content/story.ts:81"
+   ],
+   "computation": "web/public/data/debt_by_risk_holder.json: sum(real_musd) where risk_bucket='private_securitization' and date='2007-12-31' (4.508e6 $M)",
+   "series": [
+    "FL673065105",
+    "FL643065173",
+    "FL673066000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Same display as public_added_mortgage_usd ($4.5T) but a different quantity.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
+   ],
+   "exact": []
+  },
+  {
+   "id": "private_label_2011q4_real",
+   "claim": "The private-label pile was $1.7T at the end of 2011 (2026 dollars).",
+   "display": [
+    "$1.7T"
+   ],
+   "value": "1.67",
+   "unit": "usd_tn",
+   "period": "2011Q4",
+   "locations": [
+    "atlas/content/story.ts:81"
+   ],
+   "computation": "web/public/data/debt_by_risk_holder.json: sum(real_musd) where risk_bucket='private_securitization' and date='2011-12-31' (1.666e6 $M)",
+   "series": [
+    "FL673065105",
+    "FL643065173",
+    "FL673066000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
+   ],
+   "exact": []
+  },
+  {
+   "id": "private_label_2026q2_real",
+   "claim": "Private-label holdings are $681B today (2026 dollars).",
+   "display": [
+    "$681B"
+   ],
+   "value": "0.681",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:106",
+    "atlas/content/story.ts:119"
+   ],
+   "computation": "atlas/components/Coda.tsx:fill -> fmtTrillions(sum of real[latest][private_securitization]); web/public/data/debt_by_risk_holder.json",
+   "series": [
+    "FL673065105",
+    "FL643065173",
+    "FL673066000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "What does this mean?",
+    "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to",
+    "today, in 2026 dollars."
+   ],
+   "exact": []
+  },
+  {
+   "id": "private_label_loss_2007_2011",
+   "claim": "The private-label pile lost almost two-thirds of its value between 2007 and 2011.",
+   "display": [
+    "almost two-thirds"
+   ],
+   "value": "0.63",
+   "unit": "share",
+   "period": "2007Q4-2011Q4",
+   "locations": [
+    "atlas/content/story.ts:81"
+   ],
+   "computation": "derived: 1 - 1.666 / 4.508 from debt_by_risk_holder.json (real 2026 dollars)",
+   "series": [
+    "FL673065105",
+    "FL643065173",
+    "FL673066000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_1980s_pp",
+   "claim": "The total public share rose about 19 points in the 1980s.",
+   "display": [
+    "+19.0 pts",
+    "19 points"
+   ],
+   "value": "19.03",
+   "unit": "pp",
+   "period": "1979Q4-1989Q4",
+   "locations": [
+    "atlas/content/story.ts:60"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/structural_periods.csv (1979Q4-1989Q4 d_public_pp)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "web/content/story.ts defines public1980s but no copy line uses facts.public1980s today; the atlas prints 'about 19 points'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The 1980s alone add about 19 points as banks sell their mortgages into agency pools. It's the biggest shift in the whole record, and it is slow and structural: the build-out of the GSEs, not a rescue. Public share:"
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_1952q1",
+   "claim": "The public share of household mortgages and consumer credit was 3.2% in 1952Q1.",
+   "display": [
+    "3.2%"
+   ],
+   "value": "0.0322",
+   "unit": "share",
+   "period": "1952Q1",
+   "locations": [
+    "atlas/content/story.ts:46",
+    "atlas/app/page.tsx:26"
+   ],
+   "computation": "C1",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C1",
+   "notes": "Public = federal direct + GSE/agency pools + state & local. The atlas copy gets this through the {share} token at step 1952-03-31 (fmtPct of the snapshot value); web copy reads facts.publicShareFirst.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held",
+    "public_share_1952q1"
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_2007q4",
+   "claim": "The public share was 36.1% at the 2007Q4 NBER peak.",
+   "display": [
+    "36.1%"
+   ],
+   "value": "0.3612",
+   "unit": "share",
+   "period": "2007Q4",
+   "locations": [
+    "atlas/content/story.ts:81",
+    "atlas/content/story.ts:74"
+   ],
+   "computation": "C4",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C4",
+   "notes": "Atlas 2007 step prints it through {share} (token at 2007-12-31); the 2011 step hard-codes '36.1%'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing.",
+    "Total debt is",
+    ". The public sector holds",
+    "of it. Keep an eye on the private-label pile."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_2011q4",
+   "claim": "The public share was 49.2% in 2011Q4, 16 quarters after the 2007Q4 peak.",
+   "display": [
+    "49.2%"
+   ],
+   "value": "0.4922",
+   "unit": "share",
+   "period": "2011Q4",
+   "locations": [
+    "atlas/content/story.ts:81"
+   ],
+   "computation": "C4",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C4",
+   "notes": "Atlas 2011 step prints it through {share} (token at 2011-12-31).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_2019q4",
+   "claim": "The public share was 55.2% at the 2019Q4 NBER peak.",
+   "display": [
+    "55.2%"
+   ],
+   "value": "0.5522",
+   "unit": "share",
+   "period": "2019Q4",
+   "locations": [
+    "atlas/content/story.ts:88"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/crisis_public_share.csv share_t0 (2019Q4)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The sharpest jump in unemployment since the 1930s, and four years after the 2019 peak the share has gone from 55.2% to",
+    ", about one point. Across all eleven recessions, the shift after a crisis looks like any other period's. 2007–11 is the exception, not the rule."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_2023q4",
+   "claim": "The public share was 56.2% sixteen quarters after the 2019Q4 peak (2023Q4).",
+   "display": [
+    "56.2%"
+   ],
+   "value": "0.56249",
+   "unit": "share",
+   "period": "2023Q4",
+   "locations": [
+    "atlas/content/story.ts:88"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/tables/crisis_public_share.csv share_t16 (2019Q4 = 0.5625, rounded to 4 d.p.); unrounded 2023Q4 share in analysis/tables/public_share_quarterly.csv = 0.56249",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Corrected 2026-11-04 from 56.3%: the 4-decimal table value 0.5625 had been rounded a second time; unrounded 0.56249. Atlas COVID step ({share} at 2023-12-31, fmtPct) shows it since 2026-11-04.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The sharpest jump in unemployment since the 1930s, and four years after the 2019 peak the share has gone from 55.2% to",
+    ", about one point. Across all eleven recessions, the shift after a crisis looks like any other period's. 2007–11 is the exception, not the rule."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_2026q2",
+   "claim": "The public share of household mortgages and consumer credit was 56.4% in 2026Q2.",
+   "display": [
+    "56.4%"
+   ],
+   "value": "0.5638",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:95",
+    "atlas/content/story.ts:112",
+    "atlas/app/page.tsx:27"
+   ],
+   "computation": "C2",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C2",
+   "notes": "Atlas 'Today' step and the first 'What does this mean?' stat use the {share} token (latest quarter, fmtPct of public_share). web/app/page.tsx renders it from the mart snapshot with pct(.,1).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "in 2026 dollars, or",
+    ", sits with the public sector. It mostly got there slowly. One crisis made it permanent.",
+    "public_share_2026q2"
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_of_student_loans",
+   "claim": "The public sector holds 86% of student loans.",
+   "display": [
+    "86%"
+   ],
+   "value": "0.8638",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:122",
+    "atlas/content/story.ts:124"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.public_share_of_student_latest",
+   "series": [
+    "FL153166220",
+    "FL313066220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Holdings, not guarantees: bank-held FFEL loans carried federal guarantees but are counted private.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
+   ],
+   "exact": [
+    "86%"
+   ]
+  },
+  {
+   "id": "public_share_of_uncoll_2007q4",
+   "claim": "The public sector held 7% of uncollateralized household debt in 2007Q4.",
+   "display": [
+    "7%"
+   ],
+   "value": "0.0727",
+   "unit": "share",
+   "period": "2007Q4",
+   "locations": [
+    "atlas/content/story.ts:124"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.public_share_of_uncoll_2007Q4",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL313066220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_share_of_uncoll_2026q2",
+   "claim": "The public sector holds 51% of all uncollateralized household debt.",
+   "display": [
+    "51%"
+   ],
+   "value": "0.5068",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:124"
+   ],
+   "computation": "analysis/notebook.py:q6_link -> analysis/results.json public_book.public_share_of_uncoll_latest",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL313066220"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
+   ],
+   "exact": []
+  },
+  {
+   "id": "public_usd_2026q2_atlas_real",
+   "claim": "The atlas 'Today' step shows the public part of household debt as $10.8T.",
+   "display": [
+    "$10.8T"
+   ],
+   "value": "10.81",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:95"
+   ],
+   "computation": "atlas/components/Experience.tsx:fill -> fmtTrillions(sum(series.real[q]) * publicShare[q])",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "CPIAUCSL",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token {public}. Real 2026-dollar total x nominal public share, so it differs from the nominal $10.77T in README/findings. Readers see $10.8T of $19.2T in the atlas and $10.77T of $19.10T elsewhere; consider saying 'in 2026 dollars' in the step.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "in 2026 dollars, or",
+    ", sits with the public sector. It mostly got there slowly. One crisis made it permanent."
+   ],
+   "exact": []
+  },
+  {
+   "id": "ratchet_placebo_p",
+   "claim": "Crisis windows are indistinguishable from placebo windows (p about 0.30; 30% of random date sets do as well).",
+   "display": [
+    "p ≈ 0.30",
+    "0.30",
+    "30%"
+   ],
+   "value": "0.3025",
+   "unit": "pvalue",
+   "period": "1953Q2-2019Q4",
+   "locations": [
+    "atlas/content/story.ts:117"
+   ],
+   "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json ratchet.all_nber_1953_2019.p_random_dates (0.3025); circular-shift p = 0.306",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": [
+    "p ≈ 0.30"
+   ]
+  },
+  {
+   "id": "scope_usd_2007q4_atlas_real",
+   "claim": "The atlas 2007 step shows total household debt as $21.0T (2026 dollars).",
+   "display": [
+    "$21.0T"
+   ],
+   "value": "20.95",
+   "unit": "usd_tn",
+   "period": "2007Q4",
+   "locations": [
+    "atlas/content/story.ts:74"
+   ],
+   "computation": "atlas/components/Experience.tsx:fill -> fmtTrillions(sumReal(series.real[q]))",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token {total}. Real 2026 dollars; the nominal 2007Q4 scope total is $13.19T (check B7). The step does not say 'in 2026 dollars'.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Total debt is",
+    ". The public sector holds",
+    "of it. Keep an eye on the private-label pile."
+   ],
+   "exact": []
+  },
+  {
+   "id": "scope_usd_2026q2_atlas_headline",
+   "claim": "The atlas site description rounds household debt to $19 trillion.",
+   "display": [
+    "$19 trillion"
+   ],
+   "value": "19",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:11"
+   ],
+   "computation": "rounding of scope_usd_2026q2 (C3)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Rounded from $19.10T nominal ($19.2T in the atlas's 2026-dollar series).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time."
+   ],
+   "exact": []
+  },
+  {
+   "id": "scope_usd_2026q2_atlas_real",
+   "claim": "The atlas 'Today' step shows total household debt as $19.2T (2026 dollars).",
+   "display": [
+    "$19.2T"
+   ],
+   "value": "19.18",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/story.ts:95"
+   ],
+   "computation": "atlas/components/Experience.tsx:fill -> fmtTrillions(sumReal(series.real[q])); web/public/data/debt_by_risk_holder.json real_musd",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "CPIAUCSL"
+   ],
+   "vintage": "z1:2026-09-11 fred:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "in 2026 dollars, or",
+    ", sits with the public sector. It mostly got there slowly. One crisis made it permanent."
+   ],
+   "exact": []
+  },
+  {
+   "id": "share_1979_atlas",
+   "claim": "The public share was 13.7% at the end of 1979.",
+   "display": [
+    "13.7%"
+   ],
+   "value": "0.137",
+   "unit": "share",
+   "period": "1979Q4",
+   "locations": [
+    "atlas/content/story.ts:53"
+   ],
+   "computation": "atlas/components/Experience.tsx:fill -> fmtPct(series.publicShare[q]) at 1979-12-31; web/public/data/public_share.json",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token filled at render time by fmtPct(series.publicShare[q]) in atlas/components/Experience.tsx (fill) from web/public/data/public_share.json (field public_share); the value is the snapshot field, the rendering itself is not independently tested.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Fannie Mae, Freddie Mac and Ginnie Mae begin buying and pooling mortgages, and dots start to cross the line. Debt keeps growing on both sides. By 1979 the public share is"
+   ],
+   "exact": []
+  },
+  {
+   "id": "share_1989_atlas",
+   "claim": "The public share was 32.7% at the end of 1989.",
+   "display": [
+    "32.7%"
+   ],
+   "value": "0.3273",
+   "unit": "share",
+   "period": "1989Q4",
+   "locations": [
+    "atlas/content/story.ts:60"
+   ],
+   "computation": "atlas/components/Experience.tsx:fill -> fmtPct(series.publicShare[q]) at 1989-12-31; web/public/data/public_share.json",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token filled at render time by fmtPct(series.publicShare[q]) in atlas/components/Experience.tsx (fill) from web/public/data/public_share.json (field public_share); the value is the snapshot field, the rendering itself is not independently tested.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The 1980s alone add about 19 points as banks sell their mortgages into agency pools. It's the biggest shift in the whole record, and it is slow and structural: the build-out of the GSEs, not a rescue. Public share:"
+   ],
+   "exact": []
+  },
+  {
+   "id": "share_2006_atlas",
+   "claim": "The public share was 33.8% at the end of 2006.",
+   "display": [
+    "33.8%"
+   ],
+   "value": "0.3375",
+   "unit": "share",
+   "period": "2006Q4",
+   "locations": [
+    "atlas/content/story.ts:67"
+   ],
+   "computation": "atlas/components/Experience.tsx:fill -> fmtPct(series.publicShare[q]) at 2006-12-31; web/public/data/public_share.json",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Token filled at render time by fmtPct(series.publicShare[q]) in atlas/components/Experience.tsx (fill) from web/public/data/public_share.json (field public_share); the value is the snapshot field, the rendering itself is not independently tested.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Wall Street securitization grows fast enough to take market share from the agencies. From the 2001 recession to 2006 the public share falls to",
+    ", while the private-label pile swells to about $4.6T in today's dollars."
+   ],
+   "exact": []
+  }
+ ]
+}

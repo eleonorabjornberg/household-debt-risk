@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/sync-catalog.mjs",
+    "prebuild": "node scripts/sync-catalog.mjs && node scripts/sync-claims.mjs && node scripts/make-downloads.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "fixtures": "node scripts/make-fixtures.mjs",
-    "sync-catalog": "node scripts/sync-catalog.mjs"
+    "sync-catalog": "node scripts/sync-catalog.mjs",
+    "predev": "node scripts/sync-claims.mjs",
+    "sync-claims": "node scripts/sync-claims.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
@@ -24,7 +27,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
     "typescript": "^5",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=20.9"

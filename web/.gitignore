@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# open-data downloads, generated at build (scripts/make-downloads.mjs)
+/public/downloads/

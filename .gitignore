@@ -2,6 +2,8 @@
 data/
 # web/public/data holds the committed JSON snapshots (hhdebt export-snapshot)
 !web/public/data/
+# the /data route (open-data page, F4)
+!web/app/data/
 *.pkl
 *.parquet
 __pycache__/

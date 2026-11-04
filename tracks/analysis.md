@@ -73,5 +73,5 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - PLAN.md row A2: suggested status "bounds done (net series waits on Q1/Q2)"; row A5: "descriptive part done (borrower-to-holder link waits on Q4)"; row A8: "blocked (network; Q5)".
 - claims/register.csv: on merge, fold `a5_public_share_cc_2026q2_readme` into `public_share_cc_2026q2` as an extra location (same claim, C8).
 - `tracks/analysis-review-log.md` → `claims/review-log.md` on merge.
-- Re-fold needed: the coordinator's fold (51a0b6a) predates 526657a; 23 folded rows changed afterwards (locations and wording). Take the current versions from `claims/tracks/analysis.csv`; review entries R-20261104-14..21 are not yet folded.
-- claims/register.csv: add `research/a5_distribution/README.md:23` as a location on the existing row for the public share of mortgages at 2026Q2 (65.6%), per R-20261104-13.
+- claims/register.csv: add `research/a5_distribution/README.md:23` as a location on the existing row for the public share of mortgages at 2026Q2 (65.6%), per R-20261104-ana-13.
+- Re-fold of rows through 526657a: done by the coordinator (174354e).
