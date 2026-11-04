@@ -1,0 +1,1 @@
+/home/user/household-debt-risk/claims/register.csv does not exist yet (task 0.5); skipping the stale-copy scan.
