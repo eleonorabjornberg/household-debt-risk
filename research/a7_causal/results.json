@@ -30,67 +30,76 @@
   "placebo_n": 90,
   "p_rank_one_sided": 0.022,
   "hac_t": -2.493,
-  "hac_p_one_sided": 0.0063
+  "hac_p_one_sided": 0.0063,
+  "t_exact_5week_variance": -2.371,
+  "week0_change_pp": -0.3658,
+  "placebo_as_low_or_lower": 1
  },
  "H2": {
   "holdout_rmspe": 657.3021,
   "holdout_sd_2006_07": 170.1927,
   "fit_ok": false,
-  "post_pre_rmspe_ratio": 3.72,
+  "p_rank": 0.7692,
   "mean_post_deviation": -869.8254,
-  "post_deviations": [
-   -440.7223,
-   -623.5437,
-   -789.5702,
-   -965.7687,
-   -1124.9411,
-   -1274.4066
-  ],
-  "placebo_ratios": [
-   15.7051,
-   14.5519,
-   12.3135,
-   9.9256,
-   8.1564,
-   6.8976,
-   5.7981,
-   4.8404,
-   4.0483,
-   3.3012,
-   2.5722,
-   1.9088
-  ],
-  "p_rank": 0.7692
+  "diagnostics_not_an_effect_estimate": {
+   "post_pre_rmspe_ratio": 3.72,
+   "mean_post_deviation": -869.8254,
+   "post_deviations": [
+    -440.7223,
+    -623.5437,
+    -789.5702,
+    -965.7687,
+    -1124.9411,
+    -1274.4066
+   ],
+   "placebo_ratios": [
+    15.7857,
+    14.8724,
+    12.8941,
+    10.6056,
+    8.7739,
+    7.4138,
+    6.2205,
+    5.1869,
+    4.3236,
+    3.5122,
+    2.7194,
+    1.9848
+   ]
+  }
  },
  "H3": {
   "holdout_rmspe": 2.2266,
   "holdout_sd_2006_07": 0.8073,
   "fit_ok": false,
-  "post_pre_rmspe_ratio": 4.6388,
+  "p_rank": 0.5385,
   "mean_post_deviation": 8.2181,
-  "post_deviations": [
-   4.9685,
-   6.1674,
-   7.4214,
-   8.7638,
-   10.318,
-   11.6693
-  ],
-  "placebo_ratios": [
-   9.2906,
-   10.3146,
-   8.6232,
-   6.6621,
-   5.0525,
-   4.1228,
-   3.3076,
-   2.5515,
-   1.9094,
-   1.4126,
-   0.9921,
-   0.8623
-  ],
-  "p_rank": 0.4615
+  "diagnostics_not_an_effect_estimate": {
+   "post_pre_rmspe_ratio": 4.6388,
+   "mean_post_deviation": 8.2181,
+   "post_deviations": [
+    4.9685,
+    6.1674,
+    7.4214,
+    8.7638,
+    10.318,
+    11.6693
+   ],
+   "placebo_ratios": [
+    10.4009,
+    11.6973,
+    10.0283,
+    7.7616,
+    5.8934,
+    4.7859,
+    3.8367,
+    2.9838,
+    2.2577,
+    1.6693,
+    1.1249,
+    0.8449
+   ]
+  }
  },
  "H4": {
   "mean_change_pre_bn": 10.322,
@@ -104,8 +113,8 @@
  "holm_reject": {
   "H4": true,
   "H1": false,
-  "H2": false,
-  "H3": false
+  "H3": false,
+  "H2": false
  },
  "verdict": {
   "H1": "null",

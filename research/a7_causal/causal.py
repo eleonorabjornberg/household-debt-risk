@@ -111,6 +111,10 @@ def event_study(s1: pd.Series) -> dict:
     resid = d.iloc[est_clean].values - mu
     se = math.sqrt(5 * a4.lrv(resid))
     t_hac = ab_mean / se
+    # Exact variance of a five-week sum from the sample autocovariances (quant review ana-46; reported alongside)
+    g = [float(np.dot(resid[k:], resid[:len(resid) - k]) / len(resid)) for k in range(5)]
+    var5 = 5 * g[0] + 2 * sum((5 - k) * g[k] for k in range(1, 5))
+    t_exact = ab_mean / math.sqrt(var5)
     return {"week0": str(idx[w0].date()), "window": [str(idx[w0 - 1].date()), str(idx[w0 + 4].date())],
             "estimation": [str(idx[est[0]].date()), str(idx[est[-1]].date())], "n_est_changes": len(est_clean),
             "dummied": sorted(str(idx[i].date()) for i in dummies),
@@ -118,7 +122,10 @@ def event_study(s1: pd.Series) -> dict:
             "abnormal_constant_mean_pp": round(ab_mean, 4), "abnormal_ar1_pp": round(ab_ar, 4),
             "ar1": {"c": round(float(c), 5), "phi": round(float(phi), 4)},
             "placebo_n": int(len(plac)), "p_rank_one_sided": round(p_rank, 4),
-            "hac_t": round(t_hac, 3), "hac_p_one_sided": round(0.5 * math.erfc(-t_hac / math.sqrt(2)), 4)}
+            "hac_t": round(t_hac, 3), "hac_p_one_sided": round(0.5 * math.erfc(-t_hac / math.sqrt(2)), 4),
+            "t_exact_5week_variance": round(t_exact, 3),
+            "week0_change_pp": round(float(s1.iloc[w0] - s1.iloc[w0 - 1]), 4),
+            "placebo_as_low_or_lower": int(np.sum(plac <= ab_mean))}
 
 
 # ------------------------------------------------------------------ H2, H3
@@ -155,10 +162,14 @@ def its(y: pd.Series, treat: str = "2008Q3", post_len: int = 6) -> dict:
     r, mean_dev, e_post = ratio(T, qi("2000Q1"))
     plac = [ratio(P, P - 32)[0] for P in pd.period_range("2004Q1", "2006Q4", freq="Q")]
     p = float((np.sum(np.array(plac) >= r) + 1) / (len(plac) + 1))
-    return {"holdout_rmspe": round(ho_rmspe, 4), "holdout_sd_2006_07": round(sd, 4), "fit_ok": bool(fit_ok),
-            "post_pre_rmspe_ratio": round(r, 4), "mean_post_deviation": round(mean_dev, 4),
-            "post_deviations": [round(float(v), 4) for v in e_post],
-            "placebo_ratios": [round(v, 4) for v in plac], "p_rank": round(p, 4)}
+    stats_ = {"post_pre_rmspe_ratio": round(r, 4), "mean_post_deviation": round(mean_dev, 4),
+              "post_deviations": [round(float(v), 4) for v in e_post],
+              "placebo_ratios": [round(v, 4) for v in plac]}
+    out = {"holdout_rmspe": round(ho_rmspe, 4), "holdout_sd_2006_07": round(sd, 4), "fit_ok": bool(fit_ok),
+           "p_rank": round(p, 4), "mean_post_deviation": round(mean_dev, 4)}
+    # A failed fit gets no effect estimate (decision rule); the statistics are kept only as diagnostics.
+    out["statistics" if fit_ok else "diagnostics_not_an_effect_estimate"] = stats_
+    return out
 
 
 # ------------------------------------------------------------------ H4
@@ -197,9 +208,11 @@ def main() -> int:
     s1 = weekly_s1(pmms, dgs)
     h1 = event_study(s1)
     pls, share, nonfed = quarterly(ROOT / "data" / "validation" / "FRB_Z1_csv.zip")
-    r2, r3, r4 = its(pls.loc["1999Q1":]), its(share.loc["1999Q1":]), h4(nonfed.loc["2006Q1":])
-    ps = {"H1": h1["p_rank_one_sided"], "H2": r2["p_rank"] if r2["fit_ok"] else 1.0,
-          "H3": r3["p_rank"] if r3["fit_ok"] else 1.0, "H4": r4["p_one_sided"]}
+    # Full series so every placebo pre-window has its 32 quarters (a first run cut at 1999Q1; quant review ana-44).
+    r2, r3, r4 = its(pls), its(share), h4(nonfed.loc["2006Q1":])
+    # Holm across H1-H4 with the computed rank p for H2/H3, as the addendum says (a first run used p = 1 for the
+    # failed fits; same verdicts; quant review ana-43).
+    ps = {"H1": h1["p_rank_one_sided"], "H2": r2["p_rank"], "H3": r3["p_rank"], "H4": r4["p_one_sided"]}
     hr = holm(ps)
     verdict = {
         "H1": ("supported" if hr["H1"] and h1["abnormal_constant_mean_pp"] < 0 else
@@ -215,8 +228,8 @@ def main() -> int:
     s1.iloc[i0 - 10:i0 + 10].round(4).to_csv(HERE / "s1_weekly_event.csv", header=["s1_pp"], index_label="pmms_date")
     print(json.dumps({"H1": {k: h1[k] for k in ("week0", "actual_change_pp", "abnormal_constant_mean_pp", "abnormal_ar1_pp",
                                                   "p_rank_one_sided", "hac_t")},
-                      "H2": {k: r2[k] for k in ("fit_ok", "post_pre_rmspe_ratio", "mean_post_deviation", "p_rank")},
-                      "H3": {k: r3[k] for k in ("fit_ok", "post_pre_rmspe_ratio", "mean_post_deviation", "p_rank")},
+                      "H2": {k: r2[k] for k in ("fit_ok", "holdout_rmspe", "holdout_sd_2006_07", "p_rank")},
+                      "H3": {k: r3[k] for k in ("fit_ok", "holdout_rmspe", "holdout_sd_2006_07", "p_rank")},
                       "H4": r4, "holm": hr, "verdict": verdict}, indent=1))
     return 0
 
