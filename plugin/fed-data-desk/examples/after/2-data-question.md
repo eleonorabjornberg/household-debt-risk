@@ -2,7 +2,7 @@
 
 Call: `public_share(start="2026Q2", end="2026Q2", measure="mortgage")`, made over stdio JSON-RPC with the command in `.mcp.json`, from the repo root, using the snapshot backend (`DATABASE_URL_READONLY` unset).
 
-Note: with `DATABASE_URL_READONLY` set and the database host unreachable, as in this cloud sandbox, the same call returned an error (`failed to resolve host ...`) rather than falling back to the snapshots. This is reported to the coordinator.
+Note: when this example was recorded, with `DATABASE_URL_READONLY` set and the database host unreachable (as in this cloud sandbox), the same call returned an error (`failed to resolve host ...`). That was fixed the same night: the server now falls back to the snapshots and adds a `backend_note` (`mcp/household-credit-mcp/tests/test_fallback.py`).
 
 ```json
 {
