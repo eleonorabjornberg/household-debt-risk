@@ -64,7 +64,7 @@ export const facts = {
   nyMortgageChange: "−$74B",
   // Z.1, 2026Q2, not seasonally adjusted
   z1MortgageChange: "+$150B",
-  z1ScopeChange: "+$198B",
+  z1ScopeChange: "+$199B",
 };
 
 export const site = {

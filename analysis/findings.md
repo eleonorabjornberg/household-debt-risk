@@ -31,7 +31,7 @@ The first-pass numbers in the original README did not include **state and local 
 | 1990Q3 | 34.5% | 41.6% | +7.0 pp | 32.8% → 40.2% |
 | 2001Q1 | 40.6% | 36.8% | −3.8 pp | 39.6% → 36.0% |
 | 2007Q4 | 36.1% | 49.2% | +13.1 pp | 35.5% → 48.3% |
-| 2019Q4 | 55.2% | 56.3% | +1.0 pp | 55.2% → 55.9% (2020Q1 start) |
+| 2019Q4 | 55.2% | 56.2% | +1.0 pp | 55.2% → 55.9% (2020Q1 start) |
 | **2026Q2 (latest)** | **56.4%** | | | 55.8% |
 
 Identity checks, all exact from 1952 to 2026:
