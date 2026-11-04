@@ -50,6 +50,13 @@ Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is 
 - Fannie states outstanding CRT risk in force only as a rounded sentence, and only for 2017 and 2020–2025; missing years stay missing. Restated values agree between consecutive 10-Ks.
 - Claude caught its own overreach in the README (a claim that Fannie's figure excludes front-end lender risk sharing, not in the source) before commit; reworded to the 10-K's own words.
 
+### Decisions relayed 2026-11-04 (PLAN.md 543d96a, lines 125–129)
+- Q8(a) decided by Eleonora 2026-11-04: pre-registered fallback, event study for H2/H3 and the mechanical check for H4.
+- Q8(b) decided by Eleonora 2026-11-04: weekly S1 alignment confirmed.
+- Q8(c) decided by Eleonora 2026-11-04: constant-mean prediction primary, AR(1) sensitivity.
+- A4 decided by Eleonora 2026-11-04: all deviations in docs/decisions/breaks.md accepted; she asked why R is not available (an install from the Ubuntu archive is being tried).
+- Q7 not decided: "We need to research this first, we can't leave it up to judgement." Research under way.
+
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
 
