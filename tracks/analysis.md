@@ -5,7 +5,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | ready for review (bounds; skeptic run, 6 objections, 5 fixed, see `tracks/analysis-review-log.md`); the net series itself waits on Q1 | `research/a2_net_exposure/` |
+| A2 | in progress: Q1(b) built for Freddie Mac 2013–2025 (outstanding cover from 10-Ks, inside the FHFA bound); Fannie Mae waits for its filings (fanniemae.com 403; SEC User-Agent contact pending) | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part; skeptic run, 7 objections incl. 1 blocker, all addressed, see `tracks/analysis-review-log.md`); borrower-to-holder link waits on Q4 | `research/a5_distribution/` |
 | A8 | blocked (network: every national source refused by the proxy; see `research/a8_international/AVAILABILITY.md`); availability note and unverified crosswalk draft done; metric choice is Q5 | `research/a8_international/` |
 
@@ -23,6 +23,11 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - Error caught by register-keeper (A5): the README printed 31.4% for the public share of consumer credit; the source is 0.31349 (31.3%, same as the existing C8 row). Claude had rounded twice. Fixed.
 - Error caught by Claude (main, A5 figures): the tile-map legend rendered "$...$" as mathtext (italic, no dollar signs); escaped and re-rendered after looking at the PNG.
 - Errors caught: Claude (main) caught its own method-note claim that 2023 Fannie attach points run 60–155 bp; the deal table shows 60–165 bp. Fixed before commit. The 4Q23 PMI cumulative box has no text layer; read from the image and checked that Fannie + Freddie add to the total and to FHFA's "$3.3 trillion".
+
+### 2026-11-04 (later), after Eleonora's decisions on Q1–Q5 (PLAN.md, a590475)
+- Host check from this session: newly allowed hosts answer except `www150.statcan.gc.ca` and `data-api.ecb.europa.eu` (no answer) and `www.fanniemae.com` (403). Reported to the coordinator.
+- A2 Q1(b): Freddie Mac 10-Ks FY2013–FY2025 from freddiemac.com (not SEC); `tenk.py` parses four table layouts, every table reconciles to its own total, overlapping year ends agree across filings. Z.1 Freddie holdings are 99.4–99.6% of the 10-K portfolio UPB (independent check of the gross side). 14 register rows written by hand.
+- Errors caught by Claude (main) through the reconciliation check while building the parser: a wrapped label turned a subtotal into a component (FY2018–20, doubled sums); "Total $" rows were missed so the parse ran past the table (FY2015); a wrapped "STACR ... / transactions" label would have been filed as "other". All caught by the table-total assert before any number was used.
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)

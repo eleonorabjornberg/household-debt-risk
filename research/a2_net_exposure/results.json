@@ -21,9 +21,31 @@
  "cum_pmi_rif_bn_unapportioned_pmi_last": 835.0,
  "pmi_issued_pct_of_gross_pmi_last": 12.519,
  "cum_crt_ref_upb_over_gross_last": 1.102,
+ "freddie_10k": {
+  "source": "Freddie Mac Form 10-K FY2013-FY2025, outstanding credit enhancement coverage (freddie_ce_outstanding.csv)",
+  "gross_freddie_bn_last": 2932.7,
+  "crt_out_bn_unapportioned_last": 40.0,
+  "crt_out_hh_bn_last": 37.3,
+  "net_freddie_of_crt_bn_last": 2895.4,
+  "crt_out_pct_of_gross_last": 1.273,
+  "crt_out_pct_of_gross_max": 1.847,
+  "crt_out_pct_of_gross_max_year": 2022,
+  "crt_out_bn_unapportioned_peak": 54.9,
+  "crt_out_peak_year": 2022,
+  "fhfa_freddie_cum_issued_rif_bn_2023": 110.5,
+  "crt_out_bn_unapportioned_2023": 48.9,
+  "pmi_out_bn_unapportioned_last": 181.5,
+  "pmi_out_pct_of_gross_last": 5.772,
+  "other_out_bn_unapportioned_last": 10.4,
+  "public_share_net_freddie_crt_pct_last": 56.189,
+  "z1_freddie_over_10k_portfolio_min": 0.9937,
+  "z1_freddie_over_10k_portfolio_max": 0.9965
+ },
  "checks": {
   "net_le_gross_all_years": true,
   "net_lower_positive_all_years": true,
+  "freddie_outstanding_crt_le_fhfa_issued": true,
+  "net_share_bounds_ordered": true,
   "scope_reconstruction_max_abs_musd": 3.725290298461914e-09
  }
 }

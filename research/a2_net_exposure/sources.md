@@ -21,3 +21,27 @@ Also used: the Fed's Z.1 (`FRB_Z1_csv.zip`, `Z1.csv` dated 2026-09-11), as in A1
 - FHFA stopped the separate CRT Progress Report after 4Q 2023. 2024 and 2025 come from the Reports to Congress, rounded to $1 billion of RIF, with no PMI figures.
 - **Outstanding** CRT protection (RIF still in force after paydowns and write-downs) is published by the Enterprises in their 10-K/10-Q filings and deal files. From this environment `www.sec.gov` and `efts.sec.gov` are refused by the network policy (403 on CONNECT, 2026-11-04), as are `www.freddiemac.com`, `crt.freddiemac.com`, `capitalmarkets.freddiemac.com`, `www.fanniemae.com` and `capitalmarkets.fanniemae.com`. Freddie and Fannie deal data may also need a registration, which Eleonora does herself (PLAN decision, 2026-11-03). Not tried with other user agents.
 - Industry mortgage-insurance totals (`www.usmi.org`) are also refused by the network policy.
+
+## Freddie Mac Form 10-K filings (outstanding cover, Q1 decision of 2026-11-04)
+
+Retrieved 2026-11-04, about 04:25–04:35 UTC, from Freddie Mac's investor site (`www.freddiemac.com`, allowed 2026-11-04). Not fetched from SEC EDGAR. Each 10-K's coverage table is parsed by `tenk.py`; the fixtures in `fixtures/` are verbatim excerpts.
+
+| Fiscal year | URL | Bytes | SHA-256 |
+|---|---|---|---|
+| FY2013 | https://www.freddiemac.com/investors/financials/pdf/10k_022714.pdf | 2499044 | `a7f85e51b062fedd47ae379e9e003dbd6d576636c94627d65c0c2a54a6eff27a` |
+| FY2014 | https://www.freddiemac.com/investors/financials/pdf/10k_021915.pdf | 2232395 | `f3171a6cdc9e6fc99d49ba6022bab84cc97af944f3588459a794934a0a030c26` |
+| FY2015 | https://www.freddiemac.com/investors/financials/pdf/10k_021816.pdf | 9798741 | `c8308310765085ad961d8fa6e41af4e625ffcec50dfd50cd30e4462ab51bd503` |
+| FY2016 | https://www.freddiemac.com/investors/financials/pdf/10k_021617.pdf | 10839045 | `cd7e07bd50ebbd522caaea920290151385171e670ad712090fad699622823174` |
+| FY2017 | https://www.freddiemac.com/investors/financials/pdf/10k_021518.pdf | 13335422 | `8234955219e025eac9ae29abca160103be570aeaa4bb9d8f44ab925d6c67217f` |
+| FY2018 | https://www.freddiemac.com/investors/financials/pdf/10k_021419.pdf | 19651206 | `68141d973b1b8f8e16bdcb7c948a97ebb46363b8aefec982070f7ac7f4177b78` |
+| FY2019 | https://www.freddiemac.com/investors/financials/pdf/10k_021320.pdf | 22812383 | `399cfcea93509f5834bbc0896e10ccaa3704109fd6bc7fb4589e78bc8aedb683` |
+| FY2020 | https://www.freddiemac.com/investors/financials/pdf/10k_021121.pdf | 8288914 | `d4392ce83e416dc7584bb464dbe495c5469903622f65211fa0c2890e26fe4e1b` |
+| FY2021 | https://www.freddiemac.com/investors/financials/pdf/10k_021022.pdf | 8809073 | `6dc7ab061105f6fa8781c17f355357da6d9f983ca277b12e6ba1ee3988439f97` |
+| FY2022 | https://www.freddiemac.com/investors/financials/pdf/10k_022223.pdf | 6345601 | `0799b32511a8780fb63bee75b618021fa9ba406ac2c4de934755da3bd6999e88` |
+| FY2023 | https://www.freddiemac.com/investors/financials/pdf/10k_021424.pdf | 8059198 | `bf99cfd4c6f19e1a8871a118018737e0065cfe5240b83e16a8e6e7883f0c891f` |
+| FY2024 | https://www.freddiemac.com/investors/financials/pdf/10k_021325.pdf | 8363766 | `fbf240901eced310757472f6ddd7743303d8f391c87d5ac794108aa410c4d50e` |
+| FY2025 | https://www.freddiemac.com/investors/financials/pdf/10k_021226.pdf | 13628466 | `b6099ca8a6824b571d97a961de8d17dcb3c65ad9b57a3f6fd1b0c8cae51ebd09` |
+
+Quotes (FY2025 10-K): table title "Table 23 - Single-Family Mortgage Portfolio Credit Enhancement Coverage Outstanding"; footnote (1) "The credit risk positions to which the maximum coverage applies may vary on a transaction-by-transaction basis."; footnote (2) on primary mortgage insurance: "Amounts exclude certain loans for which we do not control servicing, as the coverage information for these loans is not readily available to us." FY2013 10-K, Table 4.5, footnote (2): maximum coverage "represents the remaining amount of loss recovery that is available subject to terms of counterparty agreements"; footnote (3) on risk transfer transactions: "Maximum coverage amounts presented represent the outstanding balance of the debt securities held by third parties as well as the remaining aggregate limit of insurance purchased from a third party."
+
+**Fannie Mae 10-Ks: not retrieved.** `www.fanniemae.com` answers 403 from this environment (2026-11-04 ~04:20 UTC). SEC EDGAR is reachable only with a declared User-Agent contact, which the coordinator is settling with Eleonora; nothing has been fetched from the SEC.

@@ -1,0 +1,21 @@
+# Excerpt of Freddie Mac Form 10-K for FY2017 (10k_021518.pdf, freddiemac.com/investors/financials/pdf/), pdftotext -layout, lines verbatim. Test fixture only.
+The table below provides information on the total current and protected UPB and maximum coverage
+associated with credit enhanced loans in our single-family credit guarantee portfolio as of December 31,
+2017 and 2016, respectively. The table includes all types of single-family credit enhancements.
+
+                                                                                                              As of December 31,
+                                                                                                    2017                                 2016
+                                                                                       Total Current                        Total Current
+                                                                                      and Protected        Maximum         and Protected        Maximum
+(In millions)                                                                             UPB(1)           Coverage(2)         UPB(1)           Coverage(2)
+    Primary mortgage insurance                                                              $334,189            $85,429           $291,217           $74,345
+                       (3)
+    STACR debt note                                                                          604,356             17,788            427,978            14,507
+    ACIS transactions(4)                                                                     617,730              6,736            453,670              5,355
+    Senior subordinate securitization structures                                               12,283             1,913               3,988               605
+           (5)
+    Other                                                                                      15,975             6,479             12,827              7,373
+Less: UPB with more than one type of credit enhancement                                      (775,751)                —           (559,400)                 —
+Single-family credit guarantee portfolio with credit enhancement                             808,782            118,345            630,280           102,185
+Single-family credit guarantee portfolio without credit enhancement                        1,020,098                  —          1,124,446                  —
+  Total                                                                                   $1,828,880          $118,345          $1,754,726          $102,185
