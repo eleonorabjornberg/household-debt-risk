@@ -140,7 +140,9 @@ function card(d) {
   let t;
   ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => saveNote(d.id, ta.value), 900); });
   ta.addEventListener("blur", () => { clearTimeout(t); saveNote(d.id, ta.value); });
-  c.append(ta, saved, el("div", { class: "where" }, "Details: ", el("code", {}, d.where)));
+  const where = el("div", { class: "where" }, "Details: ", el("code", {}, d.where));
+  if (d.link && /^https:\/\//.test(d.link)) where.append(" ", el("a", { href: d.link, target: "_blank", rel: "noopener noreferrer" }, "Open"));
+  c.append(ta, saved, where);
   return c;
 }
 

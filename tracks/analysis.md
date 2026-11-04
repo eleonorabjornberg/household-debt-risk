@@ -5,10 +5,11 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
+| A2 | ready for review: Freddie (2013–2025) and Fannie (2017, 2020–2025) outstanding cover; net of both Enterprises' CRT 56.0% vs 56.4% gross (2025); skeptic done | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
 | A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
-| A4 | ready for review: run to the frozen prereg (02cc47f); one break at 1966Q1 (CI 1952Q2–1967Q1); no evidence at the five 2008–10 dates; vintage-robust; quant review done (interval bug fixed); not confirmable without R | `research/a4_breaks/` |
+| A4 | ready for review: run to prereg 02cc47f; break at 1966Q1; no evidence at the 2008–10 dates; R strucchange cross-check within tolerance; deviations accepted by Eleonora | `research/a4_breaks/` |
+| A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
 ## Where the track stopped (2026-11-04, about 05:45 UTC)
@@ -45,6 +46,18 @@ Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is 
 - A4 quant-reviewer (58k tokens): caught a sign error in the Bai (1997) interval (wrong whenever regime variances differ; 1966Q1 interval was 1965Q1–1997Q4, now 1952Q2–1967Q1). Fixed with a test that fails on the old code.
 - Errors caught by Claude (main): the first "Approved" line in a GovInfo page file can belong to the preceding chapter (1944: June 20 is the Sugar Act; 1938: January 27 is chapter 11); dates now taken after each act's own chapter heading.
 
+### 2026-11-04 (afternoon), A2 Fannie via EDGAR (Q6)
+- 28 SEC requests (27 × 200, 1 × 503 on a first run at 0.5 s spacing; script stopped, rerun once at 2 s spacing); no 403. User-Agent passed per command only; `git grep` for it clean before each commit.
+- Fannie states outstanding CRT risk in force only as a rounded sentence, and only for 2017 and 2020–2025; missing years stay missing. Restated values agree between consecutive 10-Ks.
+- Claude caught its own overreach in the README (a claim that Fannie's figure excludes front-end lender risk sharing, not in the source) before commit; reworded to the 10-K's own words.
+
+### Decisions relayed 2026-11-04 (PLAN.md 543d96a, lines 125–129)
+- Q8(a) decided by Eleonora 2026-11-04: pre-registered fallback, event study for H2/H3 and the mechanical check for H4.
+- Q8(b) decided by Eleonora 2026-11-04: weekly S1 alignment confirmed.
+- Q8(c) decided by Eleonora 2026-11-04: constant-mean prediction primary, AR(1) sensitivity.
+- A4 decided by Eleonora 2026-11-04: all deviations in docs/decisions/breaks.md accepted; she asked why R is not available (an install from the Ubuntu archive is being tried).
+- Q7 not decided: "We need to research this first, we can't leave it up to judgement." Research under way.
+
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
 
@@ -74,6 +87,8 @@ Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is 
 - Recommendation: (c), with (b) as the headline, since the project's question is who carries the risk. Either way A8 needs the hosts in `research/a8_international/AVAILABILITY.md` ("What would unblock A8") added to Allowed domains, or the national tables downloaded by hand into `data/a8/`.
 
 **Q6 (A2). SEC_USER_AGENT not set in the track environment (needed for Fannie Mae 10-K, A2 Q1(b)).** Your decision says the SEC contact is read from `SEC_USER_AGENT`, which you set in the environment settings; it is unset in this session, so no SEC fetch runs and Fannie's outstanding cover is not built. Note: before this was clear, Claude made one EDGAR request (Fannie's 10-K filing list) with a User-Agent it had set in its own shell from the address in your decision, and then attempted a second with that address hard-coded as a fallback; the coordinator stopped the second. Nothing containing the address is committed. Options: (a) set `SEC_USER_AGENT` in the environment settings and start a fresh session for the Fannie step; (b) download Fannie's 10-K filings yourself into `data/a2/fannie/`. Recommendation: (a).
+
+**Q6 decided by Eleonora 2026-11-04: in-shell, analysis track only.** (Decision card option "Set it in-shell in one track, SEC requests only (never written to a file)", 16:33 UTC, relayed by the coordinator; the card is in commit 23ad51b.) The User-Agent is passed as a per-command prefix to `research/a2_net_exposure/fannie_10k.py` only, sent only to www.sec.gov, and never written to a file; `git grep` for the address is run before every commit.
 
 **Q7 (A8). Do losses at publicly owned banks count as public?** Germany's savings banks, Landesbanken and promotional banks hold 30.3% of bank lending to individuals. On the risk-bearer measure, a loss at a publicly owned bank falls first on that bank's capital, which is public-sector equity, but (on general knowledge, not yet sourced) carries no state guarantee since 2005. Options: (a) count it as public on (b) too; (b) count it as private on (b), public only on (a); (c) show it as a third category, "publicly owned, not guaranteed". Recommendation: (c), since it keeps the two measures honest and makes the German case visible rather than resolving it by definition.
 
