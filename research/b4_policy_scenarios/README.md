@@ -6,8 +6,8 @@
 
 | Scenario | Status of the debate (as looked up, 2026-11-04) | Result |
 |---|---|---|
-| Recession | — | Losses from $595B to $1,886B on 2026Q2 balances. The public share of losses is 23% to 42%. The range runs from B3's DFAST proxy to its 2008–12 replay; both are proxies. |
-| GSEs released from conservatorship | FHFA's conservatorship page, retrieved 2026-11-04, says "Fannie Mae and Freddie Mac continue to operate under conservatorship, as they have since 2008". The page carries no date of its own and cites the 2025 Scorecard, so it may lag. Only the first page of FHFA news releases (10 items) was checked, and none concerned an exit. So the status is **unconfirmed beyond those two pages**. | Public share of losses from 7% to 42% across both recession proxies and 0–100% of the Fannie and Freddie book turning private (below). |
+| Recession | — | Losses from $595B to $1,886B on 2026Q2 balances. The public share of losses is 23% to 42% (federal student loans excluded: no loss rate in either preset). The range runs from B3's DFAST proxy to its 2008–12 replay; both are proxies. |
+| GSEs released from conservatorship | FHFA's conservatorship page, retrieved 2026-11-04, says "Fannie Mae and Freddie Mac continue to operate under conservatorship, as they have since 2008". The page carries no date of its own and cites the 2025 Scorecard, so it may lag. Only the first page of FHFA news releases (10 items) was checked, and none concerned an exit. So the status is **unconfirmed beyond those two pages**. | Public share of mortgage and other consumer-credit losses (federal student loans excluded) from 7% to 42% across both recession proxies and 0–100% of the Fannie and Freddie book turning private (below). |
 | Student-loan reform | P.L. 119-21, approved July 4, 2025: no Federal Direct PLUS loans for graduate and professional students for periods from July 1, 2026, subject to the statute's transition exception ("Subject to paragraph (8)"); new limits; a Repayment Assistance Plan. | Waits for a sourced estimate of the lending shift (card b4-student (c)) |
 
 - **No transfer.** Neither range applies a CRT or mortgage-insurance transfer. With A2's cover as an input, the public figures would be lower.
@@ -15,14 +15,14 @@
 
 ## GSE release: who bears the losses (card b4-gse (a))
 
-**What moves.** On release, a share of the losses on Fannie Mae's and Freddie Mac's books (portfolio and pools) turns private: 0% (the implicit guarantee holds), then 25%, 50%, 75% and 100% (fully private, no backstop). These are scenario points, not forecasts of release terms. Balances and loss rates stay as in B3; only the side of the losses changes.
+**What moves.** On release, a share of the losses on Fannie Mae's and Freddie Mac's books (portfolio and pools) turns private: 0% (losses stay on the GSEs' and Treasury's side, as under conservatorship), then 25%, 50%, 75% and 100% (fully private, no backstop). These are scenario points, not forecasts of release terms. Balances and loss rates stay as in B3; only the side of the losses changes.
 
-**What stays public.** Ginnie Mae and FmHA pools (an explicit federal guarantee), the FHLBs and the other GSEs. The split of B3's "GSEs & agency pools" mortgage book ($8,977B, household-apportioned, 2026Q2, from the 2026-09-11 Z.1 release):
+**What stays public.** Ginnie Mae and FmHA pools, the FHLBs and the other GSEs. The Ginnie pools are federally insured or guaranteed loans (FHA, VA, USDA); VA and USDA guaranties are partial and issuers bear part of the loss, so counting the whole pool as public is a holder-based simplification (see A1's caveat). The split of B3's "GSEs & agency pools" mortgage book ($8,977B, household-apportioned, 2026Q2, from the 2026-09-11 Z.1 release):
 - Fannie Mae and Freddie Mac, the book that is released: $6,277B (Fannie $3,329B, Freddie $2,948B).
 - Ginnie Mae and FmHA pools: $2,611B.
 - FHLBs and other GSEs: $90B.
 
-**Result.** Public losses and the public share of all household-credit losses, by share of the Fannie/Freddie book's losses that turns private:
+**Result.** Public losses and the public share of losses on mortgages and other consumer credit, by share of the Fannie/Freddie book's losses that turns private. Federal student loans are excluded: neither B3 preset gives them a loss rate, so they add no loss.
 
 | Share turning private | DFAST 2026 proxy: public losses | Public share of losses | 2008–12 replay proxy: public losses | Public share of losses |
 |---|---|---|---|---|
@@ -35,9 +35,11 @@
 Total losses do not change with the share: $595B under the DFAST proxy and $1,886B under the replay. At 0% the figures equal the recession range above.
 
 **Caveats.**
+- **What "public" means here.** Losses on the books of the GSEs, the federal government and other public holders. Under conservatorship the GSEs' own capital takes losses first and Treasury's Senior Preferred Stock Purchase Agreements stand behind them, so "public" is not the same as taxpayer outlay.
+- **Gross of existing risk transfer.** The shares are measured before CRT and mortgage insurance. Fannie and Freddie already pass part of their losses to private investors and insurers today (A2, `research/a2_net_exposure/`), so on a net basis today's arrangement already sits above 0%.
 - **One loss rate per class.** B3 applies one mortgage loss rate to every holder, so Fannie and Freddie lose at the same rate as Ginnie's FHA and VA pools. If Ginnie's pools lose more per dollar than the GSE book, the public share at each point is understated, and overstated if they lose less. Relative loss rates are not estimated here.
 - **Proxies.** Both loss paths are bank-portfolio proxies (B3).
-- **Release is not the same as loss-bearing.** A released GSE would hold capital and buy CRT. The share turning private stands in for those terms, which are not known (option (c) of the card, a specific proposal, was not chosen).
+- **Release is not the same as loss-bearing.** A released GSE would hold more capital and could buy more CRT. The share turning private stands in for those terms, which are not known (option (c) of the card, a specific proposal, was not chosen).
 
 ## Reproduce
 
