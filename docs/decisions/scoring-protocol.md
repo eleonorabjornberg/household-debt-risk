@@ -1,10 +1,10 @@
 # Pre-registration: C2 scoring protocol for the public-share forecast
 
-> **Claude draft, not the author's text.** Options for Eleonora to choose; nothing here is decided until she records it.
+> **Claude draft, not the author's text.** Claude drafted the options. Eleonora chose them on 2026-11-04 by accepting every recommended option; each choice carries a **Decided** line. The wording is still Claude's.
 
-Status: draft (2026-11-04). Not frozen. No C2 forecast, fit or score exists yet. When the choices are made, freeze it as the `preregister` skill says: commit this file on its own as `prereg: C2 (frozen)`, then record the hash here.
+Status: decided by Eleonora 2026-11-04; frozen in commit `prereg: C2 (frozen)` (hash recorded in PLAN.md and the build log). No C2 forecast, fit or score existed when it was frozen.
 
-Each design choice is a `CHOICE:` line with options. "(Claude recommends)" marks one option. It is a suggestion, not a decision.
+Each design choice is a `CHOICE:` line with options; "(Claude recommends)" marks the one Claude suggested, and the **Decided** line under it is Eleonora's pick. Fact checks behind the edits made just before freezing: [`prereg-fact-checks.md`](prereg-fact-checks.md).
 
 ## Question
 
@@ -26,7 +26,7 @@ What exists, stated plainly:
 
 - **Z.1, latest vintage.** `data/validation/FRB_Z1_csv.zip`, `Z1.csv` dated 2026-09-11. Quarterly from 1952Q1 to 2026Q2: 298 quarters. Levels are in $ millions, end of quarter, not seasonally adjusted (catalog header).
 - **Z.1, one earlier vintage.** `data/validation/prev_z1_csv_files.zip`. These are the Fed's archived per-table files for the 2026-06-11 release, ending 2026Q1. `validation/zparse.py` reads them. Validation check F2 found public-share revisions between the two vintages of at most 0.021 pp (`validation/REPORT.md`). That is two vintages, not a revision history.
-- **No Z.1 vintage archive in the repo.** The Fed keeps per-release folders (`releases/z1/<YYYYMMDD>/`). The June 2026 folder works. How far back these folders have usable CSVs is **not verified**. The public share is not a FRED series, so ALFRED has no vintages of the target. Some Z.1 aggregates are on FRED/ALFRED. Whether every component series is there, and from when, is **not verified**.
+- **No Z.1 vintage archive in the repo.** The Fed keeps per-release folders (`releases/z1/<YYYYMMDD>/`). Per-release CSV zips exist from the 16 Sep 2016 release (folder 20160916) onwards, about 40 vintages; earlier releases are HTML/PDF only on the Fed site (`prereg-fact-checks.md` §6). The 2016 zips use a different file layout from 2026, so `validation/zparse.py` must be tested on them before use. The public share is not a FRED series, so ALFRED has no vintages of the target. Some Z.1 aggregates are on ALFRED, from different dates: `CMDEBT` (household debt) from 1999-06-11, `HHMSDODNS` (household mortgages) only from 2010-06-10. Other component series are **not verified**.
 - **C1 inputs.** G.19, H.8 and `WSHOMCB` have ALFRED vintages (per PLAN C1). C1 is still to be built. Its release-lag table will set when each input can be used.
 - **Known breaks.** The validation suite lists breaks at 1968Q1, 1977Q1, 2006Q1 and 2010Q1. This file does not interpret them. That is A4's job.
 - **Timing.** Z.1 for quarter T is released about ten weeks after T ends (2026Q2 came out on 2026-09-11). The next release is expected on 2026-12-10, with 2026Q3.
@@ -41,6 +41,7 @@ What exists, stated plainly:
 - (a) The level of the share at T+h. Simple to read. Errors are in pp.
 - (b) The cumulative change, share(T+h) − share(T), turned back into a level for scoring. (Claude recommends.) Changes are closer to stationary. Within one vintage the level error and the change error are the same number, so nothing is lost. Across vintages they differ: see the revisions choice.
 - (c) As (b), but modelled on the log-odds of the share, so forecasts and intervals stay between 0 and 1. More correct near the edges. Harder to explain. The share is now far from 0 and 1, so the gain is small.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **Horizons.** 1, 4 and 8 quarters. Fixed. Direct forecasts, one model per horizon, unless a model is iterated by construction (the AR benchmark: see below).
 
@@ -48,12 +49,14 @@ What exists, stated plainly:
 - (a) Expanding: each origin uses all data back to 1952Q1. Most data. Slow to adapt after a regime change, such as 2008.
 - (b) Rolling, 80 quarters (20 years). Adapts. Fewer observations. The window length is a tuning choice in its own right.
 - (c) Expanding as the primary design, plus rolling 80 quarters as one declared secondary that counts in the multiple-testing family. (Claude recommends.)
+**Decided: (c).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **CHOICE: first evaluation origin.** Development origins run from this date up to the holdout.
 - (a) 1985Q1. About 130 training quarters at the first origin. Most origins. Spans the 1980s rise of agency MBS.
-- (b) 1990Q1. (Claude recommends.) A round post-1980s start. Still about 130 origins at h=1 before the holdout. Close to where ALFRED coverage of many C1-type inputs plausibly begins (not verified).
+- (b) 1990Q1. (Claude recommends.) A round post-1980s start. Still about 130 origins at h=1 before the holdout. Origins before archived vintages exist (Z.1 CSVs from 2016-09; ALFRED from 1999 or 2010 by series) are pseudo out-of-sample on latest-vintage data and are labelled so.
 - (c) 2000Q1. Closest to today's market structure. Only about 90 origins, and the 2008 shift weighs heavily on them.
 Family Z+C1 starts where C1's panel starts. Every model comparison uses the common set of origins of the models compared.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **CHOICE: purge and embargo.** At origin T, a training pair for horizon h is (features at s, target at s+h).
 - *Purge* (fixed, not a choice): keep a pair only if s+h ≤ T. That means only targets already published at the origin. Without it, targets at multi-step horizons overlap the period being forecast, and the model learns from the future. The purge removes the last h quarters of feature rows.
@@ -61,12 +64,15 @@ Family Z+C1 starts where C1's panel starts. Every model comparison uses the comm
   - (a) e = 0. Purge only. Most data. Assumes recent revisions do not matter.
   - (b) e = 1, one release cycle. A small guard.
   - (c) e = 4. (Claude recommends.) A year of guard costs under 3% of training data at a 1990 origin. That Z.1 revisions are concentrated within about a year is a working assumption, **not verified**.
+**Decided: (c).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **CHOICE: real-time vs latest-vintage data.**
 - (a) Latest vintage everywhere. A pseudo out-of-sample test. Labelled as such. Overstates real-time accuracy by an unknown amount.
 - (b) Build a real-time Z.1 archive from the Fed's release folders, score against the first release, and use it as far back as the folders allow. Most honest. The depth of the archive is unknown, and building it is extra work (a source-provenance task).
 - (c) Both. (Claude recommends.) Latest vintage is the primary design over the full sample. A real-time check runs over whatever window archived vintages cover, even if short. Every forecast filed from now on is kept and scored against the first release and the latest. C3 reports the gap between the two as a measured revision effect.
 C1 features are always read point-in-time from ALFRED, whatever the target vintage. A feature with no vintages is flagged "latest vintage", and its model is labelled "not real-time".
+**Decided: (c).** Eleonora, 2026-11-04 (accepted the recommended option).
+The real-time check therefore covers origins from the 2016-09-16 release onward (about 40 vintages), once the old CSV layout is parsed and tested.
 
 ## Benchmarks and the holdout
 
@@ -80,12 +86,14 @@ C1 features are always read point-in-time from ALFRED, whatever the target vinta
 - (a) Fixed p = 1. No search, nothing to overfit. May be too simple.
 - (b) p chosen by BIC from 0 to 4, again at each origin using training data only. (Claude recommends.) Standard. BIC leans toward small p.
 - (c) p chosen by AIC from 0 to 8. Fits better in sample. Overfits more.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **CHOICE: holdout.** It is scored once.
 - (a) The last 8 quarters, 2024Q3–2026Q2. At h=8 there is only one holdout forecast.
 - (b) The last 12 quarters, 2023Q3–2026Q2. (Claude recommends.) Origins 2023Q2 onward give 12, 9 and 5 holdout forecasts at h = 1, 4, 8. Development stops at targets up to 2023Q2.
 - (c) As (b), plus a prospective holdout: forecasts made at each Z.1 release from 2026-12-10 onward, committed before the release.
 Honest caveat for every option: the history to 2026Q2 has already been seen in A1 and on the sites. A historical holdout is untouched by the models, not by the researchers. Only (c)'s prospective part is truly unseen. Claude suggests adding (c) once C3 is out, as a running record that does not hold up C3.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **Holdout rules (proposed as fixed):**
 - The data loader cuts the series at 2023Q2 unless it is given the frozen pre-registration hash and an explicit holdout flag.
@@ -100,11 +108,13 @@ Honest caveat for every option: the history to 2026Q2 has already been seen in A
 - (b) MAE. Robust to one bad quarter. Hides the large misses that matter most here.
 - (c) CRPS as the primary loss, for point and interval together. Most complete. Needs a full predictive distribution from every model, benchmarks included.
 Whichever is primary, RMSE and MAE are both reported. So are the interval score at 80% and 95% (Gneiting-Raftery / Winkler) and CRPS where a full predictive distribution exists.
+**Decided: (a).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **CHOICE: interval method.** It applies to every model and benchmark, so interval scores can be compared.
 - (a) Model-based, Gaussian. Simple. Wrong if errors have fat tails or change size over time.
 - (b) Empirical quantiles of the model's own past out-of-sample errors at the same horizon, using only errors already realised at the origin (purged the same way). (Claude recommends.) Needs no distributional assumption. Needs a burn-in of past errors, about 40 origins, before intervals start.
 - (c) Adaptive conformal intervals. Like (b), but updated online for coverage. Better under drift. One more tuning rate to fix in advance.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **Coverage targets.** 80% and 95%, both two-sided. Coverage is reported per horizon. Each figure comes with a Clopper-Pearson binomial interval. At h=1 it also gets the Kupiec unconditional test and the Christoffersen independence test. At h>1 errors overlap, so independence tests are invalid there and coverage stays descriptive. Plain fact: 12 holdout forecasts at 95% coverage should miss about 0.6 times. The holdout cannot test 95% coverage. Coverage is judged on the development sample. The holdout only reports it.
 
@@ -122,6 +132,7 @@ The harness has an as-of guard. Every datum carries `available_at`. Any datum wi
 - (a) The guard trips on tests 1–4. Mechanism only.
 - (b) Tests 1 and 5 by outcome only. They catch leaks the guard cannot see, but only large ones.
 - (c) Both: guard tests 1–4 and outcome checks 1 and 5. (Claude recommends.) A harness that fails to flag a deliberately leaked feature is a bug, and C2 is not done until it is fixed.
+**Decided: (c).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 ## Significance and multiple testing
 
@@ -129,11 +140,13 @@ The harness has an as-of guard. Every datum carries `available_at`. Any datum wi
 - (a) Diebold-Mariano with the Harvey-Leybourne-Newbold small-sample correction for every pair. HAC lag h−1, Student-t critical values with n−1 degrees of freedom. Simple. Invalid for nested pairs (an AR model against no-change), where it is too conservative.
 - (b) Clark-West for nested pairs, DM-HLN for non-nested pairs. Tests run on the development sample. Holdout results are descriptive only: relative loss and sign, no p-values. (Claude recommends.) Correct for nesting. Few holdout forecasts cannot carry a test.
 - (c) Descriptive only, everywhere. Most honest about the small number of independent origins (overlap at h=8 leaves few). Gives no basis for saying "beats".
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 **CHOICE: multiple-testing control.** The family is 3 horizons × candidates × (no-change, AR).
 - (a) One pre-declared primary comparison (the main candidate vs no-change at h=4, on the primary loss). Everything else is labelled exploratory. Cleanest. Puts weight on one number.
 - (b) Holm correction across the whole family, with at most 3 frozen candidates. (Claude recommends.) Controls the family-wise error. Keeps all horizons in play.
 - (c) Hansen's Model Confidence Set per horizon. Built for comparing many models. Its bootstrap is fragile with this few effective observations.
+**Decided: (b).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 ## Decision rules
 
@@ -141,6 +154,7 @@ The harness has an as-of guard. Every datum carries `available_at`. Any datum wi
 - (a) Lower primary loss on the development sample, significant after correction, and lower loss in the holdout.
 - (b) As (a), plus relative loss ≤ 0.95 (at least 5% better) in both samples, and 80% coverage not rejected on development data. (Claude recommends.) It guards against wins too small to matter.
 - (c) Holdout only: lower loss there. Easy. With 5–12 forecasts it is close to a coin flip.
+**Decided: (a).** Eleonora, 2026-11-04 (accepted the recommended option).
 
 Other wording, fixed in advance:
 - "Comparable to the benchmark": the loss difference is not significant, or its sign flips between samples.
@@ -168,4 +182,4 @@ Other wording, fixed in advance:
 
 ## Deviations (dated, after freezing)
 
-None. The file is not frozen.
+None yet.
