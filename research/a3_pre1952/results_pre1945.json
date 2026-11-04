@@ -1,0 +1,20 @@
+{
+ "label": "1925-1944 from Historical Statistics (reliability B/C), 1945-1952 Z.1 (A)",
+ "checks": {
+  "overlap_year": 1945,
+  "hist_share_1945_pct": 3.5401,
+  "z1_share_1945_pct": 3.5051,
+  "gap_pp": 0.035,
+  "hist_federal_1945_musd": 859.0,
+  "hist_scope_1945_musd": 24265.0,
+  "z1_scope_1945_musd": 25506.0,
+  "ratio_z1_over_hist_1945": 0.9901,
+  "tolerance_pp": 0.25
+ },
+ "share_1932_pct": 0.0,
+ "share_1935_pct": 14.0699,
+ "peak_pre1945_year": 1935,
+ "peak_pre1945_pct": 14.0699,
+ "share_1944_pct": 4.9585,
+ "holc_1935_musd": 2897.0
+}
