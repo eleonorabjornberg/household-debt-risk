@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** Eleonora decided on 2026-11-04 to pre-register this run (Q-C1b, option (a): Freddie Mac and Ginnie Mae monthly data, Fannie Mae carried flat; PLAN.md "Decisions taken"). The design choices below are hers to make. Claude drafted them as `CHOICE:` lines with a recommendation. Nothing here has been run.
 
-Status: **draft** (not frozen). Drafted 2026-11-04 by Claude (markets track).
+Status: **choices filled, not yet frozen.** Drafted 2026-11-04 by Claude (markets track). Eleonora's choices filled in on 2026-11-04 (evening) from PLAN.md "Decisions taken" (cards c1b-joint, c1b-cells-2, c1b-pubdate-2, c1b-map). This version is committed before `research/c1b_nowcast/nowcast_c1b.py` exists or has scored anything. Lines marked *[implementation]* are Claude's mechanical details and can be overruled before the freeze.
 
 **Before any result.** No C1b output exists. C1's own development results are known, and they are what motivated this run: they showed a downward bias, possibly from carrying the public mortgage holders flat (`research/c1_nowcast/README.md`). This design is therefore not blind to C1's development results; it is blind to C1b's. C1's and C2's holdout (2023Q3–2026Q2) is still sealed (Q-C1c).
 
@@ -19,45 +19,48 @@ Does adding agency monthly data for the public mortgage holders reduce the error
   - Reachable (HTTP 200). The listing page links 165 reports, from January 2013 to September 2026.
   - What it gives: Freddie's mortgage portfolio and its single-family credit-guarantee (pool) UPB at month end.
   - No real-time vintages: each report is the value as first published, and the PDF is the vintage.
-- **Ginnie Mae.** Monthly reports (`https://www.ginniemae.gov/data_and_reports/reporting/Pages/monthly_summary_reports.aspx`). The page is reachable, but **no downloadable file was found in its static HTML on 2026-11-04**. Availability is to verify with the `source-provenance` skill before freezing; if it can't be verified, Ginnie is carried flat and the run is recorded as "Freddie only".
+- **Ginnie Mae.** Monthly reports (`https://www.ginniemae.gov/data_and_reports/reporting/Pages/monthly_summary_reports.aspx`). The page is reachable, but **no downloadable file was found in its static HTML on 2026-11-04**; the provenance check failed (markets track, reported to the coordinator 2026-11-04 ~17:25 UTC). **Ginnie is carried flat and the run is recorded as "Freddie only".**
+- **Freddie Mac, as fetched.** `research/c1b_nowcast/freddie_mvs.py` fetched the listing page (`https://www.freddiemac.com/investors/financials/monthly-volume-summaries`, 165 reports) and the 129 reports from January 2016 to September 2026 on 2026-11-04. It parses Table 1 ("Total mortgage portfolio", ending balance, $ millions) for every month each report shows (about 13 months per report). Byte counts and SHA-256 per PDF: `data/c1b/mvs/manifest.jsonl` and `freddie_mvs_reports.csv`. Only publication metadata and Table 1 were read before this commit; no nowcast was computed.
 - **Fannie Mae.** Carried flat, as decided: fanniemae.com is still blocked.
 - **Everything else as C1.** Z.1 vintages from the release archive (41 releases from 2016-09-16), G.19 and H.8 from ALFRED as of each instant, and the target is the first-release share (`research/c1_nowcast/EVALUATION.md`).
 
 ## Method
 - **Model.** C1's accounting bridge with indicator set 2b, plus one mapping: the agency cells move with their agency's monthly growth.
   - *Freddie's growth.* From the last month of quarter T to the latest month published by instant t, both read from reports published by t.
-- **CHOICE: which Z.1 cells the agency data move.** The archive's catalog-level cells (`mort_gse`, FL403065105; `mort_pools`, FL413065105) combine Fannie, Freddie, Ginnie, the FHLBs and others.
-  - (a) Split the two cells into Freddie, Ginnie and the rest using the finer Z.1 series (FL403065120 + FL413065123 for Freddie; FL413065110 + FL413065133 for Ginnie) where a vintage has them; otherwise use the shares from the nearest earlier vintage that does. *Recommended.* It uses each agency's own growth. The finer series are absent from the 2016 table layout, so their availability by vintage must be checked first.
-  - (b) Apply Freddie's growth to Freddie's share of the combined cell taken from the latest vintage. Simpler, but it puts a latest-vintage quantity into a real-time run.
-  - (c) Apply an agency-weighted growth to the whole combined cell. Crude: it also moves Fannie, which is meant to be carried flat.
-- **CHOICE: publication date of each agency report** (for the as-of rule).
-  - (a) The PDF's own creation date from its metadata, checked against the listing page. *Recommended.*
-  - (b) A fixed lag after month end (for example the 25th of the next month), checked against a sample of reports. Simpler, but it can put a report into an instant before it was out.
-  - (c) The listing page's dates only (the page may not show them).
-- **CHOICE: what Freddie's report quantity maps to.** The Z.1 cell is household 1–4 family mortgages held by Freddie in portfolio and pools; the report gives total single-family portfolio and guarantee UPB.
-  - (a) Use growth rates only, so level differences in definition cancel. *Recommended.*
-  - (b) Use levels with a calibration ratio from the last Z.1 quarter (in effect the same as (a) for a nowcast).
+- **CHOICE (decided): which Z.1 cells the agency data move. Eleonora: (d)** (card c1b-cells-2, 2026-11-04). Her first pick, (a), split by the finer Z.1 series, could not run: none of the 41 archived releases carries FL403065120, FL413065123, FL413065110 or FL413065133.
+  - **(d)** Freddie's share of the combined GSE + pool cell = Freddie's own published total mortgage portfolio ÷ that vintage's combined cell. Real-time; **labelled a proxy**, because Freddie's total includes multifamily and the Z.1 cells are household 1–4 family.
+  - *[implementation]* Combined cell C_T = `mort_gse` + `mort_pools` at T in the base release R (household-apportioned, as in C1). Freddie's level F_T = the ending balance for the last month of T in the latest MVS report published before t. Freddie's share s = min(1, F_T / C_T).
+  - *[implementation]* Nowcast: C_q = C_T × (1 + s × (g − 1)), with g Freddie's growth (below). `mort_gse` and `mort_pools` are both scaled by C_q / C_T (both are public, so the split between them does not move the share). Fannie, Ginnie, the FHLBs and the rest of the cell are carried flat. Every other cell moves as in C1's set 2b.
+- **CHOICE (decided): publication date of each agency report. Eleonora: (a2)** (card c1b-pubdate-2, 2026-11-04). Her first pick, (a), the PDF creation date checked against the listing page, could not run as written: the listing shows no dates, and 21 of the 129 reports carry a creation date of 2024-01-18 (re-issued in a batch).
+  - **(a2)** The PDF creation date where it is plausible (after month end and within 45 days of it), otherwise month end + a fixed lag. Re-issued months are labelled **"content possibly revised"**.
+  - *[implementation]* Fixed lag = the largest lag among the plausible reports: 33 days (108 plausible reports, lags 17–33 days). The 21 re-issued reports: 2016-08, 2019-05, -06, -07, -09, -11, -12, 2020-01 to -06, 2021-11, 2022-02, 2023-03, -05 to -09 (`freddie_mvs_reports.csv`).
+  - *[implementation]* A report is usable at instant t if its publication date is strictly before t (the 15th).
+- **CHOICE (decided): what Freddie's report quantity maps to. Eleonora: (a)**, growth rates only, so definition differences cancel (card c1b-map, 2026-11-04). Under (d) the level enters only as the weight s.
+  - *[implementation]* g = F(m*) / F(last month of T), both read from the **same** report: the latest one published before t. m* is the latest month in that report on or before the end of q. Using one report for both months keeps definition breaks between reports out of g (one was found: the March 2021 report restates February 2021 by +$44.0 billion). If no month after T is published yet, g = 1.
 - **Instants, k, metrics.** As C1: the 15th of each month, k = 1, 2, 3, RMSE and MAE in pp, mean error.
 
 ## Benchmarks and holdout
 - **Benchmarks.** No-change (the C1 headline) and C1's bridge (2b), the comparison that matters for H1 and H2.
 - **Development and holdout.** Development targets 2016Q3–2023Q2, as C1. Holdout 2023Q3–2026Q2, the same sealed holdout as C1 and C2.
-- **CHOICE: does C1b enter the joint holdout run?**
-  - (a) Yes, if C1b is frozen before that run. *Recommended:* the holdout is then still seen only once.
-  - (b) No: C1b is scored on development only, and on a prospective holdout (releases from 2026-12-10).
+- **CHOICE (decided): does C1b enter the joint holdout run? Eleonora: (a)**, yes: build and freeze C1b, then one joint C1 + C1b + C2 holdout run (card c1b-joint, 2026-11-04).
+- *[implementation]* Sample: real time only (C1's RT sample: Z.1 vintages from 2016-09-16, first-release target). C1's pseudo-real-time samples P2a and P2b are not rerun.
 
 ## Multiple testing
 Two hypotheses × 3 instant indices. C1b's bridge against C1's bridge is non-nested: DM with the HLN correction, lag 0, plus the post-hoc lag-1 sensitivity, as C1. Holm over the 6 tests. All p-values descriptive given about 25 targets per k.
+- *[implementation]* H1 test: DM-HLN on squared errors, C1's bridge vs C1b's bridge, two-sided, per k.
+- *[implementation]* H2 test: paired t-test (HLN small-sample factor, lag 0, two-sided) of the mean of e(C1b) − e(C1), per k. H2 is supported at k when the test is significant after Holm and |mean e(C1b)| < |mean e(C1)|.
 
 ## Decision rules
 - **"Improves on C1":** lower RMSE at every k on development, significant after Holm at one or more k, and lower in the holdout (if (a) above).
+  - *[implementation]* "Lower in the holdout" = lower RMSE pooled over k = 1–3 on the holdout targets 2023Q3–2026Q2 (per-k values reported descriptively).
 - **"Comparable":** not significant, or the sign differs across k.
 - **"Does not improve":** C1's bridge has lower RMSE at one or more k.
 - **Bias:** reported as mean error with its HAC standard error, descriptively.
 
 ## What is and is not identified
 - It measures whether Freddie's (and possibly Ginnie's) monthly data improve a mechanical nowcast. It says nothing about why the share moves.
-- With Fannie carried flat, any gain is a lower bound on what full agency data could give.
+- With Fannie and Ginnie carried flat, any gain is a lower bound on what full agency data could give.
+- s is a proxy (multifamily inside Freddie's total; Freddie's total also includes Freddie-guaranteed securities held outside the pools cell). It matters only as the weight on Freddie's growth.
 
 ## Deviations (dated, after freezing)
 None (not frozen).
