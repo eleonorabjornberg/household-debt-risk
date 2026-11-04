@@ -272,8 +272,14 @@ def load_series(zip_path: Path, end: str | None = None) -> pd.DataFrame:
     import zparse
     cat, rows, public, groups = run.load_catalog()
     ids = sorted({s["id"] for s in rows})
-    z = zparse.load_z1_zip(zip_path, ids)
-    df = run.to_frame(z[0] if isinstance(z, tuple) else z)
+    if "Z1.csv" in __import__("zipfile").ZipFile(zip_path).namelist():
+        z = zparse.load_z1_zip(zip_path, ids)
+        z = z[0] if isinstance(z, tuple) else z
+    else:  # per-table archive (the June 2026 vintage), read as validation/run.py check_revisions does
+        z = run.load_prev(zip_path, ids)[0]
+    df = run.to_frame(z)
+    if "FL154104015" not in df:  # per-table archive lacks the total; derived exactly as validation/run.py does
+        df["FL154104015"] = df["FL153165105"] + df["FL153166000"]
     res = run.compute(df, groups, public)
     out = pd.DataFrame({"total": res["share"], "mortgage": res["pub_mort"] / res["mort"],
                         "consumer_credit": res["pub_cc"] / res["cc"]})
