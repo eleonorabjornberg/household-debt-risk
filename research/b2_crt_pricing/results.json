@@ -1,0 +1,105 @@
+{
+  "source": "FHFA CRT Progress Report, December 2016 (fixtures/fhfa_dec2016_tables.txt); A2 crt_fhfa.csv",
+  "baseline": {
+    "CPR": 0.1,
+    "CDR": 0.002,
+    "LGD": 0.25,
+    "horizon_months": 120,
+    "cum_pool_loss_bp_at_120m": 30.82027710031939,
+    "el_full_pool_bp_per_year": 5.004589198367436
+  },
+  "n_deals_priced": 47,
+  "n_deals_with_el": 31,
+  "n_dates_disagree": 1,
+  "credit_cost_bp": {
+    "zero_attach_median": 32.0,
+    "positive_attach_median": 13.0
+  },
+  "multiple": {
+    "zero_attach_median": 6.3941312126955046,
+    "zero_attach_min": 4.995415009918363,
+    "zero_attach_max": 8.592113817059584,
+    "zero_attach_median_original_basis": 10.382774916604621,
+    "n_zero_attach": 21,
+    "n_positive_attach_absent": 17,
+    "zero_attach_el_unique": true
+  },
+  "zero_attach_el_bp": {
+    "outstanding_basis": 5.004589198367436,
+    "original_basis": 3.082027710031939
+  },
+  "credit_cost_bp_range_zero_attach": [
+    25.0,
+    43.0
+  ],
+  "gfee_identity_gaps_bp": [
+    21,
+    30
+  ],
+  "cost_per_tranche_pct_range": [
+    3.2761187137454097,
+    6.857299429980828
+  ],
+  "sold_share_of_tranche_range": [
+    0.6788079824057074,
+    0.8166202126208976
+  ],
+  "by_year": {
+    "2013": {
+      "n_deals": 3.0,
+      "n_priced": 3.0,
+      "ref_upb_priced_musd": 84670.0,
+      "annual_cost_musd": 105.8321,
+      "sold_priced_musd": 1805.0,
+      "tranche_priced_musd": 2286.09,
+      "upb_weighted_cost_bp": 12.499362229833471,
+      "cost_per_tranche_pct": 4.62939341845684,
+      "sold_share_of_tranche": 0.7895577164503584,
+      "annual_ref_upb_musd": 89800.0,
+      "annual_rif_musd": 2200.0,
+      "priced_share_of_crt_upb": 0.9428730512249444
+    },
+    "2014": {
+      "n_deals": 14.0,
+      "n_priced": 14.0,
+      "ref_upb_priced_musd": 369708.0,
+      "annual_cost_musd": 431.8705,
+      "sold_priced_musd": 10765.0,
+      "tranche_priced_musd": 13182.382500000002,
+      "upb_weighted_cost_bp": 11.681394505934414,
+      "cost_per_tranche_pct": 3.2761187137454097,
+      "sold_share_of_tranche": 0.8166202126208976,
+      "annual_ref_upb_musd": 378400.0,
+      "annual_rif_musd": 12200.0,
+      "priced_share_of_crt_upb": 0.9770295983086681
+    },
+    "2015": {
+      "n_deals": 14.0,
+      "n_priced": 14.0,
+      "ref_upb_priced_musd": 335941.0,
+      "annual_cost_musd": 771.8498999999999,
+      "sold_priced_musd": 11142.0,
+      "tranche_priced_musd": 14589.376,
+      "upb_weighted_cost_bp": 22.975757647920318,
+      "cost_per_tranche_pct": 5.290492890168846,
+      "sold_share_of_tranche": 0.7637064121179685,
+      "annual_ref_upb_musd": 420400.0,
+      "annual_rif_musd": 16100.0,
+      "priced_share_of_crt_upb": 0.7990984776403426
+    },
+    "2016": {
+      "n_deals": 17.0,
+      "n_priced": 16.0,
+      "ref_upb_priced_musd": 389578.0,
+      "annual_cost_musd": 1203.1449,
+      "sold_priced_musd": 11910.0,
+      "tranche_priced_musd": 17545.4625,
+      "upb_weighted_cost_bp": 30.883286530553573,
+      "cost_per_tranche_pct": 6.857299429980828,
+      "sold_share_of_tranche": 0.6788079824057074,
+      "annual_ref_upb_musd": 548000.0,
+      "annual_rif_musd": 18100.0,
+      "priced_share_of_crt_upb": 0.7109087591240876
+    }
+  }
+}

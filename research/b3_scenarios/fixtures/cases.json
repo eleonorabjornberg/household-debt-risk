@@ -1,0 +1,375 @@
+[
+ {
+  "name": "zero default",
+  "exposures": [
+   {
+    "class": "mortgage",
+    "holder": "gse_agency",
+    "side": "public",
+    "balance": 8000.0,
+    "transfer_eligible": true
+   },
+   {
+    "class": "mortgage",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 150.0
+   },
+   {
+    "class": "mortgage",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 3000.0
+   },
+   {
+    "class": "student_federal",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 1500.0
+   },
+   {
+    "class": "consumer_other",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 2500.0
+   }
+  ],
+  "classes": {
+   "mortgage": {
+    "pd": 0.0,
+    "lgd": 0.4
+   }
+  },
+  "transfer": null,
+  "expected": {
+   "public": [
+    0.0
+   ],
+   "private": [
+    0.0
+   ],
+   "total": [
+    0.0
+   ],
+   "transferred": [
+    0.0
+   ],
+   "sum": {
+    "public": 0.0,
+    "private": 0.0,
+    "total": 0.0,
+    "transferred": 0.0
+   }
+  }
+ },
+ {
+  "name": "mortgage only, one quarter",
+  "exposures": [
+   {
+    "class": "mortgage",
+    "holder": "gse_agency",
+    "side": "public",
+    "balance": 8000.0,
+    "transfer_eligible": true
+   },
+   {
+    "class": "mortgage",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 150.0
+   },
+   {
+    "class": "mortgage",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 3000.0
+   },
+   {
+    "class": "student_federal",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 1500.0
+   },
+   {
+    "class": "consumer_other",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 2500.0
+   }
+  ],
+  "classes": {
+   "mortgage": {
+    "pd": 0.05,
+    "lgd": 0.3
+   }
+  },
+  "transfer": null,
+  "expected": {
+   "public": [
+    122.25
+   ],
+   "private": [
+    45.0
+   ],
+   "total": [
+    167.25
+   ],
+   "transferred": [
+    0.0
+   ],
+   "sum": {
+    "public": 122.25,
+    "private": 45.0,
+    "total": 167.25,
+    "transferred": 0.0
+   }
+  }
+ },
+ {
+  "name": "three classes, timing",
+  "exposures": [
+   {
+    "class": "mortgage",
+    "holder": "gse_agency",
+    "side": "public",
+    "balance": 8000.0,
+    "transfer_eligible": true
+   },
+   {
+    "class": "mortgage",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 150.0
+   },
+   {
+    "class": "mortgage",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 3000.0
+   },
+   {
+    "class": "student_federal",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 1500.0
+   },
+   {
+    "class": "consumer_other",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 2500.0
+   }
+  ],
+  "classes": {
+   "mortgage": {
+    "pd": 0.04,
+    "lgd": 0.35,
+    "timing": [
+     0.1,
+     0.3,
+     0.4,
+     0.2
+    ]
+   },
+   "student_federal": {
+    "pd": 0.2,
+    "lgd": 0.5,
+    "timing": [
+     0.25,
+     0.25,
+     0.25,
+     0.25
+    ]
+   },
+   "consumer_other": {
+    "pd": 0.08,
+    "lgd": 0.8,
+    "timing": [
+     0.5,
+     0.5
+    ]
+   }
+  },
+  "transfer": null,
+  "expected": {
+   "public": [
+    48.91,
+    71.73,
+    83.14,
+    60.32
+   ],
+   "private": [
+    84.2,
+    92.6,
+    16.8,
+    8.4
+   ],
+   "total": [
+    133.11,
+    164.32999999999998,
+    99.94,
+    68.72
+   ],
+   "transferred": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sum": {
+    "public": 264.1,
+    "private": 202.0,
+    "total": 466.1,
+    "transferred": 0.0
+   }
+  }
+ },
+ {
+  "name": "transfer capped",
+  "exposures": [
+   {
+    "class": "mortgage",
+    "holder": "gse_agency",
+    "side": "public",
+    "balance": 8000.0,
+    "transfer_eligible": true
+   },
+   {
+    "class": "mortgage",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 150.0
+   },
+   {
+    "class": "mortgage",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 3000.0
+   },
+   {
+    "class": "student_federal",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 1500.0
+   },
+   {
+    "class": "consumer_other",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 2500.0
+   }
+  ],
+  "classes": {
+   "mortgage": {
+    "pd": 0.04,
+    "lgd": 0.35,
+    "timing": [
+     0.5,
+     0.5
+    ]
+   }
+  },
+  "transfer": {
+   "share": 0.6,
+   "cap_musd": 40.0
+  },
+  "expected": {
+   "public": [
+    23.449999999999996,
+    50.65
+   ],
+   "private": [
+    54.6,
+    27.4
+   ],
+   "total": [
+    78.05,
+    78.05
+   ],
+   "transferred": [
+    33.6,
+    6.399999999999999
+   ],
+   "sum": {
+    "public": 74.1,
+    "private": 82.0,
+    "total": 156.1,
+    "transferred": 40.0
+   }
+  }
+ },
+ {
+  "name": "transfer uncapped",
+  "exposures": [
+   {
+    "class": "mortgage",
+    "holder": "gse_agency",
+    "side": "public",
+    "balance": 8000.0,
+    "transfer_eligible": true
+   },
+   {
+    "class": "mortgage",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 150.0
+   },
+   {
+    "class": "mortgage",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 3000.0
+   },
+   {
+    "class": "student_federal",
+    "holder": "federal_direct",
+    "side": "public",
+    "balance": 1500.0
+   },
+   {
+    "class": "consumer_other",
+    "holder": "banks_credit_unions",
+    "side": "private",
+    "balance": 2500.0
+   }
+  ],
+  "classes": {
+   "mortgage": {
+    "pd": 0.04,
+    "lgd": 0.35,
+    "timing": [
+     0.5,
+     0.5
+    ]
+   }
+  },
+  "transfer": {
+   "share": 0.6,
+   "cap_musd": 1000000000.0
+  },
+  "expected": {
+   "public": [
+    23.449999999999996,
+    23.449999999999996
+   ],
+   "private": [
+    54.6,
+    54.6
+   ],
+   "total": [
+    78.05,
+    78.05
+   ],
+   "transferred": [
+    33.6,
+    33.6
+   ],
+   "sum": {
+    "public": 46.89999999999999,
+    "private": 109.2,
+    "total": 156.1,
+    "transferred": 67.2
+   }
+  }
+ }
+]
