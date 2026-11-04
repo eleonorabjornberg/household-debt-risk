@@ -281,8 +281,8 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 
 | ID | Task | Depends | Acceptance criteria | Status |
 |---|---|---|---|---|
-| E1 | **Question-to-SQL benchmark**: about 100 questions with verified answers; Haiku vs Sonnet vs Opus on accuracy, cost and latency | D5, `ANTHROPIC_API_KEY` | Answers verified independently of any model; scoring rules fixed before the run; cost estimated and approved before running | todo (spend not approved) |
-| E2 | **Planted-error test**: deliberate errors; catch rate and misses for `skeptic` and `quant-reviewer` | D4 | Errors planted by a script with a hidden key; catch rate with confidence intervals; every miss analysed | in progress: freeze held; she asked for far fewer planted errors (e2-3 note, 2026-11-04); infra drafting smaller designs for a new card |
+| E1 | **Question-to-SQL benchmark**: about 100 questions with verified answers; Haiku vs Sonnet vs Opus on accuracy, cost and latency | D5, `ANTHROPIC_API_KEY` | Answers verified independently of any model; scoring rules fixed before the run; cost estimated and approved before running | in progress: pilot approved (E1 only, cap $2.98); 10 pilot questions verified 10/10 with no model (7eb7a20), in review; the run waits on the API key (401); the full benchmark needs its own prereg and spend approval |
+| E2 | **Planted-error test**: deliberate errors; catch rate and misses for `skeptic` and `quant-reviewer` | D4 | Errors planted by a script with a hidden key; catch rate with confidence intervals; every miss analysed | in progress: prereg frozen at 5986353 with her round-5 design (CHOICE-11 (a), CHOICE-12 (i), Wilson primary), in review; not yet run |
 | E3 | **Regression suite**: rerun E1–E2 when prompts or models change; chart results over time | E1, E2 | One command; results appended, never overwritten; chart via `chart-from-sql` | in progress (`make evals` status and fingerprints built; waits on E1, E2) |
 | E4 | **Red-team "Ask Hot Potato"**: try to get misleading answers or unsupported forecasts | D6 | Attack catalogue, results, guardrails added and remaining failures documented | todo (needs D6) |
 

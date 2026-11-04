@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Household debt risk, round 4, 2026-11-04 evening. Rounds 1–3 (all accepted) are recorded in PLAN.md. Tap to record your verdict; notes save on their own.</p>
+      <p class="sub">Household debt risk, round 5, 2026-11-04 evening. Rounds 1–4 (all accepted) are recorded in PLAN.md. Tap to record your verdict; notes save on their own.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-q7c", "group": "Analysis", "tag": "A8 / Q7", "title": "Germany: your 'publicly owned, not guaranteed' category, applied", "ctx": "A8 now shows Germany's publicly owned bank lending in its own column: 30.3% of bank lending to individuals, Q4 2025 (Bundesbank). It is never added to a public share, and Germany still has no headline number. Split: public-law banks 29.1%, promotional banks 1.1%. Skeptic-reviewed: 6 objections, all answered.", "flag": "Scope open: the 2005 end of state guarantees is sourced only for public-law banks. Whether promotional banks belong in the category is a separate card on your docket.", "opts": [["ok", "Accept as is"], ["changes", "Accept with changes (note what)"], ["redo", "Not accepted: redo (note why)"], ["later", "Later"]], "where": "research/a8_international/README.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/tree/claude/sweet-gates-avwrcs/research/a8_international"}];
+const DECISIONS = [{"id": "rv-e2-frozen", "group": "Benchmarks", "tag": "E2", "title": "Planted-error test: pre-registration frozen with your round-5 design", "ctx": "Frozen at commit 5986353, with the file's hash recorded. Your choices: 8 skeptic errors and 6 quant-reviewer errors, 2 controls (CHOICE-11 (a)), a descriptive pilot (CHOICE-12 (i)), Wilson intervals as the primary result. Not yet run; running it uses subagents, not the API key.", "flag": "Design note: the controls are copies of documents that also carry plants. To stop a reviewer comparing the two, each document gets its own review run. A second infra session suggested separate control files instead.", "opts": [["ok", "Accept as is"], ["changes", "Accept with changes (note what)"], ["redo", "Not accepted: redo (note why)"], ["later", "Later"]], "where": "docs/decisions/e2-prereg.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/docs/decisions/e2-prereg.md"}, {"id": "rv-e1-pilotq", "group": "Benchmarks", "tag": "E1", "title": "SQL benchmark pilot: 10 questions with checked answers", "ctx": "10 questions. Each gold answer is recomputed from the data snapshot and matched to a PASS row in the claims register: 10/10. The scoring rule was fixed before any run. No model or API call was used.", "flag": "9 of the 10 use the public-share tool, because the NY Fed and collateral tools have no PASS register rows yet. The pilot waits on the API key (still 401).", "opts": [["ok", "Accept as is"], ["changes", "Accept with changes (note what)"], ["redo", "Not accepted: redo (note why)"], ["later", "Later"]], "where": "evals/e1_sql_benchmark/pilot_questions.yaml", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/evals/e1_sql_benchmark/pilot_questions.yaml"}];
 
-const GROUPS = ["Analysis"];
+const GROUPS = ["Benchmarks"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
