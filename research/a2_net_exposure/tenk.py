@@ -22,8 +22,8 @@ Categories (label regexes, applied the same way in every year):
          senior/subordinate structures, seller indemnification, deep MI, "Other"). From FY2021 Freddie reports only
          STACR, ACIS and "Other", so finer splits are not comparable over time and are not used.
 
-Fannie Mae: not parsed yet. Its 10-Ks are on www.fanniemae.com (403 from this environment) and SEC EDGAR (not fetched
-until the SEC User-Agent contact is settled), so there is no real Fannie text to fix a layout against.
+Fannie Mae: not parsed here. Fannie prints outstanding CRT risk in force as a sentence, not a table; see
+fannie_extract.py (10-Ks fetched from SEC EDGAR by fannie_10k.py under Eleonora's Q6 decision).
 """
 from __future__ import annotations
 

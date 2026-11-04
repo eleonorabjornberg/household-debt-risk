@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
 
-**PLAN task A2. Status: Eleonora chose (2026-11-04) outstanding cover from the 10-K filings, with the issuance bounds below as the check; mortgage insurance as a separate line; Ginnie Mae pools at gross. Freddie Mac is done for 2013–2025; Fannie Mae waits for access to its filings** (`tracks/analysis.md`). Method: [`METHOD.md`](METHOD.md). Sources, with hashes and quotes: [`sources.md`](sources.md).
+**PLAN task A2. Status: Eleonora chose (2026-11-04) outstanding cover from the 10-K filings, with the issuance bounds below as the check; mortgage insurance as a separate line; Ginnie Mae pools at gross. Built for Freddie Mac (2013–2025) and Fannie Mae (year ends where its 10-Ks state the figure: 2017, 2020–2025).** Method: [`METHOD.md`](METHOD.md). Sources, with hashes and quotes: [`sources.md`](sources.md).
 
 Data: Fed Z.1, `Z1.csv` dated 2026-09-11; FHFA CRT Progress Reports (Dec 2016 to 4Q 2023) and FHFA Reports to Congress (2024, 2025), transcribed in [`crt_fhfa.csv`](crt_fhfa.csv). Every number below has a register row (`claims/tracks/analysis.csv`).
 
@@ -37,13 +37,13 @@ Freddie's 10-Ks report, at each year end, the maximum coverage still in force on
 - **Outstanding CRT cover is 1.3% of Freddie's gross holdings at end 2025**, down from 1.8% in 2022, when it peaked at $54.9B. This series is not decomposed into runoff and new issuance, and a smaller maximum coverage need not mean less protection (Freddie's own caveat, above). It counts STACR and ACIS only; part of "Other" is CRT-type cover in FHFA's sense, so a broader CRT measure would be higher by up to $10.4B.
 - **It sits well inside the issuance bound.** At end 2023 Freddie had $48.9B of CRT cover in force against $110.5B issued since 2013 (FHFA).
 - **Mortgage insurance in force is 5.8% of gross**, measured the same way (maximum coverage). Per Eleonora's choice it is a separate line, not netted: the insurer pays first, but Freddie keeps the risk that the insurer fails.
-- **Public share net of CRT, end 2025: between 55.2% and 56.2%.** The lower end nets every CRT dollar ever issued by both Enterprises (FHFA); the upper end nets Freddie's outstanding STACR and ACIS cover only, so it stays an upper bound whatever part of "Other" is counted as CRT. Fannie's outstanding cover will narrow the range from above once its filings can be read.
+- **Public share net of CRT, end 2025: between 55.2% and 56.2%.** The lower end nets every CRT dollar ever issued by both Enterprises (FHFA); the upper end nets Freddie's outstanding STACR and ACIS cover only, so it stays an upper bound whatever part of "Other" is counted as CRT. With Fannie's outstanding cover netted as well, the figure is 56.0% (section "Both Enterprises" below).
 - **Cross-check of the gross side.** Z.1's Freddie holdings are 99.4% to 99.6% of the single-family portfolio UPB in Freddie's own 10-K, 2017–2025.
 - **Ginnie Mae pools stay at gross** (Eleonora, 2026-11-04): FHA insures in full; the VA guaranty is partial, which this series does not adjust for.
 
 ## Limits
 
-- **Fannie Mae not yet in the net series.** Its 10-Ks are on `www.fanniemae.com` (403 from this environment) and SEC EDGAR, which is not fetched until the SEC's fair-access User-Agent contact is settled. The parser (`tenk.py`) is fixed against Freddie's real tables only; Fannie's layout will be added from a real filing, not guessed.
+- **Fannie's CRT figure is rounded and patchy.** It is stated to the nearest $1 billion and only for 2017 and 2020–2025; the combined net share exists only for those years. The figure covers what the 10-K calls Fannie's "back-end credit risk transfer transactions" ("Connecticut Avenue Securities, Credit Insurance Risk Transfer, and other transactions").
 - **Freddie's categories shift slightly over time.** From FY2021 Freddie reports only STACR, ACIS and "Other"; later filings moved some coverage between them (`restated_*` columns). Each year end uses its own 10-K.
 - **Ginnie Mae pools and federal student loans stay at gross.** FHA insures in full; the VA guaranty is partial, but VA data are not yet sourced.
 - **Apportioning.** CRT and mortgage-insurance amounts are scaled to households with the Z.1 ratio used for the holdings.
@@ -63,3 +63,10 @@ uv run --project pipeline python research/a2_net_exposure/net_exposure.py
 - `results.json`: headline numbers for the register.
 - `METHOD.md`: what "transferred" can mean, and what each option needs.
 - `sources.md`: the FHFA reports, with hashes and quotes.
+
+## Both Enterprises: net of outstanding CRT
+
+Fannie Mae states its outstanding CRT risk in force in its 10-Ks as a rounded sentence, not a table: "the maximum amount of losses that could be absorbed by credit risk transfer investors, was approximately $39 billion as of December 31, 2025" ([`fannie_ce_outstanding.csv`](fannie_ce_outstanding.csv), `fannie_extract.py`). The figure is given for year ends 2017 and 2020–2025 only; the other years are left missing. Its mortgage insurance risk in force was $201.4B at end 2025 (separate line, not netted).
+
+- **Public share net of both Enterprises' outstanding CRT, end 2025: 56.0%**, against 56.4% gross. CRT still in force lowers the public share by about 0.4 pp, measured as loss capacity against principal.
+- It sits inside the bounds in every year it can be computed (2017, 2020–2025): above the FHFA issuance bound, below the Freddie-only figure. Fannie's outstanding CRT is also below its own cumulative issuance (FHFA) in every year checked.
