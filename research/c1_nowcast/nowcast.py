@@ -26,7 +26,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / "research" / "common"))
 import pit  # noqa: E402
 
-DEV_END = "2023Q2"          # holdout(s) start 2023Q3 (C2 frozen) / 2024Q3 (C1 decided): both untouched
+DEV_END = "2023Q2"          # holdout 2023Q3-2026Q2 (C2 frozen; coordinator ruling 66adeff): untouched
 LATEST_RELEASE = "2026-09-11"
 MAP_2B = {"cc_federal": "TOTALGOV", "cc_depository": "TOTALDI", "cc_finance": "TOTALFC",
           "cc_credit_unions": "TOTALTCU", "mort_banks": "RREACBW027NBOG"}

@@ -61,9 +61,7 @@ All benchmarks are computed from R only, so they use as-of data:
   - Indicators are point-in-time; the target is the latest vintage.
   - Development targets run 2015Q1–2023Q2.
 - **P2a, pseudo-real-time.** As P2b, with indicator set 2a. Development targets run 2010Q2–2023Q2.
-- **Holdout.** Untouched by every script run until the holdout run. Targets after 2023Q2 are neither scored nor printed: the loader drops them unless `--holdout` is passed.
-  - The decided C1 holdout is 2024Q3–2026Q2. The frozen C2 holdout starts at 2023Q3.
-  - Until the coordinator rules on that conflict, both are kept untouched by cutting at 2023Q2.
+- **Holdout: 2023Q3–2026Q2** (see Deviations). Untouched by every script run until the holdout run. Targets after 2023Q2 are neither scored nor printed: the loader drops them unless `--holdout` is passed.
 
 ## Leakage guards (from C2's tests 1–4, applied to C1)
 - **Availability check.** Every datum carries `available_at` (ALFRED `realtime_start`, or the Z.1 release date). `nowcast.guard` raises if any datum used at t has `available_at > t`.
@@ -73,8 +71,10 @@ All benchmarks are computed from R only, so they use as-of data:
   - (3) a value is published one day after t.
 
 ## Open conflicts (reported to the coordinator 2026-11-04)
-- **Holdout start:** 2024Q3 (C1 decision) vs 2023Q3 (C2 frozen). Handled conservatively above.
+- **Holdout start:** resolved 2026-11-04 in C2's favour (2023Q3); see Deviations.
 - **Archive depth:** C2's fact check says releases before 2016-09 are HTML/PDF only. In fact `z1r-N.zip` text archives exist for 2010–2016; whether they carry the holder tables is unverified. RT therefore starts at 2016-09.
 
 ## Deviations
-None yet.
+- **2026-11-04, holdout ruling** (coordinator commit 66adeff; PLAN.md "Decisions taken": "C1's holdout follows the frozen C2 protocol (2023Q3–2026Q2), not 2024Q3", Eleonora's rule, Claude's application). The C1 holdout is now 2023Q3–2026Q2. No score changes: development already stopped at 2023Q2. The holdout run happens once, after review.
+- **2026-11-04, tests:** aligned exactly with C2 (DM with HLN, Clark–West for nested pairs, holdout descriptive only), as specified above. No change.
+- **2026-11-04, archive depth:** the coordinator confirmed that `z1r-N.zip` archives exist before 2016-09 and recorded a factual correction in C2. The real-time window still starts 2016-09-16. Extending it would need a new deviation before any score.
