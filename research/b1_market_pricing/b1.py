@@ -4,8 +4,8 @@
     uv run --project pipeline python research/b1_market_pricing/b1.py [--z1-zip PATH]
 
 Specification fixed in METHOD.md before this script was first run. Reads:
-  - Z.1 zip (default data/validation/FRB_Z1_csv.zip, as validation/run.py downloads it), through A1's
-    holder cells, so the public share matches validation exactly;
+  - Z.1 zip (default data/validation/FRB_Z1_csv.zip, as validation/run.py downloads it); shares at catalog
+    level, as validation/run.py computes them (since 6a161c7; see public_shares);
   - FRED series through research/common/fred.py (raw JSON cached in data/fred/ with a SHA-256 manifest).
 
 Writes next to this file: regressions.csv (every specification, every coefficient), spreads_summary.csv
@@ -259,9 +259,10 @@ def main(argv=None) -> int:
         "main_L": coef("main", "L"),
         "main_D": coef("main", "D"),
         "verdicts": {v: verdict(reg, v) for v in reg.variant.unique() if not v.startswith("post-hoc")},
-        # Engle-Granger 5% critical values (MacKinnon 2010, constant, no trend) for the residual ADF:
-        # N=7 regressors+dependent -> about -5.10; N=3 (only the I(1)-looking series) -> -3.79 (quant review).
-        "eg_crit_5pct": {"N7": -5.10, "N3": -3.79},
+        # Engle-Granger 5% critical values, constant, no trend, 157 effective ADF observations; from
+        # statsmodels.tsa.adfvalues.mackinnoncrit (MacKinnon 2010), checked 2026-11-04 (coord-q2).
+        # N counts the dependent variable plus regressors in the cointegrating regression.
+        "eg_crit_5pct": {"N7": -5.10, "N8": -5.38, "N3": -3.80},
         "pmms_dummy_coef": coef("post-hoc: PMMS 2022Q4+ dummy", "L", "pmms_2022q4"),
         "public_share_coef": {v: {f: coef(v, f) for f in ["L", "D"]} for v in reg.variant.unique()},
         "S1_mean_1986_2008q2": sm("1986Q1-2008Q2", "S1"),
@@ -277,6 +278,11 @@ def main(argv=None) -> int:
         # Power: how large a spread change over the 1986-2008Q2 -> 2020+ rise in the share the D interval allows
         "D_halfwidth_over_rise_pp": (lambda x: (x["ci_hi"] - x["ci_lo"]) / 2)(coef("main", "D"))
             * (sm("2020Q1-latest", "mort_share") - sm("1986Q1-2008Q2", "mort_share")),
+        # Minimum detectable effect at 5% size and 80% power (2.8 SE of the main D coefficient), scaled by the
+        # same rise in the share (coord-q3). Assumes the short-run (D) response equals the long-run one.
+        "D_mde80_over_rise_pp": 2.8 * coef("main", "D")["se"]
+            * (sm("2020Q1-latest", "mort_share") - sm("1986Q1-2008Q2", "mort_share")),
+        "S1_mean_change_first_to_last_pp": sm("2020Q1-latest", "S1") - sm("1986Q1-2008Q2", "S1"),
         "mort_share_latest": float(panel.loc[pd.Period(last_q, "Q"), "mort_share"]),
     }
     (HERE / "results.json").write_text(json.dumps(res, indent=2, allow_nan=False) + "\n")

@@ -26,7 +26,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / "research" / "common"))
 import pit  # noqa: E402
 
-DEV_END = "2023Q2"          # holdout(s) start 2023Q3 (C2 frozen) / 2024Q3 (C1 decided): both untouched
+DEV_END = "2023Q2"          # holdout 2023Q3-2026Q2 (C2 frozen; coordinator ruling 66adeff): untouched
 LATEST_RELEASE = "2026-09-11"
 MAP_2B = {"cc_federal": "TOTALGOV", "cc_depository": "TOTALDI", "cc_finance": "TOTALFC",
           "cc_credit_unions": "TOTALTCU", "mort_banks": "RREACBW027NBOG"}
@@ -167,7 +167,7 @@ def run(sample: str, z: Z1, vint: dict, holdout: bool) -> pd.DataFrame:
         if not holdout and q > DEV_END:
             continue
         k_of[q] = k_of.get(q, 0) + 1
-        k = min(k_of[q], 3)
+        k = k_of[q]   # 1, 2, 3; a 4th instant before the next release is k=4, kept but not scored (deviation q11)
         rel = rdate.date().isoformat()
         row = {"sample": sample, "t": t.date().isoformat(), "base_release": rel, "T": T, "q": q, "k": k}
         if rt:
@@ -184,7 +184,7 @@ def run(sample: str, z: Z1, vint: dict, holdout: bool) -> pd.DataFrame:
         t_end = pd.Period(T, "Q").end_time.normalize()
         q_end = pd.Period(q, "Q").end_time.normalize()
         g, used = {}, {}
-        for sid in set(mapping.values()) | {CC_TOTAL}:
+        for sid in sorted(set(mapping.values()) | {CC_TOTAL}):  # sorted: deterministic column order
             g[sid], used[sid] = indicator_growth(vint[sid], t, t_end, q_end, FREQ[sid])
         s_T = share_of(cells_T)
         assert abs(s_T - hist.iloc[-1]) < 1e-8   # shares CSV stores 8 decimals
@@ -276,8 +276,11 @@ MODELS = ["bridge", "bridge_reg", "no_change", "drift", "ar1"]
 
 def score(df: pd.DataFrame) -> pd.DataFrame:
     out = []
+    df = df[df["k"] <= 3]   # one row per target and k; k=4 rows are reported in nowcasts_dev.csv only
     for (sample, k), g in list(df.groupby(["sample", "k"])) + [((s, "all"), g) for s, g in df.groupby("sample")]:
-        for m in MODELS:
+        # Like-for-like (quant-reviewer q12): the bridge scored on exactly the regression's targets
+        g = g.assign(bridge_on_reg_targets=g["bridge"].where(g["bridge_reg"].notna()))
+        for m in MODELS + ["bridge_on_reg_targets"]:
             d = g.dropna(subset=[m, "actual"])
             if d.empty:
                 continue
@@ -288,6 +291,17 @@ def score(df: pd.DataFrame) -> pd.DataFrame:
                         "mae_pp": e.abs().mean(), "rel_rmse_vs_no_change": math.sqrt((e ** 2).mean() / (e0 ** 2).mean()),
                         "sign_accuracy": sign})
     return pd.DataFrame(out)
+
+
+def dm_hac1(e1: np.ndarray, e2: np.ndarray) -> tuple[float, float]:
+    """Post-hoc sensitivity (quant-reviewer q14): DM with a Newey-West lag-1 variance of the loss
+    differential (errors at consecutive quarters are autocorrelated within each k). Two-sided, t(n-1)."""
+    d = e1 ** 2 - e2 ** 2
+    n = len(d)
+    u = d - d.mean()
+    v = (u @ u + 2 * 0.5 * (u[1:] @ u[:-1])) / n
+    stat = d.mean() / math.sqrt(v / n) * math.sqrt((n - 1) / n)
+    return float(stat), float(2 * t_sf(abs(stat), n - 1))
 
 
 def dm_hln(e1: np.ndarray, e2: np.ndarray) -> tuple[float, float]:
@@ -321,6 +335,7 @@ def tests(df: pd.DataFrame) -> pd.DataFrame:
     pairs = [("bridge", "no_change", "DM-HLN"), ("bridge", "ar1", "DM-HLN"), ("bridge_reg", "no_change", "CW"),
              ("bridge_reg", "ar1", "DM-HLN"), ("drift", "no_change", "CW"), ("ar1", "no_change", "CW")]
     out = []
+    df = df[df["k"] <= 3]
     for (sample, k), g in df.groupby(["sample", "k"]):
         for cand, bench, kind in pairs:
             d = g.dropna(subset=[cand, bench, "actual"])
@@ -331,10 +346,11 @@ def tests(df: pd.DataFrame) -> pd.DataFrame:
                 stat, p = dm_hln(eb, ec)
             else:
                 stat, p = clark_west(eb, ec, 100 * d[bench].to_numpy(), 100 * d[cand].to_numpy())
+            sens = dm_hac1(eb, ec) if kind == "DM-HLN" else (np.nan, np.nan)
             primary = sample == "RT" and cand in ("bridge", "bridge_reg") and bench in ("no_change", "ar1")
             out.append({"sample": sample, "k": k, "candidate": cand, "benchmark": bench, "test": kind, "n": len(d),
                         "stat": stat, "p": p, "candidate_lower_rmse": bool((ec ** 2).mean() < (eb ** 2).mean()),
-                        "primary_family": primary})
+                        "primary_family": primary, "posthoc_dm_hac1_stat": sens[0], "posthoc_dm_hac1_p": sens[1]})
     t = pd.DataFrame(out)
     t["p_holm"] = np.nan
     fam = t["primary_family"]
@@ -374,18 +390,25 @@ def main(argv=None) -> int:
         "dev_end": DEV_END,
         "n_instants": {s: int((df["sample"] == s).sum()) for s in df["sample"].unique()},
         "n_absent_rt": int(df.loc[df["sample"] == "RT", "absent"].notna().sum()) if "absent" in df else 0,
-        "rmse_pp": {s: {str(k): {m: s_(s, k, m) for m in MODELS} for k in [1, 2, 3, "all"]} for s in ["RT", "RT-latest", "P2b", "P2a"]},
-        "rel_rmse_vs_no_change": {s: {str(k): {m: s_(s, k, m, "rel_rmse_vs_no_change") for m in MODELS}
+        "rmse_pp": {s: {str(k): {m: s_(s, k, m) for m in MODELS + ["bridge_on_reg_targets"]} for k in [1, 2, 3, "all"]} for s in ["RT", "RT-latest", "P2b", "P2a"]},
+        "rel_rmse_vs_no_change": {s: {str(k): {m: s_(s, k, m, "rel_rmse_vs_no_change") for m in MODELS + ["bridge_on_reg_targets"]}
                                       for k in [1, 2, 3, "all"]} for s in ["RT", "RT-latest", "P2b", "P2a"]},
         "n_scored": {s: {str(k): s_(s, k, "bridge", "n") for k in [1, 2, 3, "all"]} for s in ["RT", "RT-latest", "P2b", "P2a"]},
         "n_scored_bridge_reg": {s: {str(k): s_(s, k, "bridge_reg", "n") for k in [1, 2, 3, "all"]} for s in ["RT", "P2b", "P2a"]},
         # Descriptive diagnostic (not a test): mean bridge error by sample and k, pp of share
         "bridge_mean_error_pp": {s: {str(k): float(100 * (g["bridge"] - g["actual"]).mean())
-                                     for k, g in list(df[df["sample"] == s].dropna(subset=["bridge", "actual"]).groupby("k"))
-                                     + [("all", df[df["sample"] == s].dropna(subset=["bridge", "actual"]))]}
+                                     for k, g in list(df[(df["sample"] == s) & (df["k"] <= 3)].dropna(subset=["bridge", "actual"]).groupby("k"))
+                                     + [("all", df[(df["sample"] == s) & (df["k"] <= 3)].dropna(subset=["bridge", "actual"]))]}
                                  for s in ["RT", "RT-latest", "P2b", "P2a"]},
+        "bridge_mean_error_by_period_pp": {s: {per: float(100 * (g["bridge"] - g["actual"]).mean())
+                                               for per, g in df[(df["sample"] == s) & (df["k"] <= 3)].dropna(subset=["bridge", "actual"])
+                                               .assign(per=lambda x: pd.cut(x["q"].str[:4].astype(int), [0, 2019, 2021, 9999],
+                                                                            labels=["to 2019", "2020-21", "2022-23"])).groupby("per", observed=True)}
+                                           for s in ["RT"]},
+        "regression_target_span": {s: [str(df[(df["sample"] == s) & df["bridge_reg"].notna()]["q"].min()),
+                                       str(df[(df["sample"] == s) & df["bridge_reg"].notna()]["q"].max())] for s in ["RT"]},
         "primary_tests": ts[ts["primary_family"]][["k", "candidate", "benchmark", "test", "n", "stat", "p", "p_holm",
-                                                  "candidate_lower_rmse"]].to_dict(orient="records"),
+                                                  "candidate_lower_rmse", "posthoc_dm_hac1_p"]].to_dict(orient="records"),
     }
     def clean(o):
         if isinstance(o, dict):

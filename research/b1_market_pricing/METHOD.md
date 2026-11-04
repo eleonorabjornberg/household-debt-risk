@@ -28,7 +28,7 @@ Quarterly, 1986Q1 (first `BAA10Y` quarter) to the latest Z.1 quarter.
 
     S1_t = a + b · public_share_t + c1 · DGS10_t + c2 · vol10_t + c3 · slope_t + c4 · BAA10Y_t + c5 · refi_t + e_t
 
-- `public_share_t`: public share of household 1–4 family mortgages, quarter end, Z.1 (public = federal direct + GSE and agency pools + state and local, apportioned exactly as `validation/run.py` and A1 do). Mortgage-only, because S1 is a mortgage price. Robustness: the project's headline share (mortgages + consumer credit).
+- `public_share_t`: public share of household 1–4 family mortgages, quarter end, Z.1 (public = federal direct + GSE and agency pools + state and local, apportioned as `validation/run.py` does; see Changes after results for the 2026-11-04 correction). Mortgage-only, because S1 is a mortgage price. Robustness: the project's headline share (mortgages + consumer credit).
 - `DGS10_t`: quarterly mean of the 10-year yield (rate level).
 - `vol10_t`: standard deviation of daily changes in `DGS10` within the quarter, in percentage points, times √252 (realized rate volatility; a free stand-in for the paywalled MOVE index and for the value of the prepayment option).
 - `slope_t`: quarterly mean of `T10Y2Y`.
@@ -57,3 +57,7 @@ B1 is descriptive, so it uses the latest vintage of every series (Z.1 of 2026-09
 - the main specification with a Fannie Mae + Freddie Mac share in place of the full mortgage public share, because PMMS prices conforming loans and the full share also counts Ginnie Mae pools of FHA/VA loans (s2);
 - the main specification with a dummy for 2022Q4 onward, the quarters after the PMMS method change (q2, s1).
 The README now also reports the residual ADF statistics next to Engle–Granger 5% critical values (q1).
+
+2026-11-04, later (coordinator's quant review, R-20261104-coord-q1 to q4):
+- **Regressor construction corrected** (commit 6a161c7). The share is now computed at catalog level, as `validation/run.py` does, instead of from A1's finer holder cells. In 1974Q3–1986Q3 the Z.1 pool sub-series add up to more than the pool total, so the cell-based share was overstated in the first three sample quarters and stepped at 1986Q4. The first-differences coefficient moved from −0.08 to −0.57, and the verdict is unchanged. The post-hoc Fannie+Freddie share still uses the sub-series, so its first three quarters carry that overstatement.
+- **Reporting only.** Each levels row's residual ADF is now set against the Engle–Granger 5% values for its own N, from statsmodels `mackinnoncrit`: −5.10 for N = 7, −5.38 for N = 8 (the dummy row) and −3.80 for the N = 3 heuristic. The power statement now uses the minimum detectable effect at 80% power, not the interval half-width.
