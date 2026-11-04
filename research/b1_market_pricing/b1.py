@@ -78,14 +78,24 @@ def adf_stat(u: np.ndarray, lags: int = 4) -> float:
 
 # ---------------------------------------------------------------- data
 def public_shares(zip_path: Path) -> pd.DataFrame:
+    """Public shares, computed at catalog level exactly as validation/run.py does.
+
+    Not from A1's finer cells: in 1974Q3-1986Q3 the Z.1 pool sub-series (FL413065110/123/133/143) sum to
+    more than the pool total FL413065105 (by about $14.6B in 1980Q4), so cell-based shares are overstated
+    there (found 2026-11-04 while cross-checking C1's vintages). The Fannie+Freddie share still needs the
+    sub-series; it is a post-hoc check only.
+    """
     df, mh, ch, public, labels = a1.load(zip_path)
-    c = a1.cells(df, mh, ch, public, labels)
-    m = c.xs("mortgages", level="loan", axis=1)
-    gse = [("public", "Fannie Mae (portfolio + pools)"), ("public", "Freddie Mac (portfolio + pools)")]
+    a = df["FL153165105"] / df["FL893065105"]
+    pub_m = sum(df[s["id"]] for s in mh if s["risk_bucket"] in public) * a
+    pub_c = sum(df[s["id"]].fillna(0.0) if s["id"] == "FL403066005" else df[s["id"]]
+                for s in ch if s["risk_bucket"] in public)
+    gse = (a1.combo(df, a1.PUBLIC_MORT["Fannie Mae (portfolio + pools)"])
+           + a1.combo(df, a1.PUBLIC_MORT["Freddie Mac (portfolio + pools)"])) * a
     out = pd.DataFrame({
-        "mort_share": m.xs("public", level="side", axis=1).sum(axis=1) / m.sum(axis=1),
-        "gse_share": sum(m[k] for k in gse) / m.sum(axis=1),
-        "headline_share": c.xs("public", level="side", axis=1).sum(axis=1) / c.sum(axis=1),
+        "mort_share": pub_m / df["FL153165105"],
+        "gse_share": gse / df["FL153165105"],
+        "headline_share": (pub_m + pub_c) / (df["FL153165105"] + df["FL153166000"]),
     })
     out.index = pd.PeriodIndex(out.index, freq="Q")
     return out.dropna()
