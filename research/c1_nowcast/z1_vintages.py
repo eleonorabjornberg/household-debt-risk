@@ -11,11 +11,11 @@ validation and A1 compute the latest one.
 
 Writes data/c1/z1_cells.parquet-like CSV (data/c1/z1_cells.csv: release, quarter, loan, side, holder, usd_m)
 and research/c1_nowcast/z1_share_vintages.csv (release, quarter, share) for the quarters each release
-covers from 2005Q1, plus first_release.csv (quarter, first release date, first-release share).
+covers from 1952Q1, plus first_release.csv (quarter, first release date, first-release share).
 
 Checks (assert): every cell is present (alias codes allowed, listed in z1_vintage_notes.csv); the residual
 private cells are positive; the latest archived release reproduces validation's 2026Q2 share and, for every
-quarter from 2005Q1, the share A1 computes from the latest Z1.csv (test_z1_vintages.py).
+quarter from 1952Q1, the share A1 computes from the latest Z1.csv (test_z1_vintages.py).
 """
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ import zparse  # noqa: E402
 ARCH = ROOT / "data" / "z1_archive"
 OUT = ROOT / "data" / "c1"
 FIRST_CSV_RELEASE = "2016-09-16"
-KEEP_FROM = "2005Q1"
+KEEP_FROM = "1952Q1"
 
 
 # Cells built from codes present in every layout since 2016 (aliases: the 2016 tables used older codes for
@@ -150,7 +150,7 @@ def main() -> int:
                       "conflicting_series": " ".join(conflicts)})
     sv = pd.concat(shares, ignore_index=True)
     OUT.mkdir(parents=True, exist_ok=True)
-    pd.concat(long, ignore_index=True).to_csv(OUT / "z1_cells.csv", index=False, float_format="%.6g")
+    pd.concat(long, ignore_index=True).to_csv(OUT / "z1_cells.csv", index=False, float_format="%.12g")
     sv.to_csv(HERE / "z1_share_vintages.csv", index=False, float_format="%.8f")
     pd.DataFrame(notes).to_csv(HERE / "z1_vintage_notes.csv", index=False)
 
