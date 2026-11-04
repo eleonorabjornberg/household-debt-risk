@@ -1,6 +1,6 @@
 # A1: What made up the 2007–11 jump?
 
-**PLAN task A1. Status: in progress.** The decomposition is done and exact. The policy dates below are not yet checked against primary sources, because the hosts that carry them (congress.gov, govinfo.gov, fhfa.gov, ginniemae.gov, studentaid.gov) were blocked by the session's network policy on 2026-11-04.
+**PLAN task A1. Status: done, for Eleonora's review with Phase A.** The decomposition is exact, and every policy date below is checked against a primary source ([`sources.md`](sources.md)).
 
 Data: Fed Z.1, `Z1.csv` dated 2026-09-11. Every number in this file has a row in [`claims/register.csv`](../../claims/register.csv), and `claims/check_register.py` scans this file.
 
@@ -29,19 +29,19 @@ All other public holders combined (FHLBs, other GSEs, federal direct mortgages, 
 - **Fannie and Freddie's piece came early and partly reversed.** Quarter by quarter (`path.csv`), Fannie and Freddie had contributed 1.3 pp by 2008Q3, before the September 2008 conservatorship. They peaked at 2.3 pp in 2009Q4 and were back to 1.4 pp by 2011Q4. Their balances barely grew. Their share rose mostly because private holders shrank around them.
 - **"The GSE conservatorship ratcheted risk onto the public" doesn't fit these data.** Conservatorship changed the backing behind debt the GSEs already held. Within this window, it didn't change how much they held.
 
-## Dated policy events (to be verified against primary sources)
+## Dated policy events
 
-The decomposition is an accounting, not a causal estimate (that is A7). The events below line up in time with the components; that does not show they caused them. Dates and citations are from memory and are **not yet checked**. Each needs a statute or agency document before A1 is done.
+The decomposition is an accounting, not a causal estimate (that is A7). The events below line up in time with the components; that does not show they caused them. Each date and citation was checked on 2026-11-04 against the official text (GovInfo for statutes, FHFA, the Fed's Z.1 release); URLs, file hashes and quoted sections are in [`sources.md`](sources.md).
 
 | Date | Event | Component it lines up with |
 |---|---|---|
-| 13 Feb 2008 | Economic Stimulus Act of 2008 (P.L. 110-185): temporary rise in FHA and GSE loan limits | Ginnie pools; Fannie and Freddie |
-| 7 May 2008 | Ensuring Continued Access to Student Loans Act (P.L. 110-227): Education Department may buy FFEL loans | Federal student loans |
-| 30 Jul 2008 | Housing and Economic Recovery Act (P.L. 110-289): creates FHFA, gives Treasury backstop authority | Fannie and Freddie |
-| 6–7 Sep 2008 | FHFA places Fannie Mae and Freddie Mac in conservatorship; Treasury preferred-stock agreements | Fannie and Freddie |
-| 17 Feb 2009 | American Recovery and Reinvestment Act (P.L. 111-5): high loan limits extended | Ginnie pools; Fannie and Freddie |
-| Jun 2009 (effective 2010Q1) | FASB SFAS 166 and 167: securitizations consolidated onto sponsors' balance sheets | Accounting only (see limits) |
-| 30 Mar 2010 | Health Care and Education Reconciliation Act (P.L. 111-152), SAFRA: no new FFEL loans after 30 Jun 2010 | Federal student loans |
+| 13 Feb 2008 | Economic Stimulus Act of 2008 (P.L. 110-185), Secs. 201–202: temporary rise in GSE and FHA loan limits | Ginnie pools; Fannie and Freddie |
+| 7 May 2008 | Ensuring Continued Access to Student Loans Act (P.L. 110-227), Sec. 7: temporary authority to buy FFEL loans | Federal student loans |
+| 30 Jul 2008 | Housing and Economic Recovery Act (P.L. 110-289), Secs. 1101 and 1117: creates FHFA; temporary Treasury authority to buy GSE obligations | Fannie and Freddie |
+| 6–7 Sep 2008 | FHFA places Fannie Mae and Freddie Mac in conservatorship (6 Sep); Treasury preferred-stock agreements signed (7 Sep) | Fannie and Freddie |
+| 17 Feb 2009 | American Recovery and Reinvestment Act (P.L. 111-5), Secs. 1202–1203: FHA and GSE loan limits for 2009 | Ginnie pools; Fannie and Freddie |
+| 2010Q1 | FAS 166 and 167: Z.1 moves consolidated securitizations from the pool and ABS sectors onto GSE, bank and finance-company balance sheets, "almost all" in 2010Q1 (Fed Z.1 release, 10 Jun 2010) | Accounting only (see limits) |
+| 30 Mar 2010 | Health Care and Education Reconciliation Act (P.L. 111-152), Sec. 2201 (SAFRA): no new FFEL loans first disbursed after 30 Jun 2010 | Federal student loans |
 
 ## Limits
 
@@ -64,4 +64,5 @@ uv run --project pipeline python research/a1_gfc_decomposition/decompose.py
 - `own_share_change.csv`: the own-share view (public holders).
 - `path.csv`: cumulative chained contributions by quarter, grouped.
 - `results.json`: headline numbers for the register.
+- `sources.md`: the primary sources for the policy dates, with hashes.
 - Method decision: [`docs/decisions/a1-decomposition.md`](../../docs/decisions/a1-decomposition.md).
