@@ -15,7 +15,8 @@ spec.json:
      "ctx": "one or two sentences", "blocks": "what it blocks (optional)",
      "flag": "warning (optional)",
      "opts": [["a", "Option A", true], ["b", "Option B"]],   # true = recommended
-     "where": "file with the full options"}
+     "where": "file with the full options",
+     "link": "https://... (optional; opens the file, e.g. on GitHub)"}
   ]
 }
 Text is inserted as text (no HTML). Checks ids are unique, every group is
@@ -44,6 +45,8 @@ def main(spec_path, out_path):
     for d in decisions:
         if d["group"] not in groups:
             sys.exit(f"{d['id']}: group {d['group']!r} not in groups")
+        if d.get("link") and not d["link"].startswith("https://"):
+            sys.exit(f"{d['id']}: link must be https://")
         if len(d.get("opts", [])) < 2:
             sys.exit(f"{d['id']}: needs at least two options")
     page = TEMPLATE.read_text()

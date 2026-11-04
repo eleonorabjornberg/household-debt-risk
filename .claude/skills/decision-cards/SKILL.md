@@ -20,6 +20,8 @@ Gather every open decision or review item from the work (status reports, track o
 - **opts**: 2 to 4 mutually exclusive options as `[key, label, recommended?]`. Mark at most one recommended, and only if a recommendation was actually made; say whose it is in the footer. Add "Later" or "I'll note which" options when deferring or a partial answer is reasonable.
 - **where**: the file or link with the full options and reasoning.
 
+**Review items** (finished work for the user to accept) go on a separate review-queue page, built the same way, so decisions stay short. Use the same four options on every review card, with no recommendation: `ok` Accept as is, `changes` Accept with changes (note what), `redo` Not accepted: redo (note why), `later` Later. Put the headline result and any review history in `ctx`, anything that limits it (partial, not cross-checked, development sample only) in `flag`, and a `link` (https) to the files, e.g. on GitHub, so the user can read them from a phone. A verdict of `changes` or `redo` with no note: ask what to change.
+
 Split a compound question into separate cards (q8a, q8b, ...) so each card is one choice. Leave out anything the user already decided.
 
 ## 2. Build and publish
