@@ -120,6 +120,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Revise the recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1 (preview deployments only). | Eleonora |
 | 2026-11-04 | Merge the three track branches overnight; Phase A still stops for her approval when its tasks are done. | Eleonora |
 | 2026-11-04 | Continue into the later phases in parallel, overnight: "I want you to continue on with Phase B once you've merged everything", "You can continue with the other phases as well", "we're already across phases since we're working with separate tracks. Just keep them running overnight … leave human decisions for my review." The tracks take the queues in the table above. Design choices, paid sources, new hosts and cost approvals (D6, E1, E4) are queued for her and not decided. | Eleonora |
+| 2026-11-04 | Q6: declare the SEC User-Agent in-shell in one track (analysis), SEC requests only, never written to a file; unblock now (decision card 16:33 UTC, then in chat). | Eleonora |
+| 2026-11-04 | GitHub setting "Allow GitHub Actions to create and approve pull requests": done (decision card 16:33 UTC). | Eleonora |
 
 ## Environment prerequisites
 
