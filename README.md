@@ -19,7 +19,7 @@ How US household debt has been reshaped by economic crises since the 1950s. The 
 | 1990Q3 | 34.5% | 41.6% |
 | 2001Q1 | 40.6% | 36.8% |
 | 2007Q4 | 36.1% | 49.2% |
-| 2019Q4 | 55.2% | 56.3% |
+| 2019Q4 | 55.2% | 56.2% |
 
 ## Stack
 | Layer | Tech | Folder |
