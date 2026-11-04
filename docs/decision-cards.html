@@ -77,110 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Household debt risk, overnight tracks, 2026-11-04. Tap an option to record it; add a note if you want. Claude reads these back and nothing is acted on until you choose.</p>
+      <p class="sub">Household debt risk, round 2, 2026-11-04 evening. Your first-round answers are recorded in PLAN.md. Tap an option to record it and add a note if you want. Claude reads these back, and nothing is acted on until you choose.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
-    <div class="filters" id="filters" role="group" aria-label="Filter by track"></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>Recommendations are the tracks' or Claude's, marked "Rec". Full options and reasoning are in the file named on each card, on branch <code>claude/sweet-gates-avwrcs</code>.</footer>
+  <footer>Recommendations come from the infra track and are marked Rec. Full options are in the file named on each card, on branch claude/track-infra.</footer>
 </div>
 
 <script>
-const DECISIONS = [
-  // Settings and access
-  { id: "q6-sec", group: "Settings", tag: "Q6 · A2/A6/C3", title: "Set SEC_USER_AGENT in the cloud environment settings",
-    ctx: "SEC EDGAR asks for a contact in the User-Agent. Every SEC fetch is off until the variable exists. Format: household-debt-risk research <your contact email>.",
-    blocks: "Blocks A6, C3, the A2 net series and B2 deal data.",
-    opts: [["done", "Done, I set it"], ["later", "Later, from a computer", true], ["shell", "Set it in-shell in one track, SEC requests only (never written to a file)"]],
-    where: "tracks/analysis.md, Q6" },
-  { id: "gh-actions-pr", group: "Settings", tag: "F3", title: "Allow GitHub Actions to create and approve pull requests",
-    ctx: "Settings → Actions → General. Lets the z1-release workflow open its PR.",
-    opts: [["done", "Done"], ["later", "Later"], ["no", "Don't enable"]], where: "tracks/infra.md" },
-  { id: "fred-secret", group: "Settings", tag: "F3", title: "Confirm the FRED_API_KEY repository secret exists",
-    ctx: "refresh.yml already reads it.", opts: [["done", "Confirmed"], ["later", "Later"]], where: "tracks/infra.md" },
-  { id: "f2-2", group: "Settings", tag: "F2-2", title: "Add DATABASE_URL_READONLY as an Actions secret (optional)",
-    ctx: "You said you would add it yourself. The DB tests skip without it.",
-    opts: [["done", "Done"], ["later", "Later"], ["skip", "Skip it"]], where: "tracks/infra.md" },
-  { id: "cost", group: "Settings", tag: "D6 · E1 · E4", title: "Approve API spend for Ask Hot Potato (D6), the question-to-SQL benchmark (E1) and its red-team (E4)",
-    ctx: "All three need an ANTHROPIC_API_KEY and a cost estimate before they start. E3 also waits on E1.",
-    opts: [["all", "Approve all three (send me a cost estimate first)"], ["e1", "E1 only for now"], ["no", "Not yet"]], where: "PLAN.md rows D6, E1, E4" },
+const DECISIONS = [{"id": "e2-c1", "group": "E2 freeze", "tag": "E2-2 · CHOICE-1", "title": "Recall threshold for H1/H2 (the same for skeptic and quant-reviewer)", "ctx": "With 36 planted errors the 95% interval is about ±15 pp. Support needs its lower bound at or above the threshold, so 70% needs 31/36 (86%) observed and 80% needs 34/36 (94%).", "blocks": "Blocks the E2 freeze, then E3.", "opts": [["a", "50%"], ["b", "70%", true], ["c", "80%"]], "where": "tracks/infra.md E2-2; docs/decisions/e2-prereg.md"}, {"id": "e2-c2", "group": "E2 freeze", "tag": "E2-2 · CHOICE-2", "title": "False-alarm ceiling for H4 (share of blocker/major objections on clean controls)", "ctx": "There are only 4 controls, so there will be few objections and a wide interval. 25% keeps H4 informative.", "opts": [["a", "10%"], ["b", "25%", true], ["c", "40%"]], "where": "tracks/infra.md E2-2"}, {"id": "e2-c4", "group": "E2 freeze", "tag": "E2-2 · CHOICE-4", "title": "Random seed for placing the planted errors", "ctx": "Option (b) is circular: a commit cannot contain its own hash.", "opts": [["a", "Fixed integer 20261104, written in before freezing", true], ["b", "First 8 hex digits of the freeze commit"]], "where": "tracks/infra.md E2-2"}, {"id": "e2-c10", "group": "E2 freeze", "tag": "E2-2 · CHOICE-10", "title": "Balance of error categories", "ctx": "This was outside CHOICE-1 to 9, so your earlier 'accept all' did not cover it.", "opts": [["a", "Random"], ["b", "Stratified: each category planted a fixed number of times", true], ["c", "Drop rare categories"]], "where": "tracks/infra.md E2-2"}, {"id": "spend-go", "group": "API spend", "tag": "D6 · E1 · E4", "title": "Go ahead with API spend, now that the estimates are in?", "ctx": "Estimates at list prices (re-checked before spending): E1 $59.74 (900 loops, three models); E4 $46.86 on Opus or $26.45 on Sonnet; D6 development about $31 on Opus or $16 on Sonnet. Build-out about $138 on Opus, $96 on Sonnet. Running D6 costs about $78 per 1,000 questions a month on Opus, $40 on Sonnet.", "blocks": "Needs an Anthropic API key in the cloud environment settings, which you add from a computer. This is billed separately from your Claude plan.", "opts": [["pilot", "10-item pilot first, spend cap at 1.5× estimate, then report measured cost", true], ["opus", "Full build-out on Opus (≈$138), cap 1.5×"], ["sonnet", "Full build-out on Sonnet where possible (≈$96), cap 1.5×"], ["no", "Not yet"]], "where": "tracks/infra.md, Cost estimates"}, {"id": "d6-model", "group": "API spend", "tag": "D6", "title": "Model for the public 'Ask Hot Potato' feature", "ctx": "Per reader question: Opus $0.078, Sonnet $0.040, Haiku $0.002. E1 will measure accuracy per model.", "opts": [["after-e1", "Decide after E1 shows accuracy per model"], ["opus", "Opus"], ["sonnet", "Sonnet"], ["haiku", "Haiku"]], "where": "tracks/infra.md, Cost estimates"}, {"id": "fred-secret-2", "group": "Settings", "tag": "F3 · carried over", "title": "Confirm the FRED_API_KEY repository secret exists", "ctx": "refresh.yml reads it. In GitHub: Settings → Secrets and variables → Actions.", "opts": [["done", "Confirmed"], ["later", "Later"]], "where": "tracks/infra.md"}, {"id": "f2-2-2", "group": "Settings", "tag": "F2-2 · carried over", "title": "Add DATABASE_URL_READONLY as an Actions secret (optional)", "ctx": "How: in GitHub go to Settings → Secrets and variables → Actions → New repository secret, named DATABASE_URL_READONLY. The value is the Supabase connection string with research_reader as the user. If that role has no password yet, set one in Supabase first.", "opts": [["done", "Done"], ["later", "Later"], ["skip", "Skip it"]], "where": "tracks/infra.md F2-2"}];
 
-  // Analysis
-  { id: "q7", group: "Analysis", tag: "Q7 · A8", title: "Do losses at publicly owned German banks count as public?",
-    ctx: "Savings banks, Landesbanken and promotional banks hold a large share of German bank lending to individuals. Their losses hit public-sector equity first, but (unsourced so far) without a state guarantee since 2005.",
-    opts: [["a", "Count them as public on the risk-bearer measure too"], ["b", "Private on risk-bearer, public only on the holder measure"], ["c", "Third category: “publicly owned, not guaranteed”", true]],
-    where: "tracks/analysis.md, Q7" },
-  { id: "q8a", group: "Analysis", tag: "Q8(a) · A7", title: "A7 donor design for H2–H4",
-    ctx: "The state donor pool you chose needs a state series for each outcome. None exists by holder, and A5's state data are annual from 2003.",
-    opts: [["i", "Use the pre-registered fallback: event study for H2/H3, mechanical check for H4", true], ["ii", "Switch to a state series that exists (intensity design), with a new pre-registration"], ["iii", "Use countries from A8 as donors"]],
-    where: "docs/decisions/a7-causal-prereg.md (addendum)" },
-  { id: "q8b", group: "Analysis", tag: "Q8(b) · A7", title: "Weekly S1: PMMS minus the mean of daily DGS10 over the same week up to the PMMS date",
-    ctx: "Fixes the alignment of the weekly spread in the A7 addendum.",
-    opts: [["confirm", "Confirm", true], ["reject", "Reject"]], where: "docs/decisions/a7-causal-prereg.md (addendum)" },
-  { id: "q8c", group: "Analysis", tag: "Q8(c) · A7", title: "Constant-mean prediction as the primary model, AR(1) as sensitivity",
-    opts: [["confirm", "Confirm", true], ["reject", "Reject"]], where: "docs/decisions/a7-causal-prereg.md (addendum)" },
-  { id: "a4-dev", group: "Analysis", tag: "A4", title: "Accept the A4 structural-break deviations",
-    ctx: "Listed in breaks.md. Includes simulated critical values, which could not be cross-checked because R is not available.",
-    opts: [["accept", "Accept all"], ["discuss", "Accept some, I'll note which"], ["reject", "Reject"]], where: "docs/decisions/breaks.md" },
-
-  // Markets
-  { id: "c2-order", group: "Markets", tag: "C2", title: "C2 deviation: leakage tests were written after the first development scoring",
-    ctx: "All 14 tests then passed with no change to the code; the holdout was not opened. Future runs execute the tests first.",
-    opts: [["accept", "Accept the deviation"], ["reject", "Reject"]], where: "research/c2_forecast/SPECS.md" },
-  { id: "c2-seasonal", group: "Markets", tag: "C2", title: "C2 deviation: seasonal naive joins the Holm family (36 → 42 tests)",
-    ctx: "The pre-scoring seasonality check triggered the protocol's rule. This is the stricter reading and is in force pending your decision.",
-    opts: [["accept", "Accept (stricter)"], ["reject", "Reject, keep 36 tests"]], where: "research/c2_forecast/SPECS.md" },
-  { id: "c2-placebo", group: "Markets", tag: "C2", title: "C2 placebo: the shuffled-target model shows slight “skill” over no-change",
-    ctx: "Shuffling keeps the target's mean, so the placebo behaves like a drift forecast. No recommendation given.",
-    flag: "These options were written after the placebo result was seen.",
-    opts: [["a", "Demean the shuffled target"], ["b", "Measure placebo skill against drift"], ["c", "Keep the definition and record a failure"]],
-    where: "research/c2_forecast/SPECS.md" },
-  { id: "qb2-measure", group: "Markets", tag: "Q-B2.1", title: "B2 price measure for CRT",
-    opts: [["a", "FHFA credit cost ÷ baseline expected loss (as built)"], ["b", "Cost ÷ a loss distribution (needs assumptions FHFA does not publish)"], ["c", "Cost alone"], ["ac", "(a) with (c) alongside", true]],
-    where: "tracks/markets.md, Q-B2" },
-  { id: "qb2-gap", group: "Markets", tag: "Q-B2.2", title: "B2 prices for 2017–2023",
-    opts: [["a", "Read spreads off FHFA's charts, labelled estimates"], ["b", "Leave the gap"], ["c", "Deal data from crt.freddiemac.com and EDGAR (needs host and SEC_USER_AGENT)", true]],
-    ctx: "Recommendation is (c) if you add the host and the variable; otherwise (b).", where: "tracks/markets.md, Q-B2" },
-  { id: "qb3", group: "Markets", tag: "Q-B3", title: "Where B3's scenario presets come from",
-    opts: [["a", "Fed stress test (DFAST) loss rates, labelled a proxy"], ["b", "2008–12 replay from realised losses (partly blocked hosts)"], ["c", "Both, starting with DFAST", true], ["d", "No presets, user enters values"]],
-    ctx: "B4 is blocked until presets exist.", where: "tracks/markets.md, Q-B3" },
-  { id: "qc1c", group: "Markets", tag: "Q-C1c", title: "When to run the C1 holdout",
-    opts: [["a", "Now"], ["b", "In the same run as C2's holdout, after C2 is frozen", true], ["c", "Keep it unrun until C3"]],
-    where: "tracks/markets.md, Q-C1c" },
-  { id: "qc1b", group: "Markets", tag: "Q-C1b", title: "Second pre-registered C1 run with agency monthly summaries (for later)",
-    ctx: "The bridge nowcast is biased downward; public mortgage holders have no monthly indicator in the current set.",
-    opts: [["a", "Pre-register a run with Freddie Mac and Ginnie Mae, Fannie flat", true], ["b", "Wait until Fannie Mae is reachable"], ["c", "No second run"]],
-    where: "tracks/markets.md, Q-C1b" },
-
-  // Infra
-  { id: "f3-1", group: "Infra", tag: "F3-1", title: "refresh.yml loads the production database on a schedule",
-    ctx: "That publishes new data before anyone reviews it. The patch is written but not applied.",
-    opts: [["a", "Drop the schedule, default load to false; load by hand after merging", true], ["b", "(a) plus an automatic load when a z1 PR merges"], ["c", "Keep both as they are"]],
-    where: "tracks/infra.md, F3-1" },
-  { id: "f3-2", group: "Infra", tag: "F3-2", title: "Who drafts the reader-facing release notes",
-    opts: [["a", "A Claude session runs the z1-release-update skill (no new cost)", true], ["b", "claude-code-action in the workflow (API key, small cost each quarter)"]],
-    where: "tracks/infra.md, F3-2" },
-  { id: "e2-1", group: "Infra", tag: "E2-1", title: "E2 planted-error test: pre-registration choices CHOICE-1 to CHOICE-9",
-    ctx: "Thresholds, size, seed, isolation, blinding and scoring. E2 is frozen only after you choose.",
-    opts: [["all", "Accept all the recommendations"], ["review", "I'll go through them in the file"]], where: "docs/decisions/e2-prereg.md" },
-  { id: "d7-1", group: "Infra", tag: "D7-1", title: "Plugin distribution and icon",
-    opts: [["repo", "Repo marketplace only, no icon", true], ["list", "List it more widely (needs a 512–2048 px icon)"]], where: "tracks/infra.md, D7-1" },
-
-  // Copy
-  { id: "copy-2008", group: "Copy review", tag: "Preview", title: "2008 copy revision on the story site, Hot Potato, findings and the recommendation draft",
-    ctx: "Now uses A1's split: private retreat, public growth, and only a small part from Fannie and Freddie. No longer says “half”. Review on the branch's preview deployment.",
-    opts: [["ok", "Approve"], ["change", "Needs changes (note below)"]], where: "web/content/story.ts, atlas" },
-  { id: "copy-nav", group: "Copy review", tag: "Preview", title: "Nav links “Data” and “Sources”, and the /sources and /data page intros",
-    ctx: "Added by the infra track, plus one sentence in the atlas coda.",
-    opts: [["ok", "Approve"], ["change", "Needs changes (note below)"]], where: "web/app/sources, web/app/data, atlas/components/Coda.tsx" },
-  { id: "copy-dotcom", group: "Copy review", tag: "Register", title: "Two unrendered facts: public share in 2001Q1 and 2005Q1",
-    ctx: "Defined in the story content but never shown on the page.",
-    opts: [["keep", "Keep the facts and their register exceptions"], ["delete", "Delete the two facts"], ["render", "Use them in the copy"]], where: "web/content/story.ts:37-38" },
-];
-
-const GROUPS = ["Settings", "Analysis", "Markets", "Infra", "Copy review"];
+const GROUPS = ["E2 freeze", "API spend", "Settings"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
