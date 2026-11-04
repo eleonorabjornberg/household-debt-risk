@@ -27,6 +27,15 @@ available with the same permissions, conditions, and restrictions set forth in t
 more restrictive terms or conditions on the Content." ... "Otherwise, follow this format: "© [year] Federal
 Reserve Bank of New York. Content from the New York Fed subject to the Terms of Use at newyorkfed.org.""
 
-Not checked: whether the HHDC data carry a specific "Use Restriction" beyond the general terms (the HHDC
-page loads its content with JavaScript, so the fetched HTML does not show it). Check by hand before
-redistributing `nyfed_by_type`.
+Checked later the same day in the HHDC workbook itself (section below). The HHDC web page loads its
+content with JavaScript, so the fetched HTML does not show page-level notices.
+
+## HHDC use-restriction check (decision F4-1, 2026-11-04 ~04:30 UTC)
+
+`data/nyfed/HHD_C_Report_2026Q2.xlsx` (the file the pipeline downloads; 962,992 bytes, SHA-256
+ddfba16b87e187848ed591a1283f310188e7bdeebe5cf409b70a35b058d99237; 73 sheets) was scanned cell by cell with
+openpyxl for copyright, terms, permission, restriction, licence, reproduction and redistribution wording.
+Result: no use restriction beyond the general Terms of Use. The only notice is the source identifier on the
+data sheets, "Source: New York Fed Consumer Credit Panel/Equifax", which the terms require us to keep
+("you must include any copyright notice and other source identifiers that the New York Fed includes with
+that Content"). The downloads carry it next to the attribution line.
