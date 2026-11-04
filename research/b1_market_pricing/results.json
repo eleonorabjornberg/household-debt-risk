@@ -56,7 +56,8 @@
   },
   "eg_crit_5pct": {
     "N7": -5.1,
-    "N3": -3.79
+    "N8": -5.38,
+    "N3": -3.8
   },
   "pmms_dummy_coef": {
     "coef": 0.8699767549497281,
@@ -265,5 +266,7 @@
   "S2_fha_conf_mean_2017_latest": -0.046856762789332956,
   "mort_share_mean_2020_latest": 0.6650117875048831,
   "D_halfwidth_over_rise_pp": 0.6998097639257549,
+  "D_mde80_over_rise_pp": 0.99972823417965,
+  "S1_mean_change_first_to_last_pp": 0.609927656673251,
   "mort_share_latest": 0.655541300593981
 }
