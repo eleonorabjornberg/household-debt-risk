@@ -12,8 +12,16 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
-## Where the track stopped (2026-11-04, about 05:45 UTC)
-Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is committed (0f9aaff) before any A7 outcome was inspected; no A7 test has been run, because H2–H4 need Eleonora's answer on the donor design (Q8a) and H1 uses two details she has not yet confirmed (Q8b, Q8c). A6 not started: it needs A2's Fannie figures (Q6) and replication of a CBO fair-value figure first (cbo.gov root answered 403 earlier). Open questions: Q6, Q7, Q8.
+## Handoff (2026-11-04, about 17:15 UTC)
+- **Accepted as is by Eleonora (PLAN.md, review round 1, 17:00 UTC):** A2 Freddie part, A3, A4, A5, A8 (partial by design). The coordinator marks them done.
+- **On her review queue. Don't change these until she answers:** A7 (results.json, README), and the A2 Fannie part (`fannie_*`, the "Both Enterprises" section of the A2 README).
+- **On her docket:** Q7, evidence in `research/a8_international/Q7_EVIDENCE.md` (4d56aad). Once she picks (a), (b) or (c), apply it in `compare.py`, `comparison.csv`, the A8 README and the register rows, then run the skeptic. Also on the docket: the A7 family question. Its card notes that the question came up after the results were seen.
+- **Blocked:** A6. It needs a CBO fair-value figure replicated first, and cbo.gov answers 403. Don't work around it.
+- **For a fresh session:**
+  - Run `git config core.hooksPath .githooks`.
+  - Data files are git-ignored; rerun the scripts to rebuild them (`validation/run.py` downloads Z.1). The EDGAR cache in `data/a2/fannie/` will be gone. Refetch only under the Q6 rules: SEC_USER_AGENT as a per-command prefix only, never written to any file or exported.
+  - Before each commit, grep the tree for the email local part named in the Q6 rule (PLAN.md decisions); it must return nothing.
+  - The A4 R cross-check needs `apt-get update` before R installs.
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
