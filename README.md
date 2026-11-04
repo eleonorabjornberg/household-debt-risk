@@ -45,7 +45,7 @@ Planned and not built yet (see PLAN.md): `research/` (Phases A–C), `.claude/ag
 
 ## How to reproduce the numbers
 
-From a fresh clone, with Python 3.13 and [uv](https://docs.astral.sh/uv/). It needs network access to `www.federalreserve.gov`, and no database or API keys.
+From a fresh clone, with Python and [uv](https://docs.astral.sh/uv/). It needs network access to `www.federalreserve.gov`, and no database or API keys.
 
 1. Install the Python environment:
    ```bash

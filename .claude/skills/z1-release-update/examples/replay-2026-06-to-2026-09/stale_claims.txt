@@ -1,1 +1,9 @@
-/home/user/household-debt-risk/claims/register.csv does not exist yet (task 0.5); skipping the stale-copy scan.
+Stale-claim scan against results.json (vintage 2026-09-11 10:41, latest 2026Q2)
+
+changed: 0   unchanged: 12   cannot compare: 2   no check in this run: 90
+
+No displayed number changes.
+
+Could not compare (check by hand):
+- mortgage_holders_count (A1): unit 'count' is not reported by validation checks
+- cc_holders_count (A2): unit 'count' is not reported by validation checks

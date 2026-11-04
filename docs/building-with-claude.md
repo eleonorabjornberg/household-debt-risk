@@ -41,3 +41,22 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   5. A PLAN.md status edit used a plain string replace that silently matched nothing, so 0.1 stayed `todo`. Caught by Claude when a later, asserted edit failed; edits to PLAN.md now assert that the target text exists.
   6. A pre-commit check listing "unexpected files" used a pattern that flagged every expected file. Caught by Claude reading the output; the commit content was correct.
   7. The validation subagent noted that the validation suite and the pipeline share the holder → bucket mapping in `series_catalog.yaml`, so a misclassified holder would pass both. Recorded in PLAN.md for the Phase D skeptic, not yet fixed.
+
+## 2026-11-04: finishing Phase 0 (session_01GDxCQ4PEo3YCh72CZhKaU4)
+
+- **Tasks:** 0.8 stale-claims step and unit reconciliation; 0.7 recommendation v1 and Hot Potato copy; 0.9 README index and reproduce steps; 0.10 prompts from the 3–4 Nov session. 0.5 (the register) was finished by the previous session, which was still running in parallel and pushed it at 00:05.
+- **Environment:** `FRED_API_KEY` set; `DATABASE_URL_READONLY`, `DATABASE_URL`, `ANTHROPIC_API_KEY` unset. The network policy now denies www.federalreserve.gov, FRED and newyorkfed.org (proxy 403; all reachable on 3 Nov), so validation could not be rerun and check D2 and the `research_reader` permission test were not run.
+- **Model tier:** main model for the recommendation, the copy, the review and the register edits; subagents below.
+- **Subagents** (tokens as reported by the harness at completion):
+
+| Task | Tier | Tokens | Tool calls | Wall time | Outcome |
+|---|---|---|---|---|---|
+| 0.10 prompts of session_01GDxCQ42apfBERQ1Fw4qyjV | Haiku | 129,310 | 38 | 3.1 min | 18 prompts, commit-linked, 0 redactions needed; reviewed and committed. The main model added a 19th, typed after the subagent ran |
+| 0.5 claims register | Sonnet | not reported (stopped) | not reported | ~6 min | Stopped unused: the other session had already pushed a register. Partial files discarded, nothing committed |
+
+- **Previous session cost** (harness figure for session_01GDxCQ42apfBERQ1Fw4qyjV, main model, 3–4 Nov): $12.61, 292,112 output tokens. This session's main-model tokens: not measured.
+- **Errors, and how they were caught:**
+  8. Two sessions worked on the same branch at once. This session briefed a subagent to build `claims/register.csv` because the branch did not have one at session start; the previous session pushed its own six minutes later. Caught when the push was rejected as non-fast-forward. The subagent was stopped, its partial work set aside, and this session's commits rebased on the pushed register. Lesson: before delegating, check that the previous session is idle (`get_session`), not only that the branch lacks the file.
+  9. The recommendation draft quoted Z.1's 2026Q2 scope change as $198B, which Eleonora had just corrected to +$199B (data $198.53B). Caught by the register check once `analysis/recommendation.md` was added to the files it scans.
+  10. The README index insertion shifted the line numbers that register rows point at, and two rows pointed at copy that had been replaced (the "1 of 11" stat). `check_register.py` only checks that a line exists, not that the number is on it, so it passed anyway. Caught by a one-off script that checks each location's line for the display text; rows fixed. Proposed for Phase D: make the check verify the text on the line.
+  11. The old Hot Potato copy said a GSE release from conservatorship "would move the biggest pile back across the line". Under the site's own definition, GSEs count as public in or out of conservatorship. Caught by the main model while writing 0.7; corrected.

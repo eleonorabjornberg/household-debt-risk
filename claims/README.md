@@ -48,7 +48,7 @@ it was computed, its series, its vintage and a validation status.
 
 `check_register.py` validates the CSV (header, unique ids, statuses, check ids against `validation/results.json`,
 that a `PASS`/`FAIL` row agrees with its check, locations that exist). It then scans `README.md`,
-`atlas/content/story.ts` and `web/content/story.ts` for number-like tokens and fails on any with no matching
+`atlas/content/story.ts`, `web/content/story.ts` and `analysis/recommendation.md` for number-like tokens and fails on any with no matching
 `display`. The token regex, the normalisation and the allowlist are documented at the top of the script. Tokens that
 reach the page only through a template (`{share}`, `{pls}`, `${facts.x}`) are registered by hand, with the resolved
 value in `display` and the data field in `notes`.

@@ -12,7 +12,7 @@ copy; a human decides what to change. Rows with no check_id or a check_id absent
 counted, not judged.
 
 Units follow claims/README.md: `share` is a fraction (0.564) and is compared as percent (56.4%); `pp`,
-`usd_tn|bn|mn` and `quarter` compare directly; `ratio`, `count`, `p_value`, `percentile`, `text` are never in
+`usd_tn|bn|mn` and `quarter` compare directly; `ratio`, `count`, `pvalue`, `pct_rank`, `date`, `text` are never in
 validation output and are listed as "cannot compare". Older free-text units ("%", "$T") still work.
 
 Matching the observed number: the check's `observed` text is searched for numbers with the same unit as the
@@ -41,7 +41,7 @@ REGISTER_UNITS = {
     "usd_tn": ("$T", 1.0), "usd_bn": ("$B", 1.0), "usd_mn": ("$M", 1.0),
     "quarter": ("quarter", None),
 }
-NOT_IN_CHECKS = {"ratio", "p_value", "percentile", "count", "text"}
+NOT_IN_CHECKS = {"ratio", "pvalue", "p_value", "pct_rank", "percentile", "count", "date", "text"}
 
 
 def unit_kind(unit: str, display: str) -> str | None:

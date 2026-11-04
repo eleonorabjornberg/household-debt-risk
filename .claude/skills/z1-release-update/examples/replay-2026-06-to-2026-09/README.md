@@ -21,8 +21,15 @@ uv run --project pipeline python .claude/skills/z1-release-update/scripts/stale_
 Files:
 - `what_moved.md`: script output, unedited. Its headline (56.4%, $10.77T of $19.10T) and largest scope revision
   (2025Q3, +$5,272M) agree with validation checks C2, C3 and F1.
-- `stale_claims.txt`: script output, unedited. At the time of the replay `claims/register.csv` (task 0.5) did not exist,
-  so the scan skipped with a message. Re-run it once the register exists; nothing in this folder was hand-written.
+- `stale_claims.txt`: script output, unedited, re-run on 2026-11-04 once `claims/register.csv` (task 0.5) existed
+  (104 rows). Result: 0 changed, 12 unchanged, 2 cannot compare (`count` rows: no validation check reports a
+  count), 90 with no check. Zero changes is the expected answer here: the register was built from the September
+  vintage, the same vintage as `validation/results.json`. So this run tests the unit handling (shares stored as
+  fractions, e.g. `0.5638`, compared as percent at display precision), not detection. Detection of a changed
+  number is covered by the synthetic tests in `tests/` (`test_stale_detects_only_display_changes`,
+  `test_register_units_share_fraction_and_vocabulary`). A June-vintage `results.json` could not be regenerated
+  for a true June-to-September scan: www.federalreserve.gov was blocked by this session's network policy.
+  The first real detection run will be the 10 Dec 2026 release.
 
 Steps 1 to 4 and 7 (detect, download, transform, export, commit) were not replayed: they need the network, write
 `data/` and `web/public/data/`, and the September data is already in the repo.
