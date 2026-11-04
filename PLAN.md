@@ -21,14 +21,14 @@
 
 ## Parallel tracks (from 2026-11-04)
 
-Eleonora approved running Phase A onward as parallel cloud sessions, one per track, each on its own branch cut from `claude/sweet-gates-avwrcs`. Phase-end approvals are unchanged: no track starts a new phase's work without her approval.
+Eleonora approved running Phase A onward as parallel cloud sessions, one per track, each on its own branch cut from `claude/sweet-gates-avwrcs`. Phase-end approvals are unchanged: no track starts a new phase's work without her approval. On 2026-11-04 (night) she gave that approval for Phases B–F (see Decisions taken). Her review of each phase's results still comes when its tasks are done.
 
 | Track | Branch | Tasks, in order | Status file |
 |---|---|---|---|
-| Data analysis | `claude/track-analysis` | A2, A5, A8 | `tracks/analysis.md` |
-| Markets and nowcast | `claude/track-markets` | B1, C1 | `tracks/markets.md` |
-| Infrastructure | `claude/track-infra` | F1, F2 (validation and tests only until E3 exists), F4 | `tracks/infra.md` |
-| Coordinator | `claude/sweet-gates-avwrcs` | shared files, reviews, merges; A4/A7/C2 pre-registration options; D3; anything not in a track | this file |
+| Data analysis | `claude/track-analysis` | A2, A5, A8; then A3, A4 (code, frozen prereg), A7 addendum then A7, A6 | `tracks/analysis.md` |
+| Markets and nowcast | `claude/track-markets` | B1, C1; then B2, B3, B4, C2 (frozen protocol), C3 | `tracks/markets.md` |
+| Infrastructure | `claude/track-infra` | F1, F2 (validation and tests only until E3 exists), F4; then F3, D3, E2 (pre-registered first), E3, D7 | `tracks/infra.md` |
+| Coordinator | `claude/sweet-gates-avwrcs` | shared files, reviews, merges; A4/A7/C2 pre-registration options; anything not in a track. D6, E1, E4 wait for Eleonora (cost or API key) | this file |
 
 **Shared files are the coordinator's.** Tracks do not edit `PLAN.md`, `claims/register.csv`, `docs/building-with-claude.md`, `README.md`, `CLAUDE.md`, `.claude/settings.json`, `.claude/hooks/` or the site copy (`atlas/content/`, `web/content/`). Instead a track:
 - keeps its status, log notes (tasks, models, subagent tokens, errors and who caught them) and questions for Eleonora in its status file;
@@ -119,6 +119,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Eleonora writes her own `analysis/recommendation.md` at the end of the project, not at the end of Phase A; the Claude draft stays bannered until then. | Eleonora |
 | 2026-11-04 | Revise the recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1 (preview deployments only). | Eleonora |
 | 2026-11-04 | Merge the three track branches overnight; Phase A still stops for her approval when its tasks are done. | Eleonora |
+| 2026-11-04 | Continue into the later phases in parallel, overnight: "I want you to continue on with Phase B once you've merged everything", "You can continue with the other phases as well", "we're already across phases since we're working with separate tracks. Just keep them running overnight … leave human decisions for my review." The tracks take the queues in the table above. Design choices, paid sources, new hosts and cost approvals (D6, E1, E4) are queued for her and not decided. | Eleonora |
 
 ## Environment prerequisites
 
