@@ -121,3 +121,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - A7 fit-failure level: the draft's example level was adopted with the recommendations (the US holdout RMSPE above the 2006–07 standard deviation of the outcome). Eleonora can change it by a dated deviation before any fit is run.
 - One item is still open. A7 checklist item 3 (donor series from A5/A8, spread proxy from B1) must be fixed in a dated addendum before any outcome is inspected.
 - Not yet fixed: `validation/REPORT.md` labels the June zip's build date (2026-06-10) as "prev vintage". The release was 2026-06-11 (`validation/run.py` line 489).
+
+### 2026-11-04: Track questions collected; database access diagnosed
+- Claude collected the open questions from the three tracks into `docs/decisions/open-questions-2026-11-04.md`, each with a recommendation, for Eleonora to decide.
+- Eleonora read `analysis/recommendation.md` and approved it in substance. She will rewrite it in her own words once the phase is through. The Claude draft banner stays until she does.
+- Database: both secrets are set in the cloud environment, but the Supabase pooler host does not resolve from the container. The environment's proxy carries HTTPS only, and raw-TCP Postgres is on its unsupported list, so allowing the host will likely not fix it. Claude found this. Live-database work moves to Eleonora's Mac, or to Supabase's HTTPS API.
