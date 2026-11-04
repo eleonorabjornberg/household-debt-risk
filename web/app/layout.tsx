@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Newsreader, Public_Sans } from "next/font/google";
 import { site } from "@/content/story";
 import "./globals.css";
+import "./claims.css";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Link href="/#ratchet">Story</Link>
                 <Link href="/methods">Methods</Link>
                 <Link href="/how-it-was-built">How it was built</Link>
+                <Link href="/sources">Sources</Link>
               </nav>
             </div>
           </div>

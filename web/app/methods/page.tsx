@@ -4,6 +4,7 @@ import { methods } from "@/content/story";
 import { getSnapshotMeta, getStoryData, supabaseConfigured } from "@/lib/data";
 import { quarterLabel } from "@/lib/format";
 import type { DataSource, TableName } from "@/lib/types";
+import { Sourced } from "@/components/claims/SourceRef";
 
 export const metadata: Metadata = {
   title: "Methods",
@@ -55,7 +56,7 @@ export default async function MethodsPage() {
         <div className="col">
           <p className="kicker">Methods</p>
           <h1>How this was made</h1>
-          <p>{methods.lede}</p>
+          <p><Sourced text={methods.lede} /></p>
         </div>
       </header>
 
@@ -66,7 +67,7 @@ export default async function MethodsPage() {
             {methods.lineage.map((l) => (
               <li key={l.step}>
                 <strong>{["raw", "core", "mart"].includes(l.step) ? <code>{l.step}</code> : l.step}</strong>
-                <span>{l.text}</span>
+                <span><Sourced text={l.text} /></span>
               </li>
             ))}
           </ol>
@@ -77,7 +78,7 @@ export default async function MethodsPage() {
         <div className="col">
           <h2 id="scope">Scope and definitions</h2>
           <div className="prose">
-            {methods.scope.map((p, i) => <p key={i}>{p}</p>)}
+            {methods.scope.map((p, i) => <p key={i}><Sourced text={p} /></p>)}
           </div>
         </div>
       </section>
@@ -88,8 +89,8 @@ export default async function MethodsPage() {
           <dl className="caveats">
             {methods.caveats.map((c) => (
               <div key={c.title}>
-                <dt>{c.title}</dt>
-                <dd>{c.body}</dd>
+                <dt><Sourced text={c.title} /></dt>
+                <dd><Sourced text={c.body} context={c.title} /></dd>
               </div>
             ))}
           </dl>
