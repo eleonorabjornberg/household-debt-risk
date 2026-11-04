@@ -104,3 +104,16 @@ def test_dfast_preset_identities():
         assert x["public_musd"] + x["private_musd"] == pytest.approx(x["total_musd"], rel=1e-12)
         assert sum(x["by_class"].values()) == pytest.approx(x["total_musd"], rel=1e-12)
     assert "student_federal" not in r["dfast2026_proxy"]["by_class"]          # absent, not defaulted
+
+
+REPLAY = HERE / "results_replay_2008_2012.json"
+
+
+@pytest.mark.skipif(not REPLAY.exists(), reason="presets not built")
+def test_replay_preset_identities():
+    r = json.loads(REPLAY.read_text())["replay_2008_2012_proxy"]
+    assert r["public_musd"] + r["private_musd"] == pytest.approx(r["total_musd"], rel=1e-12)
+    assert r["quarters"] == 20
+    p = json.loads((HERE / "presets" / "replay_2008_2012.json").read_text())["presets"]["replay_2008_2012_proxy"]["classes"]
+    assert all(abs(sum(c["timing"]) - 1) < 1e-12 for c in p.values())
+    assert "student_federal" not in p

@@ -28,6 +28,19 @@
 
 **Reading (Claude draft).** In this proxy recession the public sector bears 23% of losses while holding 56.4% of the debt. Its book is mostly mortgages, which have low stressed loss rates, and the high-loss consumer credit is privately held. Counting federal student loans at the weak proxy rate raises the public share of losses to 36%. These are ESTIMATES under a proxy. No transfer to CRT or mortgage-insurance cover is applied (the cap is 0); A2's bounds would lower the public figure.
 
+## 2008–12 replay preset (Q-B3 (c), second family): labelled a proxy
+
+**What it is.** The banks' realised net charge-off rates, quarter by quarter, from 2008Q1 to 2012Q4. They come from the Fed's charge-off release for all commercial banks, via FRED: `CORSFRMACBS` (single-family mortgages), `CORCCACBS` (cards), `COROCLACBS` (other consumer). The release defines them as "net charge-offs (gross charge-offs minus recoveries) during a quarter divided by the average level of its loans outstanding", multiplied by 400 to annualise (`sources.md`).
+- Each quarter's loss is therefore rate ÷ 400, and the twenty-quarter path sets the timing.
+- Over the window, cumulative charge-offs were 8.7% for mortgages and 18.9% for other consumer credit (cards and other consumer, weighted as in the DFAST preset).
+- Federal student loans are absent: there is no bank series for them.
+
+| Preset | Total losses | Public | Private | Public share of losses |
+|---|---|---|---|---|
+| 2008–12 replay, bank charge-offs (proxy) | $1,886B | $801B | $1,085B | 42% |
+
+**Limits (Claude draft).** This replays the banks' crisis, not the GSEs'. Bank mortgage books in 2008–12 included subprime and option-ARM loans that the GSEs did not guarantee, so applying bank charge-offs to the GSE book likely overstates public losses. The GSEs' own realised losses (from their 10-Ks) would be the better source for that book, and are a possible refinement. The figures apply one historical path to today's balances, so they are ESTIMATES.
+
 ## Not done here
 - **2008–12 replay preset** (Q-B3 (c), second family): not yet built.
 - **In-app version.** `atlas/` is site code; the coordinator owns it. A proposal is in `tracks/markets.md`, and only preview deployments would be made.
