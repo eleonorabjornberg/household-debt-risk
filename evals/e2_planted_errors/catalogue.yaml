@@ -1,0 +1,100 @@
+# E2 error catalogue (docs/decisions/e2-prereg.md). DRAFT until the pre-registration is frozen: entries
+# can still change; after the freeze they cannot (a change is a dated deviation).
+#
+# Each entry plants one error at a line that matches `eligible`. Kinds:
+#   replace: re.sub(find, repl, line, count=1)
+#   insert:  append `text` after the line (the error's line is the inserted one)
+# `agent` is the reviewer whose remit covers it (skeptic = data, quant-reviewer = method). `fix` says what
+# a correct objection would ask for; scorers use it for the "same fix" test.
+errors:
+  # ---------------------------------------------------------------- data (skeptic)
+  - id: vintage_label
+    agent: skeptic
+    kind: replace
+    eligible: 'z1[: ]2026-09-11|2026-09-11'
+    find: '2026-09-11'
+    repl: '2025-12-11'
+    fix: the vintage cited does not match the data used (meta.json / register vintage)
+  - id: source_swap
+    agent: skeptic
+    kind: replace
+    eligible: '\(Z\.1\)|Z\.1 (Financial Accounts|figure|data)'
+    find: 'Z\.1'
+    repl: 'NY Fed credit-report'
+    fix: the figure is Z.1, not NY Fed CCP; sources must not be mixed or mislabelled
+  - id: holds_to_bears
+    agent: skeptic
+    kind: replace
+    eligible: '\b(holds?|held)\b[^.]*\d'
+    find: '\b(holds|held|hold)\b'
+    repl: 'bears the losses on'
+    fix: holding is not bearing credit risk (guarantees, insurance, CRT)
+  - id: number_change
+    agent: skeptic
+    kind: replace
+    eligible: '\b\d{2}\.\d%'
+    find: '\b(\d)(\d)\.(\d)%'
+    repl: '\g<1>{bump}.\g<3>%'
+    fix: the number does not match the register / recompute
+  - id: period_shift
+    agent: skeptic
+    kind: replace
+    eligible: '\b(19|20)\d\dQ[1-4]\b'
+    find: '\b((?:19|20)\d)(\d)Q([1-4])\b'
+    repl: '\g<1>{bumpyear}Q\g<3>'
+    fix: the quarter does not match the number's period
+  - id: double_count
+    agent: skeptic
+    kind: insert
+    eligible: '(agency|GSE|Ginnie|public)[^.]*\d'
+    text: 'Adding the Fed''s own agency MBS holdings on top of the agency pools gives the full public book.'
+    fix: Fed MBS are inside the agency pools; adding them double counts
+  - id: definition_shift
+    agent: skeptic
+    kind: insert
+    eligible: 'public share'
+    text: 'Here the public share leaves out state and local governments, unlike elsewhere in the project.'
+    fix: the definition of public changes between compared numbers
+  - id: causal_word
+    agent: skeptic
+    kind: insert
+    eligible: '(rose|fell|jump|grew|shrank)[^.]*\d'
+    text: 'The 2008 rescues caused this shift directly.'
+    fix: causal claim without an identification strategy (only A7 may claim cause)
+  # ---------------------------------------------------------------- method (quant-reviewer)
+  - id: tuned_on_holdout
+    agent: quant-reviewer
+    kind: insert
+    eligible: '(holdout|out-of-sample|test (set|period)|evaluation)'
+    text: 'The model''s settings were chosen by comparing errors over the holdout period, then the holdout errors are reported as out-of-sample.'
+    fix: the holdout was used for tuning; its errors are not out-of-sample
+  - id: benchmark_dropped
+    agent: quant-reviewer
+    kind: insert
+    eligible: '(forecast|nowcast|model|RMSE|error)'
+    text: 'No naive or AR benchmark is needed here because the errors are small in absolute terms.'
+    fix: every model must be compared to naive and AR benchmarks
+  - id: multiple_testing
+    agent: quant-reviewer
+    kind: insert
+    eligible: '(test|p ?[=≈<]|significan|specification)'
+    text: 'Of the twenty specifications tried, the best has p = 0.03, so the effect is statistically significant.'
+    fix: selection among many tests; correct for multiplicity or report all
+  - id: wrong_se
+    agent: quant-reviewer
+    kind: insert
+    eligible: '(regression|standard error|interval|test)'
+    text: 'Standard errors are plain OLS; the quarterly errors are treated as independent.'
+    fix: serially correlated errors need HAC (or similar) standard errors
+  - id: ci_as_pi
+    agent: quant-reviewer
+    kind: insert
+    eligible: '(interval|band|fan|uncertainty)'
+    text: 'The 95% confidence interval of the mean forecast shows where the next quarter''s value will fall 95% of the time.'
+    fix: a confidence interval of the mean is not a prediction interval
+  - id: lookahead
+    agent: quant-reviewer
+    kind: insert
+    eligible: '(vintage|real[- ]time|as of|ALFRED|nowcast)'
+    text: 'Inputs are taken from the latest vintage for every past nowcast date.'
+    fix: look-ahead; past nowcasts must use the vintage public at the time (ALFRED)

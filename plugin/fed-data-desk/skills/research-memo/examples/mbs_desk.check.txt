@@ -1,0 +1,1 @@
+/home/user/household-debt-risk/.claude/skills/research-memo/examples/mbs_desk.md: PASS · 796/1000 words · claim-check {'AMBIGUOUS': 5, 'MATCH': 15} · 16 register rows

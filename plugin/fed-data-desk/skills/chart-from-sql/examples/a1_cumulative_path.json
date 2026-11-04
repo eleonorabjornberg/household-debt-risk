@@ -1,0 +1,39 @@
+{
+  "name": "a1_cumulative_path",
+  "kind": "line",
+  "title": "Cumulative change in the public share since 2007Q4",
+  "source_line": "Source: Fed Z.1 Financial Accounts; research/a1_gfc_decomposition/path.csv (A1) (vintage 2026-09-11); chart: household-debt-risk",
+  "vintage": "2026-09-11",
+  "data_source": {
+    "type": "file",
+    "path": "research/a1_gfc_decomposition/path.csv",
+    "sha256": "6f6b95bf2f66de700af83cc12861ba86d89f43b847c00fa74a3ab8b11d9eb7f0"
+  },
+  "row_count": 16,
+  "x": "quarter",
+  "y": [
+    "fannie_freddie",
+    "ginnie_pools",
+    "federal_student_loans",
+    "other_public",
+    "private_label_and_mreits",
+    "banks_and_credit_unions",
+    "other_private",
+    "total"
+  ],
+  "group": null,
+  "units": "Cumulative contribution (percentage points)",
+  "scale_applied": 1.0,
+  "recession_shading": false,
+  "modes": [
+    "light"
+  ],
+  "files": [
+    "a1_cumulative_path.png",
+    "a1_cumulative_path.svg",
+    "a1_cumulative_path.alt.txt",
+    "a1_cumulative_path.json"
+  ],
+  "alt_text": "Line chart titled \"Cumulative change in the public share since 2007Q4\": Fannie/Freddie, Ginnie Mae pools, Federal student loans, Other public, Private label and mREITs, Banks and CUs, Other private, Total (Cumulative contribution (percentage points)) by quarter, 2008Q1 to 2011Q4, 16 observations. Fannie/Freddie rose from 0.58 pp in 2008Q1 to 1.40 pp in 2011Q4 (high 2.29 pp in 2009Q4). Ginnie Mae pools rose from 0.08 pp in 2008Q1 to 3.29 pp in 2011Q4. Federal student loans rose from 0.03 pp in 2008Q1 to 1.62 pp in 2011Q4. Other public fell from 0.00 pp in 2008Q1 to -0.04 pp in 2011Q4 (high 0.00 pp in 2008Q2; low -0.05 pp in 2010Q1). Private label and mREITs rose from 0.18 pp in 2008Q1 to 5.71 pp in 2011Q4. Banks and CUs rose from -0.01 pp in 2008Q1 to 0.49 pp in 2011Q4 (high 0.87 pp in 2009Q4; low -0.06 pp in 2010Q1). Other private rose from 0.04 pp in 2008Q1 to 0.63 pp in 2011Q4 (high 0.68 pp in 2009Q4). Total rose from 0.89 pp in 2008Q1 to 13.11 pp in 2011Q4.",
+  "generator": "chart-from-sql"
+}
