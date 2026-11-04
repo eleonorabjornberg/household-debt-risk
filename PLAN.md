@@ -120,6 +120,31 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Revise the recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1 (preview deployments only). | Eleonora |
 | 2026-11-04 | Merge the three track branches overnight; Phase A still stops for her approval when its tasks are done. | Eleonora |
 | 2026-11-04 | Continue into the later phases in parallel, overnight: "I want you to continue on with Phase B once you've merged everything", "You can continue with the other phases as well", "we're already across phases since we're working with separate tracks. Just keep them running overnight … leave human decisions for my review." The tracks take the queues in the table above. Design choices, paid sources, new hosts and cost approvals (D6, E1, E4) are queued for her and not decided. | Eleonora |
+| 2026-11-04 | Q6: declare the SEC User-Agent in-shell in one track (analysis), SEC requests only, never written to a file; unblock now (decision card 16:33 UTC, then in chat). | Eleonora |
+| 2026-11-04 | GitHub setting "Allow GitHub Actions to create and approve pull requests": done (decision card 16:33 UTC). | Eleonora |
+| 2026-11-04 | Q8(a), A7 donors: use the pre-registered fallback, event study for H2/H3 and mechanical check for H4 (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q8(b): confirm weekly S1 = PMMS minus the mean of daily DGS10 over the same week up to the PMMS date (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q8(c): confirm constant-mean prediction as the primary A7 model, AR(1) as sensitivity (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | A4: accept all the structural-break deviations in docs/decisions/breaks.md (she asked why R is not available) (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q7: not decided. "We need to research this first, we can't leave it up to judgement." Research the status of German public banks before choosing (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | C2: accept the test-ordering deviation (leakage tests written after the first development scoring) (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | C2: accept adding seasonal naive to the Holm family (36 → 42 tests) (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | C2 placebo: option (a), demean the shuffled target. The options were written after the result was seen, and the card said so (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q-B2.1: price measure (a) FHFA credit cost ÷ baseline expected loss, with (c) cost alone alongside (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q-B2.2: 2017–2023 prices from deal data (crt.freddiemac.com and EDGAR) (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q-B3: scenario presets from both DFAST loss rates (labelled a proxy) and the 2008–12 replay, starting with DFAST (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q-C1c: run the C1 holdout in the same run as C2's holdout, after C2 is frozen (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Q-C1b: pre-register a second C1 run with Freddie Mac and Ginnie Mae, Fannie flat (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | F3-1: drop the refresh.yml schedule and default load to false; load by hand after merging (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | F3-2: a Claude session runs the z1-release-update skill to draft release notes (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | E2-1: accept all the recommendations for CHOICE-1 to CHOICE-9 (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | D7-1: list the plugin more widely (needs a 512–2048 px icon) (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | D6, E1, E4 API spend: approve all three, with a cost estimate sent to her first (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Copy review: approve the 2008 copy revision (A1 Shapley split) on the story site, Hot Potato, findings and recommendation draft (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | Copy review: approve the Data/Sources nav links and the /sources and /data intros (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | public_share_2001q1 / _2005q1: keep the facts and their register exceptions (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | FRED_API_KEY secret: later (still open) (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | F2-2 DATABASE_URL_READONLY: not decided; she asked how to add it (decision card, 16:35–16:41 UTC). | Eleonora |
 
 ## Environment prerequisites
 
