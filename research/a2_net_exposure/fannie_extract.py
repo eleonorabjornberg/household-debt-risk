@@ -7,7 +7,7 @@ Unlike Freddie (tenk.py), Fannie does not print a table of outstanding CRT maxim
 sentence, rounded to $1 billion: "The risk in force of these transactions, which refers to the maximum amount of losses
 that could be absorbed by credit risk transfer investors, was approximately $X billion as of December 31, YYYY" (FY2017
 and FY2020 on; not stated in FY2013-16, FY2018-19, which stay missing). Mortgage insurance: "our (total) mortgage
-insurance risk in force was $X billion" (FY2017 on). Each value keeps the 10-K it came from, that file's SHA-256 and
+insurance risk in force was $X billion" (FY2017 on); "total mortgage insurance coverage risk in force of $X billion" (FY2013-16). Each value keeps the 10-K it came from, that file's SHA-256 and
 the quoted sentence; where a later 10-K restates a year end, both must agree.
 Output: fannie_ce_outstanding.csv (committed).
 """
@@ -25,8 +25,12 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "a2" / "fannie"
 OUT = Path(__file__).resolve().parent / "fannie_ce_outstanding.csv"
 CRT = re.compile(r"absorbed by (?:the )?credit risk transfer investors,? (?:was|were) (?:approximately )?\$([\d.]+) billion as of "
-                 r"December 31, (\d{4})(?:,? compared (?:with|to) (?:approximately )?\$([\d.]+) billion as of December 31, (\d{4}))?")
+                 r"December 31, (\d{4})(?:\s?,?\s?compared (?:with|to) (?:approximately )?\$([\d.]+) billion as of December 31, (\d{4}))?")
 MI = re.compile(r"(?:As of December 31, (\d{4}), )?[Oo]ur (?:total )?(?:primary )?mortgage insurance risk in force was \$([\d.]+) billion")
+# FY2013-FY2016 wording: "We had total mortgage insurance coverage risk in force of $X billion and $Y billion on the
+# single-family mortgage loans in our guaranty book of business as of December 31, FY and FY-1"
+MI_OLD = re.compile(r"total mortgage insurance coverage risk in force of \$([\d.]+) billion and \$[\d.]+ billion on the single-family "
+                    r"mortgage loans in our (?:single-family )?guaranty book of business as of December 31, (\d{4})")
 
 
 def text(p: Path) -> str:
@@ -45,6 +49,12 @@ def extract(t: str, fy: int) -> dict:
         if m.group(3):
             out["crt_prior"] = (int(m.group(4)), float(m.group(3)))
     m = MI.search(t)
+    if not m:
+        mo = MI_OLD.search(t)
+        if mo:
+            assert int(mo.group(2)) == fy, f"FY{fy}: MI sentence dated {mo.group(2)}"
+            out["mi_rif_bn"] = float(mo.group(1))
+            out["mi_quote"] = mo.group(0)
     if m:
         assert m.group(1) in (None, str(fy)), f"FY{fy}: MI sentence dated {m.group(1)}"
         out["mi_rif_bn"] = float(m.group(2))
