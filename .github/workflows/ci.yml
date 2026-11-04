@@ -96,3 +96,6 @@ jobs:
       - name: Every register row is a link on the site (F1)
         working-directory: .
         run: node claims/site/check_html.mjs --site ${{ matrix.site }}
+      - name: Every chart has a text description (F4)
+        working-directory: .
+        run: node tools/check_chart_text.mjs --site ${{ matrix.site }}
