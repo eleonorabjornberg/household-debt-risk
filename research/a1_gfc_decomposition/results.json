@@ -1,0 +1,33 @@
+{
+ "vintage_z1_csv": "2026-09-11 10:41:06",
+ "t0": "2007Q4",
+ "t1": "2011Q4",
+ "public_share_t0": 0.361155,
+ "public_share_t1": 0.492211,
+ "total_pp": 13.105589,
+ "sum_of_cells_minus_total_pp": 0.0,
+ "scope_reconstruction_max_abs_musd": 1.862645149230957e-09,
+ "from_public_growth_pp": 7.126829,
+ "from_private_change_pp": 5.97876,
+ "groups_pp": {
+  "fannie_freddie": 1.421405,
+  "ginnie_pools": 3.808975,
+  "federal_student_loans": 1.935771,
+  "other_public": -0.039321,
+  "private_label_and_mreits": 4.926664,
+  "banks_and_credit_unions": 0.470014,
+  "other_private": 0.582082
+ },
+ "own_share_change_pp": {
+  "fannie_freddie": 3.887502,
+  "ginnie_pools": 6.119127,
+  "federal_student_loans": 3.077461,
+  "other_public": 0.021498
+ },
+ "change_usd_bn": {
+  "fannie_freddie": 278.368,
+  "ginnie_pools": 745.951,
+  "federal_student_loans": 379.102,
+  "private_label_and_mreits": -1706.7
+ }
+}

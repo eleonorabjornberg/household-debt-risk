@@ -1,0 +1,28 @@
+loan,side,holder,usd_bn_2007Q4,usd_bn_2011Q4,change_usd_bn,contribution_pp
+mortgages,public,"Ginnie Mae pools (FHA, VA, USDA)",383.097,1129.048,745.951,3.809
+consumer credit,public,Federal government (student loans),115.657,494.759,379.102,1.9358
+mortgages,public,Fannie Mae (portfolio + pools),2427.1374,2680.3156,253.1782,1.2928
+mortgages,public,State and local governments,84.1351,111.6856,27.5505,0.1407
+mortgages,public,Freddie Mac (portfolio + pools),1633.6691,1658.8593,25.1902,0.1286
+mortgages,public,Federal government (direct),12.8395,22.0998,9.2603,0.0473
+mortgages,public,Other GSEs (Farm Credit System and unallocated),19.475,10.6488,-8.8262,-0.0451
+mortgages,public,Federal Home Loan Banks,86.3997,50.7144,-35.6853,-0.1822
+mortgages,private,Private securitization & mortgage REITs: Issuers of ABS (private label),2108.9837,1066.0537,-1042.93,3.0106
+consumer credit,private,Private securitization & mortgage REITs: Issuers of ABS,652.513,46.208,-606.305,1.7502
+mortgages,private,Banks & credit unions: U.S.-chartered depository institutions,2897.1033,2416.0319,-481.0714,1.3887
+mortgages,private,Finance companies & other private: Finance companies,449.0173,142.489,-306.5283,0.8848
+mortgages,private,Private securitization & mortgage REITs: Mortgage REITs,76.1119,18.6473,-57.4646,0.1659
+consumer credit,private,Finance companies & other private: Nonprofits (student loans),82.536,67.074,-15.462,0.0446
+consumer credit,private,Banks & credit unions: Credit unions,236.57,223.03,-13.54,0.0391
+mortgages,private,Finance companies & other private: Nonfinancial corporate business,23.622,15.8142,-7.8078,0.0225
+mortgages,private,Finance companies & other private: State & local DB pension funds,9.2154,4.3433,-4.8722,0.0141
+consumer credit,private,Finance companies & other private: Nonfinancial corporate business (retailers),49.424,45.017,-4.407,0.0127
+mortgages,private,Banks & credit unions: Banks in U.S.-affiliated areas,20.317,16.9067,-3.4103,0.0098
+mortgages,private,Finance companies & other private: Nonfinancial noncorporate business,14.5132,12.6377,-1.8755,0.0054
+mortgages,private,Finance companies & other private: Life insurance companies,9.4373,9.2346,-0.2026,0.0006
+mortgages,private,Finance companies & other private: Private pension funds,1.1508,1.5502,0.3995,-0.0012
+mortgages,private,Banks & credit unions: Foreign banking offices in U.S.,0.0,1.2552,1.2552,-0.0036
+mortgages,private,Finance companies & other private: Households & nonprofits (seller financing),85.704,115.1438,29.4398,-0.085
+mortgages,private,Banks & credit unions: Credit unions,235.2053,271.46,36.2547,-0.1047
+consumer credit,private,Finance companies & other private: Finance companies,577.894,687.565,109.671,-0.3166
+consumer credit,private,Banks & credit unions: U.S.-chartered depository institutions,894.883,1192.572,297.689,-0.8593
