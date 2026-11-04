@@ -78,7 +78,7 @@ export const steps: Step[] = [
     kicker: "2007–2011",
     title: "The hot potato",
     body:
-      "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to {share}, a rise bigger than 98% of all four-year windows. It is the one crisis that ratcheted risk onto the public, and it never went back.",
+      "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to {share}, a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing.",
   },
   {
     date: "2023-12-31",

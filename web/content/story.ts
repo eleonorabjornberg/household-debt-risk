@@ -34,6 +34,9 @@ export const facts = {
   gfcPrivateLabelShare: "12.5 pts",
   gfcPublicGrowPct: "29%",
   gfcPublicGrow: "$1.40T",
+  gfcPrivateRetreatPts: "6.9 pts", // A1 Shapley split, 2007Q4–2011Q4
+  gfcPublicGrowthPts: "6.2 pts", // A1 Shapley split
+  gfcFannieFreddiePts: "1.2 pts", // A1, Fannie Mae + Freddie Mac (portfolio + pools)
   dotcomFrom: "40.6%",
   dotcomTo: "36.8%",
   dotcomDelta: "−3.8 pts",
@@ -142,7 +145,7 @@ export const crisisByCrisis: Chapter & {
   body: [
     "Each panel starts two years before a crisis and runs four years past it. The line shows how far the public share moved, in percentage points, from the quarter the crisis began.",
     `If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952, recession windows are statistically indistinguishable (p ≈ ${facts.placeboP} in a placebo test), and only ${facts.crisesAboveMedian} recessions beat the median window. The big gains of the 1970s and 1980s happened inside recessions and outside them alike, because the agencies were growing the whole time.`,
-    `The financial crisis is the exception. The public share rose ${facts.gfcDelta.replace("+", "")} from the end of 2007, from ${facts.gfcFrom} to ${facts.gfcTo}, which puts it in the ${facts.gfcPercentile} percentile of all four-year windows since 1952. About half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank ${facts.gfcPrivateShrinkPct} (${facts.gfcPrivateShrink}) and private-label securities lost ${facts.gfcPrivateLabelShare} of share, while public holdings grew ${facts.gfcPublicGrowPct} (${facts.gfcPublicGrow}).`,
+    `The financial crisis is the exception. The public share rose ${facts.gfcDelta.replace("+", "")} from the end of 2007, from ${facts.gfcFrom} to ${facts.gfcTo}, which puts it in the ${facts.gfcPercentile} percentile of all four-year windows since 1952. A little over half of that was private lenders pulling back rather than the public sector expanding: private holdings shrank ${facts.gfcPrivateShrinkPct} (${facts.gfcPrivateShrink}) and private-label securities lost ${facts.gfcPrivateLabelShare} of share, while public holdings grew ${facts.gfcPublicGrowPct} (${facts.gfcPublicGrow}). Split exactly, the private retreat accounts for ${facts.gfcPrivateRetreatPts.replace(" pts", "")} of the ${facts.gfcDelta.replace("+", "")} and public growth for ${facts.gfcPublicGrowthPts.replace(" pts", "")}. Fannie Mae and Freddie Mac, taken over by the government in 2008, account for only ${facts.gfcFannieFreddiePts.replace(" pts", "")} of it; most of the public growth was Ginnie Mae's FHA and VA pools and federal student loans.`,
     `2001 went the other way, ${facts.dotcomDelta.replace(" pts", " points")}, during the private-label boom. The 2020 recession added about one point. The CARES Act forbearance, the 2023 student-loan restart and the 2025 return of collections each moved the share by ${facts.shocksMax}.`,
   ],
   figure: {
@@ -161,7 +164,7 @@ export const crisisByCrisis: Chapter & {
     "1981": { label: "1981–82", text: "High rates break the savings-and-loan model; thrifts swap mortgages into agency securities." },
     "1990": { label: "1990–91", text: "The savings-and-loan cleanup. Agency pools become the default home for new mortgages." },
     "2001": { label: "2001", text: "The share falls 3.8 points as private-label securitization booms." },
-    "2007": { label: "2007–09", text: "The one real ratchet: +13.1 points, half of it private lenders retreating. It never reversed." },
+    "2007": { label: "2007–09", text: "The one real ratchet: +13.1 points, a little over half of it private lenders retreating, not Fannie and Freddie growing. It never reversed." },
     "2019": { label: "2020", text: "About one point. Rates fall to zero and refinancing flows through the agencies." },
     "2020": { label: "CARES Act", text: "Mortgage forbearance and the student-loan pause. Less than half a point since." },
     "2023": { label: "2023 restart", text: "Student-loan payments resume. A policy shock with almost no effect on the share." },
