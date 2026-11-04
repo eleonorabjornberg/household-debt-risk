@@ -1,0 +1,33 @@
+{
+  "name": "a1_contributions",
+  "kind": "hbar",
+  "title": "What moved the public share, 2007Q4 to 2011Q4: contribution by holder group",
+  "source_line": "Source: Fed Z.1 Financial Accounts; research/a1_gfc_decomposition (A1) (vintage 2026-09-11); chart: household-debt-risk",
+  "vintage": "2026-09-11",
+  "data_source": {
+    "type": "file",
+    "path": "research/a1_gfc_decomposition/decomposition.csv",
+    "note": "rows grouped to the 7 groups in results.json groups_pp; totals asserted equal to it",
+    "sha256": "d747057e29ed3cad0fc7e3211ace2bad93487469dfb09d1e3e578a22fd57dbbb"
+  },
+  "row_count": 7,
+  "x": "group",
+  "y": [
+    "contribution_pp"
+  ],
+  "group": "side",
+  "units": "Contribution to change in public share (percentage points)",
+  "scale_applied": 1.0,
+  "recession_shading": false,
+  "modes": [
+    "light"
+  ],
+  "files": [
+    "a1_contributions.png",
+    "a1_contributions.svg",
+    "a1_contributions.alt.txt",
+    "a1_contributions.json"
+  ],
+  "alt_text": "Horizontal bar chart titled \"What moved the public share, 2007Q4 to 2011Q4: contribution by holder group\": 7 bars of Contribution to change in public share (percentage points). Largest positive: Private-label securitization and mortgage REITs, +4.93 pp. Largest negative: Other public holders, -0.04 pp. The bars sum to +13.11 pp (6 positive totalling +13.14 pp, 1 negative totalling -0.04 pp).",
+  "generator": "chart-from-sql"
+}

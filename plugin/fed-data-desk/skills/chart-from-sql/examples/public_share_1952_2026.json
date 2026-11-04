@@ -1,0 +1,35 @@
+{
+  "name": "public_share_1952_2026",
+  "kind": "line",
+  "title": "Public share of U.S. household mortgage and consumer debt",
+  "source_line": "Source: Fed Z.1 Financial Accounts (HH&NP mortgages and consumer credit, holders by sector), pipeline mart.public_share (vintage 2026-09-11); chart: household-debt-risk",
+  "vintage": "2026-09-11",
+  "data_source": {
+    "type": "file",
+    "path": "web/public/data/public_share.json",
+    "sha256": "c3dce2a416ba2ef93481cd45375b633f53077a59406cea64ab6605918fb55e67"
+  },
+  "row_count": 299,
+  "x": "date",
+  "y": [
+    "public_share"
+  ],
+  "group": null,
+  "units": "Percent of mortgage and consumer credit (%)",
+  "scale_applied": 100.0,
+  "recession_shading": true,
+  "modes": [
+    "light",
+    "dark"
+  ],
+  "files": [
+    "public_share_1952_2026.png",
+    "public_share_1952_2026.svg",
+    "public_share_1952_2026-dark.png",
+    "public_share_1952_2026-dark.svg",
+    "public_share_1952_2026.alt.txt",
+    "public_share_1952_2026.json"
+  ],
+  "alt_text": "Line chart titled \"Public share of U.S. household mortgage and consumer debt\": Public share (Percent of mortgage and consumer credit (%)) by date, 1951Q4 to 2026Q2, 299 observations. Public share rose from 2.9% in 1951Q4 to 56.4% in 2026Q2 (high 58.6% in 2021Q1; low 2.5% in 1965Q3). Shaded bands mark 11 NBER recessions (1953Q2 to 2020Q2).",
+  "generator": "chart-from-sql"
+}

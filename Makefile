@@ -99,6 +99,7 @@ ci-static:  ## register check and stale-copy check (before any build rewrites th
 	node claims/site/sync.mjs --check
 	node web/scripts/make-downloads.mjs --check
 	node opendata/archive.mjs --check
+	python3 plugin/sync.py --check
 
 clean-data:  ## remove downloaded data (data/ is gitignored)
 	rm -rf $(DATA) analysis/.cache
