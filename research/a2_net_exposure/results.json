@@ -41,11 +41,30 @@
   "z1_freddie_over_10k_portfolio_min": 0.9937,
   "z1_freddie_over_10k_portfolio_max": 0.9965
  },
+ "fannie_10k": {
+  "source": "Fannie Mae Form 10-K FY2013-FY2025 via SEC EDGAR (fannie_ce_outstanding.csv); CRT risk in force stated rounded to $1bn",
+  "crt_rif_bn_unapportioned_last": 39.0,
+  "mi_rif_bn_unapportioned_last": 201.4,
+  "crt_years_available": [
+   2017,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025
+  ],
+  "public_share_net_both_crt_pct_last": 55.996,
+  "both_crt_out_hh_bn_last": 73.7,
+  "gap_gross_minus_net_both_pp_last": 0.39
+ },
  "checks": {
   "net_le_gross_all_years": true,
   "net_lower_positive_all_years": true,
   "freddie_outstanding_crt_le_fhfa_issued": true,
   "net_share_bounds_ordered": true,
+  "fannie_outstanding_crt_le_fhfa_issued": true,
+  "net_both_within_bounds": true,
   "scope_reconstruction_max_abs_musd": 3.725290298461914e-09
  }
 }

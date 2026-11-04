@@ -5,7 +5,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
+| A2 | in progress: Freddie (2013–2025) and Fannie (2017, 2020–2025) outstanding cover built; net of both Enterprises' CRT 56.0% vs 56.4% gross (2025); skeptic on the Fannie part pending | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
 | A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
 | A4 | ready for review: run to the frozen prereg (02cc47f); one break at 1966Q1 (CI 1952Q2–1967Q1); no evidence at the five 2008–10 dates; vintage-robust; quant review done (interval bug fixed); not confirmable without R | `research/a4_breaks/` |
@@ -44,6 +44,11 @@ Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is 
 - A3 skeptic (50k tokens): 6 objections; skeptic caught that the overlap check used one year although both sources run past 1945, and that the 1945 match came from offsetting component gaps. Fixed.
 - A4 quant-reviewer (58k tokens): caught a sign error in the Bai (1997) interval (wrong whenever regime variances differ; 1966Q1 interval was 1965Q1–1997Q4, now 1952Q2–1967Q1). Fixed with a test that fails on the old code.
 - Errors caught by Claude (main): the first "Approved" line in a GovInfo page file can belong to the preceding chapter (1944: June 20 is the Sugar Act; 1938: January 27 is chapter 11); dates now taken after each act's own chapter heading.
+
+### 2026-11-04 (afternoon), A2 Fannie via EDGAR (Q6)
+- 28 SEC requests (27 × 200, 1 × 503 on a first run at 0.5 s spacing; script stopped, rerun once at 2 s spacing); no 403. User-Agent passed per command only; `git grep` for it clean before each commit.
+- Fannie states outstanding CRT risk in force only as a rounded sentence, and only for 2017 and 2020–2025; missing years stay missing. Restated values agree between consecutive 10-Ks.
+- Claude caught its own overreach in the README (a claim that Fannie's figure excludes front-end lender risk sharing, not in the source) before commit; reworded to the 10-K's own words.
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
