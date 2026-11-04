@@ -1,0 +1,14 @@
+{
+  "name": "household-debt-risk",
+  "owner": {
+    "name": "Eleonora Björnberg"
+  },
+  "description": "The household-debt-risk research team's Claude Code plugins (Fed Data Desk).",
+  "plugins": [
+    {
+      "name": "fed-data-desk",
+      "source": "./fed-data-desk",
+      "description": "Skills, reviewer subagents and the household-credit MCP server for the household-debt-risk research team."
+    }
+  ]
+}
