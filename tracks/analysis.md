@@ -60,6 +60,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - (c) Report both (a) and (b), with the gaps stated.
 - Recommendation: (c), with (b) as the headline, since the project's question is who carries the risk. Either way A8 needs the hosts in `research/a8_international/AVAILABILITY.md` ("What would unblock A8") added to Allowed domains, or the national tables downloaded by hand into `data/a8/`.
 
+**Q6 (A2). SEC_USER_AGENT not set in the track environment (needed for Fannie Mae 10-K, A2 Q1(b)).** Your decision says the SEC contact is read from `SEC_USER_AGENT`, which you set in the environment settings; it is unset in this session, so no SEC fetch runs and Fannie's outstanding cover is not built. Note: before this was clear, Claude made one EDGAR request (Fannie's 10-K filing list) with a User-Agent it had set in its own shell from the address in your decision, and then attempted a second with that address hard-coded as a fallback; the coordinator stopped the second. Nothing containing the address is committed. Options: (a) set `SEC_USER_AGENT` in the environment settings and start a fresh session for the Fannie step; (b) download Fannie's 10-K filings yourself into `data/a2/fannie/`. Recommendation: (a).
+
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
 
@@ -67,4 +69,5 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - PLAN.md row A2: suggested status "bounds done (net series waits on Q1/Q2)"; row A5: "descriptive part done (borrower-to-holder link waits on Q4)"; row A8: "blocked (network; Q5)".
 - claims/register.csv: on merge, fold `a5_public_share_cc_2026q2_readme` into `public_share_cc_2026q2` as an extra location (same claim, C8).
 - `tracks/analysis-review-log.md` → `claims/review-log.md` on merge.
+- Re-fold needed: the coordinator's fold (51a0b6a) predates 526657a; 23 folded rows changed afterwards (locations and wording). Take the current versions from `claims/tracks/analysis.csv`; review entries R-20261104-14..21 are not yet folded.
 - claims/register.csv: add `research/a5_distribution/README.md:23` as a location on the existing row for the public share of mortgages at 2026Q2 (65.6%), per R-20261104-13.
