@@ -126,3 +126,18 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Claude collected the open questions from the three tracks into `docs/decisions/open-questions-2026-11-04.md`, each with a recommendation, for Eleonora to decide.
 - Eleonora read `analysis/recommendation.md` and approved it in substance. She will rewrite it in her own words once the phase is through. The Claude draft banner stays until she does.
 - Database: both secrets are set in the cloud environment, but the Supabase pooler host does not resolve from the container. The environment's proxy carries HTTPS only, and raw-TCP Postgres is on its unsupported list, so allowing the host will likely not fix it. Claude found this. Live-database work moves to Eleonora's Mac, or to Supabase's HTTPS API.
+
+### 2026-11-04: Track decisions; Supabase connector; ADH check
+- Eleonora accepted every recommendation in `docs/decisions/open-questions-2026-11-04.md` and added the A8, SEC and GSE hosts to Allowed domains.
+- Host check from the cloud container:
+  - All ten A8 hosts answer.
+  - `www.freddiemac.com` answers.
+  - `www.sec.gov` and `efts.sec.gov` return the SEC's own "Request Rate Threshold Exceeded" page. The SEC's fair-access policy asks for a User-Agent naming the requester and a contact address. That needs Eleonora's OK on which contact to declare. Claude will not spoof one.
+  - `www.fanniemae.com` returns 403 from the site itself.
+- Database: Eleonora pointed out that the Supabase connector already has access. Read-only checks on the production project `household-debt-risk` through it:
+  - The three migrations are applied (init, mart_dim_views, research_reader).
+  - `research_reader` can log in and is set read-only, with a 15 s statement timeout and a 60 s idle-in-transaction timeout.
+  - `research_reader` has SELECT on every `mart` table and on the three `core` dimension tables. It has no SELECT on `core.fact_quarterly` or `raw.observations`, and INSERT on nothing.
+  - `anon` reads `mart` and the two `core` dimension tables `dim_crisis` and `dim_risk_bucket`. Migration `20261027010000` grants that on purpose; CLAUDE.md's "mart only" is slightly loose.
+  - No writes were made.
+- ADH (2010) placebo cutoffs: Eleonora's Mac Claude Code session read the paper (fact checks §3b, 4512152). The paper uses three cutoffs, 20×, 5× and 2×, all on pre-period **MSPE**. The frozen A7 uses 5× **RMSPE**, which is 25× MSPE and matches none of them. The Mac session caught this. Whether to change A7 by a dated deviation is Eleonora's call.
