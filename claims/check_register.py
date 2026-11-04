@@ -60,7 +60,8 @@ REQUIRED = ["claim_id", "claim", "display", "value", "unit", "period", "location
             "computation", "vintage", "validation"]
 
 # Files whose published copy is scanned for unregistered numbers.
-SCAN_FILES = ["README.md", "atlas/content/story.ts", "web/content/story.ts", "analysis/recommendation.md"]
+SCAN_FILES = ["README.md", "atlas/content/story.ts", "web/content/story.ts", "analysis/recommendation.md",
+              "research/a1_gfc_decomposition/README.md"]
 
 # Non-claims. Each entry: file (exact path), pattern (regex matched with fullmatch against the
 # normalised token), reason. Keep this short; prefer registering a row.
