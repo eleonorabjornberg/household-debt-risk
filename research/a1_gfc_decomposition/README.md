@@ -55,6 +55,7 @@ The decomposition is an accounting, not a causal estimate (that is A7). The even
 - **Apportioning.** Mortgage holders are scaled to the household liability, as in the rest of the project, assuming the same holder mix for household and business 1–4 family mortgages.
 - **"Other GSEs" is partly a residual.** It is FL403065105 minus the Fannie, Freddie and FHLB lines. It is small (under $20B) and is reported, not hidden.
 - **A different counterfactual gives different words.** `analysis/findings.md` says that had private debt stayed at its 2007Q4 level, the share would have risen 6.1 pp. That figure is the public-growth side of a split that holds private debt fixed, and it leaves the remainder to private retreat. The Shapley split here averages over both orders. Both say about half of the jump came from private retreat.
+- **Pool sub-series before 1987.** In the 2026-09-11 vintage the four pool lines (FL413065110, FL413065123, FL413065133, FL413065143) add up to more than the pool total FL413065105 from 1974Q3 to 1986Q3, by up to $21.4B ($14.6B in 1980Q4). Inside A1's window they match exactly, and `decompose.py` asserts this every run. A1 should not be extended before 1987 with these cells unless the gap is first explained. The markets track found the gap on 2026-11-04.
 - **Revisions.** The figures are from the 2026-09-11 vintage. Rerun after each Z.1 release.
 
 ## Files and how to rerun

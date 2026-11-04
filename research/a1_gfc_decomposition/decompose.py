@@ -58,7 +58,11 @@ PUBLIC_CC = {
     "Federal government (student loans)": ["+FL313066220"],
     "Sallie Mae as a GSE": ["+FL403066005"],
 }
-TOTALS = ["FL154104015", "FL153165105", "FL153166000", "FL893065105"]
+TOTALS = ["FL154104015", "FL153165105", "FL153166000", "FL893065105", "FL413065105"]
+# Agency- and GSE-backed mortgage pools, total (FL413065105). The four pool cells above should sum to it.
+# In Z.1 2026-09-11 they exceed it in 1974Q3-1986Q3 (about $14.6B in 1980Q4; found by the markets track,
+# 2026-11-04), so A1 asserts the identity over its own window only. See README "Data note".
+POOL_CELLS = ["FL413065110", "FL413065123", "FL413065133", "FL413065143"]
 
 
 def q(ts) -> str:
@@ -168,6 +172,10 @@ def main(argv=None) -> int:
     p0, p1 = share.loc[t0], share.loc[t1]
     total_pp = 100 * (p1 - p0)
     assert scope_gap < 1e-3, f"cells do not reproduce the scope total: {scope_gap} $M"
+    pool_gap = (df[POOL_CELLS].sum(axis=1) - df["FL413065105"]).loc[t0:t1].abs().max()
+    assert pool_gap < 1e-3, f"pool cells do not sum to FL413065105 in the window: {pool_gap} $M"
+    pool_resid = df[POOL_CELLS].sum(axis=1) - df["FL413065105"]  # full history, for the README data note
+    pool_off = pool_resid[pool_resid.abs() > 1e-3]
 
     con = contrib(c.loc[t0], c.loc[t1])
     gap = abs(con.sum() - total_pp)
@@ -227,6 +235,13 @@ def main(argv=None) -> int:
         "total_pp": round(float(total_pp), 6),
         "sum_of_cells_minus_total_pp": float(gap),
         "scope_reconstruction_max_abs_musd": float(scope_gap),
+        "pool_cells_vs_FL413065105_max_abs_musd": float(pool_gap),
+        "pool_cells_gap_full_history": {
+            "first_quarter": q(pool_off.index.min()) if len(pool_off) else None,
+            "last_quarter": q(pool_off.index.max()) if len(pool_off) else None,
+            "max_abs_usd_bn": round(float(pool_resid.abs().max()) / 1e3, 1),
+            "usd_bn_1980Q4": round(float(pool_resid.loc[q_end("1980Q4")]) / 1e3, 1),
+        },
         "from_public_growth_pp": round(float(con.xs("public", level="side").sum()), 6),
         "from_private_change_pp": round(float(con.xs("private", level="side").sum()), 6),
         "groups_pp": {k: round(v, 6) for k, v in endpoint_groups.items()},
