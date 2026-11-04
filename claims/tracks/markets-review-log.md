@@ -71,3 +71,66 @@
 - **Evidence:** python comparison of README/results/markets.csv values: all agree to display precision.
 - **Proposed resolution:** Fix period cells; add the horizon difference to the b4 note; say the range is two proxies, not a confidence interval.
 - **Status:** resolved (2026-11-04, by Claude, markets track): see s24; register regenerated, values unchanged.
+
+### R-20261104-mkt-q25 · quant-reviewer · research/c1b_nowcast/nowcast_c1b.py (holdout gate)
+- **Objection:** The prereg (Decisions: "one joint C1 + C1b + C2 holdout run") and the frozen joint runner disagree with the C1b holdout path. `--holdout` calls `nc.run("RT", ..., True)` directly, bypassing C1's own holdout refusal, and writes C1's holdout bridge (`bridge_c1`) to nowcasts_holdout.csv. Run before or apart from research/c2_forecast/holdout_run.py (frozen in research/c2_forecast/FREEZE.json, which knows nothing of C1b), it unseals C1's holdout outside the frozen joint run. Run after it, the "one run" is two runs. research/c1b_nowcast/FREEZE.json does not exist yet, so `check_freeze` has no file list. `check_approval` does not check that the approval commit is a descendant of the C1b freeze commit and an ancestor of HEAD (the C2 pattern has the same gap).
+- **Severity:** blocking-before-freeze
+- **Evidence:** nowcast_c1b.py:236-263; research/c1_nowcast/nowcast.py:366-367; research/c2_forecast/holdout_run.py:2-7, 141-174.
+- **Proposed resolution:** Before freezing, write down the joint procedure in the prereg: one approval commit, both scripts run back to back in one clean commit, and C1b's `--holdout` refuses unless research/c2_forecast/FREEZE.json also verifies. Create FREEZE.json listing nowcast_c1b.py, freddie_mvs.py, both Freddie CSVs, the prereg, and C1's frozen files plus data/c1/z1_cells.csv. In check_approval, add `git merge-base --is-ancestor` checks: freeze commit before the approval commit, and the approval commit before HEAD.
+- **Status:** resolved (2026-11-04, by main session, before the freeze): prereg gains a "Joint holdout run" section (C2 runner first, then C1b with the same approval, one commit); `--holdout` now checks both FREEZE.json files, that the tree differs only by C2's fresh result from the same approval, and that the approval commit lies between C1b's freeze commit and HEAD. FREEZE.json lists the files named.
+
+### R-20261104-mkt-q26 · quant-reviewer · research/c1b_nowcast/nowcast_c1b.py (pre-registered outputs)
+- **Objection:** Two pre-registered outputs are missing. (1) "Bias: reported as mean error with its HAC standard error": no HAC SE is computed. (2) H2 "supported at k when significant after Holm and |mean e(C1b)| < |mean e(C1)|": there is no h2_supported flag. Only p_holm and c1b_better are reported separately.
+- **Severity:** minor (fix before freeze, or it becomes a dated deviation)
+- **Evidence:** c1b-prereg.md:51, 58; nowcast_c1b.py:140-155, 185-197.
+- **Proposed resolution:** Add the Newey-West lag-1 SE of the mean error per model and k, and an `h2_supported` column, to tests/summary.
+- **Status:** resolved (2026-11-04, by main session, before the freeze): `bias_dev.csv` (mean error, Newey–West lag-1 s.e.) and a `supported` column in `tests_dev.csv`; both written into the prereg as [implementation] lines.
+
+### R-20261104-mkt-q27 · quant-reviewer · nowcast_c1b.py verdict()
+- **Objection:** The decision-rule edge cases are not in the prereg. (a) A holdout RMSE that is not lower returns "comparable". The prereg does not say this, and "does not improve" is arguable. (b) Exact RMSE ties fall through to "improves on C1", although the rule needs "lower at every k". (c) The prereg's "comparable" (sign differs across k) overlaps its "does not improve". The code gives priority to "does not improve" without saying so.
+- **Severity:** minor
+- **Evidence:** c1b-prereg.md:54-57; nowcast_c1b.py:158-170.
+- **Proposed resolution:** Add [implementation] lines to the prereg fixing (a)-(c) before the freeze. Use `<=` for the tie test.
+- **Status:** resolved (2026-11-04, by main session, before the freeze): rule order and tie handling written into the prereg; `verdict()` treats an exact tie as not lower; tests added (`test_verdict_rules`).
+
+### R-20261104-mkt-q28 · quant-reviewer · Freddie publication dates and re-issued reports
+- **Objection:** None blocking; recorded so the checks are on file. (1) The strict rule holds: guard(pub_date+1) <= t. No pub_date falls on the 5th-14th (all lags are 17-33 days), so every report month m is first used at the 15th of m+2 under any lag from 16 to 45 days, and the a2 choice does not move timing. (2) Content of the 21 re-issued reports: across 273 overlapping row-months they match contemporaneous plausible reports. For example, the 2020-03 to 2020-06 re-issues carry the pre-restatement levels of the 2020-07 report, not the 2021 restatement. There is no sign of later revisions. (3) Dev result without the 17 re-issue instants: RMSE ratio C1b/C1 0.63 (re-issue instants 0.67), H1 p_holm 0.023 at every k, verdict unchanged. (4) The lag-1 HAC sensitivity under Holm is about 0.043, which is marginal. The p-values are descriptive (n = 22-28 overlapping targets).
+- **Severity:** note
+- **Evidence:** freddie_mvs_reports.csv, freddie_mvs_rows.csv, nowcasts_dev.csv, tests_dev.csv (reproduced from nowcasts_dev.csv with tests()); pytest 8 passed.
+- **Proposed resolution:** State (1)-(3) as descriptive robustness in the C1b README, and report the lag-1 Holm values next to the lag-0 values.
+- **Status:** resolved (2026-11-04, by main session): `results_dev.json` `robustness_reissued` reports it (ratio 0.67 on the 17 instants that used a re-issued report, 0.63 on the rest); to be stated in the C1b README.
+
+### R-20261104-mkt-s33 · skeptic · research/b4_policy_scenarios/README.md:10,25 (b4_gse_pubshare_lo/hi, b4_gse_*_pubshare)
+- **Objection:** The GSE section calls the result "the public share of all household-credit losses", and the 7%–42% range is presented without qualification. In both B3 presets federal student loans ($1,605B, public) carry no loss rate, so they add zero loss. The range is a share of mortgage + other-consumer losses only. B3's README says this (its variant with student loans at 7.3% moves the DFAST public share from 23% to 36%); B4's README does not.
+- **Severity:** major
+- **Evidence:** presets/dfast2026.json and replay_2008_2012.json classes = {mortgage, consumer_other} only; exposures.json student_federal/federal_direct balance 1605134; research/b3_scenarios/README.md:22,26-27.
+- **Proposed resolution:** Say "of mortgage and other consumer credit losses (federal student loans excluded, as in B3's main presets)" in the scenario table, the Result line and the register claim text. Optionally add the B3 student-loan variant as a sensitivity row.
+- **Status:** resolved (2026-11-04, by main session): README and register text now say mortgage and other consumer-credit losses, federal student loans excluded (also on the recession row). B3's student-loan variant not added (not part of the card).
+
+### R-20261104-mkt-s34 · skeptic · research/b4_policy_scenarios/README.md:18,42 (0% point; "Release is not the same as loss-bearing")
+- **Objection:** The README reads as if CRT and capital would arrive only with release ("A released GSE would hold capital and buy CRT"). In fact, Fannie and Freddie already transfer part of their credit losses today through CRT, and through private MI on loans above 80% LTV (A2). So "0% = the implicit guarantee holds" is not the status quo: part of the 0–100% axis has already happened, and the 0% public figures overstate today's public loss-bearing. The general "No transfer" bullet does not link this to the GSE axis.
+- **Severity:** major
+- **Evidence:** README.md:18 "0% (the implicit guarantee holds)"; README.md:42; research/a2_net_exposure (net-of-CRT and MI exposure below gross; R-20261104-ana-1..16).
+- **Proposed resolution:** State that the share turning private is measured gross of existing CRT and MI. Today's arrangement already sits at some share above 0%. Point to A2 for the size.
+- **Status:** resolved (2026-11-04, by main session): 0% relabelled (losses stay on the GSEs' and Treasury's side); caveat added that shares are gross of CRT and mortgage insurance, so today's arrangement sits above 0% net, pointing to A2.
+
+### R-20261104-mkt-s35 · skeptic · research/b4_policy_scenarios/README.md:20, METHOD.md section 2 ("Ginnie ... explicit federal guarantee", "stay public in every case")
+- **Objection:** The Ginnie guarantee is explicit to MBS investors. It does not make every credit loss on the underlying loans public. VA and USDA guaranties are partial, and Ginnie issuers and servicers bear losses beyond them. That is the same holder-vs-risk point as R-20261104-8, which was fixed in A1's README but is repeated here. FmHA pools are $0 at 2026Q2, so naming them has no effect.
+- **Severity:** minor
+- **Evidence:** Z1.csv 2026-06-30: FL413065110 = 2,798,659; FL413065133 = 0. R-20261104-8 resolution text.
+- **Proposed resolution:** "Ginnie Mae pools (federal guarantee to investors; FHA insurance full, VA/USDA partial, with issuers bearing the remainder)". Note that the public share at each point is therefore an upper bound on that count.
+- **Status:** resolved (2026-11-04, by main session): Ginnie wording qualified (VA and USDA guaranties partial; holder-based simplification, A1's caveat).
+
+### R-20261104-mkt-s36 · skeptic · claims/tracks/markets.csv rows b4_gse_bal_* (29-34)
+- **Objection:** The balance rows carry vintage "z1:2026-09-11 fred:2026-11-04", but they use only Z.1. They are also left UNVERIFIED although they reproduce independently. I recomputed all of them from the raw Z1.csv: a = 13,976,938/14,983,477 = 0.932823; released 6,728,906×a = 6,276,881; Ginnie 2,610,655; FHLB+other 89,795 (FHLB 83,106 + FCS 7,915 + 5,240 unallocated, ×a); total 8,977,330 = B3 bucket. The series labels match the Z.1 descriptions: FL413065143 is Fannie pools, FL413065133 is FmHA pools, and the post-2010 consolidated trusts sit in FL403065110/120. No double count with the pools sector.
+- **Severity:** minor
+- **Evidence:** grep of Z1.csv descriptions and 2026-06-30 values (scratchpad); split identical to A1 decompose.py PUBLIC_MORT.
+- **Proposed resolution:** Drop "fred:" from the vintage of rows 29-34 and record this independent recompute in their validation/notes.
+- **Status:** resolved (2026-11-04, by main session): b4_gse_bal_* vintage now z1:2026-09-11 only; note records the skeptic's independent recompute (status stays UNVERIFIED: no validation check id).
+
+### R-20261104-mkt-s37 · skeptic · research/b4_policy_scenarios/README.md:18 ("0% (the implicit guarantee holds)")
+- **Objection:** Under conservatorship the backstop is the explicit Treasury PSPA commitment, not an implicit guarantee. Losses also hit the GSEs' own retained capital before any Treasury draw. Counting all 0%-point losses as "public" therefore means "on the GSEs' or Treasury's books", not taxpayer outlay. Under the DFAST proxy the released book loses $94B (1.5% × $6,277B), which may sit within the GSEs' own capital (not sourced here).
+- **Severity:** note
+- **Evidence:** presets/dfast2026.json mortgage pd 0.015, lgd 1.0; results.json dfast 0% minus 100% public = 137.4 - 43.3 = 94.2 $B.
+- **Proposed resolution:** Reword to "0% (losses stay with the GSEs and Treasury, as in conservatorship)" and define "public" this way in the caveats. Option (b) stays unchosen.
+- **Status:** resolved (2026-11-04, by main session): Caveat 'What "public" means here' added: GSE capital first, PSPA behind; public is not taxpayer outlay.

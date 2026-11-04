@@ -109,7 +109,7 @@ for key, cid in [("bucket_total", "bucket"), ("released_total", "released"), ("F
                  ("FHLBs and other GSEs", "fhlb_other")]:
     add(f"b4_gse_bal_{cid}", f"B4 GSE release: {key} mortgage balance, household-apportioned, {bn(B[key])}.", bn(B[key]),
         B[key], "usd_m", f"gse_release.balances_musd['{key}']", GSER,
-        "Z.1 2026-09-11, 2026Q2, apportioned with FL153165105/FL893065105 as B3. Recomputed independently from Z1.csv by the skeptic (R-20261104-mkt-s26).", sec, val="UNVERIFIED", vintage="z1:2026-09-11")
+        "Z.1 2026-09-11, 2026Q2, apportioned with FL153165105/FL893065105 as B3. Recomputed independently from Z1.csv by the skeptic (R-20261104-mkt-s36).", sec, val="UNVERIFIED", vintage="z1:2026-09-11")
 tab = next(i for i, l in enumerate(lines) if l.startswith("| Share turning private"))
 for j, (d, p) in enumerate(zip(D, P)):
     x = int(round(100 * d["share_private"]))
