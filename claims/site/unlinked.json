@@ -2,7 +2,10 @@
   "_doc": "Register rows located on a site that are expected NOT to appear as a link in the prerendered HTML, with the reason. check_html.mjs fails on any other unlinked row, and on a row listed here that is in fact linked (so the list cannot go stale).",
   "web": {
     "public_share_2001q1": "Defined in web/content/story.ts facts (dotcomFrom) but never rendered; proposed: drop the fact or the location (tracks/infra.md).",
-    "public_share_2005q1": "Defined in web/content/story.ts facts (dotcomTo) but never rendered; same proposal."
+    "public_share_2005q1": "Defined in web/content/story.ts facts (dotcomTo) but never rendered; same proposal.",
+    "a1_private_change_pp": "web/content/story.ts:148 renders the bare number '6.9' (the copy strips ' pts'), which is not a register display spelling; proposed: add '6.9' to display, or keep the unit in the copy (tracks/infra.md).",
+    "a1_public_growth_pp": "web/content/story.ts:148 renders the bare number '6.2' (the copy strips ' pts'), which is not a register display spelling; proposed: add '6.2' to display, or keep the unit in the copy (tracks/infra.md).",
+    "a1_ff_pp": "web/content/story.ts:148 renders the bare number '1.2' (the copy strips ' pts'), which is not a register display spelling; proposed: add '1.2' to display, or keep the unit in the copy (tracks/infra.md)."
   },
   "atlas": {
     "atlas_share_dots": "Shown only in the Shares lens legend, which renders after the reader switches lens (client state); linked there.",

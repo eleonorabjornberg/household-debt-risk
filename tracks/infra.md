@@ -41,12 +41,7 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 - Register: F1–F4 publish no new numbers. The `/sources` summary counts register rows; `/data` shows source vintages from `meta.json`. So `claims/tracks/infra.csv` is not needed.
 
 ## Questions for Eleonora
-- **Q-scope (2026-11-04, overnight).** The coordinator asked this track to take on, overnight and in order: F3 (scheduled Z.1 refresh), D3 (research-memo skill), E2 (planted-error test, pre-registered first), E3, then D7 (plugin). PLAN.md does not assign these to infra. D3 is listed as the coordinator's. PLAN.md also says "no track starts a new phase's work without her approval" and records only "merge the three track branches overnight". So I have **not started them**; I only did the merge (step 1). Please choose one:
-  - (a) Approve the list as proposed: F3 → D3 → E2 → E3 → D7 on this track. E2 and E3 are Phase E, and D7 starts new Phase D work.
-  - (b) Approve F3 only on this track, since it is Phase F like F1, F2 and F4 and its dependencies (0.8, F2) are in place; the rest stays with the coordinator or waits for the phase decision.
-  - (c) Keep this track at F1, F2 and F4; the coordinator schedules the rest.
-
-  **Recommendation: (b).** F3 builds on the archive and FRED pin I just made. The workflow can live on the branch with no schedule firing against production until you merge it. E2, E3 and D7 belong with your Phase D/E decision. D6, E1 and E4 also need cost approval or an API key (`ANTHROPIC_API_KEY` is unset in this session).
+- ~~Q-scope~~ **Resolved by PLAN.md `cc74d76`** (coordinator branch). That commit records Eleonora's approval to continue Phases B–F overnight in her words, and the Parallel tracks table now gives infra F3, D3, E2 (pre-registered first), E3, D7. I verified it there before starting. D6, E1 and E4 stay hers (cost or API key).
 
 Answered 2026-11-04: Eleonora accepted the recommendations (PLAN.md "Decisions taken", coordinator commit `a590475`). What was done:
 - **F2-1 (a), pin FRED via ALFRED** (`8bf5d88`). `HHDEBT_FRED_ASOF` (pipeline) and `FRED_ASOF` (notebook) read FRED as it stood on one day (ALFRED `realtime_start` = `realtime_end`). The day defaults to the committed `web/public/data/meta.json` `vintages.fred` (2026-10-27), and `make` passes it; a refresh moves it on purpose (`make all FRED_ASOF=2026-12-20`, say). Verified: a pinned ingest plus the notebook reproduce every committed results file and table byte for byte, so `findings.md:15` ($1.90T, $845B) no longer drifts. ALFRED writes some whole numbers as `1721271.0` and missing weeks as `.`; both are normalised so the tables match the fredgraph format exactly.
@@ -57,6 +52,7 @@ Answered 2026-11-04: Eleonora accepted the recommendations (PLAN.md "Decisions t
 - **For F3 (coordinator):** the refresh workflow should run `make ingest FRED_ASOF=<run date>` and commit the new `opendata/archive/z1-<date>/` with the snapshots.
 
 ## Proposed changes to shared files
+0. **New, after merging `cc74d76`, `claims/register.csv`:** `web/content/story.ts:148` renders the A1 Shapley numbers bare ("accounts for 6.9 of the 13.1 pts and public growth for 6.2 … only 1.2 of it"), because the copy strips " pts". Either add the bare spellings `6.9`, `6.2`, `1.2` to `a1_private_change_pp`, `a1_public_growth_pp`, `a1_ff_pp` (the F1 matcher only links them on that cited line, with digit boundaries), or keep the unit in the copy ("6.9 points"). Recommendation: keep the unit; a bare "6.9" reads as unitless. Then remove the three rows from `claims/site/unlinked.json`, where they are listed as known exceptions for now.
 Patches for the coordinator; I have not applied them.
 
 1. **`claims/register.csv`** (found by the F1 link check):
