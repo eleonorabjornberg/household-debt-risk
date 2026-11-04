@@ -1,10 +1,10 @@
 > **Claude draft, frozen.** Text drafted by Claude. Every design choice is Eleonora's, as recorded in the Decisions table with dates. Frozen 2026-11-04 (`preregister` skill). Changes after the freeze go only in "Deviations", dated.
 
 # Pre-registration: E2, planted-error test for the reviewer subagents
-Status: **frozen** on 2026-11-04, choices by Eleonora (PLAN.md "Decisions taken", coordinator commits `543d96a` and `b7f1158`). Freeze commit: see "Frozen at" below. No E2 result exists at the freeze.
+Status: **frozen** on 2026-11-04, choices by Eleonora (PLAN.md "Decisions taken", coordinator commits `543d96a` and `b7f1158`). Freeze commit: `5986353`. No E2 result exists at the freeze.
 
 ## Frozen at
-Recorded in the follow-up commit (a commit cannot contain its own hash).
+Commit `5986353` ("prereg: E2 (frozen)", 2026-11-04). SHA-256 of this file as frozen there: `1f474cfd0f115823122eb4098cf7eb451932b88b1db05b4170ca6d3480779646`. This section and the Status line's hash were added in the follow-up commit (a commit cannot contain its own hash); nothing else changed.
 
 ## Decisions (all by Eleonora, 2026-11-04, decision cards; PLAN.md "Decisions taken" on `claude/sweet-gates-avwrcs`)
 | Choice | Decided | When |

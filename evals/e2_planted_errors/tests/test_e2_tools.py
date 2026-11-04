@@ -87,6 +87,11 @@ def test_per_agent_counts(tmp_path):
                                      [("skeptic", True), ("quant-reviewer", True)])
 
 
+def test_real_prereg_is_frozen():
+    """E2 was frozen 2026-11-04 (CHOICE-11 (a)); plant.py may run without --rehearsal."""
+    assert plant.is_frozen()
+
+
 def _rehearse(tmp_path):
     d, m = tmp_path / "d.md", tmp_path / "m.md"
     d.write_text(DATA_DOC)
