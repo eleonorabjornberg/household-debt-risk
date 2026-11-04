@@ -96,6 +96,21 @@ def check(t: pd.DataFrame) -> None:
     assert (t["public_share_net_lower_pct"] <= t["public_share_gross_pct"] + 1e-12).all()
 
 
+def load_freddie(path: Path = HERE / "freddie_ce_outstanding.csv") -> pd.DataFrame:
+    return pd.read_csv(path).set_index("year_end")
+
+
+def check_freddie(t: pd.DataFrame, fo: pd.DataFrame, crt: pd.DataFrame) -> None:
+    """Outstanding cover must sit inside the FHFA issuance bound (net_exposure 'a' check of Q1)."""
+    have = crt["fre_cum_rif_musd"].dropna().index
+    over = fo.loc[have, "crt_maxcov_musd"] > crt.loc[have, "fre_cum_rif_musd"]
+    assert not over.any(), f"Freddie outstanding CRT exceeds FHFA cumulative issued RIF in {list(over[over].index)}"
+    assert (t["net_freddie_of_crt_bn"] <= t["gross_freddie_bn"]).all() and (t["net_freddie_of_crt_bn"] > 0).all()
+    # Net share bounds: FHFA cumulative issuance (all CRT, both Enterprises) <= truth <= Freddie outstanding netted only.
+    assert (t["public_share_net_lower_pct"] <= t["public_share_net_freddie_crt_pct"] + 1e-12).all()
+    assert (t["public_share_net_freddie_crt_pct"] <= t["public_share_gross_pct"] + 1e-12).all()
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--z1-zip", type=Path, default=ROOT / "data" / "validation" / "FRB_Z1_csv.zip")
@@ -123,6 +138,24 @@ def main(argv=None) -> int:
 
     t = bounds(g, pub, s, a, crt)
     check(t)
+
+    # Q1 (b), decided 2026-11-04: outstanding cover from the 10-Ks. Freddie Mac only so far (Fannie's filings are not
+    # reachable: fanniemae.com 403, SEC not fetched until the User-Agent contact is settled).
+    fo = load_freddie().reindex(yr)
+    fre_col = [k for k in ff_cols if k[2].startswith("Freddie")]
+    g_fre = pd.Series(c.loc[ends, fre_col].sum(axis=1).values, index=yr)
+    g_fre_unapp = pd.Series(((df["FL403065120"] + df["FL413065123"]).loc[ends]).values, index=yr)
+    t["gross_freddie_bn"] = g_fre / 1e3
+    t["freddie_crt_out_hh_bn"] = fo["crt_maxcov_musd"] * a / 1e3
+    t["freddie_pmi_out_hh_bn"] = fo["pmi_maxcov_musd"] * a / 1e3
+    t["freddie_other_out_hh_bn"] = fo["other_maxcov_musd"] * a / 1e3
+    t["net_freddie_of_crt_bn"] = t["gross_freddie_bn"] - t["freddie_crt_out_hh_bn"]
+    t["freddie_crt_out_pct_of_gross"] = 100 * t["freddie_crt_out_hh_bn"] / t["gross_freddie_bn"]
+    t["freddie_pmi_out_pct_of_gross"] = 100 * t["freddie_pmi_out_hh_bn"] / t["gross_freddie_bn"]
+    # Public share with Freddie's outstanding CRT netted and Fannie's not: an upper bound on the share net of all CRT.
+    t["public_share_net_freddie_crt_pct"] = 100 * (pub - fo["crt_maxcov_musd"] * a) / s
+    t["z1_freddie_over_10k_portfolio"] = g_fre_unapp / fo["sf_portfolio_upb_musd"]
+    check_freddie(t, fo, crt)
     t.round(4).to_csv(HERE / "net_exposure.csv")
 
     last = int(t.index.max())
@@ -148,9 +181,31 @@ def main(argv=None) -> int:
         "cum_pmi_rif_bn_unapportioned_pmi_last": r(crt.at[pmi_last, "cum_pmi_rif_musd"] / 1e3, 1),
         "pmi_issued_pct_of_gross_pmi_last": r(t.at[pmi_last, "pmi_issued_pct_of_gross"], 3),
         "cum_crt_ref_upb_over_gross_last": r(t.at[last, "cum_crt_ref_upb_over_gross"], 3),
+        "freddie_10k": {
+            "source": "Freddie Mac Form 10-K FY2013-FY2025, outstanding credit enhancement coverage (freddie_ce_outstanding.csv)",
+            "gross_freddie_bn_last": r(t.at[last, "gross_freddie_bn"], 1),
+            "crt_out_bn_unapportioned_last": r(fo.at[last, "crt_maxcov_musd"] / 1e3, 1),
+            "crt_out_hh_bn_last": r(t.at[last, "freddie_crt_out_hh_bn"], 1),
+            "net_freddie_of_crt_bn_last": r(t.at[last, "net_freddie_of_crt_bn"], 1),
+            "crt_out_pct_of_gross_last": r(t.at[last, "freddie_crt_out_pct_of_gross"], 3),
+            "crt_out_pct_of_gross_max": r(t["freddie_crt_out_pct_of_gross"].max(), 3),
+            "crt_out_pct_of_gross_max_year": int(t["freddie_crt_out_pct_of_gross"].idxmax()),
+            "crt_out_bn_unapportioned_peak": r(fo["crt_maxcov_musd"].max() / 1e3, 1),
+            "crt_out_peak_year": int(fo["crt_maxcov_musd"].idxmax()),
+            "fhfa_freddie_cum_issued_rif_bn_2023": r(crt.at[2023, "fre_cum_rif_musd"] / 1e3, 1),
+            "crt_out_bn_unapportioned_2023": r(fo.at[2023, "crt_maxcov_musd"] / 1e3, 1),
+            "pmi_out_bn_unapportioned_last": r(fo.at[last, "pmi_maxcov_musd"] / 1e3, 1),
+            "pmi_out_pct_of_gross_last": r(t.at[last, "freddie_pmi_out_pct_of_gross"], 3),
+            "other_out_bn_unapportioned_last": r(fo.at[last, "other_maxcov_musd"] / 1e3, 1),
+            "public_share_net_freddie_crt_pct_last": r(t.at[last, "public_share_net_freddie_crt_pct"], 3),
+            "z1_freddie_over_10k_portfolio_min": r(t["z1_freddie_over_10k_portfolio"].min(), 4),
+            "z1_freddie_over_10k_portfolio_max": r(t["z1_freddie_over_10k_portfolio"].max(), 4),
+        },
         "checks": {
             "net_le_gross_all_years": True,
             "net_lower_positive_all_years": True,
+            "freddie_outstanding_crt_le_fhfa_issued": True,
+            "net_share_bounds_ordered": True,
             "scope_reconstruction_max_abs_musd": float(scope_gap),
         },
     }

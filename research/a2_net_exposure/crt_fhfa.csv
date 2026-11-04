@@ -1,14 +1,14 @@
-year,cum_ref_upb_musd,cum_rif_musd,annual_ref_upb_musd,annual_rif_musd,cum_pmi_upb_musd,cum_pmi_rif_musd,basis,source
-2013,89800,2200,89800,2200,157000,39900,cum = annual (programs began 2013); annual UPB = Fannie 31.9 + Freddie 57.9 ($bn chart); RIF total row,FHFA CRT Progress Report Dec 2016 p.1 (CRT) and p.5 (PMI table)
-2014,468200,14400,378400,12200,305800,77600,cum = sum of published annual totals 2013-14,FHFA CRT Progress Report Dec 2016 p.1 and p.5
-2015,888600,30500,420400,16100,497600,126300,cum = sum of published annual totals 2013-15,FHFA CRT Progress Report Dec 2016 p.1 and p.5
-2016,1436600,48700,548000,18100,731100,185500,published cumulative totals,FHFA CRT Progress Report Dec 2016 p.1 and p.5
-2017,2126768,69301,,,,,derived: 4Q18 cumulative minus 4Q18 annual 2018 (no 4Q17 report fetched),FHFA CRT Progress Report 4Q18 tables
-2018,2770101,91507,643333,22206,1200000,312000,published tables ($M); PMI from text ($1.2 trillion / $312 billion),FHFA CRT Progress Report 4Q18
-2019,3479054,115070,708953,23562,1600000,398000,published tables ($M); PMI from text ($1.6 trillion / $398 billion),FHFA CRT Progress Report 4Q2019
-2020,4127233,137002,648179,21931,2136000,534000,published tables ($M); PMI cumulative chart box ($bn),FHFA CRT Progress Report 4Q20
-2021,5179758,161573,1052021,24594,2677000,671000,published tables ($M); PMI cumulative chart box ($bn),FHFA CRT Progress Report 4Q21
-2022,6242800,197243,1063043,35669,3044000,767000,published tables ($M); PMI cumulative chart box ($bn),FHFA CRT Progress Report 4Q22
-2023,6664614,210218,421814,12976,3299000,835000,published tables ($M); PMI cumulative chart box ($bn) read from the chart image (no text layer): Fannie 1890 + Freddie 1409 UPB; Fannie 480 + Freddie 355 RIF,FHFA CRT Progress Report 4Q23
-2024,7000000,222000,365000,11900,,,"published, rounded (""approximately $7 trillion"" / ""$222 billion""); no PMI figure published",FHFA 2024 Annual Report to Congress p.50
-2025,7400000,233000,343000,11300,,,"published, rounded (""approximately $7.4 trillion"" / ""$233 billion""); no PMI figure published",FHFA 2025 Annual Report to Congress p.47
+year,cum_ref_upb_musd,cum_rif_musd,fre_cum_rif_musd,annual_ref_upb_musd,annual_rif_musd,cum_pmi_upb_musd,cum_pmi_rif_musd,basis,source
+2013,89800,2200,,89800.0,2200.0,157000.0,39900.0,cum = annual (programs began 2013); annual UPB = Fannie 31.9 + Freddie 57.9 ($bn chart); RIF total row,FHFA CRT Progress Report Dec 2016 p.1 (CRT) and p.5 (PMI table)
+2014,468200,14400,,378400.0,12200.0,305800.0,77600.0,cum = sum of published annual totals 2013-14,FHFA CRT Progress Report Dec 2016 p.1 and p.5
+2015,888600,30500,,420400.0,16100.0,497600.0,126300.0,cum = sum of published annual totals 2013-15,FHFA CRT Progress Report Dec 2016 p.1 and p.5
+2016,1436600,48700,24700.0,548000.0,18100.0,731100.0,185500.0,published cumulative totals,FHFA CRT Progress Report Dec 2016 p.1 and p.5
+2017,2126768,69301,,,,,,derived: 4Q18 cumulative minus 4Q18 annual 2018 (no 4Q17 report fetched),FHFA CRT Progress Report 4Q18 tables
+2018,2770101,91507,43839.0,643333.0,22206.0,1200000.0,312000.0,published tables ($M); PMI from text ($1.2 trillion / $312 billion),FHFA CRT Progress Report 4Q18
+2019,3479054,115070,52646.0,708953.0,23562.0,1600000.0,398000.0,published tables ($M); PMI from text ($1.6 trillion / $398 billion),FHFA CRT Progress Report 4Q2019
+2020,4127233,137002,67855.0,648179.0,21931.0,2136000.0,534000.0,published tables ($M); PMI cumulative chart box ($bn),FHFA CRT Progress Report 4Q20
+2021,5179758,161573,87112.0,1052021.0,24594.0,2677000.0,671000.0,published tables ($M); PMI cumulative chart box ($bn),FHFA CRT Progress Report 4Q21
+2022,6242800,197243,106675.0,1063043.0,35669.0,3044000.0,767000.0,published tables ($M); PMI cumulative chart box ($bn),FHFA CRT Progress Report 4Q22
+2023,6664614,210218,110512.0,421814.0,12976.0,3299000.0,835000.0,published tables ($M); PMI cumulative chart box ($bn) read from the chart image (no text layer): Fannie 1890 + Freddie 1409 UPB; Fannie 480 + Freddie 355 RIF,FHFA CRT Progress Report 4Q23
+2024,7000000,222000,,365000.0,11900.0,,,"published, rounded (""approximately $7 trillion"" / ""$222 billion""); no PMI figure published",FHFA 2024 Annual Report to Congress p.50
+2025,7400000,233000,,343000.0,11300.0,,,"published, rounded (""approximately $7.4 trillion"" / ""$233 billion""); no PMI figure published",FHFA 2025 Annual Report to Congress p.47

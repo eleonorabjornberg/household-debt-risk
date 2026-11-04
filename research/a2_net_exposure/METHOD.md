@@ -27,7 +27,13 @@ FHFA publishes RIF at issuance only. Outstanding RIF is lower, because notes pay
 
 **Mortgage insurance** is reported next to the bounds, not inside them. FHFA's PMI figures are RIF at acquisition for loans acquired from 2013 on. They omit cover on loans acquired earlier and keep cover that has since been cancelled or paid off, so they bound nothing. The Enterprise keeps the counterparty risk on PMI (FHFA 4Q23 report p.12), and PMI pays before CRT investors, so adding PMI and CRT RIF overstates the joint cover on loans that have both.
 
-## What would turn the bounds into a series
+## Decision (Eleonora, 2026-11-04) and what is built
+
+Q1: option (b), outstanding CRT and mortgage-insurance cover from the 10-K/10-Q filings, with the issuance bounds as the check; measure 3 waits for A6. Q2: mortgage insurance is a separate line, not netted. Q3: Ginnie Mae pools stay at gross.
+
+Built for Freddie Mac, 2013–2025 (`freddie_10k.py`, `tenk.py`, `freddie_ce_outstanding.csv`): maximum coverage in force at each year end, in three categories that can be followed over time (CRT = STACR + ACIS; mortgage insurance; other). Checks: every 10-K table reconciles to its own total; the two filings that report each year end agree on the total; Freddie's outstanding CRT never exceeds FHFA's cumulative issued Freddie RIF; net ≤ gross. Fannie Mae waits for its filings (see `sources.md`).
+
+## Options considered before the decision
 
 - **Outstanding CRT and MI cover from the Enterprises' 10-K/10-Q** (free, primary). They are expected to report credit-enhanced UPB and outstanding coverage; not yet checked, because the filings could not be reached. `www.sec.gov` is blocked by the network policy here; allowing it (or Eleonora downloading the filings) would give an observed net series rather than a bound.
 - **A runoff estimate**: decay each issuance year's RIF with an assumed paydown rate (for example, the Z.1 GSE book's own runoff). This is an estimate, labelled as one, and sensitive to the 2020–21 refinancing wave. Not done until Eleonora picks the definition.
