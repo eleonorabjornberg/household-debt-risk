@@ -37,6 +37,14 @@ Earlier in A8 (`sources.md`): KfW's home-ownership programme sheet puts the liab
 - *For:* records both facts the sources establish, no legal guarantee since 2005 and public money in practice in 2008–12, without forcing them into one bucket.
 - *Against:* the US has no direct counterpart, so the cross-country headline loses one-number comparability for Germany; the category's size would need its own row in A8's table.
 
+## Follow-up: do promotional banks carry a state guarantee? (Eleonora, card q7-promo, option iii)
+
+Retrieved 2026-11-04 17:34 UTC by the main session; details and the hosts that did not answer in `sources.md`.
+
+- **KfW: yes, for KfW's own obligations.** KfW law, Article 1a (KfW's English version, `e32bf2c7…`): "The Federal Republic guarantees all obligations of KfW in respect of loans extended to and debt securities issued by KfW, fixed forward transactions or options entered into by KfW, and other credits extended to KfW …". This guarantees KfW's creditors and funding, not the households KfW lends to. A loss on a KfW loan is KfW's, and KfW's obligations are backed by the federal government. On this source, the "not guaranteed" label does not fit KfW, although no household borrower is guaranteed either. On KfW's on-lent programme loans, the on-lending bank takes the liability (KfW programme sheet 124/134, above).
+- **Länder promotional banks: not established.** No statute or Commission text could be reached (gesetze-im-internet.de, EUR-Lex, the Commission, NRW.BANK, L-Bank and the Länder law portals did not answer), so whether they carry a state guarantee is unsourced here.
+- **Size: not split.** The 1.1% is the Bundesbank category "banks with special, development and other central support tasks". No source here lists its members or gives KfW's share of its lending to individuals.
+
 ## What would make the choice firmer
 
 - The Commission's 2001 understanding and 2004 decision texts (EUR-Lex), and the state-aid decisions for the three banks (Commission case pages), once those hosts answer.
