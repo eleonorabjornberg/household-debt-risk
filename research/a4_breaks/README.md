@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** Results of the pre-registered tests and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
 
-**PLAN task A4. Status: run to the frozen pre-registration ([`docs/decisions/breaks.md`](../../docs/decisions/breaks.md), commit `02cc47f`); quant review pending.** The code was committed (`eed0ce7`) before the first run on the target series. Deviations (also listed in `breaks.md`, Deviations): critical values are simulated, because the Bai-Perron tables are not available offline; and the break-date interval was corrected after the first run (a sign error, caught by the quant reviewer; `breaks.py`, docstring). The R `strucchange` cross-check required for "confirmed" cannot run here, so no break is called confirmed.
+**PLAN task A4. Status: run to the frozen pre-registration ([`docs/decisions/breaks.md`](../../docs/decisions/breaks.md), commit `02cc47f`); quant review pending.** The code was committed (`eed0ce7`) before the first run on the target series. Deviations (also listed in `breaks.md`, Deviations): critical values are simulated, because the Bai-Perron tables are not available offline; and the break-date interval was corrected after the first run (a sign error, caught by the quant reviewer; `breaks.py`, docstring). The R `strucchange` cross-check (R installed from the Ubuntu archive) has been run and agrees within the pre-registered tolerance on every part R implements (`rcheck/comparison.json`); no known date is confirmed, because no Chow test at a known date rejects.
 
 Data: quarterly change in the public share of household mortgages and consumer credit, 1952Q2–2026Q2 (297 quarters), Z.1 release of 2026-09-11. Results: [`results.json`](results.json).
 
@@ -36,7 +36,7 @@ No one-quarter step at these dates meets the pre-registered robust-z rule either
 
 ## Limits
 
-- **Not confirmed in R.** Leg 3 of the decision rule (Python and R agree) has not run; it needs an environment with R and CRAN.
+- **R cross-check.** Dates and SSR identical, HAC sup-F within 2.5%, interval within one quarter. The sequential test, UDmax/WDmax and the simulated critical values are not in `strucchange` and are not cross-checked.
 - **Simulated critical values** (2,000 replications, seed in `breaks.py`); they replace published tables, which are not reachable offline.
 - **Timing, not cause.** A break says the series changed course; causal questions are A7.
 - **The pre-1952 history (A3) is not in this test**, as pre-registered; it would need an annual-frequency addendum.
