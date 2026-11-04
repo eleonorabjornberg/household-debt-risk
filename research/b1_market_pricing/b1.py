@@ -81,8 +81,10 @@ def public_shares(zip_path: Path) -> pd.DataFrame:
     df, mh, ch, public, labels = a1.load(zip_path)
     c = a1.cells(df, mh, ch, public, labels)
     m = c.xs("mortgages", level="loan", axis=1)
+    gse = [("public", "Fannie Mae (portfolio + pools)"), ("public", "Freddie Mac (portfolio + pools)")]
     out = pd.DataFrame({
         "mort_share": m.xs("public", level="side", axis=1).sum(axis=1) / m.sum(axis=1),
+        "gse_share": sum(m[k] for k in gse) / m.sum(axis=1),
         "headline_share": c.xs("public", level="side", axis=1).sum(axis=1) / c.sum(axis=1),
     })
     out.index = pd.PeriodIndex(out.index, freq="Q")
@@ -140,6 +142,13 @@ def spec_list(last_q: str):
                 # METHOD.md: robustness checks vary one thing at a time
                 if len(tag) <= 1:
                     out.append(dict(share=share, dep=dep, end=end, variant=", ".join(tag) or "main"))
+    # Post-hoc checks added after the first results, in response to review (METHOD.md "Changes after
+    # results"). Reported, but the verdict rule is applied to the pre-specified variants only.
+    out += [
+        dict(share="mort_share", dep="S1", end=last_q, variant="post-hoc: HAC lag 8", lags=8),
+        dict(share="gse_share", dep="S1", end=last_q, variant="post-hoc: Fannie+Freddie share"),
+        dict(share="mort_share", dep="S1", end=last_q, variant="post-hoc: PMMS 2022Q4+ dummy", dummy="2022Q4"),
+    ]
     return out
 
 
@@ -147,16 +156,19 @@ def run_specs(panel: pd.DataFrame, last_q: str) -> pd.DataFrame:
     rows = []
     for sp in spec_list(last_q):
         cols = [sp["dep"], sp["share"]] + CONTROLS
-        d = panel.loc[pd.Period(START, "Q"):pd.Period(sp["end"], "Q"), cols]
+        d = panel.loc[pd.Period(START, "Q"):pd.Period(sp["end"], "Q"), cols].copy()
+        if sp.get("dummy"):
+            d["pmms_2022q4"] = (d.index >= pd.Period(sp["dummy"], "Q")).astype(float)
+            cols = cols + ["pmms_2022q4"]
         assert not d.isna().any().any(), f"missing values in {sp}: {d.isna().sum()[d.isna().sum() > 0].to_dict()}"
         for form in ["L", "D"]:
             dd = d if form == "L" else d.diff().dropna()
             y = dd[sp["dep"]].to_numpy()
             X = np.column_stack([np.ones(len(dd))] + [dd[c].to_numpy() for c in cols[1:]])
-            L = nw_lag(len(dd))
+            L = sp.get("lags", nw_lag(len(dd)))
             b, se, u, r2 = ols_hac(y, X, L)
             adf = adf_stat(u) if form == "L" else float("nan")
-            names = ["const", "public_share"] + CONTROLS
+            names = ["const", "public_share"] + cols[2:]
             for n, bi, si in zip(names, b, se):
                 rows.append(dict(variant=sp["variant"], form=form, dep=sp["dep"], share=sp["share"],
                                  start=str(dd.index[0]), end=str(dd.index[-1]), T=len(dd), hac_lags=L,
@@ -236,7 +248,11 @@ def main(argv=None) -> int:
         "sample": {"start": START, "end": last_q},
         "main_L": coef("main", "L"),
         "main_D": coef("main", "D"),
-        "verdicts": {v: verdict(reg, v) for v in reg.variant.unique()},
+        "verdicts": {v: verdict(reg, v) for v in reg.variant.unique() if not v.startswith("post-hoc")},
+        # Engle-Granger 5% critical values (MacKinnon 2010, constant, no trend) for the residual ADF:
+        # N=7 regressors+dependent -> about -5.10; N=3 (only the I(1)-looking series) -> -3.79 (quant review).
+        "eg_crit_5pct": {"N7": -5.10, "N3": -3.79},
+        "pmms_dummy_coef": coef("post-hoc: PMMS 2022Q4+ dummy", "L", "pmms_2022q4"),
         "public_share_coef": {v: {f: coef(v, f) for f in ["L", "D"]} for v in reg.variant.unique()},
         "S1_mean_1986_2008q2": sm("1986Q1-2008Q2", "S1"),
         "S1_mean_2008q3_2019": sm("2008Q3-2019Q4", "S1"),
@@ -248,6 +264,9 @@ def main(argv=None) -> int:
         "S2_jumbo_conf_max_2017_latest": sm("2017Q1-latest (Optimal Blue)", "S2_jumbo_conf", "max"),
         "S2_fha_conf_mean_2017_latest": sm("2017Q1-latest (Optimal Blue)", "S2_fha_conf"),
         "mort_share_mean_2020_latest": sm("2020Q1-latest", "mort_share"),
+        # Power: how large a spread change over the 1986-2008Q2 -> 2020+ rise in the share the D interval allows
+        "D_halfwidth_over_rise_pp": (lambda x: (x["ci_hi"] - x["ci_lo"]) / 2)(coef("main", "D"))
+            * (sm("2020Q1-latest", "mort_share") - sm("1986Q1-2008Q2", "mort_share")),
         "mort_share_latest": float(panel.loc[pd.Period(last_q, "Q"), "mort_share"]),
     }
     (HERE / "results.json").write_text(json.dumps(res, indent=2, allow_nan=False) + "\n")
