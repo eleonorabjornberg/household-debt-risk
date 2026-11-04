@@ -1,0 +1,16 @@
+{
+ "as_of": "2026-06-30",
+ "units": "USD millions",
+ "label": "PROXY: realised bank net charge-off rates applied to all holders",
+ "cumulative_loss_pct": {
+  "mortgage": 8.737499999999999,
+  "consumer_other": 18.90041708343717
+ },
+ "replay_2008_2012_proxy": {
+  "public_musd": 800569.9525342704,
+  "private_musd": 1085038.1022157297,
+  "total_musd": 1885608.05475,
+  "public_share_of_losses": 0.42456858970111505,
+  "quarters": 20
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "recession": {
+  "source": "B3 presets: dfast2026_proxy (lower), replay_2008_2012_proxy (upper); both proxies",
+  "total_musd": [
+   594537.7699999998,
+   1885608.05475
+  ],
+  "public_musd": [
+   137436.9017226215,
+   800569.9525342704
+  ],
+  "public_share_of_losses": [
+   0.23116597238661818,
+   0.42456858970111505
+  ],
+  "transfer": "none (cap 0); A2 bounds not yet an input"
+ },
+ "gse_release": "pending Q-B4 (status 2026-11-04: in conservatorship, sources.md)",
+ "student_loan_reform": "pending Q-B4 (status: P.L. 119-21 approved 2025-07-04, sources.md)"
+}
