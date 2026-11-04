@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Git pre-commit hook for people: same checks Claude's hook runs. Enable once per clone with
+#   git config core.hooksPath .githooks
+exec "$(git rev-parse --show-toplevel)/.claude/hooks/checks.sh"

@@ -77,6 +77,9 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-03 | Research memos (D3) target financial institutions: banks, asset managers, insurers, MBS and CRT investors. | Eleonora |
 | 2026-11-03 | Licences (default, open to change): MIT for code; CC BY 4.0 for derived data and text. Third-party series (e.g. S&P Case-Shiller via FRED) are not redistributed, only linked. | Eleonora / Claude |
 | 2026-11-04 | Phase 0 approved; start Phase A. D2 and the `research_reader` test stay open until `DATABASE_URL_READONLY` is set. | Eleonora |
+| 2026-11-04 | Four 0.7 copy fixes approved (2026-dollar label, COVID step at 2023Q4, named decline windows, unused facts removed). | Eleonora |
+| 2026-11-04 | Add hooks: register check and tests before every commit; no hand edits to `results.json`. | Eleonora |
+| 2026-11-04 | Authorship: design, validation and write-up are Eleonora's; Claude's analysis texts are labelled drafts until she rewrites them. | Eleonora |
 
 ## Environment prerequisites
 
