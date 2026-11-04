@@ -11,8 +11,10 @@ both the numerator and the denominator. A share that cannot be computed is recor
   (a) holder: share of household credit held by publicly owned lenders (ownership is not a guarantee)
 
 Germany's publicly owned banks (Eleonora, 2026-11-04, Q7 card q7-2, option c): on the risk-bearer measure their
-lending is a third category, "publicly owned, not guaranteed", reported in its own column and never added to the
-public (b) share or subtracted from it. Evidence: Q7_EVIDENCE.md.
+lending is a third category, "publicly owned, not guaranteed", reported in its own column (no US counterpart) and
+never added to the public (b) share or subtracted from it. Evidence: Q7_EVIDENCE.md. The end of state guarantees in
+2005 is sourced for public-law banks (savings banks, Landesbanken); for promotional banks no source on guarantees was
+read, so their part is reported separately (de_promotional_banks_share) until Eleonora confirms the scope.
 
 Output: comparison.csv, results.json.
 """
@@ -78,16 +80,22 @@ def compare(f: pd.DataFrame, a2: dict) -> pd.DataFrame:
               + v(f, "DE", "promotional_banks_lending_individuals"))
     assert 0 < de_pub < de_tot
     # Q7 (c): the same banks' lending is the third category on the risk-bearer measure; it stays out of risk_b_*.
+    de_promo = v(f, "DE", "promotional_banks_lending_individuals")
     rows.append(dict(country="DE", date="2025Q4", holder_a=de_pub / de_tot, risk_b_low=math.nan, risk_b_high=math.nan,
-                     risk_b_public_owned_not_guaranteed=de_pub / de_tot,
+                     public_owned_not_guaranteed=de_pub / de_tot,
+                     public_owned_excl_promotional=(de_pub - de_promo) / de_tot,
+                     promotional_banks_share=de_promo / de_tot,
                      household_credit_lcu_m=de_tot,
                      note="(a) savings banks + Landesbanken + promotional banks (public building-savings banks not separable), bank lending to employees and other individuals; "
                           "(b) these banks' lending is a third category, publicly owned, not guaranteed (Q7 c); public (b) share not computed: "
                           "BAföG not sourced; KfW loans carry the on-lending bank's liability"))
     t = pd.DataFrame(rows).set_index("country")
-    for c in ("holder_a", "risk_b_low", "risk_b_high", "risk_b_public_owned_not_guaranteed"):
+    for c in ("holder_a", "risk_b_low", "risk_b_high", "public_owned_not_guaranteed",
+              "public_owned_excl_promotional", "promotional_banks_share"):
         ok = t[c].dropna()
         assert ((ok >= 0) & (ok <= 1)).all(), c
+    de = t.loc["DE"]
+    assert math.isclose(de.public_owned_excl_promotional + de.promotional_banks_share, de.public_owned_not_guaranteed)
     us = t.loc["US"]
     assert us.risk_b_low <= us.risk_b_high <= us.public_bucket_incl_pools
     return t
