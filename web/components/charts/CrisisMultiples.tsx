@@ -5,6 +5,7 @@ import { pts, quarterLabel } from "@/lib/format";
 import { crisisStepId, requestCrisisFocus } from "@/lib/crisisFocus";
 import { TimeSeriesChart } from "./TimeSeriesChart";
 import { DataTable, SLOT } from "./parts";
+import { Sourced } from "@/components/claims/SourceRef";
 
 interface Props {
   data: CrisisWindows;
@@ -100,7 +101,7 @@ export function CrisisMultiples({ data, metricLabels, notes, title }: Props) {
                 zeroLine
                 markerX={0}
               />
-              {note && <p className="multiples__note">{note.text}</p>}
+              {note && <p className="multiples__note"><Sourced text={note.text} /></p>}
             </li>
           );
         })}
