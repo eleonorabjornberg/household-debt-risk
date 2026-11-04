@@ -17,7 +17,7 @@
 
 **Status values:** `done` · `in progress` · `next` · `todo` · `blocked (reason)` · `needs-approval` · `dropped (reason)`
 
-**Current position:** Phase 0 complete pending Eleonora's approval (all tasks 0.0–0.10 done). Open: D2 and the `research_reader` permission test stay NOT RUN until `DATABASE_URL_READONLY` is set. Phase A not started.
+**Current position:** Phase 0 approved 2026-11-04. Phase A: A1 in progress. Open from Phase 0: D2 and the `research_reader` test need `DATABASE_URL_READONLY`.
 
 ---
 
@@ -76,6 +76,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-03 | Eleonora registers any Freddie Mac / Fannie Mae data accounts herself (A2, B2). | Eleonora |
 | 2026-11-03 | Research memos (D3) target financial institutions: banks, asset managers, insurers, MBS and CRT investors. | Eleonora |
 | 2026-11-03 | Licences (default, open to change): MIT for code; CC BY 4.0 for derived data and text. Third-party series (e.g. S&P Case-Shiller via FRED) are not redistributed, only linked. | Eleonora / Claude |
+| 2026-11-04 | Phase 0 approved; start Phase A. D2 and the `research_reader` test stay open until `DATABASE_URL_READONLY` is set. | Eleonora |
 
 ## Environment prerequisites
 
@@ -122,7 +123,7 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 
 | ID | Task | Depends | Data and availability | Acceptance criteria | Status |
 |---|---|---|---|---|---|
-| A1 | **Decompose the 2007–11 jump** by loan type × holder: GSE conservatorship (Sept 2008), FHA/Ginnie Mae expansion, the 2010 student-loan takeover (SAFRA ended new FFEL loans) | 0.3 | Z.1 (have); Ginnie Mae / FHA portfolio data (ginniemae.gov reachable); FSA portfolio data (studentaid.gov untested) | Additive decomposition that sums exactly to +13.1 pp; each component tied to a dated policy event with a primary source; register rows | todo |
+| A1 | **Decompose the 2007–11 jump** by loan type × holder: GSE conservatorship (Sept 2008), FHA/Ginnie Mae expansion, the 2010 student-loan takeover (SAFRA ended new FFEL loans) | 0.3 | Z.1 (have); Ginnie Mae / FHA portfolio data (ginniemae.gov reachable); FSA portfolio data (studentaid.gov untested) | Additive decomposition that sums exactly to +13.1 pp; each component tied to a dated policy event with a primary source; register rows || in progress |
 | A2 | **Net vs gross public exposure**: subtract risk sold back through CRT (STACR, CAS) and mortgage insurance | A1 | FHFA CRT reports (fhfa.gov untested); Freddie deal data (reachable, may need registration); Fannie deal data (host 403); no CRT before 2013 | Gross and net series 2013+; method note on what "transferred" means (first-loss vs mezzanine, reference-pool notional vs expected loss); net ≤ gross check; estimates labelled | todo |
 | A3 | **Full history before 1952**: Z.1 annual 1945–51; earlier from historical sources. Document HOLC (1933), FHA (1934), Fannie Mae (1938) and every later policy step | 0.3 | Z.1 annual (have); Grebler, Blank & Winnick (NBER 1956) and Fed *Banking and Monetary Statistics* (FRASER, reachable); *Historical Statistics of the US*: Millennial ed. is paywalled, the 1975 Bicentennial ed. is free (census.gov untested) | Splice method documented with overlap checks; each pre-1945 point labelled by source and reliability; a policy timeline in which every date is checked against a primary source (statute, agency report) | todo |
 | A4 | **Structural breaks**: legislation dates as candidate breaks; Bai-Perron (unknown breaks) and Chow (known dates) | A3 | Derived series (have) | Python implementation cross-checked against R `strucchange` (CRAN reachable) on the same series; HAC errors; result table: candidate date → confirmed / not confirmed / confidence interval; pre-registered in `docs/decisions/breaks.md` before running | todo |
