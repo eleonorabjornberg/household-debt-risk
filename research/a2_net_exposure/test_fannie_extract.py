@@ -30,3 +30,11 @@ def test_fy2021_sentence_without_comma():
 def test_wrong_year_is_refused():
     with pytest.raises(AssertionError):
         fe.extract(FY2025, 2024)
+
+
+def test_space_before_comma_and_old_mi_wording():
+    s = ("absorbed by credit risk transfer investors, was approximately $42 billion as of December 31, 2023 , compared with "
+         "approximately $38 billion as of December 31, 2022. We had total mortgage insurance coverage risk in force of $102.5 billion "
+         "and $91.7 billion on the single-family mortgage loans in our guaranty book of business as of December 31, 2023")
+    e = fe.extract(s, 2023)
+    assert e["crt_prior"] == (2022, 38.0) and e["mi_rif_bn"] == 102.5

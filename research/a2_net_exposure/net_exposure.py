@@ -140,7 +140,7 @@ def main(argv=None) -> int:
     check(t)
 
     # Q1 (b), decided 2026-11-04: outstanding cover from the 10-Ks. Freddie Mac only so far (Fannie's filings are not
-    # reachable: fanniemae.com 403, SEC not fetched until the User-Agent contact is settled).
+    # in this block; Fannie is added below from fannie_ce_outstanding.csv).
     fo = load_freddie().reindex(yr)
     fre_col = [k for k in ff_cols if k[2].startswith("Freddie")]
     g_fre = pd.Series(c.loc[ends, fre_col].sum(axis=1).values, index=yr)
