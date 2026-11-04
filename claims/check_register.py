@@ -49,6 +49,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REGISTER = ROOT / "claims" / "register.csv"
+# Parallel tracks add rows in claims/tracks/<track>.csv (same schema); the coordinator moves them into
+# register.csv when it merges the track, so tracks never edit the shared register.
+TRACK_REGISTERS = ROOT / "claims" / "tracks"
 VALIDATION_RESULTS = ROOT / "validation" / "results.json"
 
 SCHEMA = [
@@ -60,8 +63,8 @@ REQUIRED = ["claim_id", "claim", "display", "value", "unit", "period", "location
             "computation", "vintage", "validation"]
 
 # Files whose published copy is scanned for unregistered numbers.
-SCAN_FILES = ["README.md", "atlas/content/story.ts", "web/content/story.ts", "analysis/recommendation.md",
-              "research/a1_gfc_decomposition/README.md"]
+SCAN_FILES = ["README.md", "atlas/content/story.ts", "web/content/story.ts", "analysis/recommendation.md"] + sorted(
+    str(p.relative_to(ROOT)) for p in (ROOT / "research").glob("*/README.md"))  # every research write-up
 
 # Non-claims. Each entry: file (exact path), pattern (regex matched with fullmatch against the
 # normalised token), reason. Keep this short; prefer registering a row.
@@ -159,20 +162,26 @@ def load_register(path: Path = REGISTER):
     with path.open(newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         header = next(reader, [])
-        rows = [dict(zip(header, r)) | {"_line": n} for n, r in enumerate(reader, 2) if any(c.strip() for c in r)]
+        rows = [dict(zip(header, r)) | {"_line": n, "_file": path.name} for n, r in enumerate(reader, 2) if any(c.strip() for c in r)]
         widths = [len(r) for r in csv.reader(path.open(newline="", encoding="utf-8"))]
     return header, rows, widths
 
 
-def validate_register(root: Path = ROOT, register: Path = REGISTER, results_path: Path = VALIDATION_RESULTS):
+def validate_register(root: Path = ROOT, register: Path = REGISTER, results_path: Path = VALIDATION_RESULTS,
+                      track_dir: Path | None = None):
     errors: list[str] = []
-    header, rows, widths = load_register(register)
-    if header != SCHEMA:
-        errors.append(f"register header mismatch.\n  expected {SCHEMA}\n  found    {header}")
-        return errors, rows
-    for n, w in enumerate(widths, 1):
-        if w and w != len(SCHEMA):
-            errors.append(f"register.csv line {n}: {w} columns, expected {len(SCHEMA)}")
+    track_dir = TRACK_REGISTERS if track_dir is None and register == REGISTER else track_dir
+    files = [register] + (sorted(track_dir.glob("*.csv")) if track_dir and track_dir.is_dir() else [])
+    rows = []
+    for f in files:
+        header, frows, widths = load_register(f)
+        if header != SCHEMA:
+            errors.append(f"{f.name} header mismatch.\n  expected {SCHEMA}\n  found    {header}")
+            return errors, rows + frows
+        for n, w in enumerate(widths, 1):
+            if w and w != len(SCHEMA):
+                errors.append(f"{f.name} line {n}: {w} columns, expected {len(SCHEMA)}")
+        rows += frows
 
     checks: dict[str, str] = {}
     if results_path.exists():
@@ -182,7 +191,7 @@ def validate_register(root: Path = ROOT, register: Path = REGISTER, results_path
 
     seen: set[str] = set()
     for r in rows:
-        tag = f"register.csv:{r['_line']} [{r.get('claim_id', '?')}]"
+        tag = f"{r.get('_file', 'register.csv')}:{r['_line']} [{r.get('claim_id', '?')}]"
         for col in REQUIRED:
             if not (r.get(col) or "").strip():
                 errors.append(f"{tag}: empty required field {col}")
