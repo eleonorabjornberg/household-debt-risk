@@ -8,6 +8,11 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 | F1 | ready for review | Every register row on both sites is a hover/focus popover + link to `/sources#<id>`; 46/49 web and 27/29 atlas rows link in the prerendered HTML, the rest are listed with reasons in `claims/site/unlinked.json` (3 are register fixes below) |
 | F2 | ready for review | `make all` and `.github/workflows/ci.yml`; evals join once E3 exists. F2-1 done: FRED pinned via ALFRED, so pinned reruns reproduce every committed result byte for byte (`8bf5d88`) |
 | F4 | ready for review | Downloads under `/downloads/v1/` (latest plus an archive of every Z.1 release), dictionary, licence notes, chart-text check, API plan. F4-1 to F4-3 done (`abc9894`) |
+| F3 | ready for review, 2 questions (F3-1, F3-2) | `.github/workflows/z1-release.yml` + `tools/z1_release.py` (3 tests). Rehearsed locally on the 2026-06-11 → 2026-09-11 release (what moved, stale claims, PR body). Not run on GitHub: scheduled runs only fire from the default branch, so nothing runs before merge |
+| D3 | next | research-memo skill |
+| E2 | todo | pre-register first |
+| E3 | todo | |
+| D7 | todo | |
 
 Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 
@@ -28,6 +33,7 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-04 ~04:50 UTC, F3. Main model, no subagents (0 subagent tokens). The workflow reuses the z1-release-update skill's `what_moved.py` and `stale_claims.py`. Detection reads the Z1.csv member date, so it works in a fresh CI checkout (the skill's `detect_release.py` needs `data/manifest.jsonl`, which CI lacks). The comparison vintage is the Fed's archived per-table zip of the previous release (`/releases/z1/<YYYYMMDD>/z1_csv_files.zip`; 20260911 already answers 200). Rehearsal: what_moved 2026-06-10 → 2026-09-11 written, stale_claims ran (2 count rows "cannot compare", as designed), PR body assembled. Not exercised: `gh pr create` and the full workflow on GitHub (they fire only from main).
 - 2026-11-04 ~04:35 UTC: merged `51a0b6a` (coordinator branch) into `claude/track-infra` with no conflicts (`a14db9f`). The pre-commit checks pass on the merged tree, as do the offline suites (pipeline 48 passed / 2 skipped, claims+research+validation+skills 65 passed / 2 skipped, MCP 33 passed / 1 skipped). `make ci-static` caught that the sites' `lib/claims.json` was stale after the register fold; I regenerated it (`17e1e1a`). Web now links 47/49 rows (the `5.0 pts` fix landed) and atlas 27/29. Both sites test and build, and the F1 and F4 checks pass. I did not start the rest of the overnight list (see Q-scope).
 - 2026-11-04, second pass after the coordinator relayed Eleonora's decisions (verified against PLAN.md on `claude/sweet-gates-avwrcs`, commit `a590475`). Main model, no subagents (0 subagent tokens). Errors caught by Claude: (1) ALFRED's number formatting changed `analysis/tables/fed_mbs.csv` without changing any value; `repro_check` passed but `git status` showed the diff, so I normalised the formatting. (2) Shell heredocs containing a command-substitution string tripped the command safety check, so nothing ran; I redid those edits with the Edit tool.
 - 2026-11-04, infra track session. Tasks F1, F2, F4. The main model did all the design, code and review. I used no subagents: each step was a few targeted reads and edits, so delegating would have cost more than it saved. Subagent tokens: 0. Cost not measured.
@@ -41,6 +47,21 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 - Register: F1–F4 publish no new numbers. The `/sources` summary counts register rows; `/data` shows source vintages from `meta.json`. So `claims/tracks/infra.csv` is not needed.
 
 ## Questions for Eleonora
+- **F3-1. The existing `refresh.yml` loads the production database on a schedule** (20 Mar/Jun/Sep/Dec, `load` defaulting to true). The sites read Supabase live, so that publishes new data before anyone reviews it, which breaks F3's "nothing publishes without her merge". Options:
+  - (a) Drop `refresh.yml`'s schedule and set `load` to default false: z1-release opens the PR, and after merging you run refresh-data by hand with load = true.
+  - (b) Same as (a), plus an automatic load when a `data/z1-*` PR is merged into main.
+  - (c) Keep both.
+
+  **Recommendation: (a)** (patch below); (b) later if the manual step proves a chore. I have not changed `refresh.yml`.
+- **F3-2. Who drafts the reader-facing release notes?** The PR carries the deterministic "what moved" note and the stale-numbers list. PLAN F3 says "Claude drafts release notes". Options:
+  - (a) A Claude session runs the `z1-release-update` skill on the PR branch and adds a "Claude draft" notes file (no new cost or secret; someone opens the session).
+  - (b) `anthropics/claude-code-action` drafts them inside the workflow (needs an `ANTHROPIC_API_KEY` Actions secret and a small cost each quarter).
+
+  **Recommendation: (a) now.** (b) is a cost decision like D6 and E1.
+- **Settings Eleonora must change for F3** (no secret values pass through chat):
+  - Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests".
+  - Confirm the `FRED_API_KEY` repository secret exists; `refresh.yml` already uses it.
+  - Note: a PR opened with the workflow's token does not trigger `ci.yml` (GitHub's rule). Re-run CI from the PR, or push an empty-change commit by hand.
 - ~~Q-scope~~ **Resolved by PLAN.md `cc74d76`** (coordinator branch). That commit records Eleonora's approval to continue Phases B–F overnight in her words, and the Parallel tracks table now gives infra F3, D3, E2 (pre-registered first), E3, D7. I verified it there before starting. D6, E1 and E4 stay hers (cost or API key).
 
 Answered 2026-11-04: Eleonora accepted the recommendations (PLAN.md "Decisions taken", coordinator commit `a590475`). What was done:
@@ -52,6 +73,7 @@ Answered 2026-11-04: Eleonora accepted the recommendations (PLAN.md "Decisions t
 - **For F3 (coordinator):** the refresh workflow should run `make ingest FRED_ASOF=<run date>` and commit the new `opendata/archive/z1-<date>/` with the snapshots.
 
 ## Proposed changes to shared files
+- **F3-1 (a) patch, if approved** (`.github/workflows/refresh.yml`; not a shared file, but it decides what reaches production, so it waits for her): delete the `schedule:` block (lines 7–8), change `default: true` to `default: false` for the `load` input, and replace the header comment with "Manual: load the database after merging a z1-release PR (Actions → refresh-data → Run workflow, load = true). Scheduled release detection is z1-release.yml."
 0. **New, after merging `cc74d76`, `claims/register.csv`:** `web/content/story.ts:148` renders the A1 Shapley numbers bare ("accounts for 6.9 of the 13.1 pts and public growth for 6.2 … only 1.2 of it"), because the copy strips " pts". Either add the bare spellings `6.9`, `6.2`, `1.2` to `a1_private_change_pp`, `a1_public_growth_pp`, `a1_ff_pp` (the F1 matcher only links them on that cited line, with digit boundaries), or keep the unit in the copy ("6.9 points"). Recommendation: keep the unit; a bare "6.9" reads as unitless. Then remove the three rows from `claims/site/unlinked.json`, where they are listed as known exceptions for now.
 Patches for the coordinator; I have not applied them.
 
