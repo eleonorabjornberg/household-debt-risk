@@ -1,7 +1,23 @@
-> **Claude draft.** Drafted by Claude for Eleonora to decide. Each `CHOICE:` below is hers; this file is not frozen and E2 must not be run until she has made every choice and the frozen commit exists (`preregister` skill).
+> **Claude draft.** Drafted by Claude; Eleonora's choices are recorded in the Decisions table. Not frozen: E2 must not be run until every choice is made and the frozen commit exists (`preregister` skill).
 
 # Pre-registration: E2, planted-error test for the reviewer subagents
-Status: **draft** (2026-11-04). Not frozen. No E2 result exists: there is no `evals/` folder, and no planted-error run has appeared in `claims/review-log.md` or the logs as of this draft.
+Status: **draft, partly decided** (2026-11-04). Not frozen. No E2 result exists.
+
+## Decisions (Eleonora, 2026-11-04, decision card about 16:35–16:41 UTC; PLAN.md "Decisions taken", `543d96a`: "accept all the recommendations for CHOICE-1 to CHOICE-9")
+| Choice | Decided |
+|---|---|
+| CHOICE-3 size | (a) 12 planted documents × 3 errors + 4 controls (36 errors) |
+| CHOICE-5 isolation | (b) separate worktree holding only the variants plus the data |
+| CHOICE-6 told about plants | no |
+| CHOICE-7 scoring | (b) `score.py` location match, human "same fix" judgement, a second human re-scores a random 20% |
+| CHOICE-8 intervals | both; cluster bootstrap over documents (2,000 resamples) is primary |
+| CHOICE-9 baseline reviewer | yes, on data documents only |
+| **CHOICE-1 recall threshold** | **open**: the draft gave no recommended value. Proposed 70% (tracks/infra.md E2-2) |
+| **CHOICE-2 false-alarm ceiling** | **open**: no recommended value. Proposed 25% |
+| **CHOICE-4 seed** | **open**: the draft listed two options with no recommendation. Proposed: the fixed integer `20261104`, written here before freezing (the commit-hash option cannot be known before the commit that contains it) |
+| **CHOICE-10 category balance** | **open**: outside "CHOICE-1 to 9". Recommended (b), stratified |
+
+The file is frozen (`prereg: E2 (frozen)`) once the four open choices have values. Until then `plant.py` refuses to run.
 
 ## Question
 How often do the project's reviewer subagents, `skeptic` (data: revisions, definitions, double counting, holder-vs-risk, causal words, arithmetic) and `quant-reviewer` (method: leakage, look-ahead, overfitting, multiple testing, standard errors, benchmarks), catch errors deliberately planted in copies of real project write-ups? Which kinds do they miss, and how often do they raise objections where nothing was planted?
