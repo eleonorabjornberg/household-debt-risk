@@ -82,7 +82,9 @@ def vintages(series_id: str, refresh: bool = False) -> pd.DataFrame:
     params = {"series_id": series_id, "realtime_start": "1776-07-04", "realtime_end": "9999-12-31",
               "output_type": 1, "limit": 100000}
     d = _get("series/observations", params, f"alfred_{series_id}", refresh)
-    if int(d.get("count", 0)) > len(d["observations"]):
+    if "count" not in d:
+        raise RuntimeError(f"{series_id}: ALFRED response has no 'count'; cannot check completeness")
+    if int(d["count"]) > len(d["observations"]):
         raise RuntimeError(f"{series_id}: {d['count']} vintage rows, only {len(d['observations'])} returned; paginate")
     df = pd.DataFrame(d["observations"])
     df["date"] = pd.to_datetime(df["date"])
@@ -130,7 +132,10 @@ def to_millions(v: pd.DataFrame, units: pd.DataFrame) -> tuple[pd.DataFrame, int
     for _, u in units.iterrows():
         k = factor(u["units"])
         if k is None:
-            return v, 0
+            labels = set(units["units"])
+            if any(factor(x) is not None for x in labels):
+                raise ValueError(f"mixed units labels, some without a dollar scale: {labels}")
+            return v, 0  # non-dollar series (percent, index): nothing to rescale
         m = (out["realtime_start"] >= u["realtime_start"]) & (out["realtime_start"] <= u["realtime_end"])
         f[m] = k
     out["value"] = out["value"] * f
