@@ -12,11 +12,11 @@ Data: Fed Distributional Financial Accounts (DFA, files dated 2026-09-15, throug
 |---|---|---|---|
 | Bottom 50% | 22.6% | 51.6% | 2.3% |
 | Next 40% | 48.9% | 34.9% | |
-| Top 10% | 28.4% | | 68.9% |
+| Top 10% | 28.5% | | 68.9% |
 
-- **The bottom half by wealth owes half the consumer credit but a fifth of the mortgages.** In 1989Q3 the split was 27.5% of mortgages and 43.8% of consumer credit (`figures/dfa_bottom50_shares.png`).
+- **The bottom half by wealth owes half the consumer credit but a fifth of the mortgages.** In 1989Q3 the split was 27.5% of mortgages and 43.8% of consumer credit; the mortgage share peaked at 34.6% in 2010Q3 (`figures/dfa_bottom50_shares.png`). Groups are ranked by net worth, and debt lowers net worth, so heavily indebted households sort into the bottom half partly by construction; and who is in the bottom half changes as house prices move. The comparison over time is between groups whose membership changes, not between the same households.
 - **By income, mortgages sit at the top.** The top 20% by income owe 53.2% of home mortgages; the bottom 20% owe 3.3% of mortgages and 7.1% of consumer credit.
-- **Leverage is concentrated at the bottom, but lower than in 2007.** The bottom 50% by wealth owe 58.4% of their assets in debt, down from 81.5% in 2007Q4. For the top 0.1% the ratio is 1.1%. (`dfa_leverage.csv`; the DFA values real estate at market prices, so these ratios move with house prices.)
+- **Leverage is concentrated at the bottom, but lower than in 2007.** The bottom 50% by wealth owe 58.4% of their assets in debt, down from 81.5% in 2007Q4 and a peak of 95.3% in 2010Q4. For the top 0.1% the ratio is 1.1%. (`dfa_leverage.csv`; the DFA values real estate at market prices, so these ratios move with house prices.)
 
 ## Who holds the loans (Z.1, 2026Q2)
 
@@ -24,8 +24,8 @@ Public holders (federal government, GSEs and agency pools, state and local) hold
 
 ## Where (NY Fed state data, Q4 2025)
 
-- **Mortgage debt per person with a credit file** ranges from $20.8k in West Virginia to $78.1k in DC, a 3.8× spread (`figures/state_mortgage_pc_2025.png`).
-- **Student loan debt per person**, a mostly federal loan type (the NY Fed series includes private student loans), ranges from $3.2k in Wyoming to $12.7k in DC (`figures/state_studentloan_pc_2025.png`).
+- **Mortgage debt per person with a credit file** ranges from $20.8k in West Virginia to $78.1k in DC, a 3.8× spread; DC is a city, and across the 50 states alone the spread is 3.5× (Colorado, $72.2k). The NY Fed series excludes home-equity lines, which the DFA and Z.1 mortgage figures include. On the map DC shares the top band with every state above $55.6k (`figures/state_mortgage_pc_2025.png`).
+- **Student loan debt per person**, a mostly federal loan type (the NY Fed series includes private student loans), ranges from $3.2k in Wyoming to $12.7k in DC (`figures/state_studentloan_pc_2025.png`). The extremes are single sample estimates, and the student-loan series comes from a 1% sample, so small states move a lot from year to year.
 - Mortgage delinquency by state: `figures/state_mortgage_delinq_2025.png`; all states: `state_2025.csv`.
 
 ## Limits
