@@ -2,28 +2,28 @@
 
 > **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
 
-**PLAN task A8. Status: partial.** Eleonora chose (2026-11-04) to show both measures, with the risk bearer as the headline. National sources give a computable share for two of the five countries; for the other three, one figure is missing and is recorded as missing ([`AVAILABILITY.md`](AVAILABILITY.md)). Definitions by country: [`CROSSWALK.md`](CROSSWALK.md). Sources, hashes and quotes: [`sources.md`](sources.md) and [`national_figures.csv`](national_figures.csv).
+**PLAN task A8. Status: partial.** Eleonora chose (2026-11-04) to show both measures, with the risk bearer as the headline. Only the US has a computable headline (b) share, and only Germany a computable holder (a) share; every other cell lacks one national figure and is recorded as missing ([`AVAILABILITY.md`](AVAILABILITY.md)). Definitions by country, checked against the sources where they could be reached: [`CROSSWALK.md`](CROSSWALK.md). Sources, hashes and quotes: [`sources.md`](sources.md), [`national_figures.csv`](national_figures.csv).
 
-## Result, end of 2025
+## Result
 
-| | (b) Risk bearer: public body takes the credit loss (headline) | (a) Holder: held by publicly owned lenders |
+| | (b) Risk bearer: a public body takes the credit loss (headline) | (a) Holder: held by publicly owned lenders |
 |---|---|---|
-| **US** | 55.2% to 56.2% (public holders, net of CRT; A2) | 56.4% (Z.1) |
-| **Canada** | not computable; CMHC insures 19.8% of residential mortgages | not sourced |
-| **Denmark** | mortgage-bank loans (80.4% of household loans): none; student loans not sourced | none found except student loans (not sourced) |
-| **UK** | not computable: government student loans not sourced | same |
-| **Germany** | none found for bank loans (KfW loans carry the on-lending bank's liability); student loans not sourced | 29.1% (savings banks and Landesbanken) |
+| **US**, end 2025 | 55.2% to 56.2% (public holders and guaranteed GSE/agency pools, net of CRT; A2) | not computable from Z.1 (see Limits); the project's public bucket, which counts guaranteed pools, is 56.4% |
+| **Canada** | not computable; CMHC states it insures 19.8% of Canadian *residential* mortgages (31 Dec 2025) | not sourced |
+| **Denmark** | not computable: state student loans not sourced; no public loss on mortgage-bank loans (Nationalbank, 2013) | not computable (student loans) |
+| **UK** | not computable: student loans, Help to Buy equity loans and the Mortgage Guarantee Scheme not sourced | same |
+| **Germany**, Q4 2025 | not computable: BAföG not sourced; losses at publicly owned banks unclassified (Q7) | 30.3% (savings banks, Landesbanken and promotional banks) |
 
-- **The US is the outlier on the headline measure even before the gaps are filled.** In Denmark the mortgage bank, not the state, bears the loss on the loans that make up most household credit: "the credit risk is initially borne by the mortgage bank" (Danmarks Nationalbank). In Germany KfW's housing loans are passed through banks that take "die Haftung" (liability). Canada's public exposure runs through mortgage insurance: CMHC alone covers 19.8% of residential mortgages, before the federally backed cover of private insurers.
-- **The holder measure misleads across systems.** Germany's publicly owned savings banks and Landesbanken hold 29.1% of bank lending to individuals, but public ownership does not guarantee the borrower's loan; on the risk-bearer measure that 29.1% is private risk.
-- **Canada needs care.** CMHC's insurance-in-force includes multi-unit rental mortgages, which are not household debt, and the private insurers' federally backed cover is not sourced, so no Canadian share of household credit is computed.
+- **No ranking yet.** Only the US has a headline share, and every gap elsewhere (student loans in all four countries; private insurers' federally backed cover in Canada; UK schemes) can only raise the other countries' shares. The evidence so far is qualitative: in Denmark "the credit risk is initially borne by the mortgage bank" (Danmarks Nationalbank, 2013), on mortgage-bank loans that make up 80.4% of Danish bank and mortgage-bank loans to households; in KfW's home-ownership programme 124/134 the on-lending bank takes the liability ("die Haftung", KfW programme sheet, 2023); Canada's public exposure runs through mortgage insurance (CMHC's 19.8% is a share of residential mortgages, which include multi-unit rental, not of household credit).
+- **The two measures diverge most in Germany.** Publicly owned banks hold 30.3% of bank lending to individuals. Whether their losses count as public is a classification question, not settled by a source here (Q7, `tracks/analysis.md`).
 
 ## Limits
 
-- **Student loans are the common gap.** The US share includes federal student loans; for Canada, Denmark, the UK and Germany the state's student-loan book is not sourced (official hosts blocked or no free stock figure), so their public shares are understated where shown.
-- **Different denominators.** Each country's total comes from its own national source (StatCan national balance sheet; Statbank DNMUDL bank and mortgage-bank loans; BoE lending to individuals excluding student loans; Bundesbank bank lending to employees and other individuals). They are not harmonised; the BIS household-credit ratios on FRED are harmonised but give no public share.
-- **US "risk bearer" is still a holder measure net of CRT.** FHA/VA-insured loans held by private lenders are not added back, and mortgage insurance is a separate line (A2).
-- **Dates.** Year-end 2025 throughout (Canada StatCan Q4 2025, CMHC 31 Dec 2025).
+- **US holder measure.** The GSEs' guaranteed MBS are mostly held by private investors, but since FAS 166/167 (2010Q1) Z.1 carries the Enterprises' consolidated trusts inside their own lines (A1), so retained holdings cannot be separated with the series used here. The US therefore has a risk-bearer share and no holder share.
+- **Denominators differ.** Each country's total is its own national figure: StatCan national balance sheet (mortgages + consumer credit); Statbank DNMUDL bank and mortgage-bank loans to households; Bank of England lending to individuals excluding student loans; Bundesbank bank lending to employees and other individuals (excludes the self-employed and non-profits). None is harmonised with the US Z.1 scope.
+- **Germany's holder share** leaves out public building-savings banks (Landesbausparkassen), which the Bundesbank table does not separate from private ones.
+- **Dates.** Figures are end 2025 (Canada StatCan Q4 2025; CMHC 31 Dec 2025; Bundesbank Q4 2025). The qualitative statements are older: Danmarks Nationalbank 2013, KfW programme sheet 2023.
+- **Re-checking.** Raw files are not committed; the hashes identify the copies read. The Bank of England query ends "Dateto=now" and the Statbank query is a POST, so a later download will differ; the exact Statbank query is in `sources.md`.
 
 ## Files and how to rerun
 
@@ -32,5 +32,5 @@ uv run --project pipeline python research/a8_international/compare.py
 ```
 
 - `national_figures.csv`: every non-US figure, transcribed from its national source with URL, SHA-256 and the exact table cell or quote.
-- `compare.py`: computes only shares with a national numerator and denominator; asserts URL and hash for every number, shares in [0, 1], and the US ordering low ≤ high ≤ holder.
+- `compare.py`: computes only shares with a national numerator and denominator; asserts URL and hash for every number, shares in [0, 1], and the US ordering.
 - `comparison.csv`, `results.json`: outputs.

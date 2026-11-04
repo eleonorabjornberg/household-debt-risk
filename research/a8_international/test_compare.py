@@ -15,7 +15,7 @@ A2 = {"public_share_gross_pct_last": 56.4, "public_share_net_lower_pct_last": 55
 
 def test_every_number_has_url_and_hash_and_missing_stays_missing():
     t = m.compare(m.load(), A2)
-    assert t.at["DE", "holder_a"] == pytest.approx((438448 + 13519) / 1551414)
+    assert t.at["DE", "holder_a"] == pytest.approx((438448 + 13519 + 17817) / 1551414)
     assert pd.isna(t.at["UK", "holder_a"]) and pd.isna(t.at["CA", "risk_b_low"])  # absent, never zero
 
 
@@ -29,6 +29,6 @@ def test_number_without_hash_is_refused(tmp_path):
 
 
 def test_us_ordering_is_checked():
-    bad = {**A2, "public_share_net_lower_pct_last": 57.0}
+    bad = {**A2, "public_share_net_lower_pct_last": 57.0}  # low above high
     with pytest.raises(AssertionError):
         m.compare(m.load(), bad)
