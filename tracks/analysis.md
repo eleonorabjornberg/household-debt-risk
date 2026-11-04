@@ -5,10 +5,11 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 ## Status
 | Task | Status | Notes |
 |---|---|---|
-| A2 | in progress: Freddie (2013–2025) and Fannie (2017, 2020–2025) outstanding cover built; net of both Enterprises' CRT 56.0% vs 56.4% gross (2025); skeptic on the Fannie part pending | `research/a2_net_exposure/` |
+| A2 | ready for review: Freddie (2013–2025) and Fannie (2017, 2020–2025) outstanding cover; net of both Enterprises' CRT 56.0% vs 56.4% gross (2025); skeptic done | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
 | A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
-| A4 | ready for review: run to the frozen prereg (02cc47f); one break at 1966Q1 (CI 1952Q2–1967Q1); no evidence at the five 2008–10 dates; vintage-robust; quant review done (interval bug fixed); not confirmable without R | `research/a4_breaks/` |
+| A4 | ready for review: run to prereg 02cc47f; break at 1966Q1; no evidence at the 2008–10 dates; R strucchange cross-check within tolerance; deviations accepted by Eleonora | `research/a4_breaks/` |
+| A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
 ## Where the track stopped (2026-11-04, about 05:45 UTC)
