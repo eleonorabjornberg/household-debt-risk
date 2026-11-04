@@ -55,7 +55,13 @@ def main() -> int:
     assert abs((ca.sum(axis=1) - dfa["FL154104015"]).loc[:"1952-12-31"]).max() < 1e-6, "cells do not reproduce scope"
     share_gap = float((sa.loc[common, "public_share_pct"] - sq.loc[common, "public_share_pct"]).abs().max())
     assert share_gap < 1e-9
-    early = sa.loc[:"1952-12-31"]
+    early = sa.loc[:"1952-12-31"].copy()
+    # Components in $M for the overlap check with Historical Statistics (pre1945.py).
+    pub = ca.xs("public", level="side", axis=1)
+    fed = [k for k in pub.columns if "Federal government (direct)" in k[1]]
+    early["federal_mortgages_musd"] = pub[fed].sum(axis=1).loc[:"1952-12-31"]
+    early["mortgages_musd"] = dfa["FL153165105"].loc[:"1952-12-31"]
+    early["consumer_credit_musd"] = dfa["FL153166000"].loc[:"1952-12-31"]
     early.index = early.index.year
     early.round(4).to_csv(HERE / "z1_annual_share.csv", index_label="year")
     vintage = a1.zparse.zip_member_info(Z1)[0].isoformat(sep=" ")
