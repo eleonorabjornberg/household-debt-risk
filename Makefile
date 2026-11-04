@@ -74,8 +74,8 @@ test:  ## offline Python suites (pipeline, claims, validation, research, skills,
 test-db:  ## database tests (needs DATABASE_URL / DATABASE_URL_READONLY and a reachable host)
 	cd pipeline && $(UV) run -q pytest -q tests/test_snapshot_and_db.py
 
-f1-links:  ## every register row is a link on its site (after build)
-	@for s in $(SITES); do node claims/site/check_html.mjs --site $$s; done
+f1-links:  ## after build: every register row is a link (F1), every chart has a text description (F4)
+	@for s in $(SITES); do node claims/site/check_html.mjs --site $$s; node tools/check_chart_text.mjs --site $$s; done
 
 repro:  ## regenerated results match the committed ones
 	python3 tools/repro_check.py
@@ -90,6 +90,7 @@ ci: ci-static test site-test site-build f1-links
 ci-static:  ## register check and stale-copy check (before any build rewrites the copies)
 	$(PY) claims/check_register.py
 	node claims/site/sync.mjs --check
+	node web/scripts/make-downloads.mjs --check
 
 clean-data:  ## remove downloaded data (data/ is gitignored)
 	rm -rf $(DATA) analysis/.cache

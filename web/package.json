@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/sync-catalog.mjs && node scripts/sync-claims.mjs",
+    "prebuild": "node scripts/sync-catalog.mjs && node scripts/sync-claims.mjs && node scripts/make-downloads.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

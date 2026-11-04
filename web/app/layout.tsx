@@ -40,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Link href="/#ratchet">Story</Link>
                 <Link href="/methods">Methods</Link>
                 <Link href="/how-it-was-built">How it was built</Link>
+                <Link href="/data">Data</Link>
                 <Link href="/sources">Sources</Link>
               </nav>
             </div>
