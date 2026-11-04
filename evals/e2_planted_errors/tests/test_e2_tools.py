@@ -122,3 +122,27 @@ def test_match_and_summarise(tmp_path):
 def test_wilson_known_value():
     lo, hi = score.wilson(18, 36)
     assert abs(lo - 0.3442) < 1e-3 and abs(hi - 0.6558) < 1e-3
+
+
+def test_stratified_plants_each_category_equally(tmp_path):
+    """CHOICE-10 (b): every category of an agent is planted the same number of times."""
+    cat = plant.load_catalogue()
+    n_s = sum(e["agent"] == "skeptic" for e in cat)
+    # one planted data document per category with k = 1: each skeptic category exactly once
+    docs = [DATA_DOC] * n_s
+    groups = plant.stratify(docs, [e for e in cat if e["agent"] == "skeptic"], 1, random.Random(3))
+    counts = {}
+    for g in groups:
+        for e in g:
+            counts[e["id"]] = counts.get(e["id"], 0) + 1
+    fits = [e["id"] for e in cat if e["agent"] == "skeptic" and plant.plant_doc(DATA_DOC, [e], 1, random.Random(0))[1]]
+    if len(fits) < n_s:
+        pytest.skip("synthetic data document does not fit every category")
+    assert set(counts.values()) == {1} and len(counts) == n_s
+    assert groups == plant.stratify(docs, [e for e in cat if e["agent"] == "skeptic"], 1, random.Random(3))
+
+
+def test_stratified_rejects_uneven_split():
+    cat = [e for e in plant.load_catalogue() if e["agent"] == "skeptic"]
+    with pytest.raises(SystemExit):
+        plant.stratify([DATA_DOC], cat, 3, random.Random(0))
