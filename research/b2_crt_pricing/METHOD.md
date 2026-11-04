@@ -38,4 +38,11 @@ Date: 2026-11-04. PLAN task B2: "CRT spreads as the market's price for the risk 
 - m measures price relative to FHFA's baseline loss, not to a loss distribution. A high m can mean risk aversion or a belief that losses will exceed the baseline; the two cannot be separated here.
 
 ## Changes after results
-None yet.
+2026-11-04, after the first run, before any write-up:
+- **Premium rate.** Added the annual cost divided by the bonds actually sold (deal tables, "sold portion"), in % per year, as the price per dollar of protection.
+- **A2 tie.** Dividing by A2's `annual_rif_musd` is kept only as context (`priced_share_of_crt_upb`). A2's risk in force includes insurance deals (CIRT, ACIS) and deals FHFA did not price, so the ratio would mix coverage.
+- **Overstatement.** FHFA's cost assumes 100% of notes are sold, so cost ÷ sold overstates the rate where the Enterprise retained part of a tranche.
+- **Transcription check as done.** Three rows per program (six in all: first, middle and last) were hand-checked against the rendered PDF pages (report pages 6, 9, 13 and 14), not only against the text layer. This replaces the "five rows" planned above. The rendered pages also showed two facts:
+  - The column after "sold" in Freddie Mac's table is "Insured via ACIS", not "retained". It is now labelled that way; B2 does not use it.
+  - The two rows without a deal name are blank in FHFA's printed table itself.
+- **Positive-attach multiples.** For deals attaching at 30–100 bps the baseline cumulative loss (about 31 bps) barely reaches the slice, so the multiple is unstable or absent. Summary multiples are reported for zero-attach deals only.
