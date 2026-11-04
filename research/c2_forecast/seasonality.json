@@ -3,6 +3,10 @@
   "p": 7.034401092342139e-05,
   "n": 285,
   "seasonal": true,
+  "check_ar2_augmented": {
+    "F": 27.503197342746653,
+    "p": 1.341007594292969e-15
+  },
   "sample": "1952Q2-2023Q2",
   "rule": "p < 0.05 => seasonal naive enters the decision rules"
 }

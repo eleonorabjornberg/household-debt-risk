@@ -2,13 +2,11 @@
 
 Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Parallel tracks".
 
-## Summary at stop (2026-11-04)
-**B1** is ready for the coordinator's review. Under the rule fixed in advance, every variant shows no robust association. The honest reading is "inconclusive, low power". Eleonora accepted it as specified (Q-B1 (a)).
-**C1** has its development-sample evaluation done, under Eleonora's design, with a spec committed before any score. Results so far:
-- The accounting bridge has about a quarter lower RMSE than no-change, but the difference is not significant after Holm, and the bridge is biased downward. Under C2's wording that is "comparable", not "beats".
-- The bridge regression does better, on few forecasts.
-- The holdout has not been run. It waits on the coordinator's ruling on the C1/C2 holdout conflict.
-Nothing touched production or the database.
+## Summary at stop (2026-11-04, overnight)
+- **B1** is done, per the coordinator. **B2** is ready for review. **B3** core is ready for review; its presets wait on Q-B3. **B4** is blocked on B3's presets. **C1** is ready for review (development); its holdout is sealed until Eleonora decides Q-C1c.
+- **C2** development is done and quant-reviewed (q17–q24 addressed), and its holdout is sealed. Three protocol items wait for Eleonora: the test ordering and seasonal naive (both PROPOSED in `research/c2_forecast/SPECS.md`), and the placebo definition. Development allows no "beats" claim: only h = 1 against no-change passes Holm, and that does not survive a bandwidth sensitivity.
+- **C3** has not started. It needs the C2 holdout run, which needs her rulings.
+- Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
 ## Status
 | Task | Status | Notes |
@@ -17,7 +15,7 @@ Nothing touched production or the database.
 | B2 | ready for review | `research/b2_crt_pricing/`. FHFA Dec 2016 deal-level credit costs, 47 deals 2013–16; zero-attach median 32 bps a year, a multiple of about 6.4 (outstanding basis) or 10.4 (original basis) of FHFA's own baseline expected loss; 3.3–6.9% a year per dollar of tranche. Skeptic (s16–s22, 4 major) addressed. 2017+ prices chart-only; GSE/SEC deal data blocked. Method choices: Q-B2. |
 | B3 | ready for review (core); presets and app blocked (Q-B3; app is coordinator site work) | `research/b3_scenarios/`: Python engine + JS twin, invariant tests, JS matches Python on fixed cases (ee9df53, 4b33458). No preset scenario values until sourced. |
 | B4 | blocked (needs B3 presets: Q-B3) | Policy-regime scenarios run on B3 presets; nothing built. |
-| C2 | in progress (development done; quant-reviewer running; three protocol items with the coordinator) | `research/c2_forecast/` (0bc647b). Under the frozen protocol, development only, pseudo out-of-sample: at h = 1 both Z candidates beat no-change after Holm, but not AR; nothing survives Holm at h = 4 or 8; 80% intervals cover at h = 1 and fall short at h = 8; Z+C1 has too few origins. Holdout not opened. Placebo shows drift-like skill (protocol question). |
+| C2 | in progress (development done and quant-reviewed; three protocol items await Eleonora; holdout sealed) | `research/c2_forecast/` (0bc647b). Under the frozen protocol, development only, pseudo out-of-sample: at h = 1 both Z candidates beat no-change after Holm, but not AR; nothing survives Holm at h = 4 or 8; 80% intervals cover at h = 1 and fall short at h = 8; Z+C1 has too few origins. Holdout not opened. Placebo shows drift-like skill (protocol question). |
 | C1 | ready for review (development sample); holdout run waits on Q-C1c | Spec `EVALUATION.md` (7ae4afb) before any score; deviations dated there. Real-time Z.1 from all 41 archived releases (2017-03-09 in folder 20170305). Development result (99d56cd): accounting bridge RMSE about 0.74 of no-change, not significant after Holm, biased downward (mostly 2020–21); bridge regression better on its own 2019Q3–2023Q2 targets, Holm-significant at k = 1 and 2 only. quant-reviewer (q11–q16) and skeptic (s9–s15) run and addressed; one minor stated limitation open (s12). |
 
 ## Log notes for the coordinator
@@ -57,6 +55,8 @@ Nothing touched production or the database.
 - B3 engine and JS twin built (no reviewer: arithmetic engine, tested by invariants).
 - C2 built. Error *caught by Claude (main session)*: I ran the first development scoring before writing the leakage tests, against the protocol's order. It is recorded in `SPECS.md` and reported to the coordinator. The tests then passed without code changes.
 - The z1r parse for pre-2016 vintages was not attempted (lower priority than the queue).
+- quant-reviewer on C2 (about 84k tokens, 22 tool calls; 8 objections: 1 blocker, 4 major). It caught leakage tests that did not exercise the production paths (blocker), DM used where Clark–West was required (nested at h = 1), bandwidth sensitivity of the headline, and a `--no-c1` run that changed the Holm family. All addressed (90a92a2) except the placebo, which waits for Eleonora.
+- C3 not started: it needs the C2 holdout.
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
