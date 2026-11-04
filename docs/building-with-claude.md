@@ -100,3 +100,12 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   16. "1.3 pp by 2008Q3, before the conservatorship" is wrong: 2008Q3 is the 30 September stock, after the 6 September conservatorship. The pre-conservatorship figure is 1.1 at 2008Q2. Caught by the skeptic subagent (R-6); the main model confirmed it from `path.csv`.
   17. The A1 decision note was committed together with the results and says "Decided by: Claude". Caught by the quant-reviewer (R-2). Fixing it needs Eleonora's choice of method.
   18. A curl to cbo.gov that faked a browser User-Agent was denied by the auto-mode classifier as bot-check circumvention. Not retried; the CBO files will be downloaded by hand if the data pages refuse.
+
+### Eleonora's decisions, 2026-11-04 (later)
+- A1 method: Shapley ("Shapley for A1"). The headline is now public growth 6.2 pp and private retreat 6.9 pp. The endpoint identity is kept as a sensitivity.
+- A4, A7, C2 pre-registrations: "accept all recommendations". Every CHOICE is resolved to the option Claude marked as recommended, and each file is then frozen.
+
+### A1 rework (f682771)
+- The main model (coordinator session) did the switch to Shapley, the regenerated outputs and the README draft. The register rows a1_* were updated: one removed, one renamed to 2008Q2, five added.
+- Of the review objections, R-20261104-1 to -11 are resolved in `claims/review-log.md`. R-12 (June-vintage issuer split) is still open.
+- R-5 is resolved by run-time checks. Scope is now reconstructed at every quarter in the window, and the groups must partition the cells. The suggested remove-a-cell test was not added.
