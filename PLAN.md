@@ -145,6 +145,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | public_share_2001q1 / _2005q1: keep the facts and their register exceptions (decision card, 16:35–16:41 UTC). | Eleonora |
 | 2026-11-04 | FRED_API_KEY secret: later (still open) (decision card, 16:35–16:41 UTC). | Eleonora |
 | 2026-11-04 | F2-2 DATABASE_URL_READONLY: not decided; she asked how to add it (decision card, 16:35–16:41 UTC). | Eleonora |
+| 2026-11-04 | SEC EDGAR access for the markets track too (B2 deal data, C3), same rules as Q6: User-Agent as a per-command prefix only, never written to a file ("Markets gets access", chat ~16:50 UTC). | Eleonora |
 
 ## Environment prerequisites
 
