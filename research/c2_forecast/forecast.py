@@ -43,6 +43,7 @@ PHI_GRID = (0.0, 0.25, 0.5, 0.75, 0.9, 1.0)
 BURN_IN = 40
 MIN_ZC1 = 12
 CANDIDATES = ("Z-DIR", "Z-DAMP", "ZC1-DIR")
+OUT_SUFFIX = ""
 BENCH = ("no_change", "drift", "ar_bic", "seasonal_naive")
 
 
@@ -95,7 +96,8 @@ def pairs(share: pd.Series, T: pd.Period, h: int, window: str, extra=None):
     for s in s_all:
         row = lags(d, s)
         if extra is not None:
-            ex = extra(s)
+            ex, src = extra(s)               # every extra feature declares the latest quarter it reads
+            feature_check(src, s)            # leakage test 1 runs through this production path
             if ex is None or not np.isfinite(ex):
                 continue
             row = np.append(row, ex)
@@ -180,6 +182,17 @@ def seasonal_naive(share, T, h):
 
 
 # ------------------------------------------------------------------ C1 bridge feature at an origin date
+def asof_filter(v: pd.DataFrame, t) -> pd.DataFrame:
+    """ALFRED rows current at the end of day t. Leakage tests 2-3 replace this with a broken filter
+    (a latest-vintage read) and check that the guard in growth_from_rows then raises."""
+    t = pd.Timestamp(t)
+    return v[(v["realtime_start"] <= t) & (v["realtime_end"] >= t)]
+
+
+def indicator_growth_pit(v, t, t_end, q_end, freq):
+    return nc.growth_from_rows(asof_filter(v, t), t, t_end, q_end, freq)
+
+
 class Bridge:
     """C1's accounting-bridge nowcast of the change from T to T+1, computed point-in-time at a given date."""
 
@@ -197,7 +210,7 @@ class Bridge:
             return math.nan
         g = {}
         for sid in sorted(set(nc.MAP_2B.values()) | {nc.CC_TOTAL}):
-            g[sid], _ = nc.indicator_growth(self.vint[sid], t, t_end, q_end, nc.FREQ[sid])
+            g[sid], _ = indicator_growth_pit(self.vint[sid], t, t_end, q_end, nc.FREQ[sid])
         return nc.bridge_share(cells, g, g[nc.CC_TOTAL], nc.MAP_2B) - nc.share_of(cells)
 
 
@@ -260,18 +273,27 @@ def lrv(x, lag):
     return v
 
 
-def dm_hln(e_bench, e_cand, h):
+def lrv_bartlett(x, lag):
+    u = x - x.mean()
+    n = len(u)
+    return (u @ u + 2 * sum((1 - k / (lag + 1)) * (u[k:] @ u[:-k]) for k in range(1, lag + 1))) / n
+
+
+def dm_hln(e_bench, e_cand, h, bw=None):
+    """bw=None: the protocol's HAC lag h-1 (primary). bw=8: post-hoc Bartlett sensitivity (mkt-q20)."""
     d = e_bench ** 2 - e_cand ** 2
     n = len(d)
-    stat = d.mean() / math.sqrt(lrv(d, h - 1) / n)
+    v = lrv(d, h - 1) if bw is None else lrv_bartlett(d, bw)
+    stat = d.mean() / math.sqrt(v / n)
     stat *= math.sqrt((n + 1 - 2 * h + h * (h - 1) / n) / n)
     return float(stat), float(2 * nc.t_sf(abs(stat), n - 1))
 
 
-def clark_west(e_small, e_big, f_small, f_big, h):
+def clark_west(e_small, e_big, f_small, f_big, h, bw=None):
     adj = e_small ** 2 - (e_big ** 2 - (f_small - f_big) ** 2)
     n = len(adj)
-    stat = adj.mean() / math.sqrt(lrv(adj, h - 1) / n)
+    v = lrv(adj, h - 1) if bw is None else lrv_bartlett(adj, bw)
+    stat = adj.mean() / math.sqrt(v / n)
     return float(stat), float(nc.norm_sf(stat))
 
 
@@ -300,8 +322,8 @@ def backtest_latest(share: pd.Series, window: str, bridge: Bridge | None, cal: p
             r["seasonal_naive"] = seasonal_naive(share, T, h)
             r["ZC1-DIR"] = math.nan
             if bridge is not None and T in rel_of and rel_of[T] >= pd.Timestamp("2015-03-01"):
-                ex = lambda s: bridge_feature(bridge, s, rel_of)
-                r["ZC1-DIR"] = f_zdir(share, T, h, window, extra=ex, extra_T=ex(T))
+                ex = lambda s: (bridge_feature(bridge, s, rel_of), s)
+                r["ZC1-DIR"] = f_zdir(share, T, h, window, extra=ex, extra_T=ex(T)[0])
             rows.append(r)
     return pd.DataFrame(rows)
 
@@ -433,12 +455,18 @@ def tests(df: pd.DataFrame, seasonal: bool = False) -> pd.DataFrame:
                 if len(d) < 8:
                     continue
                 ec, eb = 100 * (d[cand] - d["actual"]).to_numpy(), 100 * (d[bench] - d["actual"]).to_numpy()
-                if kind == "CW":
+                # At h = 1 an AR(p<=4) on changes is a special case of the direct regression on 4 lags, so
+                # Z-DIR and ZC1-DIR vs AR are nested there (quant-reviewer mkt-q19): Clark-West.
+                k = "CW" if (bench == "ar_bic" and h == 1 and cand in ("Z-DIR", "ZC1-DIR")) else kind
+                if k == "CW":
                     stat, p = clark_west(eb, ec, 100 * d[bench].to_numpy(), 100 * d[cand].to_numpy(), h)
+                    _, p8 = clark_west(eb, ec, 100 * d[bench].to_numpy(), 100 * d[cand].to_numpy(), h, bw=8)
                 else:
                     stat, p = dm_hln(eb, ec, h)
-                rows.append({"design": design, "h": h, "candidate": cand, "benchmark": bench, "test": kind, "n": len(d),
-                             "stat": stat, "p": p, "candidate_lower_rmse": bool((ec ** 2).mean() < (eb ** 2).mean())})
+                    _, p8 = dm_hln(eb, ec, h, bw=8)
+                rows.append({"design": design, "h": h, "candidate": cand, "benchmark": bench, "test": k, "n": len(d),
+                             "stat": stat, "p": p, "candidate_lower_rmse": bool((ec ** 2).mean() < (eb ** 2).mean()),
+                             "posthoc_p_bartlett8": p8})
     t = pd.DataFrame(rows)
     t["p_holm"] = holm(t["p"]).values
     return t
@@ -457,7 +485,16 @@ def seasonality_check(share: pd.Series) -> dict:
     d1, d2 = 3, len(y) - 4
     F = ((r0 @ r0 - r1 @ r1) / d1) / (r1 @ r1 / d2)
     p = nc.betainc(d2 / 2, d1 / 2, d2 / (d2 + d1 * F))
+    # Check (not the gate): the same F-test with two lags of the change as controls, since changes are AR(2)
+    ya, Xa0 = y[2:], np.column_stack([np.ones(len(y) - 2), y[1:-1], y[:-2]])
+    Xa1 = np.column_stack([Xa0] + [(Q[2:] == k).astype(float) for k in (2, 3, 4)])
+    ra0 = ya - Xa0 @ np.linalg.lstsq(Xa0, ya, rcond=None)[0]
+    ra1 = ya - Xa1 @ np.linalg.lstsq(Xa1, ya, rcond=None)[0]
+    da2 = len(ya) - Xa1.shape[1]
+    Fa = ((ra0 @ ra0 - ra1 @ ra1) / 3) / (ra1 @ ra1 / da2)
+    pa = nc.betainc(da2 / 2, 1.5, da2 / (da2 + 3 * Fa))
     return {"F": float(F), "p": float(p), "n": len(y), "seasonal": bool(p < 0.05),
+            "check_ar2_augmented": {"F": float(Fa), "p": float(pa)},
             "sample": f"{d.index[0]}-{d.index[-1]}", "rule": "p < 0.05 => seasonal naive enters the decision rules"}
 
 
@@ -488,6 +525,8 @@ def main(argv=None) -> int:
     ap.add_argument("--prereg")
     ap.add_argument("--no-c1", action="store_true", help="skip the Z+C1 family (no ALFRED cache)")
     a = ap.parse_args(argv)
+    global OUT_SUFFIX
+    OUT_SUFFIX = "_noc1" if a.no_c1 else ""   # a --no-c1 run changes the Holm family: never the primary files (mkt-q21)
     if a.holdout:
         raise SystemExit("holdout run not cleared in this session (Q-C1c / coordinator); development only")
     share = load_latest()
@@ -501,7 +540,7 @@ def main(argv=None) -> int:
     models = list(CANDIDATES) + list(BENCH)
     df = add_intervals(df, [m for m in models if m != "ZC1-DIR"])
     assert (df["T"].map(lambda x: pd.Period(x, "Q")) + df["h"] <= DEV_END).all()
-    df.to_csv(HERE / "forecasts_dev.csv", index=False, float_format="%.8g")
+    df.to_csv(HERE / f"forecasts_dev{OUT_SUFFIX}.csv", index=False, float_format="%.8g")
 
     zmods = ["Z-DIR", "Z-DAMP", "no_change", "drift", "ar_bic", "seasonal_naive"]
     sc = pd.concat([scores(df, zmods, "Z family, all origins"),
@@ -523,12 +562,12 @@ def main(argv=None) -> int:
     lat_same = df[(df.design == "latest-expanding") & df["T"].isin(rt["T"])]
     rt_sc.append(scores(lat_same.assign(design="latest-on-realtime-origins"), ["Z-DIR", "Z-DAMP", "no_change", "drift", "ar_bic"], "real-time check"))
     sc = pd.concat([sc] + rt_sc, ignore_index=True)
-    rt.to_csv(HERE / "forecasts_realtime_dev.csv", index=False, float_format="%.8g")
-    sc.to_csv(HERE / "scores_dev.csv", index=False, float_format="%.6g")
-    cov.to_csv(HERE / "coverage_dev.csv", index=False, float_format="%.6g")
-    ts.to_csv(HERE / "tests_dev.csv", index=False, float_format="%.6g")
+    rt.to_csv(HERE / f"forecasts_realtime_dev{OUT_SUFFIX}.csv", index=False, float_format="%.8g")
+    sc.to_csv(HERE / f"scores_dev{OUT_SUFFIX}.csv", index=False, float_format="%.6g")
+    cov.to_csv(HERE / f"coverage_dev{OUT_SUFFIX}.csv", index=False, float_format="%.6g")
+    ts.to_csv(HERE / f"tests_dev{OUT_SUFFIX}.csv", index=False, float_format="%.6g")
     pl = placebo(share)
-    (HERE / "placebo_dev.json").write_text(json.dumps(pl, indent=2) + "\n")
+    (HERE / f"placebo_dev{OUT_SUFFIX}.json").write_text(json.dumps(pl, indent=2) + "\n")
 
     def clean(o):
         if isinstance(o, dict):
@@ -546,7 +585,7 @@ def main(argv=None) -> int:
            "n_forecasts": df.groupby(["design", "h"]).size().rename("n").reset_index().to_dict(orient="records"),
            "scores": sc.to_dict(orient="records"), "tests": ts.to_dict(orient="records"),
            "coverage": cov.to_dict(orient="records")}
-    (HERE / "results_dev.json").write_text(json.dumps(clean(res), indent=1, allow_nan=False) + "\n")
+    (HERE / f"results_dev{OUT_SUFFIX}.json").write_text(json.dumps(clean(res), indent=1, allow_nan=False) + "\n")
     show = sc[(sc.design == "latest-expanding") & (sc.comparison == "Z family, all origins")]
     print(show[["h", "model", "n", "rmse_pp", "rel_rmse_vs_no_change", "interval_score80_pp", "crps_pp"]].round(3).to_string(index=False))
     return 0
