@@ -7,6 +7,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 |---|---|---|
 | A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
+| A3 | in progress: 1925–1952 built (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44, overlap gap 0.035 pp at 1945); policy timeline 1933–1970 checked against statutes; skeptic pending | `research/a3_pre1952/` |
+| A4 | run to the frozen prereg (02cc47f): one break at 1966Q1 (CI 1965Q1–1997Q4); no evidence at the five 2008–10 dates; vintage-robust; not confirmable without R; quant review pending | `research/a4_breaks/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
 ## Where the track stopped (2026-11-04, about 05:00 UTC)
@@ -36,6 +38,10 @@ A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 o
 - A8 (main model, from the scouts' leads): every non-US figure re-checked against the downloaded official file; the German table re-fetched by the main session so all three German figures come from one Bundesbank file. Claude caught two of its own slips before commit: a KfW URL with a guessed file name (replaced by the recorded URL) and a German row pairing one PDF's URL with another's hash (fixed by re-fetching).
 - Skeptic (A8, 63k tokens): 7 objections. Skeptic caught a blocker: the US 56.4% "holder" share counted guaranteed GSE/agency pools held by private investors, so it was not comparable with Germany's ownership share. Also: an "outlier" claim the gaps could not support, an unsourced "private risk" label for Sparkassen, a stale crosswalk, an omitted promotional-bank block (29.1% → 30.3%). Claude then caught its own first fix (subtracting the pool sector) as wrong, because after FAS 166/167 most investor-held GSE MBS sit in the Enterprises' own lines; US holder share recorded as not computable.
 - Errors caught by Claude (main) through the reconciliation check while building the parser: a wrapped label turned a subtotal into a component (FY2018–20, doubled sums); "Total $" rows were missed so the parse ran past the table (FY2015); a wrapped "STACR ... / transactions" label would have been filed as "other". All caught by the table-total assert before any number was used.
+
+### 2026-11-04 (overnight), A3
+- Coordinator relayed Eleonora's approval to continue into later phases (PLAN cc74d76, checked). A3 built by the main model; source scout (Sonnet, about 170k tokens) found Historical Statistics 1975 on FRASER and the statutes on GovInfo; every value and date re-read by the main session from page images and statute text.
+- Errors caught by Claude (main): the first "Approved" line in a GovInfo page file can belong to the preceding chapter (1944: June 20 is the Sugar Act; 1938: January 27 is chapter 11); dates now taken after each act's own chapter heading.
 
 ## Questions for Eleonora
 (Design choices are hers. List each with the options and a recommendation; do not proceed on that point until she answers.)
@@ -68,6 +74,11 @@ A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 o
 **Q6 (A2). SEC_USER_AGENT not set in the track environment (needed for Fannie Mae 10-K, A2 Q1(b)).** Your decision says the SEC contact is read from `SEC_USER_AGENT`, which you set in the environment settings; it is unset in this session, so no SEC fetch runs and Fannie's outstanding cover is not built. Note: before this was clear, Claude made one EDGAR request (Fannie's 10-K filing list) with a User-Agent it had set in its own shell from the address in your decision, and then attempted a second with that address hard-coded as a fallback; the coordinator stopped the second. Nothing containing the address is committed. Options: (a) set `SEC_USER_AGENT` in the environment settings and start a fresh session for the Fannie step; (b) download Fannie's 10-K filings yourself into `data/a2/fannie/`. Recommendation: (a).
 
 **Q7 (A8). Do losses at publicly owned banks count as public?** Germany's savings banks, Landesbanken and promotional banks hold 30.3% of bank lending to individuals. On the risk-bearer measure, a loss at a publicly owned bank falls first on that bank's capital, which is public-sector equity, but (on general knowledge, not yet sourced) carries no state guarantee since 2005. Options: (a) count it as public on (b) too; (b) count it as private on (b), public only on (a); (c) show it as a third category, "publicly owned, not guaranteed". Recommendation: (c), since it keeps the two measures honest and makes the German case visible rather than resolving it by definition.
+
+**Q8 (A7). Donor design and two H1 details (addendum in `docs/decisions/a7-causal-prereg.md`, 2026-11-04).**
+- (a) H2–H4: the states donor pool you chose (CHOICE 5(b)) needs a state series for each outcome; A5 has none (no state data by holder), and its state data are annual from 2003. Options: (i) fall back to CHOICE 5(c), event study and pre-trend extrapolation only, for H2 and H3, and to 8(a), the mechanical check, for H4 (the pre-registered fallback when no private-student-loan source exists); (ii) replace the outcome with a state series that exists (for example mortgage balances per person) in an intensity design, which needs a new pre-registration; (iii) countries from A8 (5(a)), which have no public-share time series either. Recommendation: (i), since it is the pre-registration's own fallback and needs no new outcome.
+- (b) Weekly S1 = PMMS minus the mean of daily DGS10 over the same week up to the PMMS date. Recommendation: confirm.
+- (c) Constant-mean prediction primary, AR(1) as sensitivity. Recommendation: confirm.
 
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)

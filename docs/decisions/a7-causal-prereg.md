@@ -173,9 +173,26 @@ Decided by Eleonora, 2026-11-04, before any donor data, fit or outcome was looke
 - The primary inference is still the rank of the US's post/pre ratio among the placebos, with no cutoff (the paper's Fig. 8, p. 503). An RMSPE ratio and an MSPE ratio give the same rank, because one is the square root of the other.
 - The fit-failure level is unchanged.
 
+### 2026-11-04: Checklist item 3, donor panel and spread proxy (addendum written before any A7 outcome is inspected)
+Written by Claude (analysis track, overnight; Eleonora away) from the A5 and A8 availability notes and B1's METHOD.md alone; committed on its own before any A7 code is run. Every point that is a choice rather than a fact is marked **for Eleonora** and listed as Q8 in `tracks/analysis.md`.
+
+**1. Donor panel (CHOICE 5 decided (b): US states from A5).** From `research/a5_distribution/AVAILABILITY.md`:
+- *Series:* NY Fed State Level Household Debt Statistics (CCP/Equifax): balance per person aged 18+ with a credit file, by type (mortgage excluding HELOC, auto, credit card, student, total), and the share of each balance 90+ days delinquent; 50 states and DC (Puerto Rico also in the file). *Frequency:* annual, Q4. *Start:* Q4 2003 (through Q4 2025). Sample: 5% of the CCP (1% for student loans).
+- *Also:* NY Fed student loans by state (borrowers, average balance, delinquency), annual from 2016; it mixes federal and private loans.
+- *Not available:* any state series by holder (public vs private, private-label securitization) or by guarantee; A5's note: no free source crosses borrower group or state with holder.
+- *Consequences (facts):* (i) for H2 (private-label holdings), H3 (public share) and H4 (private student loans) there is no state outcome series, so CHOICE 5(b)'s condition, "valid only if A5 finds a state series for the outcome", is not met; (ii) the state series are annual from 2003, while CHOICE 6 fixes a quarterly pre-period 2000Q1–2007Q4 with a 2006Q1–2007Q4 holdout; (iii) A5's notes contain no pre-event state exposure measure (GSE-eligible or FFEL share) for an intensity design.
+- **For Eleonora (Q8a):** what to do for H2–H4 given (i)–(iii). Until she answers, no synthetic control and no intensity regression is run.
+- *A8 (countries, CHOICE 5(a), not chosen), for the record:* A8's notes give national household-credit totals and, for two countries, a public share at end 2025 only; no donor has a public-share time series.
+
+**2. Spread proxy (H1).** B1 uses S1 = Freddie Mac PMMS 30-year fixed rate (FRED `MORTGAGE30US`, weekly, from 1971) minus the 10-year Treasury yield (FRED `DGS10`, daily) (`research/b1_market_pricing/METHOD.md`, line 21), as quarterly means. For A7's weekly event study the weekly S1 is the PMMS value minus the mean of daily `DGS10` over the business days of the same week up to and including the PMMS date. **For Eleonora (Q8b):** this alignment is Claude's implementation choice, fixed here before any spread around 2008 is looked at.
+
+**3. "Constant-mean (or AR(1), fixed now)" (Method, H1).** Fixed now: the constant-mean prediction is primary and the AR(1) prediction is reported as a sensitivity. **For Eleonora (Q8c).**
+
+**4. Disclosure.** Before this addendum, this session's A5 work displayed state cross-sections of NY Fed per-person balances for Q4 2007 and Q4 2025 and DFA national group shares; it did not compute or plot any A7 outcome path (weekly S1 around September 2008, private-label holdings or the public share around 2008Q3, state paths over 2003–2010). B1 (markets track) estimated quarterly S1 regressions; this session has not looked at S1 around 2008.
+
 ## Before freezing (checklist)
 
 1. Done 2026-11-04: Eleonora's choices 1–9 are recorded here and in PLAN.md "Decisions taken".
 2. Done 2026-11-04: Fed MBS dates verified; the ADH attribution could not be verified and was removed (`prereg-fact-checks.md` §1, §3).
-3. **Open.** Before any outcome is inspected, a dated addendum under "Deviations" must state the donor series, frequency and start date from the A5 or A8 availability note, and the spread proxy B1 uses. The addendum is written from those notes alone; neither panel's outcome paths are looked at first.
+3. Done 2026-11-04 (addendum above, under Deviations). Before any outcome is inspected, a dated addendum under "Deviations" must state the donor series, frequency and start date from the A5 or A8 availability note, and the spread proxy B1 uses. The addendum is written from those notes alone; neither panel's outcome paths are looked at first.
 4. Done 2026-11-04: committed alone as `prereg: A7 (frozen)`.
