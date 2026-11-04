@@ -12,8 +12,16 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
-## Where the track stopped (2026-11-04, about 05:45 UTC)
-Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is committed (0f9aaff) before any A7 outcome was inspected; no A7 test has been run, because H2–H4 need Eleonora's answer on the donor design (Q8a) and H1 uses two details she has not yet confirmed (Q8b, Q8c). A6 not started: it needs A2's Fannie figures (Q6) and replication of a CBO fair-value figure first (cbo.gov root answered 403 earlier). Open questions: Q6, Q7, Q8.
+## Handoff (2026-11-04, about 17:15 UTC)
+- **Accepted as is by Eleonora (PLAN.md, review round 1, 17:00 UTC):** A2 Freddie part, A3, A4, A5, A8 (partial by design). The coordinator marks them done.
+- **On her review queue. Don't change these until she answers:** A7 (results.json, README), and the A2 Fannie part (`fannie_*`, the "Both Enterprises" section of the A2 README).
+- **On her docket:** Q7, evidence in `research/a8_international/Q7_EVIDENCE.md` (4d56aad). Once she picks (a), (b) or (c), apply it in `compare.py`, `comparison.csv`, the A8 README and the register rows, then run the skeptic. Also on the docket: the A7 family question. Its card notes that the question came up after the results were seen.
+- **Blocked:** A6. It needs a CBO fair-value figure replicated first, and cbo.gov answers 403. Don't work around it.
+- **For a fresh session:**
+  - Run `git config core.hooksPath .githooks`.
+  - Data files are git-ignored; rerun the scripts to rebuild them (`validation/run.py` downloads Z.1). The EDGAR cache in `data/a2/fannie/` will be gone. Refetch only under the Q6 rules: SEC_USER_AGENT as a per-command prefix only, never written to any file or exported.
+  - Before each commit, grep the tree for the email local part named in the Q6 rule (PLAN.md decisions); it must return nothing.
+  - The A4 R cross-check needs `apt-get update` before R installs.
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
@@ -91,6 +99,8 @@ Ready for review: A2 (Freddie only), A3, A4, A5, A8. A7: the item-3 addendum is 
 **Q6 decided by Eleonora 2026-11-04: in-shell, analysis track only.** (Decision card option "Set it in-shell in one track, SEC requests only (never written to a file)", 16:33 UTC, relayed by the coordinator; the card is in commit 23ad51b.) The User-Agent is passed as a per-command prefix to `research/a2_net_exposure/fannie_10k.py` only, sent only to www.sec.gov, and never written to a file; `git grep` for the address is run before every commit.
 
 **Q7 (A8). Do losses at publicly owned banks count as public?** Germany's savings banks, Landesbanken and promotional banks hold 30.3% of bank lending to individuals. On the risk-bearer measure, a loss at a publicly owned bank falls first on that bank's capital, which is public-sector equity, but (on general knowledge, not yet sourced) carries no state guarantee since 2005. Options: (a) count it as public on (b) too; (b) count it as private on (b), public only on (a); (c) show it as a third category, "publicly owned, not guaranteed". Recommendation: (c), since it keeps the two measures honest and makes the German case visible rather than resolving it by definition.
+
+**Q7 evidence (2026-11-04):** Eleonora asked for research before choosing. The evidence note is `research/a8_international/Q7_EVIDENCE.md`: Bundesbank sources confirm the end of Anstaltslast and Gewährträgerhaftung in July 2005 (Commission decision of 27 March 2004) and that 2008–12 Landesbank losses were absorbed by Länder capital injections, SoFFin and later a state guarantee. The 2001 understanding text, the Commission state-aid decisions and an ownership statement for Sparkassen/Landesbanken could not be reached. Each of (a)/(b)/(c) is set against the evidence; the choice stays hers.
 
 **Q8 (A7). Donor design and two H1 details (addendum in `docs/decisions/a7-causal-prereg.md`, 2026-11-04).**
 - (a) H2–H4: the states donor pool you chose (CHOICE 5(b)) needs a state series for each outcome; A5 has none (no state data by holder), and its state data are annual from 2003. Options: (i) fall back to CHOICE 5(c), event study and pre-trend extrapolation only, for H2 and H3, and to 8(a), the mechanical check, for H4 (the pre-registered fallback when no private-student-loan source exists); (ii) replace the outcome with a state series that exists (for example mortgage balances per person) in an intensity design, which needs a new pre-registration; (iii) countries from A8 (5(a)), which have no public-share time series either. Recommendation: (i), since it is the pre-registration's own fallback and needs no new outcome.
