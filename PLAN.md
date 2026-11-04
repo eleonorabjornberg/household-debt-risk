@@ -11,13 +11,34 @@
 ## How to resume (read this first in a fresh session)
 
 1. Read this file, then `docs/building-with-claude.md` (latest entries at the bottom).
-2. Find the first task whose status is `next`. Check its dependencies are `done`.
-3. Work only on that task. When its acceptance criteria are met, set it to `done`, add a log entry, commit, push.
+2. Find your task. A **track session** (see "Parallel tracks" below) works only on its own track's tasks, in order, on its own branch. The **coordinator session** works on the first task marked `next` that belongs to no track, plus reviews and merges. Check dependencies are `done`.
+3. When a task's acceptance criteria are met, set it to `done` (track sessions: in their track's status file, not here), add a log entry, commit, push.
 4. **Stop at the end of every phase** and ask for approval before starting the next one.
 
 **Status values:** `done` · `in progress` · `next` · `todo` · `blocked (reason)` · `needs-approval` · `dropped (reason)`
 
-**Current position:** Phase A. A1 done; A2 next. Open from Phase 0: D2 and the `research_reader` test need `DATABASE_URL_READONLY`. Proposed for Eleonora: revise recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1.
+**Current position:** Phase A, run as three parallel tracks (below) since 2026-11-04. A1 done. D1, D2, D4, D5 done early. Coordinator next: pre-registration options for A4, A7 and C2 (for Eleonora to choose), D3, skeptic review of A1. Open from Phase 0: D2 and the `research_reader` test need the Supabase pooler host reachable from the sandbox. Proposed for Eleonora: revise recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1.
+
+## Parallel tracks (from 2026-11-04)
+
+Eleonora approved running Phase A onward as parallel cloud sessions, one per track, each on its own branch cut from `claude/sweet-gates-avwrcs`. Phase-end approvals are unchanged: no track starts a new phase's work without her approval.
+
+| Track | Branch | Tasks, in order | Status file |
+|---|---|---|---|
+| Data analysis | `claude/track-analysis` | A2, A5, A8 | `tracks/analysis.md` |
+| Markets and nowcast | `claude/track-markets` | B1, C1 | `tracks/markets.md` |
+| Infrastructure | `claude/track-infra` | F1, F2 (validation and tests only until E3 exists), F4 | `tracks/infra.md` |
+| Coordinator | `claude/sweet-gates-avwrcs` | shared files, reviews, merges; A4/A7/C2 pre-registration options; D3; anything not in a track | this file |
+
+**Shared files are the coordinator's.** Tracks do not edit `PLAN.md`, `claims/register.csv`, `docs/building-with-claude.md`, `README.md`, `CLAUDE.md`, `.claude/settings.json`, `.claude/hooks/` or the site copy (`atlas/content/`, `web/content/`). Instead a track:
+- keeps its status, log notes (tasks, models, subagent tokens, errors and who caught them) and questions for Eleonora in its status file;
+- adds register rows to `claims/tracks/<track>.csv` (same header; `check_register.py` reads it), which the coordinator moves into the register on merge;
+- writes each analysis under `research/<task>_<name>/` with a "Claude draft" banner on the write-up, as A1 does;
+- proposes changes to shared files as a patch or a list in its status file.
+
+**Every track** follows CLAUDE.md and the Rules above, runs its own subagents (cheaper models for routine work), commits through the pre-commit hook, pushes only to its own branch, never touches production, and stops to ask Eleonora (through its status file and its session) for any design choice. Before a task is marked done, the coordinator runs `skeptic` (and `quant-reviewer` for any test or forecast) on it and logs the review in `claims/review-log.md`.
+
+**Merging.** The coordinator fetches a track branch, reviews it, merges it into `claude/sweet-gates-avwrcs`, folds the track's register rows and log notes into the shared files, and tells the track to rebase.
 
 ---
 
@@ -80,6 +101,11 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Four 0.7 copy fixes approved (2026-dollar label, COVID step at 2023Q4, named decline windows, unused facts removed). | Eleonora |
 | 2026-11-04 | Add hooks: register check and tests before every commit; no hand edits to `results.json`. | Eleonora |
 | 2026-11-04 | Authorship: design, validation and write-up are Eleonora's; Claude's analysis texts are labelled drafts until she rewrites them. | Eleonora |
+| 2026-11-04 | Run the plan as parallel tracks (data analysis A2/A5/A8; markets and nowcast B1/C1; infrastructure F1/F2/F4), one cloud session and branch each; this session coordinates, owns the shared files and merges. Higher cost accepted. | Eleonora |
+| 2026-11-04 | Rule change: tracks may run in parallel instead of only the first `next` task; phase-end approvals stay. | Eleonora |
+| 2026-11-04 | Claude drafts the design options for A4, A7 and C2 with the `preregister` skill; Eleonora chooses. | Eleonora |
+| 2026-11-04 | Build the Claude tooling (skills, subagents, MCP) with the whole plan in mind: D1, D2, D4, D5 pulled forward. | Eleonora |
+| 2026-11-04 | `ANTHROPIC_API_KEY` added to the environment settings (D6, E1–E4); `fraser.stlouisfed.org`, `www.census.gov`, `www.cbo.gov` allowed (A3, A6). | Eleonora |
 
 ## Environment prerequisites
 
@@ -88,13 +114,13 @@ Set in the cloud environment's settings (session title bar → environment menu 
 | Need | For | Status |
 |---|---|---|
 | `FRED_API_KEY` (free, fred.stlouisfed.org → My Account → API Keys) | ALFRED vintages for 0.3, C1, C2 | set (2026-11-04) |
-| `DATABASE_URL_READONLY` (`research_reader`, Supabase → Connect → Session pooler) | 0.3, D (MCP, evals, Ask Hot Potato) | not set; needs task 0.2 first |
-| `DATABASE_URL` (write; ideally a Supabase dev branch) | schema changes from Phase A on | not set |
-| `ANTHROPIC_API_KEY` (console.anthropic.com → API Keys; paid) | D (Ask Hot Potato), E1–E4 | not set |
+| `DATABASE_URL_READONLY` (`research_reader`, Supabase → Connect → Session pooler) | 0.3, D (MCP, evals, Ask Hot Potato) | set; the pooler host `aws-0-us-east-1.pooler.supabase.com` does not resolve from the sandbox (2026-11-04), so it needs adding to Allowed domains |
+| `DATABASE_URL` (write; ideally a Supabase dev branch) | schema changes from Phase A on | set (2026-11-04) |
+| `ANTHROPIC_API_KEY` (console.anthropic.com → API Keys; paid) | D (Ask Hot Potato), E1–E4 | added to environment settings 2026-11-04 (new sessions pick it up; unset in the coordinator session) |
 | Network: `www.federalreserve.gov`, `fred.stlouisfed.org`, `api.stlouisfed.org`, `www.newyorkfed.org` | 0.3, 0.9, 0.8 live run, every Z.1/FRED/NY Fed extract | reachable on 2026-11-03; proxy 403 early on 2026-11-04; allowed again later that day |
 | Network: `www.govinfo.gov`, `www.fhfa.gov`, `www.ginniemae.gov` | A1 primary sources, A2 | reachable 2026-11-04 |
 | Network: `studentaid.gov`, `www.hud.gov`, `www.federalregister.gov`, `fraser.stlouisfed.org`, `www.fasb.org` | A2, A3, A5 | still blocked 2026-11-04; `www.congress.gov` answers 403 itself (use GovInfo instead) |
-| Network: `www.cbo.gov` | A6, B4 | returned 403 on 2026-11-03; add to Allowed domains, else manual download |
+| Network: `www.cbo.gov` | A6, B4 | allowed 2026-11-04; the root page still answers 403 (likely the site's own bot check, not the proxy): try the data pages, else manual download |
 | Network: `capitalmarkets.fanniemae.com` | A2, B2 | returned 403 on 2026-11-03; same |
 | Network: `www.fhfa.gov`, `www.census.gov`, `www.nber.org`, `studentaid.gov` | A2, A3, A5, B4, C1 | untested |
 
@@ -170,11 +196,11 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 
 | ID | Task | Depends | Acceptance criteria | Status |
 |---|---|---|---|---|
-| D1 | **Skill `claim-check`**: trace any number to its query, series and vintage; flag mismatches | 0.5 | Given a sentence with a number, returns the register row and a recompute, or flags it as untraced or mismatched; trigger examples logged | todo |
-| D2 | **Skill `chart-from-sql`**: query → publication-quality chart in the project style | 0.3 | Fixed style module (palette validated for contrast in light and dark); source and vintage line on every chart; alt text generated; examples logged | todo |
+| D1 | **Skill `claim-check`**: trace any number to its query, series and vintage; flag mismatches | 0.5 | Given a sentence with a number, returns the register row and a recompute, or flags it as untraced or mismatched; trigger examples logged | done (2026-11-04, `.claude/skills/claim-check`, 14 tests) |
+| D2 | **Skill `chart-from-sql`**: query → publication-quality chart in the project style | 0.3 | Fixed style module (palette validated for contrast in light and dark); source and vintage line on every chart; alt text generated; examples logged | done (2026-11-04, `.claude/skills/chart-from-sql`, 60 tests; live SQL untested until the DB host is reachable) |
 | D3 | **Skill `research-memo`**: findings → 2-page memo for a named market audience (e.g. MBS desk, rates strategist, policy shop) | D1 | Every number passes `claim-check`; three audience examples logged | todo |
-| D4 | **Subagents** in `.claude/agents/`: `analyst` (runs queries), `skeptic` (revisions, definition changes, double counting, vintages), `quant-reviewer` (leakage, overfitting, bad tests), `editor` (style and sourcing) | D1 | Each has a role, tool limits and a logged output format; every objection and its resolution recorded in `claims/review-log.md` | todo |
-| D5 | **MCP server `household-credit-mcp`**: Z.1, FRED, NY Fed, CBO | 0.2, 0.5 | Read-only; tools return values with series ID, vintage and caveats; refuses questions the data can't answer (e.g. auto loans by holder, which Z.1 doesn't split); tests, docs and install instructions; publishing to PyPI or an MCP registry only with approval | todo |
+| D4 | **Subagents** in `.claude/agents/`: `analyst` (runs queries), `skeptic` (revisions, definition changes, double counting, vintages), `quant-reviewer` (leakage, overfitting, bad tests), `editor` (style and sourcing) | D1 | Each has a role, tool limits and a logged output format; every objection and its resolution recorded in `claims/review-log.md` | done (2026-11-04, six agents in `.claude/agents/`; E2 planted-error test still to run) |
+| D5 | **MCP server `household-credit-mcp`**: Z.1, FRED, NY Fed, CBO | 0.2, 0.5 | Read-only; tools return values with series ID, vintage and caveats; refuses questions the data can't answer (e.g. auto loans by holder, which Z.1 doesn't split); tests, docs and install instructions; publishing to PyPI or an MCP registry only with approval | done (2026-11-04, `mcp/household-credit-mcp`, snapshot backend tested, 33 tests; Postgres backend untested live) |
 | D6 | **"Ask Hot Potato"** (Anthropic API app on the site): tool use against the database; every answer cites its query; refuses unsupported forecasts | D5, `ANTHROPIC_API_KEY` | Answers carry the query and vintage; refusal cases tested; rate limit and cost cap; preview deployment first, production only with approval | todo |
 | D7 | **Cowork plugin "Fed Data Desk"**: packages the skills, subagents and MCP for a research team | D1–D5 | Installs cleanly; before/after outputs for three routine jobs | todo |
 
