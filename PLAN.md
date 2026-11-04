@@ -116,6 +116,9 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | A7 CHOICE 7: placebo cutoffs become the paper's 20×, 5× and 2× pre-period MSPE (5× quoted in the text), credited to Abadie, Diamond and Hainmueller (2010); the primary ratio-rank inference is unchanged. Dated deviation in `a7-causal-prereg.md`. | Eleonora |
 | 2026-11-04 | SEC EDGAR requests declare a User-Agent naming the project and Eleonora's contact email, per the SEC's fair-access policy. The address is read from the `SEC_USER_AGENT` environment variable and kept out of the repo. | Eleonora |
 | 2026-11-04 | C1's holdout follows the frozen C2 protocol (2023Q3–2026Q2), not 2024Q3. This applies her rule that C1 agrees with C2; the markets track found the conflict. | Eleonora (rule) / Claude (application) |
+| 2026-11-04 | Eleonora writes her own `analysis/recommendation.md` at the end of the project, not at the end of Phase A; the Claude draft stays bannered until then. | Eleonora |
+| 2026-11-04 | Revise the recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1 (preview deployments only). | Eleonora |
+| 2026-11-04 | Merge the three track branches overnight; Phase A still stops for her approval when its tasks are done. | Eleonora |
 
 ## Environment prerequisites
 
