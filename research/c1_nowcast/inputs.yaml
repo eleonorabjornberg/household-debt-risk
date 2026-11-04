@@ -1,0 +1,34 @@
+# Candidate inputs for the C1 nowcast of the public share between Z.1 releases.
+# A candidate list, not a chosen indicator set: which of these the model uses is Eleonora's decision
+# (tracks/markets.md, "Questions for Eleonora"). Vintage coverage checked against ALFRED 2026-11-04.
+#
+# role: target          = Z.1 level that enters the public share itself (real-time vintages for the target)
+#       public_cc       = higher-frequency read of a public consumer-credit holder
+#       total_cc        = higher-frequency read of the consumer-credit total
+#       private_cc      = higher-frequency read of a private consumer-credit holder
+#       private_mort    = higher-frequency read of a private mortgage holder
+#       market          = related market quantity, not itself in the share
+# alfred: false         = no real-time vintages in ALFRED; point-in-time only from dated publications
+inputs:
+  # ---- Z.1 target components (quarterly; ALFRED vintages since 2019 for BOGZ1 series) ----
+  - {id: HMLBSHNO, release: Z.1, freq: Q, role: target, desc: "HH&NP 1-4 family mortgages, liability, NSA (FL153165105)", alfred: true}
+  - {id: CCLBSHNO, release: Z.1, freq: Q, role: target, desc: "HH&NP consumer credit, liability, NSA (FL153166000)", alfred: true}
+  - {id: BOGZ1FL154104015Q, release: Z.1, freq: Q, role: target, desc: "HH&NP 1-4 family mortgages + consumer credit (the share's scope total)", alfred: true}
+  - {id: BOGZ1FL413065105Q, release: Z.1, freq: Q, role: target, desc: "Agency- and GSE-backed pools, 1-4 family mortgages, asset", alfred: true}
+  - {id: BOGZ1FL403065105Q, release: Z.1, freq: Q, role: target, desc: "GSEs, 1-4 family mortgages, asset", alfred: true}
+  - {id: FGCCSAQ027S, release: Z.1, freq: Q, role: target, desc: "Federal government, student loans, asset (FL313066220)", alfred: true}
+  # ---- G.19 consumer credit (monthly, about five weeks after month end) ----
+  - {id: TOTALNS, release: G.19, freq: M, role: total_cc, desc: "Total consumer credit owned and securitized, NSA", alfred: true}
+  - {id: TOTALGOV, release: G.19, freq: M, role: public_cc, desc: "Consumer credit owned by the federal government (mostly student loans), NSA", alfred: true}
+  - {id: TOTALDI, release: G.19, freq: M, role: private_cc, desc: "Consumer credit owned by depository institutions, NSA", alfred: true}
+  - {id: TOTALFC, release: G.19, freq: M, role: private_cc, desc: "Consumer credit owned by finance companies, NSA", alfred: true}
+  - {id: TOTALTCU, release: G.19, freq: M, role: private_cc, desc: "Consumer credit owned by credit unions, NSA", alfred: true}
+  # ---- H.8 bank balance sheets (weekly, Wednesday levels, about nine days later) ----
+  - {id: RREACBW027NBOG, release: H.8, freq: W, role: private_mort, desc: "Residential real estate loans, all commercial banks, NSA", alfred: true}
+  - {id: CLSACBW027NBOG, release: H.8, freq: W, role: private_cc, desc: "Consumer loans, all commercial banks, NSA", alfred: true}
+  # ---- H.4.1 Federal Reserve balance sheet (weekly, Wednesday level, published Thursday) ----
+  - {id: WSHOMCB, release: H.4.1, freq: W, role: market, desc: "Fed holdings of agency MBS (not a holder of household mortgages in Z.1's sense: the pools are)", alfred: true}
+  # ---- Agency monthly summaries (no ALFRED vintages) ----
+  - {id: GINNIE_RPB, release: "Ginnie Mae monthly", freq: M, role: target, desc: "Ginnie Mae MBS outstanding; ginniemae.gov reachable 2026-11-04, not yet parsed", alfred: false}
+  - {id: FREDDIE_MVS, release: "Freddie Mac monthly volume summary", freq: M, role: target, desc: "freddiemac.com not reachable from the sandbox 2026-11-04 (proxy 000)", alfred: false}
+  - {id: FANNIE_MS, release: "Fannie Mae monthly summary", freq: M, role: target, desc: "fanniemae.com not reachable 2026-11-04 (proxy 000); capitalmarkets.fanniemae.com 403 on 2026-11-03", alfred: false}
