@@ -75,6 +75,11 @@ A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 o
 
 **Q7 (A8). Do losses at publicly owned banks count as public?** Germany's savings banks, Landesbanken and promotional banks hold 30.3% of bank lending to individuals. On the risk-bearer measure, a loss at a publicly owned bank falls first on that bank's capital, which is public-sector equity, but (on general knowledge, not yet sourced) carries no state guarantee since 2005. Options: (a) count it as public on (b) too; (b) count it as private on (b), public only on (a); (c) show it as a third category, "publicly owned, not guaranteed". Recommendation: (c), since it keeps the two measures honest and makes the German case visible rather than resolving it by definition.
 
+**Q8 (A7). Donor design and two H1 details (addendum in `docs/decisions/a7-causal-prereg.md`, 2026-11-04).**
+- (a) H2–H4: the states donor pool you chose (CHOICE 5(b)) needs a state series for each outcome; A5 has none (no state data by holder), and its state data are annual from 2003. Options: (i) fall back to CHOICE 5(c), event study and pre-trend extrapolation only, for H2 and H3, and to 8(a), the mechanical check, for H4 (the pre-registered fallback when no private-student-loan source exists); (ii) replace the outcome with a state series that exists (for example mortgage balances per person) in an intensity design, which needs a new pre-registration; (iii) countries from A8 (5(a)), which have no public-share time series either. Recommendation: (i), since it is the pre-registration's own fallback and needs no new outcome.
+- (b) Weekly S1 = PMMS minus the mean of daily DGS10 over the same week up to the PMMS date. Recommendation: confirm.
+- (c) Constant-mean prediction primary, AR(1) as sensitivity. Recommendation: confirm.
+
 ## Proposed changes to shared files
 (PLAN.md, register, README, site copy: describe or attach a patch; the coordinator applies them.)
 
