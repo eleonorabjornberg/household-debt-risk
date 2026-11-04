@@ -137,6 +137,7 @@ Set in the cloud environment's settings (session title bar → environment menu 
 | Network: `www.cbo.gov` | A6, B4 | allowed 2026-11-04; the root page still answers 403 (likely the site's own bot check, not the proxy): try the data pages, else manual download |
 | Network: `capitalmarkets.fanniemae.com` | A2, B2 | returned 403 on 2026-11-03; same |
 | Network: `www.fhfa.gov`, `www.census.gov`, `www.nber.org`, `studentaid.gov` | A2, A3, A5, B4, C1 | untested |
+| Network, as seen from the track sessions: `www.sec.gov`, `efts.sec.gov`, `www.freddiemac.com`, `www.fanniemae.com` (and other freddiemac/fanniemae hosts), `api.census.gov`, `www2.census.gov`, `www.usmi.org`, `alfred.stlouisfed.org`, CMHC, Bank of England, Bundesbank, Statbank DK, BIS, ECB | A2 Q1(b), A8, C1 2c | proxy 403 on 2026-11-04 (reported by the analysis and markets tracks), although the SEC hosts were meant to be allowlisted; `api.stlouisfed.org` is enough for vintages. Check the track environment's network policy |
 
 Reachable on 2026-11-03: federalreserve.gov (Z.1, DFA), FRED, newyorkfed.org, freddiemac.com, ginniemae.gov, FRASER, CMHC, Bank of England, Bundesbank, Statbank DK, BIS, ECB, PyPI, Supabase, the Anthropic API. CRAN was listed here, but on 2026-11-04 cran.r-project.org was refused and R is not installed (`docs/decisions/prereg-fact-checks.md` §4).
 
