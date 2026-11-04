@@ -415,3 +415,31 @@ Review entries from the analysis track; the coordinator moves them into `claims/
 - R-ana-19: accepted. Assumptions and gaps listed in the README. The skeptic's SCF total ($1.15T) also exposed a bug: a first version divided SCF weighted sums by five although the weights already sum to households; fixed and asserted (shares were unaffected).
 - R-ana-20: accepted as a note (income groups are not exact fifths; sizes in results_public_by_group.json).
 - R-ana-21: accepted. 86.4% now says "held by the federal government", excluding guaranteed FFEL; stale line 23 rewritten.
+
+### R-20261104-coord-q1 · quant-reviewer · research/b1_market_pricing/METHOD.md "Changes after results"; b1.py:6-8
+- **Objection:** The verdict follows the pre-set rule (no variant has b<0 with the 95% HAC interval excluding 0 in both L and D; main, headline and blend have L>0 significant with D insignificant, so "no robust association"). But the 6a161c7 correction changed how the regressor is built after results existed, and METHOD.md "Changes after results" does not list it. The README notes it; the pre-registration record does not. METHOD.md still says the share is apportioned "exactly as validation/run.py and A1 do", and those two now differ. The b1.py docstring still says the share comes "through A1's holder cells".
+- **Severity:** minor
+- **Evidence:** git log: METHOD.md b094579 00:53:54Z, results a8fc3de 00:58:51Z, correction 6a161c7 04:30:39Z; b1.py:6-8 vs public_shares() docstring.
+- **Proposed resolution:** Add the catalog-level correction, with its date and effect (D -0.08 to -0.57), to METHOD.md "Changes after results". Fix the stale docstring.
+- **Status:** open
+
+### R-20261104-coord-q2 · quant-reviewer · research/b1_market_pricing/README.md (first bullet under Result)
+- **Objection:** The EG constants are right (statsmodels mackinnoncrit, constant, T≈157: N=7 -5.10, N=3 -3.80; N=8 for the dummy row -5.38). The sentence "Every residual ADF statistic falls short of ... and still -3.79 counting only the three series" is false. Headline L (-3.87), ends-2022Q3 L (-4.46) and the post-hoc dummy L (-4.73) are all below -3.79. In addition, the N=3 bound has no stated basis: the regression has 6 regressors, and the README gives no unit-root evidence that vol10, slope, BAA10Y and refi are I(0). The verdict does not change. The rows that may cointegrate (pre-2022, dummy) have b<0 and are insignificant.
+- **Severity:** major
+- **Evidence:** regressions.csv adf_resid; mackinnoncrit(N, 'c', nobs=157).
+- **Proposed resolution:** Report the row-by-row comparison. Say that pre-2022 and dummy reject only under the N=3 heuristic, or drop N=3. Name N=8 for the dummy row.
+- **Status:** open
+
+### R-20261104-coord-q3 · quant-reviewer · research/b1_market_pricing/README.md (power bullet); results.json D_halfwidth_over_rise_pp
+- **Objection:** The arithmetic is right: 1.96·1.993·0.179 = 0.70 pp. But this is a 95% CI half-width, not a minimum detectable effect. At 80% power and 5% size the MDE is 2.8·SE·0.179 ≈ 1.0 pp. "Covers any plausible compression" has no benchmark. Scaling a quarter-on-quarter D coefficient to an 18-pp long-run rise also assumes the short-run and long-run responses are equal. D is fragile too: correcting three 1986 quarters moved it by 0.25 SE, and 1986Q4 is still the largest |Δshare| (2.03 pp, about 3.3 SD).
+- **Severity:** minor
+- **Evidence:** my offline recompute of public_shares() from data/validation/FRB_Z1_csv.zip: sd Δmort_share 0.61 pp, top value 1986Q4.
+- **Proposed resolution:** State the MDE (about 1.0 pp) and set it against a benchmark such as the g-fee level. Replace "any plausible" with that benchmark. Note the short-run/long-run assumption.
+- **Status:** open
+
+### R-20261104-coord-q4 · quant-reviewer · research/b1_market_pricing/README.md (second bullet); b1.py public_shares gse_share
+- **Objection:** "The positive sign comes from the PMMS method change" is a causal attribution based on post-hoc variants chosen after seeing the result. The README itself says the dummy (0.87 pp, against a ~0.17 pp method step) absorbs other 2023-26 conditions. Nothing is wrong in the multiple-testing sense: 4 pre-set variants × 2 forms, and the verdict is a null, so there is no inflated false-positive claim. No look-ahead problem either: the analysis is descriptive, latest vintage is declared, and refi is trailing. Separately, the post-hoc Fannie+Freddie share is still built from the sub-series cells that the docstring says are overstated in 1974Q3-1986Q3, so its first three quarters carry the bug fixed in 6a161c7.
+- **Severity:** minor
+- **Evidence:** README Result bullets; b1.py public_shares() docstring and gse line.
+- **Proposed resolution:** Change to "coincides with the 2022Q4+ period (method change and other conditions)". Either start the GSE variant at 1986Q4 or caveat it.
+- **Status:** open
