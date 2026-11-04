@@ -44,10 +44,14 @@ ALFRED holds vintages for the Z.1 holder series (`BOGZ1…`) only from 2019-03-0
 | Release | `z1_csv_files.zip` | `z1r-1.zip` (fixed-width .prn tables) |
 |---|---|---|
 | 2010-06-10, 2013-03-07, 2014-09-18, 2016-03-10 | 404 | 200 |
-| 2011-09-28 | 404 | 404 (to recheck: another file name, or not archived) |
+| 2011-09-28 | 404 | 404. This date came from the first calendar, built from `HHMSDODNS` ALFRED vintages; it is an ALFRED vintage, not a Z.1 release. The release is 2011-09-16 (current calendar, from `HMLBSHNO`), not rechecked. |
 | 2017-09-21, 2019-03-07, 2020-09-21, 2022-03-10, 2023-09-08, 2025-03-13, 2026-09-11 | 200 | 404 |
 
-So real-time target vintages look possible back to 2010: CSV from 2017, .prn tables before. None of these files has been parsed yet. Which target vintage to use is one of the design questions in `tracks/markets.md`.
+So real-time target vintages look possible back to 2010: CSV from 2016-09-16, `z1r-N` text archives before. None of these files has been parsed yet. Which target vintage to use is one of the design questions in `tracks/markets.md`.
+
+## Release archive actually used (`z1_vintages.py`)
+
+All 41 Z.1 releases from 2016-09-16 to 2026-09-11 were downloaded as `z1_csv_files.zip`. Each one's URL, byte count, SHA-256 and retrieval time are in `data/z1_archive/manifest.jsonl`; the per-release cell codes are in `z1_vintage_notes.csv`. One folder is not named after its release date: the 2017-03-09 release (2016Q4) is in `releases/z1/20170305/` (6249231 bytes, SHA-256 `1b730b3a987f1401a72708e0a1566d3382bc8c1cec184afe6c6f4df89bf2bf74`), confirmed by its last quarter. The skeptic found it (R-20261104-mkt-s9).
 
 ## Agency monthly summaries
 
