@@ -1,5 +1,5 @@
 {
-  "_doc": "Data dictionary for the open-data downloads (PLAN F4). Column definitions follow pipeline/src/hhdebt/transform.py (METHODOLOGY) and supabase/migrations/20261027000000_init.sql. `licence` is one of the keys in `licences`; `redistribute: false` tables are listed with a link to the original source instead of a file.",
+  "_doc": "Data dictionary for the open-data downloads (PLAN F4). Column definitions follow pipeline/src/hhdebt/transform.py (METHODOLOGY) and supabase/migrations/20261027000000_init.sql. `licence` is one of the keys in `licences`; Every table is redistributed under its own `licence`; series in `third_party_not_redistributed` are only linked.",
   "title": "Who holds US household debt: derived quarterly tables",
   "publisher": "household-debt-risk project (Eleonora Björnberg)",
   "repository": "https://github.com/eleonorabjornberg/household-debt-risk",
@@ -20,7 +20,8 @@
       "name": "Federal Reserve Bank of New York Terms of Use",
       "url": "https://www.newyorkfed.org/privacy/termsofuse.html",
       "attribution": "© 2026 Federal Reserve Bank of New York. Content from the New York Fed subject to the Terms of Use at newyorkfed.org.",
-      "applies_to": "NY Fed Household Debt and Credit figures. The terms require redistributed content to keep the same permissions, conditions and restrictions, so it cannot be relicensed under CC BY 4.0."
+      "applies_to": "NY Fed Household Debt and Credit figures (nyfed_by_type), redistributed under the NY Fed's own terms, not CC BY 4.0: the terms require redistributed content to keep the same permissions, conditions and restrictions, the attribution line and the source identifier (decision F4-1, 2026-11-04). The NY Fed does not endorse this project.",
+      "source_identifier": "Source: New York Fed Consumer Credit Panel/Equifax"
     },
     "mit": {
       "name": "MIT License",
@@ -43,17 +44,60 @@
       "grain": "one row per quarter",
       "licence": "cc-by-4.0",
       "redistribute": true,
-      "sources": ["Z.1 (FL154104015, FL153165105, FL153166000 and the holder series in pipeline/series_catalog.yaml)", "FRED WSHOMCB (Fed MBS holdings)"],
+      "sources": [
+        "Z.1 (FL154104015, FL153165105, FL153166000 and the holder series in pipeline/series_catalog.yaml)",
+        "FRED WSHOMCB (Fed MBS holdings)"
+      ],
       "validation": "Every quarter is recomputed independently from the raw Z.1 file by validation check D1 (validation/REPORT.md).",
       "columns": [
-        {"name": "date", "type": "date", "unit": "date", "desc": "Quarter end."},
-        {"name": "scope_total_musd", "type": "number", "unit": "musd", "desc": "Household 1–4 family mortgages plus consumer credit (Z.1 FL154104015), nominal."},
-        {"name": "public_musd", "type": "number", "unit": "musd", "desc": "Part of scope held by the public sector: federal government direct, GSEs and agency pools, state and local governments. Nominal."},
-        {"name": "public_share", "type": "number", "unit": "share", "desc": "public_musd / scope_total_musd. Holdings, not guarantees: GSE-guaranteed loans held by private investors count as private."},
-        {"name": "public_share_mortgage", "type": "number", "unit": "share", "desc": "Public share of household mortgages only (holders apportioned to households)."},
-        {"name": "public_share_cc", "type": "number", "unit": "share", "desc": "Public share of consumer credit only."},
-        {"name": "fed_mbs_musd", "type": "number", "unit": "musd", "desc": "Federal Reserve holdings of agency MBS (FRED WSHOMCB, last weekly value in the quarter). An overlay, already inside the agency pools: never add it to public_musd. Empty before 2009."},
-        {"name": "fed_mbs_share_of_scope", "type": "number", "unit": "share", "desc": "fed_mbs_musd / scope_total_musd. Empty before 2009."}
+        {
+          "name": "date",
+          "type": "date",
+          "unit": "date",
+          "desc": "Quarter end."
+        },
+        {
+          "name": "scope_total_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "Household 1–4 family mortgages plus consumer credit (Z.1 FL154104015), nominal."
+        },
+        {
+          "name": "public_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "Part of scope held by the public sector: federal government direct, GSEs and agency pools, state and local governments. Nominal."
+        },
+        {
+          "name": "public_share",
+          "type": "number",
+          "unit": "share",
+          "desc": "public_musd / scope_total_musd. Holdings, not guarantees: GSE-guaranteed loans held by private investors count as private."
+        },
+        {
+          "name": "public_share_mortgage",
+          "type": "number",
+          "unit": "share",
+          "desc": "Public share of household mortgages only (holders apportioned to households)."
+        },
+        {
+          "name": "public_share_cc",
+          "type": "number",
+          "unit": "share",
+          "desc": "Public share of consumer credit only."
+        },
+        {
+          "name": "fed_mbs_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "Federal Reserve holdings of agency MBS (FRED WSHOMCB, last weekly value in the quarter). An overlay, already inside the agency pools: never add it to public_musd. Empty before 2009."
+        },
+        {
+          "name": "fed_mbs_share_of_scope",
+          "type": "number",
+          "unit": "share",
+          "desc": "fed_mbs_musd / scope_total_musd. Empty before 2009."
+        }
       ]
     },
     {
@@ -62,16 +106,53 @@
       "grain": "one row per quarter × risk_bucket × debt_type",
       "licence": "cc-by-4.0",
       "redistribute": true,
-      "sources": ["Z.1 holder series (pipeline/series_catalog.yaml)", "FRED CPIAUCSL (CPI-U, from BLS)", "FRED DSPI (disposable personal income, from BEA)"],
+      "sources": [
+        "Z.1 holder series (pipeline/series_catalog.yaml)",
+        "FRED CPIAUCSL (CPI-U, from BLS)",
+        "FRED DSPI (disposable personal income, from BEA)"
+      ],
       "validation": "Produced by the pipeline (pipeline/tests). Sums are recomputed by validation checks A1–A4 and B; rows are not individually re-checked.",
       "columns": [
-        {"name": "date", "type": "date", "unit": "date", "desc": "Quarter end."},
-        {"name": "risk_bucket", "type": "text", "desc": "Holder group; labels and public/private flag in dim_risk_bucket."},
-        {"name": "debt_type", "type": "text", "desc": "mortgage or consumer_credit."},
-        {"name": "nominal_musd", "type": "number", "unit": "musd", "desc": "Holdings, nominal. Mortgage holders are apportioned to households: holder / all 1–4 family mortgages (FL893065105) × household mortgages (FL153165105)."},
-        {"name": "real_musd", "type": "number", "unit": "musd", "desc": "Holdings in constant dollars of the CPI base quarter in meta.json (cpi_base_quarter): nominal × CPI(base) / CPI(quarter), CPI = quarterly mean of CPIAUCSL."},
-        {"name": "share_of_total", "type": "number", "unit": "share", "desc": "Of the scope total (mortgages plus consumer credit) in that quarter."},
-        {"name": "pct_of_dpi", "type": "number", "unit": "share", "desc": "Of disposable personal income (DSPI quarterly mean, SAAR). Despite the name, a 0–1 fraction. Empty before 1959."}
+        {
+          "name": "date",
+          "type": "date",
+          "unit": "date",
+          "desc": "Quarter end."
+        },
+        {
+          "name": "risk_bucket",
+          "type": "text",
+          "desc": "Holder group; labels and public/private flag in dim_risk_bucket."
+        },
+        {
+          "name": "debt_type",
+          "type": "text",
+          "desc": "mortgage or consumer_credit."
+        },
+        {
+          "name": "nominal_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "Holdings, nominal. Mortgage holders are apportioned to households: holder / all 1–4 family mortgages (FL893065105) × household mortgages (FL153165105)."
+        },
+        {
+          "name": "real_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "Holdings in constant dollars of the CPI base quarter in meta.json (cpi_base_quarter): nominal × CPI(base) / CPI(quarter), CPI = quarterly mean of CPIAUCSL."
+        },
+        {
+          "name": "share_of_total",
+          "type": "number",
+          "unit": "share",
+          "desc": "Of the scope total (mortgages plus consumer credit) in that quarter."
+        },
+        {
+          "name": "pct_of_dpi",
+          "type": "number",
+          "unit": "share",
+          "desc": "Of disposable personal income (DSPI quarterly mean, SAAR). Despite the name, a 0–1 fraction. Empty before 1959."
+        }
       ]
     },
     {
@@ -80,16 +161,51 @@
       "grain": "one row per quarter × collateral_class",
       "licence": "cc-by-4.0",
       "redistribute": true,
-      "sources": ["Z.1 FL153165105, FL153166100, FL153166220, FL153166400, FL153166205, FL155035015, FL155111005"],
+      "sources": [
+        "Z.1 FL153165105, FL153166100, FL153166220, FL153166400, FL153166205, FL155035015, FL155111005"
+      ],
       "validation": "Produced by the pipeline (pipeline/tests); not independently recomputed. Rows with is_estimated = true contain an imputation.",
       "columns": [
-        {"name": "date", "type": "date", "unit": "date", "desc": "Quarter end."},
-        {"name": "collateral_class", "type": "text", "desc": "home_backed (mortgages), vehicle_backed (auto loans), uncollateralized (revolving + student loans), other_nonrevolving."},
-        {"name": "debt_musd", "type": "number", "unit": "musd", "desc": "Debt in the class, nominal."},
-        {"name": "collateral_value_musd", "type": "number", "unit": "musd", "desc": "home_backed: owner-occupied real estate (FL155035015). vehicle_backed: ALL consumer durables (FL155111005), a generous proxy, so vehicle coverage is an upper bound. Empty where there is no collateral."},
-        {"name": "coverage_ratio", "type": "number", "unit": "ratio", "desc": "collateral_value_musd / debt_musd. Empty where there is no collateral."},
-        {"name": "share_of_debt", "type": "number", "unit": "share", "desc": "Of the scope total in that quarter."},
-        {"name": "is_estimated", "type": "boolean", "desc": "True before 2006Q1 for uncollateralized and other_nonrevolving: student loans are imputed out of other non-revolving credit (linear ramp from 1965Q4, floored at known federal, Sallie Mae and nonprofit holdings). Revolving credit is zero before 1968Q1 because the source starts then."}
+        {
+          "name": "date",
+          "type": "date",
+          "unit": "date",
+          "desc": "Quarter end."
+        },
+        {
+          "name": "collateral_class",
+          "type": "text",
+          "desc": "home_backed (mortgages), vehicle_backed (auto loans), uncollateralized (revolving + student loans), other_nonrevolving."
+        },
+        {
+          "name": "debt_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "Debt in the class, nominal."
+        },
+        {
+          "name": "collateral_value_musd",
+          "type": "number",
+          "unit": "musd",
+          "desc": "home_backed: owner-occupied real estate (FL155035015). vehicle_backed: ALL consumer durables (FL155111005), a generous proxy, so vehicle coverage is an upper bound. Empty where there is no collateral."
+        },
+        {
+          "name": "coverage_ratio",
+          "type": "number",
+          "unit": "ratio",
+          "desc": "collateral_value_musd / debt_musd. Empty where there is no collateral."
+        },
+        {
+          "name": "share_of_debt",
+          "type": "number",
+          "unit": "share",
+          "desc": "Of the scope total in that quarter."
+        },
+        {
+          "name": "is_estimated",
+          "type": "boolean",
+          "desc": "True before 2006Q1 for uncollateralized and other_nonrevolving: student loans are imputed out of other non-revolving credit (linear ramp from 1965Q4, floored at known federal, Sallie Mae and nonprofit holdings). Revolving credit is zero before 1968Q1 because the source starts then."
+        }
       ]
     },
     {
@@ -98,16 +214,48 @@
       "grain": "one row per crisis × metric × quarter offset",
       "licence": "cc-by-4.0",
       "redistribute": true,
-      "sources": ["Derived from public_share, debt_by_risk_holder and collateral_coverage", "dim_crisis"],
+      "sources": [
+        "Derived from public_share, debt_by_risk_holder and collateral_coverage",
+        "dim_crisis"
+      ],
       "validation": "Produced by the pipeline (pipeline/tests); not independently recomputed.",
       "columns": [
-        {"name": "crisis_id", "type": "text", "desc": "Key into dim_crisis."},
-        {"name": "metric", "type": "text", "desc": "public_share, share:<risk_bucket or collateral_class> (share of scope total) or coverage:<collateral_class> (coverage ratio)."},
-        {"name": "q_offset", "type": "integer", "desc": "Quarters from the crisis start quarter (t0), −8 to +16 where data exist."},
-        {"name": "date", "type": "date", "unit": "date", "desc": "Quarter end at that offset."},
-        {"name": "value", "type": "number", "desc": "The metric in its own unit (shares 0–1, coverage as a ratio)."},
-        {"name": "value_at_t0", "type": "number", "desc": "The metric at the crisis start quarter."},
-        {"name": "delta_from_t0", "type": "number", "desc": "value − value_at_t0 in the metric's own unit: for shares, 0.05 = 5 percentage points."}
+        {
+          "name": "crisis_id",
+          "type": "text",
+          "desc": "Key into dim_crisis."
+        },
+        {
+          "name": "metric",
+          "type": "text",
+          "desc": "public_share, share:<risk_bucket or collateral_class> (share of scope total) or coverage:<collateral_class> (coverage ratio)."
+        },
+        {
+          "name": "q_offset",
+          "type": "integer",
+          "desc": "Quarters from the crisis start quarter (t0), −8 to +16 where data exist."
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "unit": "date",
+          "desc": "Quarter end at that offset."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "desc": "The metric in its own unit (shares 0–1, coverage as a ratio)."
+        },
+        {
+          "name": "value_at_t0",
+          "type": "number",
+          "desc": "The metric at the crisis start quarter."
+        },
+        {
+          "name": "delta_from_t0",
+          "type": "number",
+          "desc": "value − value_at_t0 in the metric's own unit: for shares, 0.05 = 5 percentage points."
+        }
       ]
     },
     {
@@ -116,15 +264,43 @@
       "grain": "one row per event",
       "licence": "cc-by-4.0",
       "redistribute": true,
-      "sources": ["NBER business-cycle dates (recessions); project classification (policy shocks)"],
+      "sources": [
+        "NBER business-cycle dates (recessions); project classification (policy shocks)"
+      ],
       "validation": "Reference table (pipeline/src/hhdebt/config.py).",
       "columns": [
-        {"name": "crisis_id", "type": "text", "desc": "Stable key."},
-        {"name": "name", "type": "text", "desc": "Display name."},
-        {"name": "kind", "type": "text", "desc": "nber_recession or policy_shock."},
-        {"name": "start_q", "type": "date", "unit": "date", "desc": "First quarter (t0 in crisis_event_window)."},
-        {"name": "end_q", "type": "date", "unit": "date", "desc": "Last quarter."},
-        {"name": "notes", "type": "text", "desc": "One-line description."}
+        {
+          "name": "crisis_id",
+          "type": "text",
+          "desc": "Stable key."
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "desc": "Display name."
+        },
+        {
+          "name": "kind",
+          "type": "text",
+          "desc": "nber_recession or policy_shock."
+        },
+        {
+          "name": "start_q",
+          "type": "date",
+          "unit": "date",
+          "desc": "First quarter (t0 in crisis_event_window)."
+        },
+        {
+          "name": "end_q",
+          "type": "date",
+          "unit": "date",
+          "desc": "Last quarter."
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "desc": "One-line description."
+        }
       ]
     },
     {
@@ -133,13 +309,31 @@
       "grain": "one row per holder group",
       "licence": "cc-by-4.0",
       "redistribute": true,
-      "sources": ["pipeline/series_catalog.yaml"],
+      "sources": [
+        "pipeline/series_catalog.yaml"
+      ],
       "validation": "Reference table.",
       "columns": [
-        {"name": "risk_bucket", "type": "text", "desc": "Key used in debt_by_risk_holder."},
-        {"name": "label", "type": "text", "desc": "Display name."},
-        {"name": "is_public", "type": "boolean", "desc": "True for federal_direct, gse_agency and state_local."},
-        {"name": "sort_order", "type": "integer", "desc": "Display order."}
+        {
+          "name": "risk_bucket",
+          "type": "text",
+          "desc": "Key used in debt_by_risk_holder."
+        },
+        {
+          "name": "label",
+          "type": "text",
+          "desc": "Display name."
+        },
+        {
+          "name": "is_public",
+          "type": "boolean",
+          "desc": "True for federal_direct, gse_agency and state_local."
+        },
+        {
+          "name": "sort_order",
+          "type": "integer",
+          "desc": "Display order."
+        }
       ]
     },
     {
@@ -147,16 +341,35 @@
       "title": "NY Fed: balances and transitions into serious delinquency by loan type",
       "grain": "one row per quarter × loan_type, 2003Q1 on",
       "licence": "nyfed-terms",
-      "redistribute": false,
-      "pending": "Eleonora to decide: redistribute under the NY Fed Terms of Use with their attribution, or link only (tracks/infra.md, question F4-1). Link only until then.",
+      "redistribute": true,
       "link": "https://www.newyorkfed.org/microeconomics/hhdc",
-      "sources": ["NY Fed Household Debt and Credit Report (Equifax Consumer Credit Panel)"],
-      "validation": "As published by the NY Fed.",
+      "sources": [
+        "NY Fed Household Debt and Credit Report (Equifax Consumer Credit Panel)"
+      ],
+      "validation": "As published by the NY Fed (HHD_C_Report, 'Page' data sheets); the pipeline only reshapes it.",
       "columns": [
-        {"name": "date", "type": "date", "unit": "date", "desc": "Quarter end."},
-        {"name": "loan_type", "type": "text", "desc": "mortgage, heloc, auto, credit_card, student, other."},
-        {"name": "balance_busd", "type": "number", "unit": "busd", "desc": "Balance as published. Credit-report data: not comparable to Z.1 levels."},
-        {"name": "transition_serious_pct", "type": "number", "desc": "Percent of balance transitioning into 90+ days delinquent, annualized, as published (0–100, not 0–1)."}
+        {
+          "name": "date",
+          "type": "date",
+          "unit": "date",
+          "desc": "Quarter end."
+        },
+        {
+          "name": "loan_type",
+          "type": "text",
+          "desc": "mortgage, heloc, auto, credit_card, student, other."
+        },
+        {
+          "name": "balance_busd",
+          "type": "number",
+          "unit": "busd",
+          "desc": "Balance as published. Credit-report data: not comparable to Z.1 levels."
+        },
+        {
+          "name": "transition_serious_pct",
+          "type": "number",
+          "desc": "Percent of balance transitioning into 90+ days delinquent, annualized, as published (0–100, not 0–1)."
+        }
       ]
     }
   ]

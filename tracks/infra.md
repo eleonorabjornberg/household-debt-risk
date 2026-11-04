@@ -6,8 +6,8 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 | Task | Status | Notes |
 |---|---|---|
 | F1 | ready for review | Every register row on both sites is a hover/focus popover + link to `/sources#<id>`; 46/49 web and 27/29 atlas rows link in the prerendered HTML, the rest are listed with reasons in `claims/site/unlinked.json` (3 are register fixes below) |
-| F2 | ready for review | `make all` and `.github/workflows/ci.yml`; evals join once E3 exists. Reproduction gap: FRED inputs are not pinned (question F2-1) |
-| F4 | ready for review, 3 questions open | Downloads, dictionary, licence notes, chart-text check, API plan (nothing exposed). NY Fed data link-only until F4-1 is answered |
+| F2 | ready for review | `make all` and `.github/workflows/ci.yml`; evals join once E3 exists. F2-1 done: FRED pinned via ALFRED, so pinned reruns reproduce every committed result byte for byte (`8bf5d88`) |
+| F4 | ready for review | Downloads under `/downloads/v1/` (latest plus an archive of every Z.1 release), dictionary, licence notes, chart-text check, API plan. F4-1 to F4-3 done (`abc9894`) |
 
 Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 
@@ -28,6 +28,7 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-04, second pass after the coordinator relayed Eleonora's decisions (verified against PLAN.md on `claude/sweet-gates-avwrcs`, commit `a590475`). Main model, no subagents (0 subagent tokens). Errors caught by Claude: (1) ALFRED's number formatting changed `analysis/tables/fed_mbs.csv` without changing any value; `repro_check` passed but `git status` showed the diff, so I normalised the formatting. (2) Shell heredocs containing a command-substitution string tripped the command safety check, so nothing ran; I redid those edits with the Edit tool.
 - 2026-11-04, infra track session. Tasks F1, F2, F4. The main model did all the design, code and review. I used no subagents: each step was a few targeted reads and edits, so delegating would have cost more than it saved. Subagent tokens: 0. Cost not measured.
 - Environment: `FRED_API_KEY`, `DATABASE_URL_READONLY` and `DATABASE_URL` set; `ANTHROPIC_API_KEY` unset in this session. The Supabase and Vercel MCP servers failed to connect at start (proxy tunnel). A second Vercel connector worked for reading deployments. No production deployment or database was touched; `make` drops `DATABASE_URL` unless `LOAD=1`.
 - Errors, and who caught them (all caught by Claude, this session):
@@ -39,11 +40,13 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 - Register: F1–F4 publish no new numbers. The `/sources` summary counts register rows; `/data` shows source vintages from `meta.json`. So `claims/tracks/infra.csv` is not needed.
 
 ## Questions for Eleonora
-- **F2-1. FRED inputs are not pinned, so `make all` drifts.** `analysis/notebook.py` downloads the latest FRED observations. A rerun moves the published Fed-MBS figures in `findings.md:15` ($1.90T, $845B) whenever WSHOMCB updates. Options: (a) pin FRED to the committed vintage with ALFRED `realtime_end` (in `meta.json` / the register vintage) so reruns are exact, and let a refresh move the vintage on purpose; (b) accept the drift and mark those two rows as moving weekly; (c) drop the weekly figure from the findings. **Recommendation: (a).** It is a notebook change in the analysis track's area, so I have not made it.
-- **F4-1. NY Fed data.** The NY Fed's terms allow sharing, but anyone who redistributes must keep their terms and attribution ("© 2026 Federal Reserve Bank of New York. Content from the New York Fed subject to the Terms of Use at newyorkfed.org."). So `nyfed_by_type` cannot go out under CC BY 4.0. Options: (a) redistribute it under the NY Fed terms with their attribution line, as a separately licensed file; (b) link only. **Recommendation: (a), after a manual check that the HHDC data carry no extra use restriction (the HHDC page loads with JavaScript, so I could not see one).** It stays link-only until you answer.
-- **F4-2. Public API.** Option A (static versioned downloads, done), B (read-only JSON API from the committed snapshots, on the web site) or C (document Supabase REST). **Recommendation: A now, B when there is a user, never C.** Details in `opendata/api-plan.md`. Nothing is exposed.
-- **F4-3.** Keep old vintages downloadable (an archive per Z.1 release)? Recommendation: yes, from F3 on, since it costs only storage.
-- **F2-2. Optional repository secret `DATABASE_URL_READONLY`** (Settings → Secrets and variables → Actions). It lets CI's validation run check D2 against `mart.public_share`. CI is green without it. `research_reader` is read-only with a 15 s timeout, so it is safe to add.
+None open. All five were answered on 2026-11-04: Eleonora accepted the recommendations (PLAN.md "Decisions taken", coordinator commit `a590475`). What was done:
+- **F2-1 (a), pin FRED via ALFRED** (`8bf5d88`). `HHDEBT_FRED_ASOF` (pipeline) and `FRED_ASOF` (notebook) read FRED as it stood on one day (ALFRED `realtime_start` = `realtime_end`). The day defaults to the committed `web/public/data/meta.json` `vintages.fred` (2026-10-27), and `make` passes it; a refresh moves it on purpose (`make all FRED_ASOF=2026-12-20`, say). Verified: a pinned ingest plus the notebook reproduce every committed results file and table byte for byte, so `findings.md:15` ($1.90T, $845B) no longer drifts. ALFRED writes some whole numbers as `1721271.0` and missing weeks as `.`; both are normalised so the tables match the fredgraph format exactly.
+- **F2-2.** Eleonora will add the optional `DATABASE_URL_READONLY` Actions secret herself. Per the coordinator, raw-TCP Postgres does not pass this environment's proxy. The pipeline's DB tests now skip with the reason when the host is unreachable; `HHDEBT_REQUIRE_DB=1` (`make test-db`) makes that a failure.
+- **F4-1 (a)** (`abc9894`). `nyfed_by_type` is now downloadable under the NY Fed Terms of Use, with their attribution line and source identifier ("Source: New York Fed Consumer Credit Panel/Equifax") in the JSON, `LICENSE-DATA.md`, `NOTICE-nyfed.txt` and on `/data`. I did the manual check first: the HHDC workbook has no use restriction beyond the general terms (`opendata/sources.md`).
+- **F4-2 (A now, B later, never C).** A is built as the stable `/downloads/v1/` contract (`index.json`, `latest/`, `vintages/`, `opendata/CHANGELOG.md`). B is not built; exposing it later needs her approval.
+- **F4-3 (archive).** `opendata/archive.mjs` stores each Z.1 release's snapshots gzipped in `opendata/archive/z1-<date>/` (about 0.2 MB each) and never overwrites one. `make ingest` runs it, and CI checks that the committed vintage is archived. `z1-2026-09-11` is archived and served at `/downloads/v1/vintages/z1-2026-09-11/`.
+- **For F3 (coordinator):** the refresh workflow should run `make ingest FRED_ASOF=<run date>` and commit the new `opendata/archive/z1-<date>/` with the snapshots.
 
 ## Proposed changes to shared files
 Patches for the coordinator; I have not applied them.
