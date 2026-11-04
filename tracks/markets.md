@@ -8,6 +8,41 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## Handoff note (2026-11-04 ~17:30 UTC, for the next markets session)
+
+**Where every task stands**
+- **B1, B2, the B3 core and DFAST preset, and C1/C2 development:** accepted by Eleonora ("Accept as is", 17:00 UTC; the B3 DFAST preset at 17:08).
+- **B3 2008–12 replay** (d5f2953) and **B4 recession range** (5111a9c): built and skeptic-reviewed (s23–s32 resolved, 8ab6986). They are not yet on her review queue: send them to the coordinator.
+- **B4's GSE-release and student-loan scenarios:** wait on Q-B4.
+- **B2 for 2017–2023:**
+  - EDGAR discovery is done (`research/b2_crt_pricing/edgar.py discover`, 4 requests, all 200). EDGAR has no per-deal STACR/CAS pricing.
+  - Next: the GSE 10-Ks FY2017–2023 (14 filings; their index URLs are in `data/edgar/list10k_*.atom`). Extract the aggregate annual CRT or credit-enhancement cost.
+  - crt.freddiemac.com stays blocked.
+- **C2 is frozen** (949acec; `research/c2_forecast/FREEZE.json`). The joint holdout runner is `research/c2_forecast/holdout_run.py` (gated; the dry run passed).
+- **The holdout is SEALED,** although Eleonora's unseal row exists (PLAN.md, cba74f9). She chose c1b-joint (a): build and freeze C1b first, then one joint C1+C1b+C2 run.
+- **C1b is blocked** on two facts reported to the coordinator (17:25 UTC):
+  - c1b-cells (a) is infeasible: no archived vintage has the per-agency series.
+  - c1b-pubdate (a) is unreliable: the Freddie PDFs were re-issued in January 2024.
+
+  Options and recommendations went to the coordinator. Ginnie Mae is unverifiable, so the run is "Freddie only". Prereg: `docs/decisions/c1b-prereg.md` (draft, CHOICE lines to fill with her picks).
+- **C3:** not started. It needs the joint holdout results.
+
+**How to resume**
+1. `git config core.hooksPath .githooks`. The hook runs the register check and the tests before every commit.
+2. Merge `origin/claude/sweet-gates-avwrcs` first.
+3. Data caches in `data/` (git-ignored) are rebuilt by each task's script:
+   - `validation/run.py`: the Z.1 zip;
+   - `research/c1_nowcast/z1_vintages.py`: the 41 archived releases;
+   - `research/c1_nowcast/pit.py`: the ALFRED cache.
+4. Register rows: new rows go to `claims/tracks/markets.csv`. Each task has a `make_*rows*.py` that regenerates its README numbers and rows from results files; the README text lives inside it. Remove from the track file any row the coordinator has already folded into `claims/register.csv`.
+5. SEC EDGAR: pass the User-Agent only as a per-command prefix, `SEC_USER_AGENT='…' uv run …`. Never write it to a file. Before each commit, `git grep` the repo for the declared address (the coordinator has the search term); there must be no hits.
+
+**Gotchas**
+- **The hook checks before a `sed`.** The pre-commit hook evaluates the tree before a `sed` in the same command runs, so edit first and commit in a separate command.
+- **The register checker ignores minus signs.** Check signs by script (see the `make_*` scripts).
+- **Reviewers rerun scripts.** Restore their outputs (`git checkout --`) rather than committing them.
+- **Some archived Z.1 folders are not named after their release date** (2017-03-09 is in `20170305`): `z1_vintages.FOLDER_OVERRIDE`.
+
 ## Decisions received (Eleonora, decision cards 2026-11-04 16:35–16:41 UTC; PLAN.md "Decisions taken", coordinator 543d96a)
 | Item | Decision | Applied |
 |---|---|---|

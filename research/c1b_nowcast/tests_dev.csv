@@ -1,0 +1,7 @@
+k,hypothesis,test,n,stat,p,c1b_better,posthoc_dm_hac1_p,p_holm,supported
+1,H1 RMSE,DM-HLN,28,2.97988,0.00603591,True,0.022276,0.0069681,True
+1,H2 bias,paired t (HLN),28,4.56749,9.73649e-05,True,,0.000389459,True
+2,H1 RMSE,DM-HLN,28,3.4379,0.00191558,True,0.0144005,0.00574673,True
+2,H2 bias,paired t (HLN),28,5.13801,2.10226e-05,True,,0.000126136,True
+3,H1 RMSE,DM-HLN,22,3.29078,0.00348405,True,0.0191047,0.0069681,True
+3,H2 bias,paired t (HLN),22,5.35107,2.62889e-05,True,,0.000131445,True
