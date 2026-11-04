@@ -35,7 +35,7 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
    - `research/c1_nowcast/z1_vintages.py`: the 41 archived releases;
    - `research/c1_nowcast/pit.py`: the ALFRED cache.
 4. Register rows: new rows go to `claims/tracks/markets.csv`. Each task has a `make_*rows*.py` that regenerates its README numbers and rows from results files; the README text lives inside it. Remove from the track file any row the coordinator has already folded into `claims/register.csv`.
-5. SEC EDGAR: pass the User-Agent only as a per-command prefix, `SEC_USER_AGENT='…' uv run …`. Never write it to a file. Run `git grep -n bjoernberg` before each commit.
+5. SEC EDGAR: pass the User-Agent only as a per-command prefix, `SEC_USER_AGENT='…' uv run …`. Never write it to a file. Before each commit, `git grep` the repo for the declared address (the coordinator has the search term); there must be no hits.
 
 **Gotchas**
 - **The hook checks before a `sed`.** The pre-commit hook evaluates the tree before a `sed` in the same command runs, so edit first and commit in a separate command.
