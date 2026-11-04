@@ -159,7 +159,19 @@ CHOICE 9:
 
 ## Deviations (dated, after freezing)
 
-None yet.
+### 2026-11-04: CHOICE 7 placebo cutoffs follow Abadie, Diamond and Hainmueller (2010)
+Decided by Eleonora, 2026-11-04, before any donor data, fit or outcome was looked at.
+
+**Why.** Eleonora's Mac Claude Code session read the paper (`prereg-fact-checks.md` §3b). It found that the paper uses three cutoffs, not one: 20×, 5× and 2× the treated unit's pre-period **MSPE** (Figs. 5–7, p. 502). The frozen text used 5× **RMSPE**. Since MSPE = RMSPE², 5× RMSPE equals 25× MSPE, which matches none of the paper's cutoffs.
+
+**Change.**
+- The placebo gap plots are shown at three cutoffs, matching the paper: placebo donors whose pre-period MSPE is more than 20×, 5× and 2× the US's are dropped.
+- The 5× MSPE cutoff (≈2.24× RMSPE) is the one quoted in the text. The 20× and 2× cutoffs are reported alongside it.
+- The cutoffs are credited to Abadie, Diamond and Hainmueller (2010), *JASA* 105(490), 493–505.
+
+**Unchanged.**
+- The primary inference is still the rank of the US's post/pre ratio among the placebos, with no cutoff (the paper's Fig. 8, p. 503). An RMSPE ratio and an MSPE ratio give the same rank, because one is the square root of the other.
+- The fit-failure level is unchanged.
 
 ## Before freezing (checklist)
 

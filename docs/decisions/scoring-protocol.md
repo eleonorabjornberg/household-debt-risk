@@ -182,4 +182,14 @@ Other wording, fixed in advance:
 
 ## Deviations (dated, after freezing)
 
-None yet.
+### 2026-11-04: factual correction to "Data and vintages" (no design change)
+The frozen text says releases before 2016-09-16 are "HTML/PDF only". That is wrong. The markets track found the error and the coordinator checked it on 2026-11-04.
+- Fixed-width text archives `z1r-N.zip` exist for earlier releases. HEAD returns 200 for 20100610, 20130307, 20140918, 20160310 and 20160609.
+- `20130307/z1r-1.zip` is 9,391 bytes, SHA-256 `50fe2446…2d81`. It holds `z1r-1.txt` (the summary section, whose contents list L.218 and L.222) and `summary.csv`.
+- `z1r-2` to `z1r-5` also exist for that release.
+- Not verified: whether those archives carry the holder detail of L.218/L.222 in a form `zparse` can read.
+
+The scoring design does not change. The real-time check still starts 2016-09-16. Extending it earlier would need a new dated deviation, written before any score is computed.
+
+### 2026-11-04: C1 aligned to this protocol's holdout
+Under Eleonora's decision that C1 must agree with this protocol, C1's holdout is 2023Q3–2026Q2, as here, not the 2024Q3 start in the C1 option list. Its tests are the ones specified here: DM with the HLN correction, HAC lag h−1, t(n−1), and Clark–West for nested pairs. Family Z+C1 therefore never sees a holdout target during development. This protocol is unchanged.
