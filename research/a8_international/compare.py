@@ -10,6 +10,10 @@ both the numerator and the denominator. A share that cannot be computed is recor
   (b) risk bearer, headline: share of household credit on which a public body takes the credit loss
   (a) holder: share of household credit held by publicly owned lenders (ownership is not a guarantee)
 
+Germany's publicly owned banks (Eleonora, 2026-11-04, Q7 card q7-2, option c): on the risk-bearer measure their
+lending is a third category, "publicly owned, not guaranteed", reported in its own column and never added to the
+public (b) share or subtracted from it. Evidence: Q7_EVIDENCE.md.
+
 Output: comparison.csv, results.json.
 """
 from __future__ import annotations
@@ -73,12 +77,15 @@ def compare(f: pd.DataFrame, a2: dict) -> pd.DataFrame:
     de_pub = (v(f, "DE", "savings_banks_lending_individuals") + v(f, "DE", "landesbanken_lending_individuals")
               + v(f, "DE", "promotional_banks_lending_individuals"))
     assert 0 < de_pub < de_tot
+    # Q7 (c): the same banks' lending is the third category on the risk-bearer measure; it stays out of risk_b_*.
     rows.append(dict(country="DE", date="2025Q4", holder_a=de_pub / de_tot, risk_b_low=math.nan, risk_b_high=math.nan,
+                     risk_b_public_owned_not_guaranteed=de_pub / de_tot,
                      household_credit_lcu_m=de_tot,
-                     note="(a) savings banks + Landesbanken + promotional banks (public building-savings banks not separable), bank lending to employees and other individuals; (b) not computed: "
+                     note="(a) savings banks + Landesbanken + promotional banks (public building-savings banks not separable), bank lending to employees and other individuals; "
+                          "(b) these banks' lending is a third category, publicly owned, not guaranteed (Q7 c); public (b) share not computed: "
                           "BAföG not sourced; KfW loans carry the on-lending bank's liability"))
     t = pd.DataFrame(rows).set_index("country")
-    for c in ("holder_a", "risk_b_low", "risk_b_high"):
+    for c in ("holder_a", "risk_b_low", "risk_b_high", "risk_b_public_owned_not_guaranteed"):
         ok = t[c].dropna()
         assert ((ok >= 0) & (ok <= 1)).all(), c
     us = t.loc["US"]

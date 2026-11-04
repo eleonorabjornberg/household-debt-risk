@@ -1,5 +1,5 @@
 {
- "label": "A8 comparison, 2025 year end; null = not computable from a national source",
+ "label": "A8 comparison, 2025 year end; a missing key = not computable from a national source",
  "us_public_bucket_incl_pools": 0.5639,
  "us_risk_b_low": 0.5524,
  "us_risk_b_high": 0.5619,
@@ -9,5 +9,6 @@
  "dk_private_mortgage_bank_share": 0.8039,
  "uk_household_credit_lcu_m": 1943184.0,
  "de_holder_a": 0.3028,
- "de_household_credit_lcu_m": 1551414.0
+ "de_household_credit_lcu_m": 1551414.0,
+ "de_risk_b_public_owned_not_guaranteed": 0.3028
 }
