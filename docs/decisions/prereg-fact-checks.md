@@ -85,6 +85,38 @@ What is *not* asserted:
 
 ---
 
+## 3b. Abadie, Diamond and Hainmueller (2010): the paper read
+
+Checked 2026-11-04T04:08Z from Eleonora's Mac, after §3 above failed from the cloud environment.
+
+**Result.** The paper uses three cutoffs, not one: **20×, 5× and 2×** the treated unit's pre-period **MSPE** (mean squared prediction error, not RMSPE). Each cutoff is one figure in the placebo section (Section 3.4, "Inference About the Effect of the California Tobacco Control Program", pp. 501–503). Figure 8 then drops the cutoff altogether and ranks the post/pre MSPE ratio.
+
+| Cutoff | Figure | Journal page | Control states left (of 38) | Quote |
+|---|---|---|---|---|
+| none | Fig. 4 | 502 | 38 | "For this reason, we provide several different versions of Figure 4, each version excluding states beyond a certain level of pre-Proposition 99 MSPE." |
+| 20× | Fig. 5 | 502 | 34 | "Figure 5 excludes states that had a pre-Proposition 99 MSPE of more than 20 times the MSPE of California. This is a very lenient cutoff, discarding only four states with extreme values of pre-Proposition 99 MSPE for which the synthetic method would be clearly ill-advised." |
+| 5× | Fig. 6 | 502 | 29 | "Figure 6 is based on a lower cutoff, excluding all states that had a pre-Proposition 99 MSPE of more than five times the MSPE of California. Twenty-nine control states plus California remain in the figure." |
+| 2× | Fig. 7 | 502 (text), 503 (figure) | 19 | "In Figure 7 we lower the cutoff even further and focus exclusively on those states that we can fit almost as well as California in the period 1970–1988, that is, those states with pre-Proposition 99 MSPE not higher than twice the pre-Proposition 99 MSPE for California." |
+| ratio, no cutoff | Fig. 8 | 503 | 38 | "The main advantage of looking at ratios is that it obviates choosing a cutoff for the exclusion of ill-fitting placebo runs." ... "the probability of obtaining a post/pre-Proposition 99 MSPE ratio as large as California's is 1/39 = 0.026." |
+
+Two small details from the same pages: the text says "Among the 35 states remaining in the figure" for Figure 5 (34 controls plus California), and California's pre-period MSPE is "about 3", against a donor-pool median of "about 6" (p. 501).
+
+**Citation, now checked** against the first page of the PDF: Abadie, A., Diamond, A. and Hainmueller, J. (2010), "Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program", *Journal of the American Statistical Association* 105(490), 493–505, June 2010, Applications and Case Studies, DOI 10.1198/jasa.2009.ap08746. The §3 recollection was right on every field.
+
+**Effect on the draft.** a7-causal-prereg.md is frozen and was not edited. For whoever reads it against this record:
+- Line 106 drops placebo donors whose pre-period **RMSPE** is more than 5× the US's. The paper's 5× is on **MSPE**. Because MSPE is RMSPE squared, 5× MSPE is about 2.24× RMSPE, and 5× RMSPE is 25× MSPE, looser than the paper's most lenient cutoff (20×). So the frozen cutoff does not match any of the paper's three.
+- Line 106 also says the 5× cutoff is the project's own choice and makes no ADH attribution. That wording stays accurate. The ratio rank as primary inference does follow the paper (Figure 8, p. 503).
+
+| Supports | Source | URL | Bytes | SHA-256 | Retrieved (UTC) |
+|---|---|---|---|---|---|
+| All of the above | Publisher-typeset PDF (JASA headers and page numbers 493–505, 13 pages per pypdf) hosted by MIT Economics | https://economics.mit.edu/sites/default/files/publications/Synthetic%20Control%20Methods.pdf | 441983 | `899dd55ab6e5d093e1cf0efbbd6493f824e36935880006a55fa4d10d27393169` | 2026-11-04T04:08Z |
+
+Not reached: `https://web.stanford.edu/~jhain/Paper/JASA2010.pdf` (404) and a guessed DSpace@MIT path (404). Text was extracted with pypdf 6.21.4 in a scratch venv. The quotes come from that text layer, with line-break hyphens rejoined (e.g. "pre-Proposition" split across lines).
+
+**Status: VERIFIED** (multiples, figures, pages and citation).
+
+---
+
 ## 4. R and `strucchange`
 
 **Environment.** `which R Rscript` returns nothing: **R is not installed**. `apt-cache policy r-base-core` shows "Installed: (none), Candidate: (none)", so it is not installable via apt from the configured sources either; I did not try to install R. **CRAN is not reachable**: `cran.r-project.org`, `cloud.r-project.org`, `r-universe.dev` and `github.com` (HTML) all returned 403 on CONNECT, so `install.packages("strucchange")` could not be tried even with R. PLAN.md row A4 says "(CRAN reachable)"; that is **not true from this environment** on 2026-11-04. The cross-check in R therefore needs R and a CRAN mirror in the cloud environment, or a local machine. Reachable: `raw.githubusercontent.com` (read of the `cran/` GitHub mirror), which is how the docs below were read.
