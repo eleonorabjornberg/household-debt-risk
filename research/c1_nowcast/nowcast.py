@@ -184,7 +184,7 @@ def run(sample: str, z: Z1, vint: dict, holdout: bool) -> pd.DataFrame:
         t_end = pd.Period(T, "Q").end_time.normalize()
         q_end = pd.Period(q, "Q").end_time.normalize()
         g, used = {}, {}
-        for sid in set(mapping.values()) | {CC_TOTAL}:
+        for sid in sorted(set(mapping.values()) | {CC_TOTAL}):  # sorted: deterministic column order
             g[sid], used[sid] = indicator_growth(vint[sid], t, t_end, q_end, FREQ[sid])
         s_T = share_of(cells_T)
         assert abs(s_T - hist.iloc[-1]) < 1e-8   # shares CSV stores 8 decimals
