@@ -141,3 +141,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - `anon` reads `mart` and the two `core` dimension tables `dim_crisis` and `dim_risk_bucket`. Migration `20261027010000` grants that on purpose; CLAUDE.md's "mart only" is slightly loose.
   - No writes were made.
 - ADH (2010) placebo cutoffs: Eleonora's Mac Claude Code session read the paper (fact checks §3b, 4512152). The paper uses three cutoffs, 20×, 5× and 2×, all on pre-period **MSPE**. The frozen A7 uses 5× **RMSPE**, which is 25× MSPE and matches none of them. The Mac session caught this. Whether to change A7 by a dated deviation is Eleonora's call.
+
+### 2026-11-04: A7 deviation; C2 correction; C1 holdout aligned
+- Eleonora approved two things:
+  - the dated A7 deviation: the ADH (2010) cutoffs at 20×, 5× and 2× MSPE, with credit to the paper;
+  - naming her contact email in SEC requests (kept out of the repo, in `SEC_USER_AGENT`).
+- The markets track found a conflict: C1's holdout, starting 2024Q3, would have scored targets inside C2's frozen holdout (2023Q3–2026Q2). Applying Eleonora's rule that C1 agrees with C2, C1 now uses 2023Q3. Recorded as a C2 deviation note. C2 itself is unchanged.
+- The markets track also found a factual error in the frozen C2: pre-2016 Z.1 releases are not "HTML/PDF only". `z1r-N.zip` text archives exist back to at least 2010-06. The coordinator re-checked the HEAD codes and the SHA-256. Whether the archives carry the holder tables in parseable form is unverified. Recorded as a dated correction, with no design change.

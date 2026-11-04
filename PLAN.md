@@ -113,6 +113,9 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | Track questions: accept Claude's recommendation on every item in `docs/decisions/open-questions-2026-11-04.md` (A2 Q1–Q3, A5 Q4, A8 Q5, B1, C1 items 1–9, F2-1, F2-2, F4-1–F4-3). C1 item 6 must agree with the frozen C2 protocol; any conflict goes in as a dated deviation there. | Eleonora |
 | 2026-11-04 | A8 national-statistics hosts, `www.sec.gov`/`efts.sec.gov` and `www.freddiemac.com`/`www.fanniemae.com` added to Allowed domains. | Eleonora |
 | 2026-11-04 | Live database checks go through the Supabase connector (HTTPS), since raw-TCP Postgres is not supported through this environment's proxy. | Eleonora |
+| 2026-11-04 | A7 CHOICE 7: placebo cutoffs become the paper's 20×, 5× and 2× pre-period MSPE (5× quoted in the text), credited to Abadie, Diamond and Hainmueller (2010); the primary ratio-rank inference is unchanged. Dated deviation in `a7-causal-prereg.md`. | Eleonora |
+| 2026-11-04 | SEC EDGAR requests declare a User-Agent naming the project and Eleonora's contact email, per the SEC's fair-access policy. The address is read from the `SEC_USER_AGENT` environment variable and kept out of the repo. | Eleonora |
+| 2026-11-04 | C1's holdout follows the frozen C2 protocol (2023Q3–2026Q2), not 2024Q3. This applies her rule that C1 agrees with C2; the markets track found the conflict. | Eleonora (rule) / Claude (application) |
 
 ## Environment prerequisites
 
