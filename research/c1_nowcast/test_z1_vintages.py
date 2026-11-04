@@ -25,7 +25,8 @@ def test_latest_archived_vintage_matches_a1_share_every_quarter():
     assert (j["vint"] - j["a1"]).abs().max() < 1e-8   # CSV stores 8 decimals
 
 
-def test_first_release_has_no_quarter_from_missing_release():
-    fr = pd.read_csv(HERE / "first_release.csv")
-    assert "2016Q4" not in set(fr.quarter)   # 2017-03-09 release has no CSV zip: absent, not substituted
-    assert fr.quarter.is_unique
+def test_first_release_unique_and_2016q4_from_its_own_release():
+    fr = pd.read_csv(HERE / "first_release.csv").set_index("quarter")
+    assert fr.index.is_unique
+    # The 2017-03-09 release lives in archive folder 20170305 (skeptic mkt-s9); 2016Q4 must come from it
+    assert fr.loc["2016Q4", "first_release"] == "2017-03-09"
