@@ -1,0 +1,41 @@
+# B2 method note (written before any B2 number was computed)
+
+> **Claude draft, not the author's text.** A proposed method for Eleonora to accept, change or replace. Written during the overnight run she approved (PLAN.md "Decisions taken", 2026-11-04). The method choices are listed under "Questions for Eleonora" in `tracks/markets.md`. Changes after results go at the bottom, with a date.
+
+Date: 2026-11-04. PLAN task B2: "CRT spreads as the market's price for the risk the GSEs hand back; link to A2." Acceptance: "Spread-per-unit-of-expected-loss series by deal; tie to A2's net exposure; paywall gaps stated."
+
+## What free data allow (checked 2026-11-04, see `sources.md`)
+
+| Wanted | Free source | Coverage |
+|---|---|---|
+| Price of transferred risk, by deal | FHFA *Credit Risk Transfer Progress Report*, December 2016: "Estimated Credit Cost" per CAS and STACR deal, with attach/detach points and an estimated guarantee fee | CAS 2013-1 to 2016-7, STACR 2013-DN1 to 2016-HQA4 |
+| Issuance spreads 2017–2023 | FHFA progress reports, Appendices D and E | Charts only, with no numbers in the text. Not used; reading values off the charts would be an estimate (Question for Eleonora) |
+| Deal structure 2017–2023 (reference UPB, attach/detach, risk in force) | FHFA progress reports, deal tables | No prices |
+| Secondary-market CRT spreads | Bloomberg, Intex, dealer runs | Paywalled |
+| Deal-level issuance margins from the GSEs | crt.freddiemac.com (not reachable from the sandbox, code 000), capitalmarkets.fanniemae.com (000/403), SEC EDGAR (403 without the `SEC_USER_AGENT` declared by Eleonora's decision, unset in this session) | Blocked; listed, not worked around |
+
+## Quantities
+
+1. **Credit cost c** (bps). FHFA's "Estimated Credit Cost", transcribed as published. FHFA's footnote: estimated "as of the date of bond issuance, based on a hypothetical baseline scenario: Constant Prepayment Rate (CPR) = 10%, Constant Default Rate (CDR) = 0.2%, Loss Given Default (LGD) = 25%, early redemption at 10-year maturity", assuming "100% of the STACR/CAS notes are sold".
+   - *Unit, an assumption to state.* c is read as bps per year of reference-pool UPB. FHFA sets it beside guarantee fees, which are quoted in bps per year, but the table header gives no unit. Labelled as an assumption wherever c is used.
+2. **Baseline expected loss of the transferred slice, EL** (bps per year of reference UPB), under FHFA's own baseline scenario. *[Claude's choice]*
+   - *Pool.* Monthly steps. The balance runs off at CPR 10% and CDR 0.2% (annual rates converted to monthly). Losses each month are defaults × LGD 25%.
+   - *Tranche loss.* Cumulative pool loss C_t, as a share of original UPB, is allocated to the slice [attach, detach] as min(max(C_t − a, 0), d − a).
+   - *Horizon.* The slice's loss is cumulated to month 120 (FHFA's early redemption).
+   - *Annualising.* EL is the slice's cumulative loss divided by the average outstanding pool balance over the 120 months, as a share of original UPB. That puts it on the same per-year, per-UPB footing as c.
+3. **Price multiple m = c / EL.** Market price per unit of baseline expected loss. A multiple above 1 is the risk premium investors charge over FHFA's baseline. EL is 0 for deals whose attachment point lies above baseline cumulative losses, and there m is undefined: it is reported as absent, never as infinity or a default.
+4. **Annual cost by year, $.** Σ over deals of c × reference UPB, by issue year and enterprise. Reference UPB comes from the same FHFA deal tables (report of December 2016).
+5. **Tie to A2.** The annual cost divided by the year's CRT risk in force (A2's `crt_fhfa.csv`, `annual_rif_musd`) gives the price paid per dollar of risk transferred, % per year. A2's net-exposure bounds (`net_exposure.csv`) are cited for context; B2 does not recompute them.
+
+## Checks (asserts in the script)
+- Every transcribed row matches the published deal count per table (CAS 25 rows, STACR 23 rows), dates are in order, attach < detach, and 0 < c < 100 bps.
+- *Transcription test.* The parser reads FHFA's text layer. Five hand-checked rows (first, last and three middle rows of each table) are compared in pytest, and a planted typo must fail.
+- *EL engine tests.* A slice with attach 0 and detach 10000 takes all pool losses. Losses are additive across adjacent slices. A slice attaching above the baseline cumulative loss gets EL = 0.
+
+## What this is not
+- Not a market spread series. c is FHFA's model-based estimate from issuance pricing, under one scenario.
+- Not 2017 onward. No numeric prices are free after the December 2016 report.
+- m measures price relative to FHFA's baseline loss, not to a loss distribution. A high m can mean risk aversion or a belief that losses will exceed the baseline; the two cannot be separated here.
+
+## Changes after results
+None yet.
