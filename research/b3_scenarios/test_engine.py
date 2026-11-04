@@ -91,3 +91,16 @@ def test_exposures_sum_to_scope_and_share():
     pub = sum(e["balance"] for e in ex if e["side"] == "public")
     tot = sum(e["balance"] for e in ex)
     assert pub / tot == pytest.approx(0.5638, abs=5e-4)   # register public_share_2026q2 (validation C2)
+
+
+RESULTS = HERE / "results_dfast2026.json"
+
+
+@pytest.mark.skipif(not RESULTS.exists(), reason="presets not built")
+def test_dfast_preset_identities():
+    r = json.loads(RESULTS.read_text())
+    for k in ["dfast2026_proxy", "dfast2026_proxy_with_student"]:
+        x = r[k]
+        assert x["public_musd"] + x["private_musd"] == pytest.approx(x["total_musd"], rel=1e-12)
+        assert sum(x["by_class"].values()) == pytest.approx(x["total_musd"], rel=1e-12)
+    assert "student_federal" not in r["dfast2026_proxy"]["by_class"]          # absent, not defaulted
