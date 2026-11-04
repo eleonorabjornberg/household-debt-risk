@@ -107,3 +107,69 @@ Review entries from the analysis track; the coordinator moves them into `claims/
 - R-11: accepted. README gives the spread across the 50 states alone (3.5×, Colorado) and notes that DC shares the top map band.
 - R-12: accepted. README says the extremes are single sample estimates and that the NY Fed mortgage series excludes HELOCs.
 - R-13: partly. The vintage day is a placeholder the checker's format requires; register notes now say so. The 65.6% location belongs on the existing register row for the public share of mortgages (claims/register.csv, coordinator-owned); listed under "Proposed changes to shared files".
+
+### R-20261104-14 · skeptic · research/a2_net_exposure/tenk.py:18-23; README.md:31,34,39; METHOD.md:34
+- **Objection:** "CRT" is coded as STACR + ACIS (insurance/reinsurance) only, but Freddie's own FY2025 10-K lists "Other" under "CRT transactions" (Table 22), and in FY2017-FY2020 the "other" bucket is mostly senior/subordinate and lender risk sharing, which FHFA's CRT totals (the issuance bound) also count as CRT. The Freddie "net of CRT" ($2.90T, 1.3%, 56.2%) therefore uses a narrower CRT definition than the bound it is checked against; up to $10.4B of 2025 CRT-type cover sits in "other".
+- **Severity:** major
+- **Evidence:** data/a2/freddie/10k_021226.txt:2455-2461 ("CRT transactions: STACR ... ACIS ... Other ... Total CRT issuance"); 10k_021121.txt FY2020 Table 20: Subordination 6,182 + Lender risk sharing 4,831 + Other 371 = 11,384 = csv other_maxcov 2020. (40.0+10.4)/40.0 = 1.26x the netted cover.
+- **Proposed resolution:** say in README/METHOD that the bucket is narrower than FHFA's CRT and Freddie's own; report the share with "other" netted as a sensitivity (56.2% stays a valid upper bound either way).
+- **Status:** open
+
+### R-20261104-15 · skeptic · research/a2_net_exposure/README.md:20 vs 10-K first-loss columns
+- **Objection:** README says the tranches sold "sit above a retained first-loss slice". Freddie's FY2018-19 tables show third parties holding first-loss coverage (2019: STACR $5.9B, insurance/reinsurance $2.5B), and the FY2025 10-K says Freddie has recently moved to retaining more initial loss, so "benefits ... may be lower ... even if the maximum coverage ... is similar". Maximum coverage is therefore not comparable over time as protection, which affects the 1.8% to 1.3% reading.
+- **Severity:** major
+- **Evidence:** research/a2_net_exposure/fixtures/freddie_10k_fy2019_excerpt.txt (First Loss column); data/a2/freddie/10k_021226.txt:2444-2448.
+- **Proposed resolution:** correct line 20; add the 10-K caveat beside line 36 that a fall (or a flat line) in maximum coverage does not mean a fall (or no change) in risk transferred.
+- **Status:** open
+
+### R-20261104-16 · skeptic · research/a2_net_exposure/README.md:28-34
+- **Objection:** The table mixes bases without saying so. Gross and net are household-apportioned, but CRT ($40.0B), mortgage insurance ($181.5B) and other ($10.4B) are not. A reader computing $2.93T - $40.0B gets $2.89T, not the $2.90T shown (apportioned CRT is $37.3B).
+- **Severity:** minor
+- **Evidence:** results.json freddie_10k: crt_out_bn_unapportioned_last 40.0, crt_out_hh_bn_last 37.3, net 2895.4.
+- **Proposed resolution:** label those rows "all borrowers, not apportioned", or show the $37.3B household figure.
+- **Status:** open
+
+### R-20261104-17 · skeptic · research/a2_net_exposure/README.md:36-38; claims/tracks/analysis.csv
+- **Objection:** Line 36 ("cover runs off as notes pay down and Freddie has issued less since 2022") explains the fall with no decomposition and no registered source for Freddie's 2024-25 issuance (crt_fhfa.csv has no Freddie figure after 2023). Also unregistered: "more than four times" (l.38) and the 55.2% at l.39 (its row's locations do not include README:39).
+- **Severity:** minor
+- **Evidence:** crt_fhfa.csv fre_cum_rif_musd empty for 2024-2025; `grep "README.md:39" claims/tracks/analysis.csv` returns only a2_share_net_freddie_crt_2025.
+- **Proposed resolution:** cite 10-K FY2025 Table 22 (issuance 2023-25: $4.2B, $6.0B, $5.7B) or drop the explanation; add the register locations.
+- **Status:** open
+
+### R-20261104-18 · skeptic · research/a5_distribution/README.md:37
+- **Objection:** "By either method the public sector holds about half or more of every wealth group's debt" is presented as a finding, but it follows from the uniform-mortgage-share assumption: each group's percentage is just its own mortgage/consumer-credit mix weighted by 65.6% and 31.3%. The assumption also biases the top, not only the bottom. Jumbo loans are not GSE-eligible and are held mostly by banks, so the top 1% figure (51-58%) is probably overstated. Line 27 mentions only the bottom-side bias.
+- **Severity:** major
+- **Evidence:** public_by_group.py:108-109 (public_b = M*p_M + CC*p_CC); results_public_by_group.json Top1 public_b_pct_of_debt 0.5793.
+- **Proposed resolution:** reword as an implication of the assumption, and add the top-end (jumbo) bias to the caveat at l.27.
+- **Status:** open
+
+### R-20261104-19 · skeptic · research/a5_distribution/README.md:27-29 (assumptions of option c)
+- **Objection:** The README leaves out several assumptions that (c) depends on: (i) the federal share of student loans is the same in every group (only the docstring says so); (ii) the SCF captures about $1.15T of education loans against Z.1's $1.86T, so the missing 38% is assumed to be distributed like the reported part; (iii) SCF NETWORTH excludes DB pension entitlements, which the DFA includes, so SCF and DFA wealth groups are different households. The script's own plausibility check shows the gap: consumer-credit shares are SCF 5.9% vs DFA 10.3% for the Next 9%, and 1.2% vs 3.2% for the Top 1%. That check is not reported in the README.
+- **Severity:** major
+- **Evidence:** my run on data/a5/scfp2025excel.zip: weighted EDN_INST total $1.15T; sum of imputed_student_loans_musd = $1.858T; public_by_group.csv scf_cc_share vs dfa_cc_share columns.
+- **Proposed resolution:** state (i)-(iii) and the SCF/DFA gap in the README caveat box.
+- **Status:** open
+
+### R-20261104-20 · skeptic · research/a5_distribution/public_by_group.py:59-71 (income cuts)
+- **Objection:** SCF INCOME is heaped at round values, so the weighted cut points give income "quintiles" with population shares of 19.3/20.4/19.0/21.0/19.2/1.0%, not 20% each. These are applied to DFA quintile levels. The non-monotonic student shares (20-40th: 19.8%, 40-60th: 16.2%) partly reflect this. Wealth cuts are fine (49.98/40.02/9.0/1.0). SCF INCOME is also 2024 income.
+- **Severity:** minor
+- **Evidence:** scratchpad check: INCOME pop shares [0.1932 0.2038 0.1904 0.2102 0.1924 0.0101].
+- **Proposed resolution:** split ties at the cut points by weight (or report the pop shares), and note the income year.
+- **Status:** open
+
+### R-20261104-21 · skeptic · claims/tracks/analysis.csv a5_federal_share_student_loans; README.md:23,36
+- **Objection:** "86.4% ... are federal" counts federally *held* loans (plus GSE FL403066005). It leaves out commercially held FFEL loans, which carry a federal guarantee, so as a measure of public risk it understates. README l.23 still says the tables "are shown side by side and not multiplied", which the new estimate section below it contradicts.
+- **Severity:** minor
+- **Evidence:** public_by_group.py:96; README.md:23 vs :25-38.
+- **Proposed resolution:** say "federally held" in the claim; update l.23.
+- **Status:** open
+
+### Responses to R-20261104-14 to -21 (analysis track, 2026-11-04)
+- R-14: accepted in part. CRT stays STACR + ACIS (the only CRT rows Freddie reports consistently since FY2021); README now says "Other" may include CRT-type cover (up to $10.4B at end 2025) and that the 56.2% upper bound holds whatever part of "Other" is counted.
+- R-15: accepted. The "retained first-loss slice" sentence is replaced by Freddie's own FY2025 caveat (retaining "higher levels of initial losses"; benefits may be lower at similar maximum coverage) and the 2018–19 first-loss sales.
+- R-16: accepted. Table now labels cover rows as unapportioned and adds the household-share CRT ($37.3B) actually subtracted.
+- R-17: accepted. Unsourced runoff explanation removed ("not decomposed"); "more than four times" removed; 55.2% location added to its row.
+- R-18: accepted. "About half or more" now framed as following from the assumption, with the jumbo-loan bias stated.
+- R-19: accepted. Assumptions and gaps listed in the README. The skeptic's SCF total ($1.15T) also exposed a bug: a first version divided SCF weighted sums by five although the weights already sum to households; fixed and asserted (shares were unaffected).
+- R-20: accepted as a note (income groups are not exact fifths; sizes in results_public_by_group.json).
+- R-21: accepted. 86.4% now says "held by the federal government", excluding guaranteed FFEL; stale line 23 rewritten.
