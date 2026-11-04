@@ -8,6 +8,25 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## Decisions received (Eleonora, decision cards 2026-11-04 16:35–16:41 UTC; PLAN.md "Decisions taken", coordinator 543d96a)
+| Item | Decision | Applied |
+|---|---|---|
+| C2 test-ordering deviation | accepted | `research/c2_forecast/SPECS.md` (ACCEPTED) |
+| C2 seasonal naive in the Holm family (36 → 42) | accepted | SPECS.md (ACCEPTED) |
+| C2 placebo | (a), demean the shuffled target. The options were written after the result was seen, and she chose knowing that | `forecast.py` `placebo()`; rerun: no skill at h = 1, 4, 8 (d683482) |
+| Q-C1c | (b), run the C1 holdout in the same run as C2's, after C2 is frozen | joint holdout script prepared, sealed (below) |
+| Q-C1b | (a), pre-register a second C1 run with Freddie Mac and Ginnie Mae, Fannie flat | prereg to write; not run |
+| Q-B2.1 | (a) credit cost ÷ baseline expected loss, with (c) cost alone alongside | as built in B2 |
+| Q-B2.2 | (c), deal data from crt.freddiemac.com and EDGAR | crt.freddiemac.com still blocked (not worked around). No EDGAR requests from this track: the request list is below for the coordinator to route |
+| Q-B3 | (c), both preset families, DFAST first (labelled a proxy), then the 2008–12 replay; then B4 | in progress |
+
+### EDGAR request list for B2 (for the coordinator to route; no requests made from this track)
+*To confirm before relying on it:* STACR (Freddie Mac) and CAS (Fannie Mae) notes have been issued as exempt or Rule 144A offerings, the later ones through trusts, so their offering circulars and pricing are probably **not** on EDGAR. What EDGAR certainly holds is the GSEs' own periodic reports.
+1. **Freddie Mac (CIK 0001026214, to confirm):** forms 10-K for FY2017–FY2023, and 10-Q for each quarter of 2017–2023. What B2 needs: the CRT programme tables (STACR and ACIS issuance by year, protection purchased, and the annual cost of CRT, often reported as "credit enhancement expense" or similar), plus reference-pool UPB covered.
+2. **Fannie Mae (CIK 0000310522, to confirm):** forms 10-K FY2017–FY2023 and 10-Q 2017–2023. Same items for CAS and CIRT: issuance, risk in force, and annual credit-enhancement or CRT expense.
+3. **Full-text search, to check whether any deal-level documents exist on EDGAR:** query `"Structured Agency Credit Risk"` and `"Connecticut Avenue Securities"`, forms 8-K and FWP, 2017–2023, filers the two CIKs above. If these return per-deal pricing supplements, B2 can extend its per-deal credit cost past 2016. If not, the 10-K aggregates give an annual cost per dollar of CRT protection for 2017–2023 (a coarser but consistent measure).
+4. **Why the analysis track:** it already has the SEC access with the `SEC_USER_AGENT` declared under Eleonora's decision. Ideally it would deliver the extracted tables (year, programme, protection or RIF, annual cost), with URL, bytes and SHA-256 per filing.
+
 ## Status
 | Task | Status | Notes |
 |---|---|---|
