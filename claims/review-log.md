@@ -777,3 +777,45 @@ Resolutions are written by the main session or Eleonora, never by the reviewer t
 - ana-36: accepted. Both deviations (simulated critical values; interval fix) are now dated under "Deviations" in `docs/decisions/breaks.md`.
 - ana-37: noted; README says the critical values are simulated and that no decision is near a cut-off.
 - ana-38: accepted in part. README now says the post-break changes are much more variable, so the break may partly be volatility, and that the 2009Q1 consumer-credit break is not evidence for H2. Correction to the note: 1968Q1 lies just outside the corrected total-share interval (it ends 1967Q1); it is inside the mortgage interval, which revolving credit does not enter.
+
+### R-20261104-ana-39 · skeptic · research/a8_international/README.md:15,18; CROSSWALK.md:11; compare.py:13-15,80-85; claims/tracks/analysis.csv a8_de_public_owned_not_guaranteed
+- **Objection:** The "not guaranteed" label is applied to promotional banks, but no committed source says they lost a guarantee. The Bundesbank 2006/2015 quotes (Q7_EVIDENCE.md:15-16) cover public-law institutions (Sparkassen and Landesbanken), and the only promotional-bank source is KfW's ownership (Q7_EVIDENCE.md:20). From general knowledge, unverified: KfW's obligations carry an explicit federal guarantee (KfW-Gesetz §1a), and promotional banks were exempted from the 2001/2002 abolition. Their direct lending to individuals (KfW-Studienkredit, the BAföG bank loan; see R-20261104-ana-26) may also be public on (b). If BAföG is sourced later, it would then be counted twice. At display precision this matters: €17,817M is 1.1 pp, so the category is 30.3% with the promotional banks and 29.1% without.
+- **Severity:** blocker (the label may be wrong for part of the number)
+- **Evidence:** Q7_EVIDENCE.md:15-20, 24; 17817/1551414 = 0.0115; (438448+13519)/1551414 = 0.2913.
+- **Proposed resolution:** Put the sourcing gap to Eleonora: does (c) cover promotional banks, given that the evidence does not show them unguaranteed? Until then, report savings banks + Landesbanken (29.1%) and promotional banks (1.1%) separately, or label the promotional-bank block's guarantee status as unverified. Source the KfW-Gesetz and the 2002 understanding on promotional banks when EUR-Lex answers.
+- **Status:** partly resolved: the promotional-bank part (1.1%) is now reported separately from the public-law banks (29.1%), and the README says no source here covers promotional banks' guarantee status. The 30.3% category total stays as Eleonora's card defined it. Whether (c) covers promotional banks has gone to Eleonora through the coordinator.
+
+### R-20261104-ana-40 · skeptic · research/a8_international/README.md:18
+- **Objection:** "Public owners and the federal fund SoFFin absorbed Landesbank losses in 2008–12" claims more than the quotes support. The quotes show capital injections (BayernLB 2008-09, HSH 2009) and an undated WestLB recapitalisation, reported in October 2012. A recapitalisation puts public money at risk, but it does not show who took the losses. The one quoted loss settlement (HSH, €2.6bn under the state second-loss guarantee) is from 2016, outside 2008–12. The sentence also attaches the Landesbank history to the whole 30.3%. Landesbanken are 2.9% of the category's numerator; savings banks are 93.3%, and Q7_EVIDENCE.md:43 found no public support for them.
+- **Severity:** major
+- **Evidence:** Q7_EVIDENCE.md:18-19, 43; 13519/469784 = 0.029, 438448/469784 = 0.933.
+- **Proposed resolution:** Reword to "Länder and SoFFin recapitalised Landesbanken in 2008–09 (Bundesbank 2012), and HSH losses were later settled under a state guarantee (2016)". Add that Landesbanken are about 3% of the category and that no support to savings banks was found.
+- **Status:** resolved: README:18 now says recapitalised in 2008–09 (BayernLB, HSH by their Länder; WestLB by SoFFin) and HSH losses later settled under a state guarantee (Annual Report 2016). It also says these cases are Landesbanken, savings banks hold most of the category, and no public support for them was found.
+
+### R-20261104-ana-41 · skeptic · research/a8_international/README.md:9,15; comparison.csv header; results.json de_risk_b_public_owned_not_guaranteed; test_compare.py:38
+- **Objection:** The 30.3% sits in the column headed "(b) Risk bearer: a public body takes the credit loss (headline)", directly under the US 55.2%–56.2%. The header says a public body takes the loss; the category says it is not guaranteed. A reader scanning the column will read 30.3% as Germany's public risk-bearer share and compare it with the US. The keys add to this: they are prefixed risk_b_ (`risk_b_public_owned_not_guaranteed`, `de_risk_b_...`), while the test comment says the category is "never folded into risk_b_*", and any consumer that filters on the prefix will pick it up. The README also omits the evidence note's point (Q7_EVIDENCE.md:38) that the US has no direct counterpart.
+- **Severity:** major
+- **Evidence:** README.md:9, 11, 15; comparison.csv line 1; results.json last key.
+- **Proposed resolution:** Show the category in its own column or row, or as a footnote outside the (b) column. Rename the keys without the risk_b_ prefix (e.g. `public_owned_not_guaranteed`). Add one sentence: no US counterpart; not comparable with the US share.
+- **Status:** resolved: renamed to public_owned_not_guaranteed (no risk_b_ prefix); the README table's (b) cell no longer carries 30.3%, and README:18 says there is no US counterpart and the figure is not comparable with the US range.
+
+### R-20261104-ana-42 · skeptic · research/a8_international/CROSSWALK.md:11,13; sources.md:29
+- **Objection:** The files now disagree about whether the July 2005 end of guarantees is sourced. CROSSWALK.md:11 still says "end of state guarantees for savings banks (2005) **unverified**", and :13 says "(on general knowledge, unverified)". sources.md:29 says it "could not be sourced". Yet Q7_EVIDENCE.md:15-16 sources it from the Bundesbank (2006, 2015), and README.md:18 now states it as fact.
+- **Severity:** minor
+- **Evidence:** grep "unverified" research/a8_international/CROSSWALK.md; sources.md:29.
+- **Proposed resolution:** Point CROSSWALK and sources.md to the Bundesbank 2006/2015 rows in Q7_EVIDENCE.md, or add those rows to sources.md, and drop the "unverified" marks for the 2005 end.
+- **Status:** resolved: CROSSWALK.md:11,13 and sources.md:29 now point to the Bundesbank rows in Q7_EVIDENCE.md and no longer mark the 2005 end as unverified.
+
+### R-20261104-ana-43 · skeptic · PLAN.md:129; tracks/analysis.md:13,18,67
+- **Objection:** The decision is applied but not recorded. PLAN.md "Decisions taken" still has only "Q7: not decided" (CLAUDE.md requires her decisions there). tracks/analysis.md still lists Q7 as open (:13), on her docket (:18) and "not decided" (:67).
+- **Severity:** minor
+- **Evidence:** grep -n Q7 PLAN.md tracks/analysis.md.
+- **Proposed resolution:** Add the 2026-11-04 card q7-2 decision (option c) to PLAN.md Decisions taken and to the session log, and update the track status lines.
+- **Status:** resolved: the decision is recorded on the coordinator branch (PLAN.md "Decisions taken", card q7-2); tracks/analysis.md updated. The log entry is the coordinator's to fold in.
+
+### R-20261104-ana-44 · skeptic · research/a8_international/README.md:18; claims/tracks/analysis.csv a8_de_public_owned_not_guaranteed
+- **Objection:** "Publicly owned" has no primary source except for KfW. Q7_EVIDENCE.md:24 says no primary statement of who owns Sparkassen and Landesbanken could be reached. The Bundesbank block "Banken mit Sonder-, Förder- und sonstigen zentralen Unterstützungsaufgaben" has other members besides KfW, and their ownership is not sourced. The category name states ownership as fact for the whole 30.3%.
+- **Severity:** minor
+- **Evidence:** Q7_EVIDENCE.md:20, 24.
+- **Proposed resolution:** Mark ownership as unverified for Sparkassen, Landesbanken and non-KfW members of the block until a source is found, or list the block's members.
+- **Status:** resolved: README:18 and CROSSWALK.md:11 say public ownership is sourced only for KfW, not for savings banks and Landesbanken.
