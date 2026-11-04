@@ -7,8 +7,8 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 |---|---|---|
 | A2 | ready for review for Freddie Mac (outstanding cover from 10-Ks 2013–2025, inside the FHFA bound); Fannie Mae blocked on Q6 (SEC_USER_AGENT unset) | `research/a2_net_exposure/` |
 | A5 | ready for review (descriptive part and the Q4(c) estimate with (b) beside it; two skeptic passes, all objections addressed) | `research/a5_distribution/` |
-| A3 | in progress: 1925–1952 built (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44, overlap gap 0.035 pp at 1945); policy timeline 1933–1970 checked against statutes; skeptic pending | `research/a3_pre1952/` |
-| A4 | run to the frozen prereg (02cc47f): one break at 1966Q1 (CI 1965Q1–1997Q4); no evidence at the five 2008–10 dates; vintage-robust; not confirmable without R; quant review pending | `research/a4_breaks/` |
+| A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
+| A4 | ready for review: run to the frozen prereg (02cc47f); one break at 1966Q1 (CI 1952Q2–1967Q1); no evidence at the five 2008–10 dates; vintage-robust; quant review done (interval bug fixed); not confirmable without R | `research/a4_breaks/` |
 | A8 | ready for review (partial by design: US (b) and Germany (a) computable, other cells recorded as missing; skeptic run, 7 objections incl. 1 blocker, all addressed); Q7 open | `research/a8_international/` |
 
 ## Where the track stopped (2026-11-04, about 05:00 UTC)
@@ -41,6 +41,8 @@ A2 (Freddie), A5 and A8 are ready for review; A2 Fannie waits on Q6; A8 has Q7 o
 
 ### 2026-11-04 (overnight), A3
 - Coordinator relayed Eleonora's approval to continue into later phases (PLAN cc74d76, checked). A3 built by the main model; source scout (Sonnet, about 170k tokens) found Historical Statistics 1975 on FRASER and the statutes on GovInfo; every value and date re-read by the main session from page images and statute text.
+- A3 skeptic (50k tokens): 6 objections; skeptic caught that the overlap check used one year although both sources run past 1945, and that the 1945 match came from offsetting component gaps. Fixed.
+- A4 quant-reviewer (58k tokens): caught a sign error in the Bai (1997) interval (wrong whenever regime variances differ; 1966Q1 interval was 1965Q1–1997Q4, now 1952Q2–1967Q1). Fixed with a test that fails on the old code.
 - Errors caught by Claude (main): the first "Approved" line in a GovInfo page file can belong to the preceding chapter (1944: June 20 is the Sugar Act; 1938: January 27 is chapter 11); dates now taken after each act's own chapter heading.
 
 ## Questions for Eleonora

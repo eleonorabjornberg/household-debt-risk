@@ -70,3 +70,17 @@ def test_simulated_cv_order_and_size_plausible():
     s = cv["supF"]
     assert s[1] > s[2] > s[3]  # per-break statistic falls with k, as in Bai-Perron's tables
     assert cv["UDmax"] >= s[1] and all(cv["seq"][l] >= s[1] for l in cv["seq"])
+
+
+def test_ci_covers_true_break_with_unequal_variances():
+    # The first version centred the interval on the wrong side when phi != 1 (R-20261104-ana-35).
+    b.CI_REPS = 300  # speed; coverage threshold below is loose enough
+    rng = np.random.default_rng(7)
+    hits, reps = 0, 60
+    for _ in range(reps):
+        y = np.r_[rng.standard_normal(150) * 0.5, rng.standard_normal(150) * 2.0 + 1.0]
+        bk = b.dp_breaks(y, 30, 1)[1][1]
+        lo, hi = b.bai_ci(y, bk)[0]
+        hits += lo <= 150 <= hi
+    b.CI_REPS = 4000
+    assert hits / reps > 0.8
