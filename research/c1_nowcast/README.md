@@ -1,8 +1,33 @@
-# C1: Nowcasting the public share between Z.1 releases (data plumbing)
+# C1: Nowcasting the public share between Z.1 releases
 
-> **Claude draft, not the author's text.** This describes the plumbing only. The evaluation design is Eleonora's choice: which indicators, the vintage rule, the benchmarks and the metrics. The options, with a recommendation, are in [`tracks/markets.md`](../../tracks/markets.md) under "Questions for Eleonora". No nowcast has been computed or evaluated.
+> **Claude draft, not the author's text.** The evaluation design is Eleonora's (her Q-C1 decisions of 2026-11-04, recorded in PLAN.md). The implementation details Claude added are marked in `EVALUATION.md`.
 
-**PLAN task C1. Status: plumbing built; evaluation blocked on Eleonora's design choice.** The acceptance criteria are a point-in-time panel, in which each input is read at the value public at the nowcast instant, and a release-lag table per input. The panel is `pit.panel(t)`. The table is [`release_lags.csv`](release_lags.csv). The Z.1 release calendar is [`z1_calendar.csv`](z1_calendar.csv). Candidate inputs are listed in [`inputs.yaml`](inputs.yaml), and the sources with their hashes in [`sources.md`](sources.md).
+**PLAN task C1. Status: development-sample evaluation done; holdout pending the coordinator.** The acceptance criteria are a point-in-time panel, in which each input is read at the value public at the nowcast instant, and a release-lag table per input. The panel is `pit.panel(t)`. The table is [`release_lags.csv`](release_lags.csv). The Z.1 release calendar is [`z1_calendar.csv`](z1_calendar.csv). Candidate inputs are listed in [`inputs.yaml`](inputs.yaml), and the sources with their hashes in [`sources.md`](sources.md).
+
+## Results: development sample only (targets to 2023Q2; holdout not run)
+
+> **Claude draft, not the author's text.** The scores below follow [`EVALUATION.md`](EVALUATION.md), which was committed before any score existed (7ae4afb). The holdout is untouched: the C1 and C2 holdout starts are still being reconciled by the coordinator. So under C2's wording rule, nothing here can yet be called "beats".
+
+**Real time (RT)** means: the Z.1 base is read from the Fed's release archive, the indicators from ALFRED as of each instant, and the target is the first release. There are monthly instants from October 2016, and targets run 2016Q3–2023Q2. The three instants whose base release (2017-03-09) has no archived CSV are absent. RMSE relative to no-change (below 1 is better), by instant index k (k = 1 is the first monthly instant after a Z.1 release):
+
+| k | n | Accounting bridge | DM-HLN p / Holm p | n (regression) | Bridge regression | Clark–West p / Holm p | AR(1) | Drift |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 26 | 0.74 | 0.02 / 0.16 | 14 | 0.43 | <0.01 / 0.01 | 0.97 | 0.87 |
+| 2 | 26 | 0.74 | 0.06 / 0.46 | 14 | 0.45 | <0.01 / 0.02 | 0.97 | 0.87 |
+| 3 | 25 | 0.80 | 0.15 / 0.47 | 13 | 0.52 | <0.01 / 0.03 | 1.09 | 0.91 |
+
+- **The accounting bridge** has an RMSE of 0.29 pp, against 0.38 pp for no-change, pooled over k: about a quarter lower. After the Holm correction the difference is not significant at any k. Under C2's wording it is so far "comparable to the benchmark".
+- **The bridge is biased downward.** Its mean error is −0.22 pp, and the bias does not shrink as more monthly data arrive (−0.18 at k = 1, −0.26 at k = 3). One likely reason, not tested: the public mortgage holders (agency pools, GSEs) have no monthly indicator in set 2b and are carried flat. Banks' mortgages and consumer credit, by contrast, move with H.8 and G.19.
+- **The bridge regression** fits its intercept to past errors, which removes most of that bias. Its RMSE is about half of no-change's, and it is significant after Holm at every k. It has only 13–14 forecasts per k, because it needs 12 past first-release pairs before it starts.
+- **AR(1)** does no better than no-change (0.97–1.09). **Drift** is slightly better (0.87–0.91), but worse than the bridge.
+- **Against the latest vintage instead of the first release** (RT-latest), the bridge's relative RMSE is 0.77.
+
+**Pseudo-real-time comparisons** use latest-vintage Z.1, cut at each release's last quarter, so they are *not real-time* for Z.1. The indicators are still point-in-time. With indicator set 2b, targets 2015Q1–2023Q2, the bridge's relative RMSE is 0.77. With set 2a (G.19 federal and total only), targets 2010Q2–2023Q2, it is 0.76. All scores are in `scores_dev.csv`, all tests in `tests_dev.csv`, and every nowcast in `nowcasts_dev.csv`.
+
+**What this does not show.**
+- It does not show accuracy on unseen data: the holdout has not been run.
+- The samples are small (25–26 targets per k in RT). All p-values are descriptive.
+- The bias finding suggests adding the agency monthly summaries (indicator set 2c), but that would be a new, separately pre-registered run. It must not be a change to this one.
 
 ## How "what was public on day t" is answered
 
