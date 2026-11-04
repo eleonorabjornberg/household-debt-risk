@@ -1,0 +1,16 @@
+# Excerpt of Freddie Mac Form 10-K for FY2013 (10k_022714.pdf, freddiemac.com/investors/financials/pdf/), pdftotext -layout, lines verbatim. Test fixture only.
+
+
+Table 4.5 — Recourse and Other Forms of Credit Protection(1)
+                                                                                UPB at                          Maximum Coverage(2) at
+                                                                 December 31, 2013  December 31, 2012     December 31, 2013 December 31, 2012
+                                                                                                 (in millions)
+Single-family:
+  Primary mortgage insurance                                     $            203,470    $            188,419    $             50,823    $             46,685
+  Risk transfer transactions(3)                                                56,903                      —                    1,183                      —
+  Lender recourse and indemnifications                                          7,119                   7,875                   6,726                   7,718
+  Pool insurance(4)                                                             4,683                   7,307                   1,186                   1,355
+  HFA indemnification(5)                                                        4,051                   6,270                   3,323                   3,323
+  Subordination(6)                                                              2,644                   2,960                     399                     503
+  Other credit enhancements                                                        38                      62                      38                      62
+     Total                                                       $            278,908    $            212,893    $             63,678    $             59,646

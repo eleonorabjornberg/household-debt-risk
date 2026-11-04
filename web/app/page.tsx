@@ -1,6 +1,7 @@
 import { Figure } from "@/components/Figure";
 import { FixtureBanner } from "@/components/FixtureBanner";
 import { Prose } from "@/components/Prose";
+import { ClaimRef, Sourced } from "@/components/claims/SourceRef";
 import { CollateralCharts } from "@/components/charts/CollateralCharts";
 import { CrisisMultiples } from "@/components/charts/CrisisMultiples";
 import { PaymentPriority } from "@/components/charts/PaymentPriority";
@@ -13,7 +14,6 @@ import {
 import { getStoryData, overallSource } from "@/lib/data";
 import { fill, pct, quarterLabel, usdFromBillions } from "@/lib/format";
 import { collateralData, crises, crisisSteps, crisisWindows, headline, nyfedData, publicSeries, ratchetData } from "@/lib/shape";
-
 export default async function Home() {
   const data = await getStoryData();
   const h = headline(data);
@@ -51,19 +51,19 @@ export default async function Home() {
           <h1 className="hero__headline">{f(hero.headline)}</h1>
           <div className="hero__grid">
             <div>
-              <p className="hero__dek">{f(hero.dek)}</p>
+              <p className="hero__dek"><Sourced text={f(hero.dek)} /></p>
               <dl className="hero__facts">
                 {hero.facts.map((x) => (
                   <div key={x.label}>
                     <dt>{x.label}</dt>
-                    <dd>{x.value}</dd>
+                    <dd><Sourced text={x.value} context={x.label} /></dd>
                   </div>
                 ))}
               </dl>
               <p className="hero__factsource">{hero.factsSource}</p>
             </div>
             <div className="stat">
-              <p className="stat__value">{pct(h.publicShareLatest, 1)}</p>
+              <p className="stat__value"><ClaimRef id="public_share_2026q2">{pct(h.publicShareLatest, 1)}</ClaimRef></p>
               <p className="stat__label">{hero.statLabel}</p>
               <div className="stat__chart">
                 <p className="stat__charttitle">{f(hero.sparkTitle)}</p>
@@ -80,7 +80,7 @@ export default async function Home() {
           <p className="hook__label">NY Fed credit-report data · {tokens.nyQuarter}</p>
           <div className="hook__body">
             <h2 className="hook__title" id="hook-title">{nyFedVsZ1.title}</h2>
-            {nyFedVsZ1.body.map((p, i) => <p key={i}>{p}</p>)}
+            {nyFedVsZ1.body.map((p, i) => <p key={i}><Sourced text={p} /></p>)}
           </div>
         </div>
       </aside>
@@ -109,7 +109,7 @@ export default async function Home() {
           <header className="figure__head">
             <p className="figure__label">{crisisScrolly.label}</p>
             <h3 className="figure__title" id="crisis-walkthrough-title">{crisisScrolly.title}</h3>
-            <p className="figure__caption">{crisisScrolly.intro}</p>
+            <p className="figure__caption"><Sourced text={crisisScrolly.intro} /></p>
           </header>
           <CrisisScrolly
             steps={crisisSteps(data, crisisByCrisis.notes)}
@@ -142,7 +142,7 @@ export default async function Home() {
       <ChapterSection chapter={paymentPriority} f={f}>
         <Figure id="fig-priority" label="Figure 4" {...paymentPriority.figure}>
           <PaymentPriority data={nyfedData(data)} labels={paymentPriority.loanLabels} title={paymentPriority.figure.title} />
-          <p className="chart__footnote">{paymentPriority.studentNote}</p>
+          <p className="chart__footnote"><Sourced text={paymentPriority.studentNote} /></p>
         </Figure>
       </ChapterSection>
 
@@ -155,8 +155,8 @@ export default async function Home() {
           <dl className="tiles">
             {now.tiles.map((t) => (
               <div key={t.label} className="tile">
-                <dt className="tile__label">{t.label}</dt>
-                <dd className="tile__value">{t.value}</dd>
+                <dt className="tile__label"><Sourced text={t.label} /></dt>
+                <dd className="tile__value"><Sourced text={t.value} context={t.label} /></dd>
               </div>
             ))}
           </dl>
@@ -174,7 +174,7 @@ function ChapterHead({ chapter }: { chapter: Pick<Chapter, "id" | "number" | "ti
     <header className="chapter__head">
       <p className="chapter__num">Chapter {chapter.number}</p>
       <h2 className="chapter__title" id={`${chapter.id}-title`}>{chapter.title}</h2>
-      <p className="chapter__lede">{chapter.lede}</p>
+      <p className="chapter__lede"><Sourced text={chapter.lede} /></p>
     </header>
   );
 }
@@ -188,7 +188,7 @@ function ChapterSection({ chapter, f, children }: { chapter: Chapter; f: (s: str
         {chapter.aside && (
           <aside className="aside">
             <h3>{chapter.aside.title}</h3>
-            <p>{chapter.aside.body}</p>
+            <p><Sourced text={chapter.aside.body} /></p>
           </aside>
         )}
       </div>

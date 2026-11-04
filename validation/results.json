@@ -5,7 +5,7 @@
     "zip_name": "FRB_Z1_csv.zip",
     "zip_bytes": 64219006,
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
-    "run_at": "2026-11-03 23:56:02"
+    "run_at": "2026-11-04 04:38:13"
   },
   "checks": [
     {
@@ -282,10 +282,10 @@
       "id": "D2",
       "description": "mart.public_share (database) vs recomputation",
       "expected": "match",
-      "observed": "DATABASE_URL_READONLY not set",
+      "observed": "OperationalError",
       "tolerance": "1e-6 shares, $1M levels",
       "status": "NOT RUN",
-      "note": "no read-only database URL in the environment"
+      "note": "could not query database: failed to resolve host 'aws-0-us-east-1.pooler.supabase.com': [Errno -2] Name or service not known"
     },
     {
       "id": "E1",
@@ -366,7 +366,7 @@
       "observed": "19 quarters revised > $0.5M; max |rev| $5,272M in 2025Q3",
       "tolerance": "report only",
       "status": "WARN",
-      "note": "prev vintage 2026-06-10 [per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000]"
+      "note": "prev vintage 2026-06-11 release (zip built 2026-06-10) [per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000]"
     },
     {
       "id": "F2",

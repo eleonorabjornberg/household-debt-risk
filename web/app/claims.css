@@ -1,0 +1,150 @@
+/* GENERATED COPY: edit claims/site/claims.css in the repo root, not the copy in a site. */
+/* Source popovers and the /sources page (PLAN F1). Uses the site's --paper, --ink, --muted, --rule, --accent. */
+
+.claim {
+  position: relative;
+  display: inline;
+}
+.claim__num {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+.claim__num:hover,
+.claim__num:focus-visible {
+  text-decoration-style: solid;
+  text-decoration-color: var(--accent);
+}
+/* Selectors are doubled up (.claim .claim__tip) so a site's own `.x span` rules cannot override them. */
+.claim .claim__tip {
+  display: none;
+  position: absolute;
+  z-index: 50;
+  left: 0;
+  top: calc(100% + 6px);
+  bottom: auto;
+  transform: none;
+  width: max-content;
+  max-width: min(22rem, calc(100vw - 32px));
+  padding: 0.6rem 0.75rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  font: 400 0.8rem/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  pointer-events: none;
+}
+.claim:hover .claim__tip,
+.claim:focus-within .claim__tip {
+  display: block;
+}
+.claim .claim__tip > span {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  gap: 0;
+}
+.claim .claim__tip > .claim__status {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+}
+/* Phones: the popover becomes a sheet along the bottom of the screen (tap still opens /sources). */
+@media (max-width: 600px) {
+  .claim .claim__tip {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 16px;
+    width: auto;
+    max-width: none;
+  }
+}
+/* Near the bottom of a sticky stage, open upward: add class="claim-up" on a container. */
+@media (min-width: 601px) {
+  .claim-up .claim .claim__tip {
+    top: auto;
+    bottom: calc(100% + 6px);
+  }
+}
+.claim__text {
+  margin: 0.35rem 0;
+  font-weight: 600;
+}
+.claim__row b {
+  color: var(--muted);
+  font-weight: 500;
+}
+.claim__row code,
+.sources code {
+  font-size: 0.92em;
+  word-break: break-word;
+}
+.claim__more {
+  margin-top: 0.35rem;
+  color: var(--muted);
+}
+
+.claim__status {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border-radius: 3px;
+  font: 600 0.7rem/1.5 system-ui, sans-serif;
+  letter-spacing: 0.03em;
+  border: 1px solid currentColor;
+}
+.claim__status--pass { color: #0b7a3e; }
+.claim__status--fail,
+.claim__status--stale { color: #b42318; }
+.claim__status--unverified { color: #7a5b00; }
+.claim__status--estimate { color: #6941c6; }
+@media (prefers-color-scheme: dark) {
+  .claim__status--pass { color: #5fd38d; }
+  .claim__status--fail,
+  .claim__status--stale { color: #ff8a80; }
+  .claim__status--unverified { color: #f2c94c; }
+  .claim__status--estimate { color: #b9a3ff; }
+}
+
+.sources__summary { color: var(--muted); }
+.sources__legend { display: grid; gap: 0.3rem; margin: 1rem 0 2rem; }
+.sources__legend > div { display: flex; gap: 0.6rem; align-items: baseline; }
+.sources__legend dd { margin: 0; }
+.sources__list { list-style: none; padding: 0; margin: 0; }
+.sources__item {
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 2rem;
+}
+.sources__item:target {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+.sources__head { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: baseline; margin: 0; }
+.sources__display { font-size: 1.25rem; font-weight: 700; }
+.sources__claim { margin: 0.3rem 0 0.6rem; }
+.sources__fields { display: grid; gap: 0.25rem; margin: 0; font-size: 0.875rem; }
+.sources__fields > div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 0.6rem; }
+.sources__fields dt { color: var(--muted); }
+.sources__fields dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 520px) {
+  .sources__fields > div { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* A standalone /sources page for a site without its own page layout (atlas). */
+.sources-page {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.5rem 16px 4rem;
+  background: var(--paper);
+  color: var(--ink);
+}
+.sources-page h1 { margin: 0.5rem 0 1rem; }
