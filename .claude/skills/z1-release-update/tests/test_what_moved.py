@@ -206,3 +206,21 @@ def test_detect_release_verdicts():
     assert d.verdict(101, datetime(2026, 12, 10, 16), rec, "2026-09-11")[0] == 10
     assert d.verdict(100, datetime(2026, 12, 10, 16), rec, "2026-09-11")[0] == 10
     assert d.verdict(100, datetime(2026, 9, 11), None, None)[0] == 2
+
+
+def test_register_units_share_fraction_and_vocabulary():
+    checks = dict(CHECKS, C6={"observed": "58.60% in 2021Q1"})
+    rows = [row(claim_id="frac", unit="share", value="0.56376"),             # 56.376% -> 56.4%: same
+            row(claim_id="frac_moved", unit="share", value="0.5662"),        # 56.6% vs 56.38%: changes
+            row(claim_id="frac_as_pct", unit="share", value="56.4"),         # percent in a share column: refused
+            row(claim_id="tn", unit="usd_tn", display="$10.77T", value="10.7676", check_id="C3"),
+            row(claim_id="pp", unit="pp", display="+13.1 pts", value="13.11", check_id="C5"),
+            row(claim_id="peakq", unit="quarter", display="2021 Q1", value="2021Q1", check_id="C6"),
+            row(claim_id="peakq_old", unit="quarter", display="2020 Q4", value="2020Q4", check_id="C6"),
+            row(claim_id="ratio", unit="ratio", display="3.56×", value="3.56", check_id="C2")]
+    stale, same, cannot, _ = sc.analyse(rows, checks)
+    assert [s[0]["claim_id"] for s in stale] == ["frac_moved", "peakq_old"]
+    assert {s[0]["claim_id"] for s in same} == {"frac", "tn", "pp", "peakq"}
+    assert {c[0]["claim_id"] for c in cannot} == {"frac_as_pct", "ratio"}
+    text = sc.render(stale, same, cannot, [], "t")
+    assert "0.5662 (share) -> now 56.4 %" in text
