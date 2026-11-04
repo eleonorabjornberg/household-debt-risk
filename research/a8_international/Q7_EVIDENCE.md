@@ -47,6 +47,25 @@ Retrieved 2026-11-04 17:34 UTC by the main session; details and the hosts that d
 
 **Decision (Eleonora, 2026-11-04, card q7-promo-2): option (c).** The category "publicly owned, not guaranteed" holds the public-law banks only (savings banks and Landesbanken, 29.1% of bank lending to individuals). Promotional banks (1.1%) stay unclassified until the Länder promotional-bank statutes can be reached; KfW's Art. 1a guarantee is kept as context. Applied in `compare.py` (`public_owned_not_guaranteed`, `promotional_banks_unclassified`), `results.json` and the README. Reaching the statute hosts needs her separate approval.
 
+## Follow-up 2: Länder promotional-bank statutes (2026-11-04, 20:38–20:45 UTC)
+
+> **Claude draft.** Source summary for Eleonora's card; not her text. The 1.1% is **not** reclassified: it is still one Bundesbank category with no member list, and any change is her call.
+
+Sources and hashes in `sources.md` ("Q7 follow-up 2" rows).
+
+- **NRW.BANK: state backing of the bank, by statute.** NRW.BANK law § 4 (consolidated text as of 1 Jan 2024, the bank's own copy) and statute § 2 (11 March 2024): the Land NRW is *Gewährträger*; it "stellt sicher, dass die NRW.BANK ihre Aufgaben erfüllen kann (Anstaltslast)"; it is liable for NRW.BANK's obligations once the bank's own assets cannot satisfy them, and liable *directly* for the bank's borrowing, bonds, derivatives and "andere Kredite an die NRW.BANK". So NRW.BANK carries all three mechanisms the question named: Anstaltslast, Gewährträgerhaftung and an explicit guarantee of its refinancing. As with KfW, the guarantee runs to the bank and its creditors. Nothing in these texts guarantees the households NRW.BANK lends to; a loss on a household loan falls on NRW.BANK, which the Land must keep able to perform its tasks.
+- **Landwirtschaftliche Rentenbank: same structure, federal.** § 1a "Haftung des Bundes", wording parallel to KfW § 1a. Whether Rentenbank sits in the Bundesbank category is not confirmed by any source on file (no member list).
+- **KfW: German text of § 1a now on file**, agreeing with the English version already recorded.
+- **L-Bank: not reached.** l-bank.de has product pages only and links its legal pages to l-bank.info (not allowed); landesrecht-bw.de's document service refused a plain request. Not worked around.
+- **Verständigung II (2002): not reached.** EUR-Lex returns a JavaScript bot challenge to every request. Whether the 2002 understanding let promotional banks keep these guarantees is therefore not sourced here, although NRW.BANK's 2004 law shows that at least one does keep them today.
+
+**What this does and does not settle.** For the three banks whose statutes are on file (KfW, Rentenbank, NRW.BANK), the label "not guaranteed" does not fit: each has a statutory state guarantee of its own obligations. None guarantees the borrower. The sources do not say who the category's other members are, how the 1.1% splits among them, or what L-Bank and the other Länder promotional banks' statutes say. So the evidence points one way for the members documented, but it covers an unknown share of the 1.1%.
+
+**Options for Eleonora's card (no recommendation; the sources do not settle the whole category):**
+1. Keep (c) as applied: the 1.1% stays unclassified; add NRW.BANK and Rentenbank to the KfW context note.
+2. Label the 1.1% "publicly owned, state-backed institution (creditor guarantee, not borrower guarantee)", with a caveat that only three members' statutes were checked and no member list exists.
+3. Keep it unclassified and ask for further access first (l-bank.info, EUR-Lex access without the bot challenge (her call, via the environment settings), a Bundesbank member list for the category) before deciding.
+
 ## What would make the choice firmer
 
 - The Commission's 2001 understanding and 2004 decision texts (EUR-Lex), and the state-aid decisions for the three banks (Commission case pages), once those hosts answer.
