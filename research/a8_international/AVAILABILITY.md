@@ -31,3 +31,7 @@ PLAN.md "Environment prerequisites" lists CMHC, Bank of England, Bundesbank, Sta
 ## What would unblock A8
 
 Add to Allowed domains (environment settings → Network), at minimum: `www.cmhc-schl.gc.ca`, `www150.statcan.gc.ca`, `www.bankofcanada.ca`, `www.nationalbanken.dk`, `api.statbank.dk`, `www.bankofengland.co.uk`, `www.bundesbank.de`, `www.kfw.de`, `data.bis.org`, `data-api.ecb.europa.eu`. Or download the national tables by hand and drop them in `data/a8/` (the script would record hashes).
+
+## Update, 2026-11-04 about 04:20–04:45 UTC
+
+After Eleonora allowed the national hosts: reachable from this session were `www.cmhc-schl.gc.ca`, `www150.statcan.gc.ca` (from the scout's session; the main session's own requests timed out), `www.bankofcanada.ca`, `www.nationalbanken.dk`, `api.statbank.dk`, `www.bankofengland.co.uk`, `www.bundesbank.de`, `www.kfw.de`, `data.bis.org`. Still not answering: `data-api.ecb.europa.eu`, `www.osfi-bsif.gc.ca`, `assets.cmhc-schl.gc.ca`, `www.canada.ca`, `www.gov.uk`, `www.ons.gov.uk`, `obr.uk`, `www.slc.co.uk`, `www.dst.dk`, `www.su.dk`, `www.finanstilsynet.dk`, `www.destatis.de`, `statistiken.bundesbank.de`. What each gap blocks is in `README.md` and `sources.md`.

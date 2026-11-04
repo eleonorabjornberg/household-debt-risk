@@ -7,7 +7,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 |---|---|---|
 | A2 | in progress: Q1(b) built for Freddie Mac 2013–2025 (outstanding cover from 10-Ks, inside the FHFA bound); Fannie Mae waits for its filings (fanniemae.com 403; SEC User-Agent contact pending) | `research/a2_net_exposure/` |
 | A5 | in progress: Q4(c) estimate with (b) beside it built (SCF 2025 student-loan shares; labelled ESTIMATE); second skeptic pass pending | `research/a5_distribution/` |
-| A8 | blocked (network: every national source refused by the proxy; see `research/a8_international/AVAILABILITY.md`); availability note and unverified crosswalk draft done; metric choice is Q5 | `research/a8_international/` |
+| A8 | in progress: Q5(c) comparison built from verified national sources; US and Germany computable, Canada/Denmark/UK each miss one figure (recorded, not imputed); skeptic pending | `research/a8_international/` |
 
 ## Log notes for the coordinator
 (Tasks done, models and subagents used with tokens, errors and who caught them. The coordinator folds these into docs/building-with-claude.md.)
@@ -30,6 +30,7 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 - A5 Q4(c): `public_by_group.py` imputes public exposure by wealth and income group from DFA, SCF 2025 and Z.1; both methods add up to the Z.1 public total; 12 register rows (10 ESTIMATE) by hand.
 - Skeptic (A2 10-K + A5 estimate, 82k tokens): 8 objections, none blocking, all addressed. Skeptic caught: CRT definition narrower than the FHFA bound; an unsupported "retained first loss" claim; mixed apportioned/unapportioned rows; unstated estimate assumptions. Its SCF total also exposed a Claude bug (SCF weighted sums divided by five twice; shares unaffected).
 - A8 source scouts (4 × Sonnet, about 440k tokens in total): Canada, Denmark, UK, Germany findings in the scratchpad; to be reviewed by the main session before any number is used.
+- A8 (main model, from the scouts' leads): every non-US figure re-checked against the downloaded official file; the German table re-fetched by the main session so all three German figures come from one Bundesbank file. Claude caught two of its own slips before commit: a KfW URL with a guessed file name (replaced by the recorded URL) and a German row pairing one PDF's URL with another's hash (fixed by re-fetching).
 - Errors caught by Claude (main) through the reconciliation check while building the parser: a wrapped label turned a subtotal into a component (FY2018–20, doubled sums); "Total $" rows were missed so the parse ran past the table (FY2015); a wrapped "STACR ... / transactions" label would have been filed as "other". All caught by the table-total assert before any number was used.
 
 ## Questions for Eleonora
