@@ -237,3 +237,115 @@ Resolutions are written by the main session or Eleonora, never by the reviewer t
 - **Evidence:** tracks/markets.md Q-C1 items 1-6; no docs/decisions entry for C1 yet.
 - **Proposed resolution:** Add these to Q-C1 before Eleonora chooses.
 - **Status:** open (design, for Eleonora): Clark–West for nested benchmarks, as-of benchmarks and a pre-registered holdout added to Q-C1 item 6; pre-2019 target vintages stated as needing the Fed archive.
+
+<!-- Analysis-track entries (A2, A5), merged 2026-11-04 from tracks/analysis-review-log.md; renumbered with an ana- infix because the track's R-20261104-1..13 collided with the coordinator's A1 entries. -->
+
+Review entries from the analysis track; the coordinator moves them into `claims/review-log.md` on merge (renumbering if ids collide).
+
+### R-20261104-ana-1 · skeptic · research/a2_net_exposure/README.md:16 (a2_public_share_net_lower_2025q4, a2_net_ff_lower_hh)
+- **Objection:** The table labels G − cumulative CRT RIF as "Net, lower bound" and the public share as "at least 55.2%". That is a lower bound only on net-of-CRT exposure. Once mortgage insurance is netted (FHFA PMI RIF is 12.5% of 2023 gross by the same method), true net exposure can be well below $6.05T and 55.2%. Read alone, the table row says the public share cannot be below 55.2%.
+- **Severity:** major
+- **Evidence:** README.md:13-16 table header "Net, lower bound (all issued CRT still in force)"; README.md:21 and net_exposure.csv 2023 pmi_issued_pct_of_gross = 12.5191; register rows 4 and 8 say "at least".
+- **Proposed resolution:** Relabel as "net of CRT only, before mortgage insurance" in the table and in register claims 4 and 8, and add one sentence saying PMI could lower net further.
+- **Status:** open
+
+### R-20261104-ana-2 · skeptic · research/a2_net_exposure/README.md:16,19 (a2_public_share_gap_pp)
+- **Objection:** "Public share net" is (public principal − RIF)/S. That mixes loss capacity with principal and treats $1 of RIF as $1 of principal moved to the private side, so 55.2% is not a share of anything observable. Line 19 adds a caveat, but the table cell at line 16 (and register row 8) carries the number without it.
+- **Severity:** major
+- **Evidence:** net_exposure.py:85 `100 * (pub - crt["cum_rif_musd"] * a) / s`; METHOD.md:15.
+- **Proposed resolution:** Put the "loss capacity against principal" caveat in the table and in the register claim text, or report the gap as RIF/S rather than as a "share".
+- **Status:** open
+
+### R-20261104-ana-3 · skeptic · research/a2_net_exposure/README.md:20
+- **Objection:** The FHFA "majority" quote is attributed to CRT ("the share transferred on covered loans is much larger"). FHFA says "Through CRT **and mortgage insurance**, the majority…". The claim that the CRT slice is "where most stress losses fall" is unsourced.
+- **Severity:** major
+- **Evidence:** sources.md:9 (4Q2019 quote); same wording in the Dec 2016 extract, line 38.
+- **Proposed resolution:** Quote FHFA in full, including "and mortgage insurance", and source the stress-loss statement or label it as an assumption.
+- **Status:** open
+
+### R-20261104-ana-4 · skeptic · research/a2_net_exposure/README.md:21 (a2_pmi_cum_rif)
+- **Objection:** "Mortgage insurance is larger than CRT in RIF terms" contradicts the project's own source: FHFA 4Q23 p.8 says "the RIF figures for these two categories are not strictly comparable".
+- **Severity:** minor
+- **Evidence:** sources.md:13 quote.
+- **Proposed resolution:** Drop the comparison or carry FHFA's caveat next to it.
+- **Status:** open
+
+### R-20261104-ana-5 · skeptic · research/a2_net_exposure/README.md:22, METHOD.md:14 (a2_crt_ref_upb_over_gross)
+- **Objection:** The 1.1× is explained only "because refinanced loans are counted again". FHFA's own footnote says the same reference UPB may back both a STACR and an ACIS deal, and cumulative UPB also keeps loans that have paid off without refinancing.
+- **Severity:** minor
+- **Evidence:** CRT-Progress-Report-4Q22 extract, Freddie table footnote 5: "The same reference pool UPB may back STACR and ACIS transactions."
+- **Proposed resolution:** List all three causes; drop "because".
+- **Status:** open
+
+### R-20261104-ana-6 · skeptic · research/a2_net_exposure/crt_fhfa.csv:7-8
+- **Objection:** The PMI UPB for 2018 and 2019 uses the rounded text figures ($1.2T, $1.6T). The chart boxes in the same reports give $1,231B and $1,570B, and 2020 onward uses the boxes. The column is not used in any output; RIF values match.
+- **Severity:** minor
+- **Evidence:** 4Q18 extract line 611 "Total $1,231"; 4Q2019 extract shows "Total $1,570".
+- **Proposed resolution:** Use the box values, or document the mixed basis.
+- **Status:** open
+
+### Responses (analysis track, 2026-11-04)
+- R-ana-20261104-ana-1: accepted. Table header and register rows now say "net of CRT only, mortgage insurance not netted"; README states 55.2% is not a floor once MI is netted.
+- R-ana-20261104-ana-2: accepted. Table header now says principal less CRT loss capacity; register claims say "RIF subtracted from principal".
+- R-ana-20261104-ana-3: accepted. The FHFA "majority" quote is now attributed to CRT and mortgage insurance together; the unsourced "most stress losses fall" clause is removed.
+- R-ana-20261104-ana-4: accepted. README quotes FHFA's "not strictly comparable".
+- R-ana-20261104-ana-5: accepted. README and METHOD now give all three reasons (paid-off loans kept at issuance balance, refinanced loans counted again, STACR/ACIS sharing a pool).
+- R-ana-20261104-ana-6: noted, not changed. The column is unused; the basis column already says the 2018–19 PMI UPB is the rounded text figure.
+
+### R-20261104-ana-7 · skeptic · research/a5_distribution/README.md:15 (a5_top10_mortgage_2026q2)
+- **Objection:** The top 10% share of home mortgages is the sum of three rounded shares (0.8 + 3.2 + 24.4 = 28.4). Computed from the levels file it is 28.48%, which displays as 28.5%. The printed number is wrong at display precision. The same rounding is why the table's mortgage column sums to 99.9.
+- **Severity:** blocker
+- **Evidence:** distribution.py:165,180 sums `dfa-networth-shares.csv` (published to 0.1). Recompute from `dfa-networth-levels.csv` 2026:Q2: (117243+453093+3410241)/13976937 = 0.28480. Top 10% net worth by the same method is 0.68918, so 68.9% is unaffected.
+- **Proposed resolution:** Compute group sums from the levels (or from shares-detail) and not from rounded shares, then rerun and update README:15, results.json and the register row. Apply the same fix to `top20_mortgages`, which happens to be right (0.53159, so 53.2%).
+- **Status:** open
+
+### R-20261104-ana-8 · skeptic · research/a5_distribution/AVAILABILITY.md:13
+- **Objection:** The row label "Who holds (and so carries) the risk by loan type" treats holding as bearing risk. Holding and risk differ in both directions: GSE pools shed part of the risk through CRT and private MI (A2), and privately held FFEL student loans are federally guaranteed. The 65.6% and 31.3% public shares (README:23) are shares of holdings, not of risk.
+- **Severity:** major
+- **Evidence:** AVAILABILITY.md:13. A2 shows net-of-CRT and MI exposure below gross. The README:23 wording ("hold") is correct; the availability note is not.
+- **Proposed resolution:** Change it to "Who holds the loans, by loan type". Add one README sentence saying holding is not bearing risk and pointing to A2.
+- **Status:** open
+
+### R-20261104-ana-9 · skeptic · research/a5_distribution/README.md:17-19
+- **Objection:** The groups are ranked by net worth, and debt lowers net worth. So "the bottom half owes half the consumer credit" and its high leverage partly restate how the bottom 50% is defined. Membership also changes with house prices. The bottom-50 mortgage share was 34.6% in 2010Q3 and 22.1% in 2021Q1: underwater owners fell into the bottom half and then rose out of it. The 1989-vs-2026 endpoint comparison hides this. Read as "who borrows", it suggests a fixed population that changed its borrowing.
+- **Severity:** major
+- **Evidence:** figures/dfa_bottom50_shares.alt.txt (high 34.6% in 2010Q3; low 22.1% in 2021Q1). README:19 already notes the house-price effect on the ratios but not on group membership.
+- **Proposed resolution:** Add a caveat that wealth groups are re-ranked each quarter and that debt enters the ranking. Show income groups (less endogenous) next to them, or say the 1989 comparison runs between different populations.
+- **Status:** open
+
+### R-20261104-ana-10 · skeptic · research/a5_distribution/README.md:19 (a5_b50_leverage_2007q4)
+- **Objection:** "Lower than in 2007" uses 2007Q4 as the reference. Bottom-50 liabilities/assets peaked at 95.3% in 2010Q4, not in 2007. The sentence is true, but readers will take 81.5% as the peak.
+- **Severity:** minor
+- **Evidence:** From dfa-networth-levels.csv, the Bottom50 Liabilities/Assets maximum is 2010:Q4 = 0.9530 (2007:Q4 = 0.8149, 2026:Q2 = 0.5836).
+- **Proposed resolution:** Either state the 2010Q4 peak as well (it needs a register row) or say "down from 81.5% on the eve of the crisis".
+- **Status:** open
+
+### R-20261104-ana-11 · skeptic · research/a5_distribution/README.md:27; figures/state_mortgage_pc_2025.*
+- **Objection:** The "3.8× spread" across states comes from DC, a city-jurisdiction outlier. Among the 50 states the spread is CO/WV = 3.5×. DC is also the maximum for student loans (12,650 against GA 7,120 next). On the sextile maps DC sits in the same top bin as every state from $55.6k up ($6.1k up for student loans), so the map understates DC while the text headline leans on it.
+- **Severity:** minor
+- **Evidence:** state_2025.csv: 72210/20770 = 3.48; mortgage sextile breaks [20770, 30540, 33813, 40310, 46350, 55600, 78140].
+- **Proposed resolution:** Give the 50-state spread next to the figure that includes DC, or footnote that DC is a city. Optionally mark DC as an outlier in the map legend.
+- **Status:** open
+
+### R-20261104-ana-12 · skeptic · research/a5_distribution/README.md:27-28, 34
+- **Objection:** The extremes are single sample-based values with no stated uncertainty. WY's student-loan minimum comes from a 1% sample (about 5k people) and fell 10% in one year (3,530 to 3,180), which suggests noise. Separately, README:27 says "mortgage debt" without "excluding HELOC". The DFA and Z.1 home mortgages used two sections earlier include HELOCs, so the three mortgage measures in the README are not the same object.
+- **Severity:** minor
+- **Evidence:** area_report_by_year.xlsx Info sheet: "Mortgage Debt Balance per Capita (excluding HELOC)", "Student Loan ... 1% of the population". The studentloan sheet row WY reads Q4_2024 3530, Q4_2025 3180. HI 3,810 is next lowest.
+- **Proposed resolution:** Write "mortgage debt (excluding HELOCs)" at README:27 and in the map title. Add "single-year sample estimates; rankings near the extremes may not be significant".
+- **Status:** open
+
+### R-20261104-ana-13 · skeptic · claims/tracks/analysis.csv (a5_ rows); README.md:23
+- **Objection:** Two register gaps. (1) README:23 prints 65.6%, but no a5 row covers it, and the main row `public_share_mortgage_2026q2` lists only analysis/findings.md and recommendation.md as locations. (2) The NY Fed rows give vintage `nyfedstate:2026-02-01`, but the workbook gives only "February 2026", so the day is invented.
+- **Severity:** minor
+- **Evidence:** `grep 0.6555 claims/tracks/analysis.csv` finds nothing. claims/register.csv:11 has the locations. The Info sheet citation reads "...Federal Reserve Bank of New York, February 2026".
+- **Proposed resolution:** Add README:23 as a location for public_share_mortgage_2026q2 on merge, like the CC fold note. Use `nyfedstate:2026-02` or the file's Last-Modified date, with its source stated.
+- **Status:** open
+
+### Responses to R-20261104-ana-7 to -ana-13 (analysis track, 2026-11-04)
+- R-ana-7 (blocker): accepted. Group sums now come from DFA levels in `distribution.py`; the top 10% share reads 28.5%; register row corrected.
+- R-ana-8: accepted. AVAILABILITY.md now says holding is not bearing the risk, with CRT, mortgage insurance and FFEL as examples.
+- R-ana-9: accepted. README says groups are ranked by net worth (debt lowers it), that membership moves with house prices, and gives the 2010Q3 peak.
+- R-ana-10: accepted. README gives the 2010Q4 leverage peak next to the 2007Q4 figure.
+- R-ana-11: accepted. README gives the spread across the 50 states alone (3.5×, Colorado) and notes that DC shares the top map band.
+- R-ana-12: accepted. README says the extremes are single sample estimates and that the NY Fed mortgage series excludes HELOCs.
+- R-ana-13: partly. The vintage day is a placeholder the checker's format requires; register notes now say so. The 65.6% location belongs on the existing register row for the public share of mortgages (claims/register.csv, coordinator-owned); listed under "Proposed changes to shared files".

@@ -162,7 +162,7 @@ def main(argv=None) -> int:
         assert len(r) == 1
         return float(r[col].iloc[0])
 
-    # Group sums are computed from DFA levels, not by adding rounded published shares (skeptic R-20261104-7).
+    # Group sums are computed from DFA levels, not by adding rounded published shares (skeptic R-20261104-ana-7).
     wl = read_dfa(dfa_zip, "dfa-networth-levels.csv")
 
     def top10(col, d="2026:Q2"):
