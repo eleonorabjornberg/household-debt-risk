@@ -1,0 +1,1 @@
+/home/user/household-debt-risk/.claude/skills/research-memo/examples/bank_treasury.md: PASS · 848/1000 words · claim-check {'AMBIGUOUS': 7, 'MATCH': 16} · 22 register rows

@@ -1,0 +1,10 @@
+{
+  "name": "fed-data-desk",
+  "version": "0.1.0",
+  "description": "Fed Data Desk: the household-debt-risk research team's skills (claim-check, research-memo, z1-release-update, chart-from-sql, source-provenance, preregister), reviewer subagents (skeptic, quant-reviewer, editor, analyst, register-keeper, prompt-archivist) and the household-credit MCP server, for work inside a clone of the household-debt-risk repository.",
+  "author": { "name": "Eleonora Björnberg" },
+  "homepage": "https://github.com/eleonorabjornberg/household-debt-risk",
+  "repository": "https://github.com/eleonorabjornberg/household-debt-risk",
+  "license": "MIT",
+  "keywords": ["federal-reserve", "z1", "household-debt", "research", "claims-register"]
+}

@@ -75,7 +75,7 @@ build: site-copies site-test site-build  ## test and build both sites
 OFFLINE := env -u DATABASE_URL -u DATABASE_URL_READONLY
 test:  ## offline Python suites (pipeline, claims, validation, research, skills, MCP)
 	cd pipeline && $(OFFLINE) $(UV) run -q pytest -q
-	$(OFFLINE) $(PY) -m pytest -q claims research validation/test_run.py .claude/skills/z1-release-update/tests
+	$(OFFLINE) $(PY) -m pytest -q claims research validation/test_run.py .claude/skills/z1-release-update/tests .claude/skills/claim-check/tests .claude/skills/research-memo/tests evals tools
 	cd mcp/household-credit-mcp && $(OFFLINE) $(UV) run -q pytest -q
 
 test-db:  ## database tests (needs DATABASE_URL / DATABASE_URL_READONLY and a reachable host)
@@ -99,6 +99,7 @@ ci-static:  ## register check and stale-copy check (before any build rewrites th
 	node claims/site/sync.mjs --check
 	node web/scripts/make-downloads.mjs --check
 	node opendata/archive.mjs --check
+	python3 plugin/sync.py --check
 
 clean-data:  ## remove downloaded data (data/ is gitignored)
 	rm -rf $(DATA) analysis/.cache

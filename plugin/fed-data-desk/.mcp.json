@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "household-credit": {
+      "command": "uv",
+      "args": ["--directory", "mcp/household-credit-mcp", "run", "household-credit-mcp"]
+    }
+  }
+}
