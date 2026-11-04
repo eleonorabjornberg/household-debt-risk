@@ -69,4 +69,10 @@ Hot Potato's "What does this mean?" (`atlas/content/story.ts`, `meaning`) is rev
 3. The student-loan point now says part of the shift is relabelling (pre-2010 guarantees) and that losses depend on collection.
 4. "Would move the biggest pile back across the line" was wrong under this site's own definition (GSEs count as public in or out of conservatorship). It now says a release changes who stands behind the pile, not which pile it is in.
 
+Four further copy fixes, approved by Eleonora on 2026-11-04:
+5. Hot Potato's "Today" step now says its totals are in 2026 dollars; the README and findings use nominal dollars ($10.77T of $19.10T), the site real ($10.8T of $19.2T).
+6. The COVID step showed 2021Q4, a rise of more than two points in two years, under the title "COVID barely moves the dots". It now shows 2023Q4, the same 16-quarter window as every other crisis: 55.2% to 56.2%, about one point.
+7. The two pre-crisis declines now name their windows: −5.0 points from the end of 1999 to the end of 2007 (story site) and 5.7 pp over 2003Q4–2007Q4 (findings).
+8. Three values defined in the story site's code but never shown (`public1980s`, `covidDelta`, `uncollShare`) are deleted; their register rows keep the places the numbers are still published.
+
 Deployed as a preview only.

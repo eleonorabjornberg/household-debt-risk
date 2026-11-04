@@ -23,7 +23,6 @@ export const facts = {
   publicSharePeak: "58.6%",
   publicSharePeakQ: "2021 Q1",
   gse1980s: "+18.8 pts", // GSE & agency pools, 1979Q4–1989Q4
-  public1980s: "+19.0 pts",
   placeboP: "0.30", // crisis windows vs random 16-quarter windows
   crisesAboveMedian: "5 of 11",
   gfcFrom: "36.1%", // 2007Q4
@@ -39,7 +38,6 @@ export const facts = {
   dotcomTo: "36.8%",
   dotcomDelta: "−3.8 pts",
   preGfcDecline: "−5.0 pts", // 1999Q4–2007Q4
-  covidDelta: "+1.0 pts",
   shocksMax: "less than 1 point",
   publicBookHome: "85%",
   studentInPublicBook2007: "2.4%",
@@ -52,7 +50,6 @@ export const facts = {
   homeCushion: "72%",
   homeCoverageLow: "1.85×",
   homeCoverageLowQ: "2012 Q1",
-  uncollShare: "16.6%",
   fedMbsPeak: "16.4%",
   fedMbsPeakQ: "2022 Q1",
   fedMbsPeakUsd: "$2.72T",
@@ -118,7 +115,7 @@ export const ratchet: Chapter = {
   body: [
     `Start in 1952. Banks, savings institutions, life insurers and households selling their own homes on credit held nearly all US home mortgages and consumer loans. Public holders, meaning the federal government, the housing agencies and state and local governments, had ${facts.publicShareFirst}.`,
     `The share climbed for the next three decades, and fastest when nothing was going wrong. Ginnie Mae issued the first mortgage-backed security in 1970 and Freddie Mac was chartered the same year. Through the 1980s, thrifts and banks sold or swapped their mortgages into agency pools. The GSEs and agency pools added ${facts.gse1980s} of household debt in that decade alone.`,
-    `The share fell in the early 2000s, by ${facts.preGfcDecline.replace("−", "")} between 1999 and 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from ${facts.gfcFrom} at the end of 2007 to ${facts.gfcTo} four years later and never came back down. It peaked at ${facts.publicSharePeak} in ${facts.publicSharePeakQ} and is ${facts.publicShareLatest} today.`,
+    `The share fell in the early 2000s, by ${facts.preGfcDecline.replace("−", "")} between the end of 1999 and the end of 2007, as Wall Street's private-label securities took market share. Then the financial crisis reversed all of that and more. The public share went from ${facts.gfcFrom} at the end of 2007 to ${facts.gfcTo} four years later and never came back down. It peaked at ${facts.publicSharePeak} in ${facts.publicSharePeakQ} and is ${facts.publicShareLatest} today.`,
     "Read the chart from the bottom up. The bands below the dark line are public: federal lending (mostly student loans), Fannie Mae, Freddie Mac and the Ginnie Mae pools, and state and local housing agencies. Everything above it is private. Switch to real dollars to see the scale, or split mortgages from consumer credit.",
   ],
   figure: {
