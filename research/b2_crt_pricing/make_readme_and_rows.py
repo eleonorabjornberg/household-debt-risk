@@ -32,7 +32,7 @@ txt = f"""# B2: What the market charges for the credit risk the GSEs pass back
 
 Only one free source gives numbers for the price of CRT: FHFA's *CRT Progress Report* of December 2016. For each CAS (Fannie Mae) and STACR (Freddie Mac) deal from 2013 to 2016, it gives an "estimated credit cost", an estimated guarantee fee, and the deal's structure. FHFA estimated each cost from issuance pricing under one baseline loss scenario: 10% prepayment, 0.2% annual defaults, 25% loss given default, and redemption at 10 years. {R['n_deals_priced']} deals have a published cost.
 
-Later FHFA reports show issuance spreads only as charts. Deal-level data from the GSEs and SEC filings are blocked from this environment, and secondary-market spreads are paywalled (`sources.md`). So B2's deal-level pricing covers 2013–2016 deals only. For 2017–2023 the GSEs' 10-Ks give a coarser, aggregate annual cost (section below).
+Later FHFA reports show issuance spreads only as charts, and secondary-market spreads are paywalled (`sources.md`). So FHFA's deal-level cost covers 2013–2016 deals only. For 2017–2023 the GSEs' 10-Ks give a coarser, aggregate annual cost, and for Freddie Mac's STACR deals from 2017 its pricing workbook gives each tranche's issuance spread (sections below). Fannie Mae's deal data are still not reachable.
 
 ## Result
 
@@ -63,11 +63,11 @@ The weighted cost rose from 2014 to 2016. Over that period the GSEs moved to sel
 - **This is FHFA's estimate, not a market spread series.** The cost is derived from issuance pricing under one scenario, and it assumes the whole slice is sold.
 - **A multiple above 1 is the premium over FHFA's baseline, not over expected losses in general.** It mixes investors' risk aversion with any belief that losses will exceed the baseline, and the two cannot be separated here. It also depends on the loss basis (about {f1(M['zero_attach_median'])} or {f1(M['zero_attach_median_original_basis'])}).
 - **Tie to A2.** The priced deals cover most of each year's CRT reference UPB (last column). The rest is insurance (CIRT, ACIS) and unpriced deals. The two sources are not reconciled deal by deal. A2's net-exposure bounds (`research/a2_net_exposure/`) are the quantity this price applies to. B2 does not recompute them.
-- **2017 onward has no deal-level prices.** Only the aggregate 10-K measure above. Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error; it was not done.
+- **2017 onward has no FHFA deal-level cost.** Instead: the aggregate 10-K measure and, for STACR only, tranche spreads from Freddie's pricing workbook (sections below). Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error; it was not done.
 
 ## 2017–2023: aggregate annual cost from the GSEs' 10-Ks
 
-Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no longer prints deal-level credit costs, and the GSEs' deal data are not reachable from here (crt.freddiemac.com, capitalmarkets.freddiemac.com; `sources.md`). What the 10-Ks give instead is the yearly cost of each GSE's whole CRT programme. It is a coarser measure than the deal table above: a cost per dollar of protection outstanding, pooled over every vintage still in force, not a price set at issuance. It is not set against FHFA's expected loss. Code: `gse_10k.py`; data: `freddie_crt_cost.csv`, `fannie_crt_cost.csv`.
+Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no longer prints deal-level credit costs, and the GSEs' deal data were not reachable from here when this section was written (crt.freddiemac.com, capitalmarkets.freddiemac.com; `sources.md`; Freddie's STACR pricing workbook became reachable later, section \"STACR 2017+\" below). What the 10-Ks give instead is the yearly cost of each GSE's whole CRT programme. It is a coarser measure than the deal table above: a cost per dollar of protection outstanding, pooled over every vintage still in force, not a price set at issuance. It is not set against FHFA's expected loss. Code: `gse_10k.py`; data: `freddie_crt_cost.csv`, `fannie_crt_cost.csv`.
 
 **Freddie Mac** ($ millions a year; each year from the first 10-K that prints it):
 
@@ -101,6 +101,16 @@ uv run --project pipeline python research/b2_crt_pricing/gse_10k.py
 uv run --project pipeline pytest -q research/b2_crt_pricing
 ```
 """
+import sys
+sys.path.insert(0, "research/b2_crt_pricing")
+from stacr_2017_readme import section  # noqa: E402
+S_LINES, S_ROWS = section()
+assert txt.count("\n## Reproduce") == 1
+txt = txt.replace("\n## Reproduce", "\n" + "\n".join(S_LINES) + "\n\n## Reproduce")
+txt = txt.replace("uv run --project pipeline python research/b2_crt_pricing/gse_10k.py\n",
+                  "uv run --project pipeline python research/b2_crt_pricing/gse_10k.py\n"
+                  "uv run --project pipeline python research/b2_crt_pricing/stacr_pricing.py   # STACR workbook (capitalmarkets.freddiemac.com)\n"
+                  "uv run --project pipeline python research/b2_crt_pricing/stacr_2017.py\n")
 open('research/b2_crt_pricing/README.md', 'w').write(txt)
 # register rows
 header = next(csv.reader(open('claims/register.csv')))
@@ -195,6 +205,12 @@ add2("b2_fre_1720_net_lo", f"Freddie 2017-2020 total less reinvestment per dolla
 add2("b2_fre_1720_net_hi", f"Freddie 2017-2020 total less reinvestment per dollar of cover, highest year {p1(n4.max())}.", p1(n4.max()), n4.max(), "gse_10k.py -> freddie_crt_cost.csv max(net_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 add2("b2_fre_1720_rate_lo", f"Freddie 2017-2020 total CRT cost per dollar of cover, lowest year {p1(g4.min())}.", p1(g4.min()), g4.min(), "gse_10k.py -> freddie_crt_cost.csv min(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 add2("b2_fre_1720_rate_hi", f"Freddie 2017-2020 total CRT cost per dollar of cover, highest year {p1(g4.max())}.", p1(g4.max()), g4.max(), "gse_10k.py -> freddie_crt_cost.csv max(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
+S0 = txt.splitlines().index(S_LINES[0]) + 1
+for r in S_ROWS:
+    ln = S0 + r.pop("_line")
+    assert r["display"] in txt.splitlines()[ln - 1], r["claim_id"]
+    out.append(dict(zip(header, [r[c] if c != "locations" else f"research/b2_crt_pricing/README.md:{ln}" for c in header])))
+assert len({r["claim_id"] for r in out}) == len(out)
 assert all(float(r['value']) >= 0 for r in out)
 import sys
 sys.path.insert(0, "research/common")

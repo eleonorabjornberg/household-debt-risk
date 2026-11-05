@@ -60,7 +60,7 @@ Still not reachable (2026-11-05 14:15 UTC): crt.freddiemac.com (proxy CONNECT 50
 - **CAS 2016-6** has no estimated credit cost: the cell is blank in FHFA's table. It is recorded as absent.
 - **Two deal-table rows print no deal name** (CAS 2016-3 (1), STACR 2016-HQA4). They are matched by program, date, attach/detach and position; the match is asserted.
 
-## LIBOR–SOFR spread adjustment for B2 STACR 2017+ (checked 2026-11-05; NOT used until the coordinator's card is approved)
+## LIBOR–SOFR spread adjustment for B2 STACR 2017+ (checked 2026-11-05; used from 18:54 UTC, approved by Eleonora on card b2-sofr-src (a))
 
 | What | Publisher, document | URL | Retrieved (UTC) | Bytes | SHA-256 | Quoted passage |
 |---|---|---|---|---|---|---|
