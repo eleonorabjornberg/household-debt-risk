@@ -11,8 +11,8 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 
 **E1: where it stands.**
 - The prereg `docs/decisions/e1-prereg.md` is a **draft, not frozen**. It records her 13 choices of 2026-11-05 (PLAN `77460b4`).
-- Open, on her cards (relayed by the coordinator): **e1-unit, e1-T, e1-h3, e1-R** (docket round 15), **e1-base** (baseline model, round 17) and **rv-e1-set** (approve the question set, review round 10). Do not pick any of these values, and do not freeze or spend until they are relayed.
-- If she picks **h3 (b)** (more unanswerable questions), redraft part of the set before she approves it. Then re-run validation, `build_register.py` and `verify_set.py`, and update `snapshot_hashes.json`. The holdout changes with the set.
+- Decided 2026-11-05 (PLAN `11f0562`, in the prereg): unit (ii), T 70%, h3 (b), baseline Opus, set ok. **Open, docket round 19 (relayed by the coordinator): e1-set-h3 (replace / add / keep), e1-R2 (70 / 80 / 90%), e1-holdback (3 or about 5 unanswerable held back), e1-cluster (CHOICE-E1-17: a design effect / b bootstrap), e1-support (i interval plus Holm p / ii Holm-widened).** Do not pick any of these values, and do not freeze or spend until they are relayed.
+- If e1-set-h3 is **replace** or **add**: write about 10 new unanswerable questions (replace: swap out about 10 answerable ones, spread across families). Re-run `validation/run.py` and `build_register.py`; the coordinator updates `register.csv` rows that change or are dropped, because `build_register` refuses to overwrite them. Then run `verify_set.py`, which redraws the holdout with the new e1-holdback count in `HOLDOUT_PER_FAMILY`, and refresh `snapshot_hashes.json`. She reviews only the changed questions.
 - Built (no spend):
   - `questions.yaml`: 100 questions, 15 unanswerable.
   - `spec.py`: the shared evaluator.
@@ -25,7 +25,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 - The raw NY Fed workbook lives at `data/validation/nyfed/HHD_C_Report_2026Q2.xlsx` (gitignored; `e1_gold.py` downloads it if absent). The SHA-256 `ddfba16b…9237` is in the prereg.
 
 **Freeze steps once her answers arrive:**
-1. Write T, R, the unit of analysis and the baseline model into the prereg, with the date and "Eleonora".
+1. Write R, e1-cluster, e1-support and e1-holdback into the prereg, with the date and "Eleonora". In `analyze_e1.py`, set `R` and fix `--method` to her e1-cluster choice; if she picks e1-support (ii), change the verdict rule to Holm-widened intervals.
 2. Note her set approval.
 3. If the prereg's Wilson arithmetic changes with the unit, recompute it.
 4. Change `Status:` to `**frozen**`. `run_e1.is_frozen()` reads the line `Status: **frozen**`.
@@ -36,7 +36,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 - `run_e1.py --live` writes to `run-<date>/`.
 - `run_e1.py --live --baseline <her model>` runs the baseline.
 - The cap of $31 covers both runs, but each run's `Budget` starts at zero, so set the baseline's cap to $31 minus the main run's spend.
-- The hypothesis tests (Wilson against T and R, exact McNemar with Holm) are not written yet. Write them as a separate analysis script under the frozen prereg, before looking at the results.
+- The hypothesis tests are in `analyze_e1.py` (written 2026-11-05 before any result; 8 tests). After the run: `analyze_e1.py run-<date> --method <her e1-cluster>`.
 
 **Other open items (unchanged):** the E1/D6/E4 build-out needs her spend approvals. `score.py` (E2) does not draw the 20% re-score sample.
 
