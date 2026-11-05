@@ -77,18 +77,18 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 29: nothing open. All answers recorded.</p>
+      <p class="sub">Round 30. New: the E1 main run stopped after one loop ($0.0036 spent). Two choices before it can go on.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>Recommendations are the coordinator&#x27;s (Claude), added 2026-11-05 at your request. The tracks made none. A recommendation is not a decision: nothing moves until you tap. A choice authorizes only what its option text says. No spend, new host or secret without a separate OK.</footer>
+  <footer>No recommendation on these two cards: both change the frozen prereg and affect spend. A choice authorizes only what its option text says; nothing runs until you tap.</footer>
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "e1-stoprule", "group": "E1 benchmark", "tag": "E1", "title": "E1 per-model cost stop: when should it apply?", "ctx": "The main run (your e1-spend (a)) stopped after its first loop, with 0 loops scored and $0.0036 spent. The frozen stop is \"a model's mean cost per loop exceeds 3× its pilot mean\" (Haiku $0.0025), checked after every call. After one loop the mean is that single loop. Haiku's first question (q128) needed two tools and all 4 turns, and cost $0.0036. Any change here is a dated deviation from the frozen prereg. The $31 cap and the guard before each call stay in every option.", "opts": [["a", "Apply the per-model stop only after 24 loops per model (10%), keeping the $31 cap, the pre-call guard and the 10% checkpoint"], ["b", "Drop the per-model stop; rely on the $31 cap and the 10% checkpoint"], ["c", "Keep the rule as frozen (the run cannot proceed)"]], "where": "docs/decisions/e1-prereg.md, 'Cost cap and stops', stop 2; evals/e1_sql_benchmark/run-2026-11-05/summary.json", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/docs/decisions/e1-prereg.md"}, {"id": "e1-cost", "group": "E1 benchmark", "tag": "E1", "title": "E1 cost: the harder questions may not fit in $31", "ctx": "Rough estimate from ONE loop, not a measurement. If every loop cost what q128 did, the main run would be about $52 (Opus ~$34, Sonnet ~$17, Haiku ~$1). The pilot's easy questions averaged 2 calls, and the real question mix is unknown. Tool results are billed again on every turn because CHOICE-E1-5 (b) dropped the top-level cache. The 10% checkpoint (projected total over $31 after 72 loops, about $3–5 spent) would stop an overrun. Option (b) reverses CHOICE-E1-5 (b); its saving is not measured. Option (c) would need a new amount from you.", "opts": [["a", "Keep $31; if the checkpoint stops the run, report the partial data as partial"], ["b", "Restore the top-level cache (reverses CHOICE-E1-5 (b)), keeping $31"], ["c", "Raise the cap (tell me the amount in a note)"]], "where": "docs/decisions/e1-prereg.md, 'Cost cap and stops' and CHOICE-E1-5", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/docs/decisions/e1-prereg.md"}];
 
 const GROUPS = ["E1 benchmark"];
 const answers = {};          // id -> {choice, note}
