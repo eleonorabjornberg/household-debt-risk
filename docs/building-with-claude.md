@@ -295,3 +295,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Error: the context note overstated the sources.** "Backs the banks' creditors, not their borrowers" left out that the statutes also cover credits a bank expressly guarantees (*caught by skeptic*, ana-51); "none of these texts" was too strong with L-Bank's statute unread (*caught by editor*, ana-e1); the note could be read as saying the four banks are in the 1.1% (*caught by editor*, ana-e3); the DZ Bank statement dropped its data-source caveat (*caught by skeptic*, ana-50). All fixed.
 - **Open, for her:** the 30.3% holder share counts the whole category, DZ Bank included, as publicly owned, and its labels still say "promotional banks" (*caught by skeptic*, ana-48/49). Not edited; proposed card sent to the coordinator.
 - First push returned a GitHub 500; retried with backoff and succeeded.
+
+### 2026-11-05 ~17:10 UTC: coordinator, merges and card rounds
+- Merged infra `9de2d27`: e1-cluster (b) and e1-support (i) are in the E1 pre-registration, which stays a draft until rv-e1-redraft. The first push got a GitHub 500 error; the retry went through.
+- Merged analysis `551fcdf` (new session session_01GDxCQ6BWQG3vypp2p8TqdV): a8-promo (b) applied, relabel plus the guarantees note, no number changed; skeptic ana-48 to 52, editor ana-e1 to e11. The results.json key was renamed; a `git grep` found no other consumer of the old key.
+- Review queue round 14: rv-a8-promo added (rv-e1-redraft and rv-holdout still open). Docket round 24: a8-holder (from skeptic ana-48/49, *caught by the skeptic agent*): the 30.3% holder share counts the whole special-tasks category, DZ Bank included. No recommendation.
