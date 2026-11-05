@@ -86,18 +86,18 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 
 > **Claude draft, not the author's text.** Built to Eleonora's choices of 2026-11-05: on cards b2-1723 (15:55 UTC) measure (ii), tranches (b), indicative (b) and LIBOR→SOFR (b); on cards b2-sofr-src (a), b2-upb (a) and b2-empty (a) (18:54 UTC). Method: `METHOD.md`, "STACR 2017+". Code: `stacr_2017.py`; data: `stacr_2017_tranches.csv`, `stacr_2017_by_year_class.csv`.
 
-Freddie Mac's STACR pricing workbook prints, for each deal, every sold tranche's spread at issuance and its credit enhancement. From 2017 it covers 78 deals and 289 tranches. 274 are in her three classes (M-1, including M-1A and M-1B; M-2; B, including B-1 and B-2); the other 15 (13 A-1, 2 M-3) are kept in the tranche file but not summarised. Fannie Mae's CAS deals are not covered: its host is not reachable (`sources.md`).
+Freddie Mac's STACR pricing workbook prints, for each deal, the spread at issuance and the credit enhancement of every tranche it lists (sold, and a few retained). From 2017 it covers 78 deals and 289 tranches. 274 are in her three classes (M-1, including M-1A and M-1B; M-2; B, including B-1 and B-2); the other 15 (13 A-1, 2 M-3) are kept in the tranche file but not summarised. Fannie Mae's CAS deals are not covered: its host is not reachable (`sources.md`).
 
 - **Spread.** As printed at issuance, over the deal's benchmark. Deals on one-month LIBOR (2017–2020) get the published LIBOR-to-SOFR adjustment of 11.448 bps added (Federal Reserve, Regulation ZZ, 12 CFR part 253, section 4(c)(2); `sources.md`), so every spread below is over SOFR. The adjustment is a fixed fallback spread, not the LIBOR–SOFR gap on each deal's pricing date.
-- **Multiple.** Spread ÷ the tranche's expected loss per dollar of tranche under FHFA's December 2016 baseline (10% prepayment, 0.2% annual defaults, 25% loss given default, redemption at 10 years), on the average outstanding balance. Applying that 2016 baseline to later deals is an assumption. The baseline pool loses 30.8 bps of its original balance over ten years, so only a tranche attaching below 30.8 bps has an expected loss and a multiple.
+- **Multiple.** Spread ÷ the tranche's expected loss a year per dollar of tranche under FHFA's December 2016 baseline (10% prepayment, 0.2% annual defaults, 25% loss given default, redemption at 10 years), on the average outstanding balance. Applying that 2016 baseline to later deals is an assumption. The baseline pool loses 30.8 bps of its original balance over ten years, so only a tranche attaching below 30.8 bps has an expected loss and a multiple.
 - **"(Indicative)" tranches.** 8 tranches in 2017–2018 were retained by Freddie and carry an indicative spread, not a sale price. They are kept and flagged (`retained_indicative`).
 
 **By year and class** (spreads over SOFR in bps, median with range; multiples for B tranches that have one, median):
 
-| Year | M-1: tranches | M-1 spread | M-2: tranches | M-2 spread | B: tranches (indicative) | B spread (range) | B with a multiple | Multiple, outstanding basis | Multiple, original basis |
+| Year | M-1: tranches (indicative) | M-1 spread | M-2: tranches | M-2 spread | B: tranches (indicative) | B spread (range) | B with a multiple (indicative) | Multiple, outstanding basis | Multiple, original basis |
 |---|---|---|---|---|---|---|---|---|---|
-| 2017 | 7 | 91 | 6 | 306 | 12 (3) | 769 (456–1311) | 6 | 1.2 | 1.9 |
-| 2018 | 7 | 86 | 7 | 221 | 14 (3) | 616 (326–1186) | 7 | 1.2 | 1.9 |
+| 2017 | 7 (1) | 91 | 6 | 306 | 12 (3) | 769 (456–1311) | 6 (3) | 1.2 | 1.9 |
+| 2018 | 7 (1) | 86 | 7 | 221 | 14 (3) | 616 (326–1186) | 7 (3) | 1.2 | 1.9 |
 | 2019 | 10 | 87 | 10 | 216 | 23 | 511 (281–1236) | 10 | 1.4 | 2.3 |
 | 2020 | 11 | 121 | 11 | 280 | 22 | 536 (241–1150) | 11 | 3.0 | 4.9 |
 | 2021 | 10 | 78 | 10 | 208 | 20 | 425 (265–780) | 10 | 3.2 | 5.3 |
@@ -107,14 +107,20 @@ Freddie Mac's STACR pricing workbook prints, for each deal, every sold tranche's
 | 2025 | 5 | 110 | 5 | 150 | — | — | — | — | — |
 | 2026 | 5 | 120 | 5 | 150 | 3 | 190 (185–210) | 0 | — | — |
 
-- **The multiple exists for few tranches.** Of the 274 tranches in her classes, 50 have a multiple, all of them B-2 tranches. The rest: 220 attach at or above the baseline's 30.8 bps loss, 3 have no known detachment point (2019-FTR1, -FTR3 and -FTR4 list only B-2 and the senior class), and 1 has no spread printed. M-1, M-2 and B-1 never get a multiple; for them the measure is the spread alone. From 2023 no sold tranche attaches below 30.8 bps.
-- **The multiple moves with where B-2 attaches.** Freddie moved B-2's attachment point up over these years. A B-2 that attaches higher takes less of the baseline loss, so the same spread gives a higher multiple. Much of the rise in the yearly median multiple comes from that, not from a change in price:
+- **The multiple exists for few tranches.** Of the 274 tranches in her classes, 50 have a multiple, all of them B-2 tranches. The rest: 218 attach at or above the baseline's 30.8 bps loss, 3 have no known detachment point (2019-FTR1, -FTR3 and -FTR4 list only B-2 and the senior class), and 3 have no single spread (2017-HRP1's M-2, B-1 and B-2 print a par/discount/IO split, not parsed), so the table above covers 271. Of the 50 multiples, 6 are on retained B-2 tranches with an indicative spread (2017–2018). M-1, M-2 and B-1 never get a multiple; for them the measure is the spread alone. From 2023 no sold tranche attaches below 30.8 bps.
+- **The multiple moves with where B-2 sits, and with price.** A B-2 that attaches higher takes less of the baseline loss, and a thicker one spreads that loss over more notional; either raises the multiple at the same spread. Freddie moved B-2's attachment point up over these years, which moves the yearly medians above. Holding the slice fixed (attach 25 bps, detach 75 bps), the median multiple is 5.0 in 2020, 3.2 in 2021, 5.3 in 2022, so changes on a fixed slice are changes in spread. By slice:
 
-| B-2 attaches at | Tranches | Years | Baseline loss taken (bps of original balance) | Multiple, median (range) |
+| B-2 slice (attach–detach, bps) | Tranches (indicative) | Years | Baseline loss taken (bps of original balance) | Multiple, median (range) |
 |---|---|---|---|---|
-| 0 bps | 10 | 2017–2018 | 30.8 | 1.1 (1.0–3.0) |
-| 10 bps | 16 | 2018–2020 | 20.8 | 1.2 (0.7–2.2) |
-| 25 bps | 24 | 2018–2022 | 5.8 | 4.0 (2.5–11.2) |
+| 0–50 | 9 (6) | 2017–2018 | 30.8 | 1.1 (1.0–1.3) |
+| 0–125 | 1 | 2018 | 30.8 | 3.0 |
+| 10–60 | 14 | 2018–2020 | 20.8 | 1.1 (0.7–1.8) |
+| 10–65 | 1 | 2018 | 20.8 | 1.8 |
+| 10–75 | 1 | 2020 | 20.8 | 2.2 |
+| 25–75 | 22 | 2020–2022 | 5.8 | 3.9 (2.5–6.8) |
+| 25–125 | 2 | 2018–2019 | 5.8 | 10.7 (10.2–11.2) |
+
+- **Each class's contents change by year.** B holds B-1 and B-2 in shifting shares, and only B-1 in 2023 and 2026; M-1 holds M-1A and M-1B from 2022; attachment points drift within each class. A change in a class's median spread can therefore reflect its make-up, not only price. Tranche detail is in `stacr_2017_tranches.csv`.
 
 - **Not like for like with 2013–2016.** There, FHFA's credit cost is a cost per dollar of the reference pool for the whole transferred slice; here, each tranche's spread is set against that tranche's own expected loss. Both use the same baseline and the same loss engine.
 - **What a multiple above 1 means** is the same as for 2013–2016: the premium over FHFA's baseline loss, mixing risk aversion with any belief that losses will exceed the baseline. Below 1, the spread is less than the baseline loss on the tranche, which the baseline (a 2016 scenario) may overstate for later pools. The expected loss per dollar of tranche also assumes the tranche runs down with the pool.
