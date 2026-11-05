@@ -190,3 +190,66 @@
 - **Evidence:** git diff research/c1b_nowcast/FREEZE.json; research/c2_forecast/FREEZE.json:8; holdout_run.py:123; nowcast_c1b.py:100-118.
 - **Proposed resolution:** Add c1b-prereg.md to the list and note the 192d60c pin. Add one sentence that 2026Q3 is outside the holdout window and could never be scored. Carry `target` into C1b's rows (or say in the deviation that it is not carried).
 - **Status:** resolved (2026-11-05, markets track): the deviation text now lists c1b-prereg.md, notes the `192d60c` pin, says 2026Q3 is outside the holdout window, and says C1b's table does not carry the `target` label (nowcast_c1b.py left unchanged).
+
+### R-20261105-mkt-q31 · quant-reviewer · research/c3_accuracy/README.md:11 (C2 headline bullet)
+- **Objection:** "the seasonal naive at h = 1, the weakest benchmark" is false on the report's own numbers. At h = 1 in development, no-change (1.00) and drift (0.96) are weaker than seasonal naive (0.92). In the holdout, drift (1.53) is weaker than seasonal naive (1.33). The bullet also leaves out the protocol's own outcomes. On H1, every candidate's holdout RMSE is above no-change at every horizon and in both designs (1.09 to 2.15), although development favoured them strongly (CW Holm p 1e-8 at h = 1). Under the protocol's Hypotheses that is a "Null": the sign flips between samples. H3 (coverage) is not mentioned at all. Neither is the real-time check, where Z-DIR/no-change is 1.03 to 1.33 against latest-vintage targets (section 5).
+- **Severity:** major
+- **Evidence:** README.md:11, 22-27, 50-55, 362-370; scoring-protocol.md:17-21, 162-163.
+- **Proposed resolution:** In make_report.py, drop "the weakest benchmark". State the H1/H2/H3 outcome in the protocol's Support/Null/Against wording. Add one clause saying the holdout RMSE exceeds no-change throughout, and one on the real-time check. Regenerate; do not hand-edit.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): "weakest benchmark" removed. The headline now states, with an assert, that every candidate's holdout RMSE is above no-change's at every h and in both designs.
+
+### R-20261105-mkt-q32 · quant-reviewer · research/c3_accuracy/README.md:44 ("12 targets per horizon")
+- **Objection:** The pre-registration (holdout option (b)) says "Origins 2023Q2 onward give 12, 9 and 5 holdout forecasts at h = 1, 4, 8". The one run scored 12 at every h, with origins back to 2022Q3 (h = 4) and 2021Q3 (h = 8): the holdout was defined by target quarter, not by origin. This may be a defensible reading, but it is not declared anywhere in the report's deviation list. At h = 8 the 12 errors overlap by up to 7 quarters, so they amount to about 1.5 non-overlapping forecasts. Ratios such as 1.90 and 5.34 rest on that.
+- **Severity:** major
+- **Evidence:** scoring-protocol.md:93; holdout_results.json c2.scores_holdout first_T = 2023Q2 / 2022Q3 / 2021Q3 at h = 1/4/8, n = 12 each; README.md:44-55, 398-410.
+- **Proposed resolution:** Route a dated deviation to the coordinator: the holdout is target-based (12/12/12), not origin-based (12/9/5). List it in section 7, and note the overlap at h = 4 and 8 beside the holdout tables. Nothing is rerun.
+- **Status:** addressed in the report; protocol side open: a holdout_count_note() paragraph states the run counted by target quarter (12/12/12, origins from 2023Q2/2022Q3/2021Q3) against the protocol's origin-based 12/9/5, flags the overlap, and says it was not declared before the run. A dated item is in section 7. Sent to the coordinator as a proposed card (no rerun; the origin subset cannot be scored without per-forecast errors).
+
+### R-20261105-mkt-q33 · quant-reviewer · research/c3_accuracy/README.md:132-161 (interval coverage)
+- **Objection:** (a) Holdout Kupiec p-values (0.021, 0.267) are printed although decided option (b) says holdout results carry "no p-values" and "The holdout only reports" coverage. 0.021 reads as a rejection; it is a 12-of-12 over-coverage that every model shares, no-change included. (b) The Christoffersen p at h = 1, which the protocol requires, is in coverage_dev.csv but not shown. (c) The Clopper–Pearson brackets at h = 4 and 8 assume independent hits. With overlapping errors they are too narrow, yet they sit beside "descriptive" with no caveat. (d) H3's fixed wording ("Intervals are reliable") is never applied. At development h = 4 and 8 the 95% coverage is 0.83 and 0.75, with CP upper bounds of 0.90 and 0.84.
+- **Severity:** major
+- **Evidence:** README.md:134-161; coverage_dev.csv christoffersen_p column; scoring-protocol.md:119, 141, 162.
+- **Proposed resolution:** Show Kupiec only for development. Add the development Christoffersen column. Mark the h > 1 CP brackets "iid, indicative only". State the H3 verdict per horizon and level, and note that 100% holdout coverage is common to all models.
+- **Status:** addressed: holdout Kupiec p removed (holdout descriptive, no p-values); Christoffersen p added at h = 1 in development; text says h > 1 Clopper-Pearson brackets assume independence and are too narrow; an H3 paragraph applies the protocol wording, stating the p < 0.05 reading as a reading, not a rule.
+
+### R-20261105-mkt-q34 · quant-reviewer · research/c3_accuracy/README.md:13 (regime counts in the headline)
+- **Objection:** The body says the protocol does not fix target versus origin and shows both, but the headline gives only the target-quarter count (1/3/4 of ten). By origin quarter the count is 1/0/0 (recomputed from forecasts_dev.csv). Choosing the split that gives the larger count, after seeing the errors, is the selection the protocol's "fixed now" clause guards against. There is also no base rate (about 16% of development forecasts have a target in a window, so about 1.6 of 10 are expected by chance). And the 4 at h = 8 (2008Q3, 2008Q4, 2009Q2, 2009Q3) are one overlapping episode.
+- **Severity:** major
+- **Evidence:** README.md:13, 322; make_report.py fail_counts(); my recomputation: origin-split counts 1, 0, 0; window base rate 0.158/0.162/0.167.
+- **Proposed resolution:** Give both counts in the headline with the base rate, or drop the count. Say that the h = 8 hits are one episode.
+- **Status:** addressed: the headline gives counts by target and by origin quarter, each with its chance base rate (registered), lists the in-window quarters, and says overlapping h = 4/8 errors are one episode.
+
+### R-20261105-mkt-q35 · quant-reviewer · research/c3_accuracy/README.md:332-343 ("rest" comparator)
+- **Objection:** "Rest" is not clean. Under the target split it keeps forecasts whose origin lies in a window. Under the origin split it keeps forecasts whose target lies in a window (for example h = 8 origins in 2005Q4–2007Q3, which carry the largest GFC misses). That is 2, 8 and 12 of the rest forecasts at h = 1/4/8. Excluding them moves Z-DIR rest/no-change at h = 8 from 0.93 to 0.96. The cells are also ratios to no-change, whose RMSE differs sixfold between windows (0.48 to 6.65 pp at h = 8 vs h = 1). A low ratio in the GFC rows (0.39) means that no-change did badly, not that the model did well. The text does not say so.
+- **Severity:** minor
+- **Evidence:** recomputed from research/c2_forecast/forecasts_dev.csv (latest-expanding); README.md:326-343.
+- **Proposed resolution:** Define "rest" as neither origin nor target in a window (n = 110/101/93). Alternatively, show it as a sensitivity. Add the model RMSE in pp, or one sentence on reading the ratios.
+- **Status:** addressed: "rest" is defined (split quarter in neither window) with the warning that the other quarter can fall in a window; ratios are explained.
+
+### R-20261105-mkt-q36 · quant-reviewer · research/c3_accuracy/README.md:329-354, 391-393, 362-370 (small-n cells)
+- **Objection:** Several cells come with no warning and no uncertainty measure: 2020 regime cells with n = 4 (origin split h = 8: 2.55, from 4 overlapping forecasts); C1 2020 with k = 3, n = 3 (C1b 0.16); and ZC1-DIR in development at h = 8 with n = 4 (Z-DIR 3.49, ZC1-DIR 0.96). The real-time check (n = 28/25/21, overlapping) and the holdout ratios at n = 12 are also printed without caveat. These invite readings that the data cannot carry.
+- **Severity:** major
+- **Evidence:** README.md lines as cited; scores_dev.csv Z+C1 common origins h = 8, n = 4.
+- **Proposed resolution:** In make_report.py, flag every cell with n < 10 (or with fewer than about 10 non-overlapping forecasts, roughly n/h) with a marker and a footnote saying it is descriptive only. Add one sentence on overlap at h = 4 and 8.
+- **Status:** addressed: cells with n < 10 are marked ‡ (regime tables, the indicator table, the registry), with a note that they are anecdotes.
+
+### R-20261105-mkt-q37 · quant-reviewer · research/c3_accuracy/README.md:20-37 (specification registry)
+- **Objection:** (a) The protocol requires "ID, commit, date and development-sample scores", and there is no date column. (b) The rows mix samples in the same columns with no n shown. `bridge_reg` RT scores 0.43/0.44/0.54 on 16/16/10 targets, against `bridge` 0.73 on 28/28/22; the like-for-like `bridge_on_reg_targets` (0.72/0.73/0.86) is omitted. `ZC1-DIR` scores 0.80/1.40/0.96 on 18/12/4 origins, against Z-DIR on 133/130/126; the same-origin Z-DIR figure (1.04/1.24/3.49) is only in section 6. Readers will compare across rows.
+- **Severity:** minor
+- **Evidence:** research/c1_nowcast/scores_dev.csv RT rows (n, bridge_on_reg_targets); research/c2_forecast/scores_dev.csv "Z+C1 common origins".
+- **Proposed resolution:** Add date and n columns. Add `bridge_on_reg_targets` and the same-origin Z-DIR row, or say beside each row that the sample differs.
+- **Status:** addressed: date column (commit date from git) and n beside each development score; text warns bridge_reg and ZC1-DIR rest on fewer forecasts.
+
+### R-20261105-mkt-q38 · quant-reviewer · research/c3_accuracy/README.md:163-197 (C1/C1b verdicts and bias)
+- **Objection:** EVALUATION.md:53 says C1's wording follows C2's rule (a), but the report gives C1 no verdict. It shows the development tests and the holdout ratios in separate tables. Applied mechanically, the rule gives "does not beat" no-change for `bridge_reg`: 0.43 in development, 1.08/1.04 at k = 1/3 and 1.01 pooled in the holdout. The bridge is at most "comparable", with Holm p 0.107 to 0.514. A reader sees 0.43 in the registry and no reversal statement. C1b's pre-registration also says bias is "reported as mean error with its HAC standard error". H2 is about bias, yet no mean error appears. The development values are in c1b holdout_results.json, and the holdout values can be computed from the committed nowcasts_holdout.csv (my values: C1 −0.037/−0.089/−0.104, C1b −0.022/−0.057/−0.051 pp at k = 1/2/3).
+- **Severity:** major
+- **Evidence:** EVALUATION.md:53; c1b-prereg.md:51-59; holdout_results.json c1.scores; c1b holdout_results.json development.mean_error_hac1.
+- **Proposed resolution:** Add a C1 verdict table under rule (a), generated from the committed files. Add C1/C1b mean errors (development with HAC SE; holdout descriptive) from the committed CSVs. Nothing is rerun.
+- **Status:** addressed: C1 verdicts under rule (a) are computed from the committed tests and holdout scores (c1_verdicts(), mirroring holdout_run.py's wording logic), with a table and headline. Result: bridge_reg vs no_change at k = 2 "beats"; the report labels it as computed by C3 and small-n. C1b bias table added (C1b's own mean_hac1 on the committed tables; development reproduces bias_dev.csv by assert).
+
+### R-20261105-mkt-q39 · quant-reviewer · research/c3_accuracy/README.md:85, 405, 398-410 (Holm family and deviations list)
+- **Objection:** (a) "The family grew from 36 to 42" cannot be right. The 42 tests are 14 per benchmark (Z-DIR and Z-DAMP × 3 h × 2 designs, plus ZC1-DIR at h = 1 and 4), so seasonal naive added 14 to 28, not 6 to 36. tests_dev.csv has had 42 rows with 14 per benchmark since 0bc647b. The text is copied from SPECS.md:67, 82. (b) ZC1-DIR at h = 8 has no test and no verdict, because forecast.tests() skips pairs with n < 8, a threshold not in SPECS. The report shows its holdout ratio (5.34) without saying it has no verdict. (c) Section 7 omits C1's declared differences from C2 (fixed AR(1), no placebo test 5 for C1, pseudo-real-time samples trained on revised targets with no embargo).
+- **Severity:** minor
+- **Evidence:** git show 0bc647b:research/c2_forecast/tests_dev.csv (14/14/14); forecast.py:454-455; EVALUATION.md:85-88.
+- **Proposed resolution:** Correct the count (28 + 14 = 42) here and route the SPECS.md correction to the track. State that ZC1-DIR h = 8 is untested (n = 4 < 8) and has no verdict. Add C1's q15 differences to section 7.
+- **Status:** addressed: section 7 gives the 28 + 14 = 42 count and says SPECS.md's "36 to 42" is a miscount (SPECS.md not edited: accepted text); the ZC1-DIR h = 8 n < 8 skip is documented; C1's declared differences from C2 are added.
