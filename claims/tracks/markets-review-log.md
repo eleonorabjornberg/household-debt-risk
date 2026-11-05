@@ -134,3 +134,45 @@
 - **Evidence:** presets/dfast2026.json mortgage pd 0.015, lgd 1.0; results.json dfast 0% minus 100% public = 137.4 - 43.3 = 94.2 $B.
 - **Proposed resolution:** Reword to "0% (losses stay with the GSEs and Treasury, as in conservatorship)" and define "public" this way in the caveats. Option (b) stays unchosen.
 - **Status:** resolved (2026-11-04, by main session): Caveat 'What "public" means here' added: GSE capital first, PSPA behind; public is not taxpayer outlay.
+
+### R-20261105-mkt-s38 · skeptic · research/b2_crt_pricing/README.md:75 (explanation of the rising last column; b2_fre_2022_ce_rate, b2_fre_2023_ce_rate)
+- **Objection:** The README gives one reason for the rise in credit-enhancement expense per dollar of cover (the move from debt notes to trust and insurance structures). Freddie names two others. For 2022 it cites "higher spreads on transactions executed during 2022", a price effect. For 2023 it cites "higher losses on STACR Trust note repurchases", a one-off buyback cost, not a protection premium. So the 4.5% for 2023 is not a running cost of cover. Also, in 2017–2020 the STACR coverage in the denominator includes debt-note coverage whose cost (interest) is left out of this numerator. The column is therefore not one consistent measure across the seven years, though the README calls it "the one measure that runs through all seven years".
+- **Severity:** major
+- **Evidence:** data/a2/freddie/10k_022223.txt:1216-1219 ("higher spreads on transactions executed during 2022"); 10k_021424.txt:1191-1193 ("higher losses on STACR Trust note repurchases"); 10k_021320.txt:3537ff and A2 freddie_10k.py: crt_maxcov = STACR (debt + trust) + insurance/reinsurance (2019: 25,112 + 10,157 = 35,269).
+- **Proposed resolution:** Quote Freddie's stated drivers for 2021–2023 next to the structural-shift sentence. Flag 2023 as including repurchase losses that are not premium. Reword "the one measure that runs through all seven years" to say that before 2021 its numerator leaves out the debt-note cost while its denominator includes that coverage.
+- **Status:** resolved (2026-11-05, by main session): README now quotes Freddie's reasons (2022 spreads; 2023 STACR Trust note repurchase losses, flagged one-off), says the expense covers all freestanding enhancements incl. lender risk sharing, and drops 'the one measure that runs through all seven years'.
+
+### R-20261105-mkt-s39 · skeptic · research/b2_crt_pricing/README.md:80 ("Against 2013–2016"; b2_fre_1720_rate_lo/hi)
+- **Objection:** The consistency check sets Freddie's gross total (credit-enhancement expense plus gross interest on STACR debt, which includes LIBOR) against FHFA's credit cost per dollar of tranche. FHFA's cost sits on the guarantee-fee footing (README:21) and is a spread cost, not a gross coupon. Net of Freddie's own reinvestment estimate, the 2017–2020 figures are 3.8–4.4%, not 4.6–5.2%. Both sets fall inside 3.3–6.9%, so the conclusion survives. But the stated numbers use the less comparable basis, and a 2x-wide range is a weak check.
+- **Severity:** major
+- **Evidence:** `uv run -q --project pipeline python -I -` on freddie_crt_cost.csv: net_cost_musd / avg_crt_maxcov_musd = 0.0401, 0.0383, 0.0416, 0.0443 (2017–2020).
+- **Proposed resolution:** Lead the comparison with the net column (3.8–4.4%), keep the gross figure as a second number, and add register rows for the net rates. Say that a value inside a 3.3–6.9% band is only weak support.
+- **Status:** resolved (2026-11-05, by main session): Comparison now leads with the net-of-reinvestment rate (3.8–4.4% in 2017–2020, new column and rows), gross in brackets, and calls it weak support (the band's top is about twice its bottom).
+
+### R-20261105-mkt-s40 · skeptic · research/b2_crt_pricing/README.md:59-61,75 (Freddie scope; b2_fre_2021..2023_ce, _ce_rate)
+- **Objection:** The numerator is broader than the denominator. Credit-enhancement expense covers every freestanding enhancement, including lender risk sharing (cover 5,657 at end-2019, not in crt_maxcov). From 2022 it also includes multifamily (MCIP etc.), while the denominator stays single-family STACR + insurance only. The table also switches scope between adjacent rows. It shows 2021 single-family at 1,470, but the consolidated 2021 figure is 1,518, so part of the 2021→2022 rise is the scope change. The multifamily share was 2.1% in 2020 and 3.2% in 2021, which is "small" but growing. The denominator also changes definition: from FY2022 the row is "ACIS", with about 531 of 2021 cover moved into "Other" (48,850 first published vs 48,319 restated).
+- **Severity:** minor
+- **Evidence:** 10k_021022.txt:11219 (2021: SF 1,470, MF 48, total 1,518; 2020: 1,036 / 22 / 1,058); 10k_021320.txt:3410, 9917; 10k_022223.txt:3125-3150 vs 10k_021022.txt:3592-3593.
+- **Proposed resolution:** Show the consolidated 2021 figure (1,518; 3.4% of cover) next to the 2022–2023 figures, and give the multifamily shares for 2019–2021. State that lender risk-sharing and multifamily costs sit in the numerator but not in the denominator, and note the relabelling of the denominator row in FY2022.
+- **Status:** resolved (2026-11-05, by main session): Consolidated 2021 ($1,518 million, 3.4% of cover) and the $48 million multifamily part stated; FY2022 relabelling of $531 million of 2021 cover disclosed. 2022–23 split not printed in the statements read (stated).
+
+### R-20261105-mkt-s41 · skeptic · research/b2_crt_pricing/README.md:57,79-80 (b2_fre_2019_ce_rate, b2_fre_2019_gross_rate, b2_fre_1720_rate_hi)
+- **Objection:** The latest vintage changes displayed numbers. Freddie restated 2019 credit-enhancement expense from 693 to 734 (FY2020 and FY2021 10-Ks). On the latest figures, the 2019 credit-enhancement rate becomes 2.2% (shown as 2.1%), the 2019 total becomes 5.4% (shown as 5.2%), and the top of the "4.6%–5.2%" range becomes 5.4%. Keeping first publication is a valid choice, but the README does not say that it moves the headline range.
+- **Severity:** minor
+- **Evidence:** freddie_crt_cost.csv latest_ce_expense 2019 = 734; (734+1060)/33507 = 0.0535; 734/33507 = 0.0219.
+- **Proposed resolution:** Add "(latest filing: 2.2% and 5.4%)" to the restatement bullet, or record the latest-vintage values in the notes of the three register rows.
+- **Status:** resolved (2026-11-05, by main session): Restated 2019 rates (5.4% total, 2.2% expense only) stated in the README with rows.
+
+### R-20261105-mkt-s42 · skeptic · research/b2_crt_pricing/README.md:71-73,77 (b2_fnm_2021..2023_cirt, _rate)
+- **Objection:** Fannie's 10-Ks footnote that 2021–2023 CIRT cash "includes cancellation fees paid on certain CIRT transactions", which are one-off exit costs and not premium. The README does not mention them. Separately, risk in force is printed as "approximately $X billion". Rounding of ±0.5bn at each year end gives ranges of 2.8–2.9% (2021), 3.3–3.4% (2022) and 3.2–3.3% (2023).
+- **Severity:** minor
+- **Evidence:** fnma_10k_fy2021/2022/2023.htm, footnote under "Credit Risk Transfer Transactions ... Cash paid or transferred for"; recomputation 1315/40500 = 0.0325, 1315/41500 = 0.0317 (2023 low end), 1207/36000 = 0.0335.
+- **Proposed resolution:** Add a bullet: "CIRT cash for 2021–2023 includes cancellation fees (amount not printed); risk in force is rounded to $1B, so the rate is ±0.05 pp."
+- **Status:** resolved (2026-11-05, by main session): Bullet added: CIRT cancellation fees (quoted footnote) and the rounding bound (< 0.05 pp, computed).
+
+### R-20261105-mkt-s43 · skeptic · claims/register.csv b2_per_tranche_lo, b2_per_tranche_hi
+- **Objection:** README:80 republishes the FHFA "3.3–6.9%" range, but the register rows for those figures list only README.md:34.
+- **Severity:** note
+- **Evidence:** `grep -n "b2_per_tranche_" claims/register.csv`: locations = research/b2_crt_pricing/README.md:34 only.
+- **Proposed resolution:** Add README.md:80 to both rows' locations (through make_readme_and_rows.py or the main register's generator).
+- **Status:** open (routed to the coordinator 2026-11-05): Not editable by the track (claims/register.csv is the coordinator's); sent to the coordinator to add README.md:80 to b2_per_tranche_lo/hi.
