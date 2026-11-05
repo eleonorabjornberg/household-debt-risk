@@ -70,6 +70,7 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-05 ~23:05 UTC, same session, no spend. Claude-draft results note `evals/e1_sql_benchmark/RESULTS.md` for the main run, generated with its 33 register rows (UNVERIFIED, traced to `analysis.json`, `summary.json` and the call logs) into `claims/tracks/infra.csv` by `write_results.py`. `check_register` OK. The baseline section is open, pending e1-baseline. Error caught by Claude before commit: the first draft said q184 hit the turn limit for all three models; it was Opus and Sonnet only.
 - 2026-11-05 ~22:50 UTC, same session.
   - **Main run complete:** `run-2026-11-05b` resumed from loop 80 (approval `74cdbb5`), 720/720 loops, no stop. 1,760 calls, 0 errors, served models as requested. E1 spend after it: $17.904212 ($0.003634 from the stopped run plus $17.900578 for `run-2026-11-05b`; Opus $12.11, Sonnet $5.47, Haiku $0.32).
   - **Pre-registered analysis** (`analysis.json`; bootstrap; T = R = 70%):
