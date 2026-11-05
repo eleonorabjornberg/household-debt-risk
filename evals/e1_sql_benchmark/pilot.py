@@ -151,7 +151,9 @@ def to_unit(value: float, unit_text: str, unit: str) -> float:
         if u.startswith(("million", "mn", "m ")) or u == "m":
             return value / 1e3
         return value
-    return value  # pp, pct, ratio, count: the number as written (a trailing % or x is ignored)
+    if unit == "ratio" and (u.startswith("%") or "percent" in u):
+        return value / 100  # a ratio stated in percent ("27.7%") is read in the unit the model states: 0.277
+    return value  # pp, pct (a percent unit), count, and plain or "x" ratios: the number as written
 
 
 REFUSAL_RE = re.compile(r"cannot|can't|can ?not|unable|not able|does(?: not|n't) (?:cover|contain|include|have)|"
