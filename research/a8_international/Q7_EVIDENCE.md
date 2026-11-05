@@ -66,6 +66,27 @@ Sources and hashes in `sources.md` ("Q7 follow-up 2" rows).
 2. Label the 1.1% "publicly owned, state-backed institution (creditor guarantee, not borrower guarantee)", with a caveat that only three members' statutes were checked and no member list exists.
 3. Keep it unclassified and ask for further access first (l-bank.info, EUR-Lex access without the bot challenge (her call, via the environment settings), a Bundesbank member list for the category) before deciding.
 
+## Follow-up 3: L-Bank, the EU list, and what the Bundesbank category holds (2026-11-05, 14:18–14:27 UTC)
+
+> **Claude draft.** Source summary for Eleonora; not her text. Nothing is reclassified (her decision q7-promo-3 (c) stands).
+
+Sources and hashes in `sources.md` ("Q7 follow-up 3" rows).
+
+- **L-Bank: Anstaltslast, Gewährträgerhaftung and an explicit, unconditional Land guarantee of its liabilities.** Source: L-Bank's 2025 annual report (pp. 80, 87). The statute itself was not read: www.l-bank.info links it only behind an investor-relations disclaimer that asks for confirmation of non-US status, which was not given. As with KfW, Rentenbank and NRW.BANK, the guarantee covers the bank's own liabilities, not its borrowers.
+- **EU list of German promotional banks.** CRD V (Directive 2019/878, Art. 2(5) point 5) names 15 German institutions: KfW, Rentenbank and 13 Länder promotional banks, among them NRW.BANK and L-Bank. This is the EU's exemption list, not the Bundesbank category. Later amendments to Art. 2(5) were not checked.
+- **The Bundesbank category is wider than promotional banks.** Since the 2016 reporting year, the Bundesbank has merged "Banken mit Sonderaufgaben" and "Genossenschaftliche Zentralbanken" into the category "Banken mit Sonder-, Förder- und sonstigen zentralen Unterstützungsaufgaben", so **DZ Bank AG** (the cooperative central bank; the 2023 footnote lists it apart from the "banks with special tasks established under public law") is in it (Monthly Report Sept 2017). The Sept 2023 report counts 20 institutions in the category and still names DZ Bank AG in its footnote. Both statements are from the profit-and-loss and bank-office statistics; the 2017 text says the monthly balance-sheet statistics (the source of table I.7) dropped the separate cooperative group in the same way, but the I.7 footnotes themselves were not re-read here.
+- **Not found:** a member list of the category or a split of its 1.1% of lending to individuals by institution; the 2002 Verständigung II text (Cellar title search found nothing).
+
+**What this changes for the card.**
+1. Every promotional bank whose terms are now on file (KfW, Rentenbank, NRW.BANK, L-Bank) carries a state guarantee of its own liabilities; none guarantees the borrower.
+2. The 1.1% is **not** only promotional banks. It also includes DZ Bank, which the Bundesbank lists apart from the public-law institutions and for which no source here shows a state guarantee (its ownership is not documented in these sources). So the README and register label "Promotional banks hold 1.1%" (`a8_de_promotional_banks_unclassified`) looks too narrow. Changing that label is a copy decision for Eleonora; it has not been edited.
+3. How the 1.1% splits between the promotional banks and DZ Bank and the other institutions is unknown from public sources. It would take a Bundesbank breakdown, which Eleonora's decision (acc-bbk) keeps out of scope for now.
+
+Options for Eleonora (no recommendation; the split is unknown):
+- (a) Keep the 1.1% unclassified, and relabel it "banks with special, development and other central support tasks (promotional banks, DZ Bank and others)".
+- (b) As (a), plus a context note: the four promotional banks checked carry a state guarantee of their own liabilities; DZ Bank does not appear to.
+- (c) Ask the Bundesbank for the split (outside contact; hers to make) before any classification.
+
 ## What would make the choice firmer
 
 - The Commission's 2001 understanding and 2004 decision texts (EUR-Lex), and the state-aid decisions for the three banks (Commission case pages), once those hosts answer.
