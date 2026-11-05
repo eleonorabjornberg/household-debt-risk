@@ -39,6 +39,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <nav className="masthead__nav" aria-label="Site">
                 <Link href="/#ratchet">Story</Link>
                 <Link href="/methods">Methods</Link>
+                <Link href="/scenarios">Scenarios</Link>
                 <Link href="/how-it-was-built">How it was built</Link>
                 <Link href="/data">Data</Link>
                 <Link href="/sources">Sources</Link>
