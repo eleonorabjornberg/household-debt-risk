@@ -138,6 +138,8 @@ def fannie() -> pd.DataFrame:
     df["avg_crt_rif_musd"] = [(rif.get(y - 1) + rif.get(y)) / 2 if pd.notna(rif.get(y - 1)) and pd.notna(rif.get(y)) else float("nan")
                               for y in df.index]
     df["cas_cirt_per_rif"] = df["cas_cirt_musd"] / df["avg_crt_rif_musd"]
+    # A2's risk in force is printed rounded to $1B: each year end +/- $0.5B, so the average too
+    df["cas_cirt_per_rif_rounding_pp"] = 100 * df["cas_cirt_per_rif"] * 500 / df["avg_crt_rif_musd"]
     df.reset_index().to_csv(HERE / "fannie_crt_cost.csv", index=False, float_format="%.6g")
     return df
 
@@ -151,6 +153,8 @@ def main() -> int:
     rest = last.pivot(index="year", columns="field", values="musd").add_prefix("latest_")
     meta = first[first["field"] == "ce_expense"].set_index("year")[["scope", "filing", "sha256"]]
     df = wide.join(rest).join(meta)
+    cons = long[(long["scope"] == "consolidated") & (long["field"] == "ce_expense")].sort_values("filing_fy")
+    df["consolidated_ce_expense"] = cons.groupby("year")["musd"].first()      # e.g. 2021 as printed in the FY2022 10-K
     df = df[df.index >= 2017]
     df["gross_cost_musd"] = df["ce_expense"] + df["crt_debt_interest"]          # NaN where interest is not printed
     df["net_cost_musd"] = df["gross_cost_musd"] - df["reinvestment_income"]
@@ -158,6 +162,10 @@ def main() -> int:
     df["avg_crt_maxcov_musd"] = [(cov[y - 1] + cov[y]) / 2 for y in df.index]
     df["ce_expense_per_maxcov"] = df["ce_expense"] / df["avg_crt_maxcov_musd"]
     df["gross_cost_per_maxcov"] = df["gross_cost_musd"] / df["avg_crt_maxcov_musd"]
+    df["net_cost_per_maxcov"] = df["net_cost_musd"] / df["avg_crt_maxcov_musd"]
+    df["latest_gross_cost_per_maxcov"] = (df["latest_ce_expense"] + df["latest_crt_debt_interest"]) / df["avg_crt_maxcov_musd"]
+    df["latest_ce_expense_per_maxcov"] = df["latest_ce_expense"] / df["avg_crt_maxcov_musd"]
+    df["consolidated_ce_per_maxcov"] = df["consolidated_ce_expense"] / df["avg_crt_maxcov_musd"]
     # Checks: the 2019 table's own total, and restatements stated (not smoothed)
     assert abs(df.loc[2019, "ce_expense"] + df.loc[2019, "crt_debt_interest"] - 1753) < 0.5
     df.reset_index().to_csv(HERE / "freddie_crt_cost.csv", index=False, float_format="%.6g")
