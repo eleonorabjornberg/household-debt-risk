@@ -321,3 +321,11 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Error: wrong times in log headings.** Four timestamps in today's entries were 25 to 70 minutes off the commit times (the 15:57, 16:08 and 16:10 coordinator entries and the markets 16:17 note). *Error by Claude (coordinator and markets track); caught by Claude (coordinator)* against `git log`. Corrected to the commit times.
 - **Error: the markets handoff note had the literal email local part** inside its grep instruction (no address). That made the `git grep` check return 0. *Caught by Claude (coordinator)* in the pre-commit grep. Reworded so the pattern is not in any file.
 - Markets rotates to a fresh session at its handoff note (d6c65cb).
+
+### 2026-11-05 ~16:35 UTC: coordinator, B2 STACR 2017+ cards
+- Fresh markets session session_01GDxCQ3coqkmwS6XE7LkiGx. Fast-forwarded its `5da961f`: the per-tranche STACR 2017+ table under her b2-1723 choices (78 deals, 289 tranches; 15 tests). Intermediate files only: no write-up and no register rows yet.
+- Docket round 26 adds three cards from the track's stop rule and findings:
+  - b2-sofr-src: the Regulation ZZ adjustment of 11.448 bps for 1M LIBOR.
+  - b2-upb: her measure (ii) text names a UPB source, but the per-tranche measure does not need one.
+  - b2-empty: only 50 of 289 tranches get a baseline multiple, all of them B-2.
+- **Error: tranche count.** The track's message said 50 of 274; the committed CSV gives 50 of 285 eligible (289 less 4 with missing data). *Caught by Claude (coordinator)* when recounting from the CSV. The cards use the CSV counts; the track was asked to reconcile.
