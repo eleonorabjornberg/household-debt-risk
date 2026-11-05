@@ -569,3 +569,38 @@
 - **Evidence:** stacr_2017.py comment "bps a year per dollar of tranche"; README.md:89, 92.
 - **Proposed resolution:** Write "every listed tranche (sold, and retained with an indicative spread)" and "expected loss per dollar of tranche per year".
 - **Status:** addressed: "the spread at issuance and the credit enhancement of every tranche it lists (sold, and a few retained)"; "expected loss a year per dollar of tranche".
+
+### R-20261105-mkt-s55 · skeptic · web/components/scenarios/ScenarioTool.tsx:96-97, 177 ("Public share of balances")
+- **Objection:** The page puts "Public share of balances" (computed over every exposure, federal student loans included) next to "Public share of losses" from presets that leave federal student loans out. On the default DFAST preset it shows 23% against 56%, and on the replay 42% against 56%. The like-for-like figure is 52%, which is the one the README uses ("52.4% once federal student loans are excluded"). The same mismatch shows in "Your own" whenever a class is unchecked. A reader will quote the 56 vs 23 gap, which overstates it by about 4 points.
+- **Severity:** major
+- **Evidence:** Playwright on /scenarios (local `next start`): DFAST shows "Public share of losses 23% | Public share of balances 56%", replay "42% | 56%". Recomputed from web/lib/b3/exposures.json: all classes 0.5638; excluding student_federal 0.5238. README.md "Like for like … 52.4%".
+- **Proposed resolution:** Compute the balance share over the classes that are switched on in the active scenario (classes with pd>0 and present in `classes`), and label it as such, e.g. "Public share of balances in the classes covered". Or show both values with labels.
+- **Status:** addressed: the tile now covers only the loan classes in the scenario and says which are left out ("Public share of balances, without federal student loans": 52% for the stress-test and replay presets, 56% with student loans), checked in the browser.
+
+### R-20261105-mkt-s56 · skeptic · web/components/scenarios/ScenarioTool.tsx:160-166, page.tsx:46-48; research/b3_scenarios/engine.py:102 (transfer base)
+- **Objection:** The transfer applies to the whole `gse_agency` mortgage bucket (transfer_eligible = mortgage and gse_agency). That bucket includes FL413065105 "Agency- and GSE-backed mortgage pools", which holds the Ginnie (FHA/VA) pools. FHA/VA risk is federal and is not covered by GSE CRT or private mortgage insurance. Yet the checkbox says "GSE mortgage losses" and the caveat says "only on GSE mortgages". The share input also goes up to 100% with no cap guidance, so the page can move every public mortgage loss to private hands: replay at 100% with an uncapped limit gives public $16.2B, 1%, and $784B moved. That reads as private investors bearing the losses on FHA/VA books.
+- **Severity:** major
+- **Evidence:** pipeline/series_catalog.yaml:51 (FL413065105 → gse_agency); engine.py:102; Playwright: replay + transfer share 100, cap 100000 → "Held on public books $16.2B … Public share of losses 1% … Moved by transfer $784B". README "Upper bound" bullet itself says the bucket includes Ginnie (FHA, VA) pools.
+- **Proposed resolution:** Either restrict the transfer base to the GSE (Fannie/Freddie) share of the bucket, which needs a split of the pools series, or relabel it "mortgages in GSE and agency pools, including Ginnie (FHA/VA), on which CRT/MI do not apply" and say that the share should reflect cover on the GSE part only. Until A2's caps exist, consider bounding the share or labelling large values as illustrative.
+- **Status:** addressed: the transfer is labelled "mortgages held by the GSEs and in agency pools", and the hint says the group includes Ginnie Mae (FHA and VA) pools, so a large uncapped share overstates what transfer can move.
+
+### R-20261105-mkt-s57 · skeptic · web/app/scenarios/page.tsx:49-53 (proxy caveats omit bias directions)
+- **Objection:** The page states that the presets are proxies but leaves out the bias directions the README records. The replay's 42% public share is "probably an upper bound" (bank charge-offs from subprime and option-ARM loans applied to GSE and Ginnie books). In DFAST, the first-lien rate on every mortgage biases the public share up, and FFEL loans counted as private bias it down. The presets apply no CRT/MI. A reader of the page sees 42% and 23% as point figures, with no sign that one is an upper bound, and the preset note has no direction either.
+- **Severity:** major
+- **Evidence:** research/b3_scenarios/README.md "Upper bound", "Junior liens", "FFEL loans", "No transfer" bullets; page.tsx bullet "whose losses would differ" (no direction); preset notes in the Playwright output carry no bound language.
+- **Proposed resolution:** Add one line per preset, in the preset note or the caveat list: replay public share likely an upper bound; DFAST public share biased up by junior liens and down by FFEL; no transfer applied.
+- **Status:** addressed: a caveat bullet "Known biases in the presets" gives the four bias directions from the README (replay public share probably an upper bound; junior liens push the DFAST public share up; FFEL pushes it down; no transfer), with no figures.
+
+### R-20261105-mkt-s58 · skeptic · web/components/scenarios/ScenarioTool.tsx:131-139 (preset loss rates shown as "Default rate")
+- **Objection:** The presets hold loss rates with lgd = 1.0, so the form shows, for example, "Default rate 1.5%, Loss given default 100%" for DFAST mortgages and 10.9% for consumer credit. These are net loss rates, not default rates, and a reader could quote "a 10.9% default rate" or "100% severity".
+- **Severity:** minor
+- **Evidence:** web/lib/b3/preset_dfast2026.json: mortgage pd 0.015 lgd 1.0; consumer_other pd 0.1095 lgd 1.0; replay pd 0.0874/0.189 lgd 1.0. The preset label itself says "loss rates".
+- **Proposed resolution:** When a preset is active, add a hint such as "Presets give a loss rate: entered as the default rate with 100% severity", or relabel the column "Default (or loss) rate".
+- **Status:** addressed: with a preset, the column reads "Loss rate, % (as default rate)" and the hint says presets enter a loss rate as a default rate with 100% loss given default.
+
+### R-20261105-mkt-s59 · skeptic · web/app/scenarios/page.tsx:25-27 with ?case= (synthetic balances under a Z.1 header)
+- **Objection:** With `?case=` the tool uses synthetic balances, and the b3-case note says so. The header above it still states that the tool applies scenarios to Z.1 balances "as of 2026-06-30", and "Public share of balances" is then synthetic. The hook is reachable on any deployment. The note is adequate, but a screenshot of the totals plus the header could circulate as Z.1 numbers.
+- **Severity:** minor
+- **Evidence:** ScenarioTool.tsx:62-63, 108; page.tsx header renders unconditionally.
+- **Proposed resolution:** Place the test-case note inside or next to the totals block, or render the hook only in non-production builds.
+- **Status:** addressed: the test-case note now says the synthetic balances replace the Z.1 balances described above and that nothing shown is Z.1 data. The header stays static (server-rendered); the hook is for tests only.

@@ -52,6 +52,13 @@ export default function ScenariosPage() {
               The stress-test presets cover nine quarters and the replay twenty, so they differ in horizon as well as severity.
             </li>
             <li>
+              <strong>Known biases in the presets</strong> (details in the method notes): the replay applies the
+              banks’ 2008–12 losses, which included loans the GSEs did not guarantee, so its public share of losses is probably
+              an upper bound. In the stress-test presets, using the first-lien rate for all mortgages understates the junior
+              liens that banks mostly hold, which pushes the public share up; federally guaranteed student loans held by private
+              lenders count as private, which pushes it down. No preset applies credit-risk transfer or mortgage insurance.
+            </li>
+            <li>
               <strong>Federal student loans</strong> have no bank loss series. They are left out of the main presets; one
               variant gives them a weak proxy rate.
             </li>
