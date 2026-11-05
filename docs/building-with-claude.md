@@ -214,3 +214,15 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - Open conflict: h3 (b) needs about 25 unanswerable questions, but she approved the set with 15 as is. R was not answered (the card said "only if (a) or (b)").
   - Docket round 18 publishes e1-set-h3 (replace about 10 / add about 10 / keep the set and make H3 descriptive) and e1-R2. The Wilson counts for about 60 answers were rechecked by the coordinator. Neither card carries a recommendation. The review queue is empty (round 11).
   - Relayed to the tracks: markets (deviation fix, STACR retry), analysis (L-Bank, EU Publications Office, bundesbank.de search) and infra (hold the freeze until round 18).
+- **2026-11-05 14:30 UTC, coordinator (Opus tier): infra merge, docket round 19.**
+  - Eleonora said she answered round 18, but the docket store has no rows for e1-set-h3 or e1-R2. Her newest rows are from round 17 (14:10 UTC), so the taps were most likely kept on her device only. Nothing was recorded or guessed. She was asked to tap again and check that each card says "Saved".
+  - Merged infra d4030f3: `evals/e1_sql_benchmark/analyze_e1.py` and `test_analyze.py`, written and tested on synthetic data before any E1 result exists. The prereg now records her unit (ii), T 70%, h3 (b) with R unset, and the Opus baseline (descriptive, not a spend OK). No freeze, no spend.
+  - Infra raised CHOICE-E1-17: how clustering by question enters the tests (design effect vs question bootstrap), and the rule for "supported" (interval plus Holm p, or Holm-widened intervals). It also raised how many unanswerable questions to hold back under replace or add (3 or about 5).
+  - The coordinator rechecked infra's Wilson bounds from ICC 0 to ICC 1. They match to within 0.1 point of rounding. One example: R = 90% cannot be met at ICC 1 with about 20 scored questions.
+  - Docket round 19 adds these to the e1-R2 card context and adds three cards: e1-holdback, e1-cluster and e1-support. None carries a recommendation. The ids e1-set-h3 and e1-R2 are unchanged.
+- **2026-11-05 14:35 UTC, coordinator: round 19 answers.**
+  - Correction to the 14:30 entry: her e1-set-h3 and e1-R2 taps were saved at 14:22:24 and 14:22:29 UTC. That was just after the coordinator's read, not "kept on her device". The coordinator read the store too early, and asking her to tap again was unnecessary (*caught by Claude, coordinator*).
+  - Choices: e1-set-h3 **replace**, e1-R2 **70%**, e1-holdback **about 5**. Recorded in PLAN "Decisions taken", credited to her.
+  - e1-cluster and e1-support have no answer in the store and stay open on the docket. Nothing was assumed.
+  - Relayed to infra: redraft about 10 answerable questions as unanswerable, hold back about 5, put R = 70% in the prereg, and have the changed questions reviewed by her before any freeze. No spend.
+  - Docket round 20 keeps e1-cluster and e1-support open.
