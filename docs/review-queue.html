@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 11. All five items are answered, thank you. Nothing open; new items will appear here.</p>
+      <p class="sub">Round 12. One item: the 10 E1 questions infra replaced after your &#x27;replace&#x27; choice. Only the changed questions need your review.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "rv-e1-redraft", "group": "E1 benchmark", "tag": "E1", "title": "E1 redraft: the 10 replaced questions (Claude draft)", "ctx": "Per your replace choice: 10 answerable questions retired (one lookup and one computation per tool family) and 10 unanswerable ones added; the other 90 are unchanged. Now 75 answerable, 25 unanswerable; holdout 20 incl. 5 unanswerable, so E1 scores 60 answerable + 20 unanswerable. Old → new (the reason it can't be answered in brackets): q102 public share of 1–4 family mortgages 1990Q4 → q201 finance companies' share of auto loans 2026Q2 [holder × type]; q110 average public share 2020 → q202 card serious-delinquency transition rate, ages 18–29, 2026Q2 [borrower age]; q118 state and local governments' share 2026Q2 → q203 banks' credit card holdings 2007Q4 [holder × type]; q125 banks+CUs vs private-label ratio 2026Q2 → q204 NY Fed total household debt growth in 2027 [forecast]; q135 COVID vehicle coverage 4 quarters after start → q205 share of student loan borrowers 90+ days delinquent 2026Q2 [borrower level]; q137 highest home-backed coverage at a window start → q206 state with highest debt per capita 2026Q2 [geography]; q147 vehicle coverage 2026Q2 → q207 NY Fed card balance July 2026 [monthly frequency]; q153 vehicle coverage change 2019Q4–2026Q2 → q208 home-backed coverage 1950Q4 [before the series starts]; q165 auto 90+ transition 2019Q4 → q209 student loan transition 2026Q3 [not yet released]; q168 card balance growth 2019Q4–2026Q2 → q210 NY Fed mortgage originations 2026Q2 [in the workbook but in no tool]. Checks (infra; coordinator re-checked the Wilson bounds): validation 123/123 PASS, verify_set 100/100, 47 tests. The prereg draft now needs 76.7–81.6% for H1 at T 70% and 81.6–90.1% for H3 at R 70%. Not frozen: freezing also waits on e1-cluster and e1-support.", "opts": [["ok", "Approve the set as is"], ["changes", "Needs changes (say which questions in the note)"], ["later", "Later"]], "where": "evals/e1_sql_benchmark/questions.yaml", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/evals/e1_sql_benchmark/questions.yaml"}];
 
-const GROUPS = [];
+const GROUPS = ["E1 benchmark"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;

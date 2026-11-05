@@ -231,3 +231,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - Sources found: L-Bank's state guarantee (2025 annual report), the CRD V exemption list (Dir. 2019/878, via EU Publications), and the Bundesbank category including DZ Bank since 2016 (Monthly Reports). The L-Bank statute sits behind a page asking readers to confirm they are not a US person. Analysis did not pass it. Verständigung II was not found.
   - Analysis flagged that the published label "Promotional banks hold 1.1%" is too narrow. It did not edit the label. Docket card a8-promo offers (a) relabel, (b) relabel plus a guarantees note, or (c) she asks the Bundesbank herself. No recommendation.
   - Errors: the pre-commit hook caught 4 format errors in the analysis track's new register rows. The analysis track caught two of its own unsourced phrasings before committing (*caught by Claude, analysis track*).
+- **2026-11-05 14:45 UTC, coordinator: E1 redraft merged.**
+  - Merged infra 6f85767. Per her "replace" choice, 10 answerable questions were retired and 10 unanswerable ones added, giving 75 answerable and 25 unanswerable. The holdout is 20 questions, 5 of them unanswerable. Not frozen, and nothing spent.
+  - The coordinator rechecked the new Wilson bounds: 76.7–81.6% for H1, 81.6–90.1% for H3. They match infra's.
+  - The 10 retired questions keep their register rows until she reviews the replacements, so a rejection can restore them.
+  - Review queue round 12 has one card, rv-e1-redraft, listing the 10 changed questions.
