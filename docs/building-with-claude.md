@@ -267,3 +267,11 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Error found: frozen-protocol transcription.** `docs/decisions/scoring-protocol.md` records the C3 "beats" rule as "Decided: (a) … (accepted the recommended option)", but the "(Claude recommends)" marker is on (b), and her PLAN decision row says she accepted the recommended option on every choice. `holdout_run.py` applies (a). *Error made by Claude (coordinator) at the C2 freeze `192d60c`; reported by the markets track's C3 session; confirmed by the coordinator.* A scan of every `docs/decisions/*.md` found no other mismatch. The frozen file was not edited; it goes to her as card c3-rule.
 - SPECS.md erratum ("36 to 42" should read 28 + 14 = 42): *caught by quant-reviewer (mkt-q39)*. SPECS.md is frozen and was not edited.
 - Docket round 23: c3-rule (b with erratum / both / keep a) and c3-hcount (deviation by target quarter / also origin subset / report only). The C3 review card waits for c3-rule, since the verdicts may change.
+- 2026-11-05 ~16:30 UTC (markets track): C3 skeptic and editor round.
+  - The skeptic raised mkt-s44 to s48 (2 major, 3 minor; about 87k tokens). The editor's 25 suggestions were logged by the track as mkt-e1 to e25 (11 major; about 50k tokens). All were addressed in `make_report.py`.
+  - The verdicts are left as computed and labelled provisional pending c3-rule.
+  - Register: with the coordinator's OK (option (a)), only the 907 folded c3_ rows in `claims/register.csv` were replaced. The replacement was line-level, and the id+value diff is empty. 4 new rows went to `claims/tracks/markets.csv`.
+  - **Errors and who caught them:**
+    1. A headline sentence said the candidates "did better inside the crisis windows". That holds only for the GFC window. *Caught by Claude (main session)* before commit; now computed.
+    2. The first register rewrite changed line endings and quoting across the whole file. *Caught by Claude (main session)* from the diff, before commit; redone line by line.
+    3. Section 5 compared C2's and C1's "first release" as if they were the same. *Caught by skeptic* (s44).
