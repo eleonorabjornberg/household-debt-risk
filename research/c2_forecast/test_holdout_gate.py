@@ -38,3 +38,14 @@ def test_freeze_detects_a_changed_file(tmp_path, monkeypatch):
     monkeypatch.setattr(hr, "FREEZE", f)
     with pytest.raises(SystemExit, match="changed since the freeze"):
         hr.check_freeze()
+
+
+def test_refuses_approval_from_before_the_last_freeze():
+    # mkt-q29: an approval at or before the last commit that changed FREEZE.json (e.g. 77460b4, which approved the
+    # crashed first run, before the c1b-dev-1 re-freeze) must not open the holdout
+    import subprocess
+    fz = subprocess.run(["git", "log", "-1", "--format=%H", "--", "research/c2_forecast/FREEZE.json"],
+                        cwd=hr.ROOT, capture_output=True, text=True).stdout.strip()
+    for c in (fz, fz + "~1"):
+        with pytest.raises(SystemExit, match="after the last commit"):
+            hr.check_order(c)

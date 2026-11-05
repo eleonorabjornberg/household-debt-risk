@@ -64,6 +64,20 @@ def check_approval(commit: str) -> str:
     return rows[-1]
 
 
+def check_order(approval: str) -> None:
+    """Deviation c1b-dev-1 (mkt-q29): the approval commit must come after the last commit that touched FREEZE.json
+    (so an approval given before a re-freeze cannot open the holdout) and be an ancestor of HEAD, as C1b checks."""
+    git = lambda *a: subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True)
+    fz = git("log", "-1", "--format=%H", "--", str(FREEZE.relative_to(ROOT))).stdout.strip()
+    ap = git("rev-parse", "--verify", f"{approval}^{{commit}}").stdout.strip()
+    if not fz or not ap:
+        raise SystemExit("cannot resolve the freeze commit or the approval commit")
+    if ap == fz or git("merge-base", "--is-ancestor", fz, ap).returncode != 0:
+        raise SystemExit("the approval commit must come after the last commit that changed C2's FREEZE.json")
+    if git("merge-base", "--is-ancestor", ap, "HEAD").returncode != 0:
+        raise SystemExit("the approval commit is not an ancestor of HEAD")
+
+
 def clean_tree() -> None:
     st = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
     if st.strip():
@@ -122,7 +136,10 @@ def c1_holdout(dev_end: str, read_holdout: bool) -> dict:
     df = df[df["k"] <= 3]
     hold = df[df["q"] > dev_end]
     sc = nc.score(hold)
-    return {"n_targets": int(hold["q"].nunique()), "scores": sc.to_dict(orient="records"),
+    scored = hold[hold["actual"].notna()]          # deviation c1b-dev-1 (a): "no target" rows are not targets
+    return {"n_targets": int(scored["q"].nunique()), "n_no_target_instants": int(hold["actual"].isna().sum()),
+            "no_target_quarters": sorted(hold.loc[hold["actual"].isna(), "q"].unique().tolist()),
+            "scores": sc.to_dict(orient="records"),
             "bridge_mean_error_pp": float(100 * (hold["bridge"] - hold["actual"]).mean()) if len(hold) else None}
 
 
@@ -150,6 +167,7 @@ def main(argv=None) -> int:
         if not a.approval:
             raise SystemExit("--approval <commit with Eleonora's go in PLAN.md> required")
         row = check_approval(a.approval)
+        check_order(a.approval)
         clean_tree()
     fz = check_freeze()
     cal = pd.read_csv(fc.C1 / "z1_calendar.csv")

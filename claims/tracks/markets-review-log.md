@@ -176,3 +176,17 @@
 - **Evidence:** `grep -n "b2_per_tranche_" claims/register.csv`: locations = research/b2_crt_pricing/README.md:34 only.
 - **Proposed resolution:** Add README.md:80 to both rows' locations (through make_readme_and_rows.py or the main register's generator).
 - **Status:** resolved (2026-11-05, by the coordinator, on the markets track's routing): README.md:83 (the line moved from :80 after the s38–s42 edits) added to b2_per_tranche_lo/hi in claims/register.csv (merge 17dfd01).
+
+### R-20261105-mkt-q29 · quant-reviewer · research/c2_forecast/holdout_run.py (approval order after c1b-dev-1)
+- **Objection:** The deviation says the rerun needs a NEW approval commit after the fix commit, but only C1b enforces that (`nowcast_c1b.check_order`). `holdout_run.py` checks only that a PLAN.md row at `--approval` contains "unseal", that FREEZE hashes match the tree, and that the tree is clean. After the fix commit, `--approval 77460b4` still passes every C2/C1 gate. It would write C2's and C1's holdout results; C1b's `check_order` would then refuse the same approval, which breaks the "one joint run, one approval" procedure. This is the C2 gap noted in q25, now live.
+- **Severity:** major
+- **Evidence:** holdout_run.py:55-70, 151-160 (no ancestry check); nowcast_c1b.py:259-267; c1b-prereg.md deviation, last bullet.
+- **Proposed resolution:** Before the re-hash, add to holdout_run.py the same check as C1b: the last commit touching research/c2_forecast/FREEZE.json must be a strict ancestor of `--approval`, and `--approval` an ancestor of HEAD. Re-hash, and add a test that fails when the approval predates the freeze. Alternatively, state in the deviation that the order is enforced only on the C1b side.
+- **Status:** resolved (2026-11-05, markets track, before the fix commit): `holdout_run.check_order()` added and called before any data is read: the approval must be strictly after the last commit touching C2's FREEZE.json and an ancestor of HEAD. Test `test_refuses_approval_from_before_the_last_freeze`. Recorded in the deviation; FREEZE re-hashed.
+
+### R-20261105-mkt-q30 · quant-reviewer · c1b-dev-1 deviation text (c1b-prereg.md, scoring-protocol.md, EVALUATION.md)
+- **Objection:** "Frozen files changed" lists nowcast.py and holdout_run.py only. C1b's FREEZE also re-hashes docs/decisions/c1b-prereg.md, and research/c2_forecast/FREEZE.json still pins `scoring-protocol.md @ 192d60c`, a commit before this appended deviation. The text also does not say that 2026Q3 lies outside the pre-registered holdout window (2023Q3–2026Q2). `hold = q > DEV_END` has no upper bound, so the rows are excluded only because they have no actual. Separately, the C1b holdout table (nowcast_c1b.run copies `actual` but not `target`) will have these rows without the "no target" label.
+- **Severity:** minor
+- **Evidence:** git diff research/c1b_nowcast/FREEZE.json; research/c2_forecast/FREEZE.json:8; holdout_run.py:123; nowcast_c1b.py:100-118.
+- **Proposed resolution:** Add c1b-prereg.md to the list and note the 192d60c pin. Add one sentence that 2026Q3 is outside the holdout window and could never be scored. Carry `target` into C1b's rows (or say in the deviation that it is not carried).
+- **Status:** resolved (2026-11-05, markets track): the deviation text now lists c1b-prereg.md, notes the `192d60c` pin, says 2026Q3 is outside the holdout window, and says C1b's table does not carry the `target` label (nowcast_c1b.py left unchanged).
