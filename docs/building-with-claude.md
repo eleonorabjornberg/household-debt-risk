@@ -352,3 +352,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Merged analysis 7ae5ec1 (a8-holder (b) applied; skeptic ana-53–57, editor ana-e12–e20). Folded its track row a8_de_holder_public_owned_public_law_banks and applied its three proposed edits to existing rows: the a8_de_public_owned_share claim text; "unclassified on both measures" on a8_de_promotional_banks_unclassified; and that row's value 0.0115 → 0.011484 (17,817 / 1,551,414; the stored value was itself rounded, *caught by editor* ana-e12). Register 1,707 rows.
 - **Error: wrong log heading time.** The analysis entry was headed ~19:20 UTC; its commits are 19:01–19:02. *Error by Claude (analysis track); caught by Claude (coordinator)* against `git log`. Corrected to ~19:00.
 - Review queue round 16: the A8 relabel (rv-a8-holder), with the editor's two flagged points (unsourced CROSSWALK:12 sentence, long caveats) on the card.
+
+### 2026-11-05 ~19:15 UTC: coordinator, E1 frozen
+- Merged infra 26aeb12. Steps: retired checks dropped and validation 113 PASS / 0 FAIL (242eead); freeze-gate test switched to temp files (134ee11); **prereg frozen at e0ae2d6**, file SHA-256 6249f5eb…451c0 (checked by the coordinator with `git show e0ae2d6`), recorded in 26aeb12. No spend.
+- Applied infra's proposed note on the 72 e1_q register rows: "Question set approved by Eleonora 2026-11-05 (PLAN 1116080); prereg frozen e0ae2d6". Values unchanged.
+- Infra pointed out that run_e1.py's gate now passes and does not check for her spend OK. Asked infra to add a gate that reads a dated spend-OK line in PLAN before `--live`, as in the C1b script. Docket round 28: e1-spend card for the full run plus the Opus baseline, within her $31 cap.
