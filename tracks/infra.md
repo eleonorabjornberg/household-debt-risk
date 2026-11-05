@@ -70,6 +70,11 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-05 ~22:00 UTC, same session, no spend yet. Her e1-stop2 "recal" and e1-resume (21:40 UTC, PLAN `74cdbb5`; checked). Prereg Deviations D4 (recalibrated stops: Sonnet $0.047, Opus $0.098, Haiku $0.0020) and D5 (resume from loop 80; the first 79 loops ran under the earlier stops; one $31 cap for all E1 spend). The prereg is now pinned in `snapshot_hashes.json`.
+  - `run_e1.py --resume`: it checks that the completed loops match the seeded plan, skips them, appends to the logs, keeps the earlier summary as `summary_part1.json`, and logs a resume record.
+  - Every `--live` run now carries the spend logged in earlier E1 run directories into the cap and the guard. The baseline therefore runs with `--cap 31` and needs no remainder arithmetic.
+  - 6 new offline tests (72 in the folder). They show the resume skipping completed loops and finishing in order, the spend carried into the cap and guard, a refusal on a mismatched plan and on a mismatched prereg hash, and the live-run spend sum.
+  - Errors caught by Claude: (1) a first carry test left more headroom than Haiku's worst-case call, so one loop ran before the guard; fixed in the test. (2) Logged per-call costs are rounded to 6 decimals, so their sum ($2.590347) differs from the unrounded run totals ($2.590335) by $0.000012. The carried spend uses the logged sum, which errs high.
 - 2026-11-05 ~21:40 UTC, same session. **E1 main run `run-2026-11-05b` STOPPED after 79 of 720 loops; $2.586701 spent.** It ran with her deviations D2 and D3 and approval `32ec93a`.
   - **Checkpoint:** the 10% checkpoint passed: $1.34 after 72 loops, projected $13.40 against the $31 cap.
   - **Stop:** then the per-model overrun stop fired on Sonnet, applying from its 25th loop: mean $0.0313 per loop over 27 loops, against a stop of $0.0305 (3× its pilot mean of $0.0102). Opus averaged $0.0656 (stop $0.121) and Haiku $0.00135 (stop $0.0025).

@@ -189,3 +189,72 @@ def test_cache_tokens_are_logged_and_priced(tmp_path):
     rec = json.loads((tmp_path / "calls.jsonl").read_text().splitlines()[0])
     assert rec["usage"] == u
     assert rec["cost_usd"] == pytest.approx(pilot.call_cost(rec["model"], u), abs=1e-6)
+
+
+# ---------------------------------------------------------------- e1-resume and e1-stop2 (2026-11-05, offline only)
+
+def test_recalibrated_stops_are_hers():
+    b = pilot.Budget(cap=31, assumed=dict(run_e1.STOP_BASIS))
+    assert {m: round(b.overrun * b.assumed[m], 6) for m in pilot.MODELS} == {
+        "claude-sonnet-5-5": 0.047, "claude-opus-5-5": 0.098, "claude-haiku-5-5": 0.002}
+
+
+def _stop_midway(tmp_path, cap):
+    b = pilot.Budget(cap=cap, assumed=dict(run_e1.STOP_BASIS), min_loops=run_e1.MIN_LOOPS)
+    return run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1, budget=b)
+
+
+def test_resume_skips_completed_loops_and_finishes_in_order(tmp_path):
+    s1 = _stop_midway(tmp_path, cap=1.0)  # the pre-call guard stops it part-way
+    assert s1["stop"] and 0 < s1["loops_done"] < 240
+    first = (tmp_path / "calls.jsonl").read_text()
+    n1 = s1["loops_done"]
+    s2 = run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1, resume=True)
+    assert s2["stop"] is None and s2["loops_done"] == 240 and s2["resumed_from_loop"] == n1 + 1
+    res = [json.loads(l) for l in (tmp_path / "results.jsonl").read_text().splitlines()]
+    gold = json.loads(run_e1.GOLD.read_text())
+    order = [(1, q["id"], m) for q in run_e1.plan(gold) for m in pilot.MODELS]
+    assert [(x["rep"], x["qid"], x["model"]) for x in res] == order  # every loop once, in the seeded order
+    assert (tmp_path / "calls.jsonl").read_text().startswith(first)  # appended, never overwritten
+    assert (tmp_path / "summary_part1.json").exists()
+    assert any("resume" in json.loads(l) for l in (tmp_path / "calls.jsonl").read_text().splitlines())
+
+
+def test_resume_carries_spend_into_cap_and_guard(tmp_path):
+    s1 = _stop_midway(tmp_path, cap=1.0)
+    spent = s1["total_usd"]
+    b = pilot.Budget(cap=31, assumed=dict(run_e1.STOP_BASIS), min_loops=run_e1.MIN_LOOPS)
+    carried = 31 - spent - 0.001  # less headroom than any model's worst-case call (Haiku: about $0.007)
+    s2 = run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1, resume=True, budget=b, carried=carried)
+    assert s2["stop"]["reason"].startswith("pre-call guard") and s2["loops_done"] == s1["loops_done"]
+    assert b.total == pytest.approx(spent + carried, abs=1e-6)  # this run's spend + other runs' spend
+
+
+def test_resume_refuses_a_mismatched_plan(tmp_path):
+    _stop_midway(tmp_path, cap=1.0)
+    lines = (tmp_path / "results.jsonl").read_text().splitlines()
+    first = json.loads(lines[0])
+    first["qid"] = "q999"
+    (tmp_path / "results.jsonl").write_text("\n".join([json.dumps(first)] + lines[1:]) + "\n")
+    with pytest.raises(SystemExit, match="do not match the seeded plan"):
+        run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1, resume=True)
+
+
+def test_refuses_a_mismatched_prereg_hash(tmp_path):
+    hashes = json.loads(run_e1.HASHES.read_text())
+    assert "docs/decisions/e1-prereg.md" in hashes  # the prereg (with its Deviations) is pinned
+    hashes["docs/decisions/e1-prereg.md"] = "0" * 64
+    f = tmp_path / "h.json"
+    f.write_text(json.dumps(hashes))
+    assert run_e1.snapshot_ok(f) == ["docs/decisions/e1-prereg.md"]
+
+
+def test_e1_spend_so_far_counts_live_runs_only(tmp_path):
+    for name, cost in (("run-a", 1.5), ("run-b", 0.25), ("run-fake-x", 9.0)):
+        (tmp_path / name).mkdir()
+        (tmp_path / name / "calls.jsonl").write_text(json.dumps({"cost_usd": cost}) + "\n" + json.dumps({"checkpoint": 1}) + "\n")
+    assert run_e1.e1_spend_so_far(tmp_path) == pytest.approx(1.75)
+    assert run_e1.e1_spend_so_far(tmp_path, exclude=tmp_path / "run-b") == pytest.approx(1.5)
+    # the two real runs so far: logged per-call costs are rounded to 6 decimals, so the sum differs from the
+    # unrounded run totals ($2.590335) by about $0.00001
+    assert run_e1.e1_spend_so_far() == pytest.approx(0.003634 + 2.586701, abs=1e-4)

@@ -48,6 +48,22 @@ PLANNING = {m: 2 * v for m, v in PILOT_MEAN.items()}  # stop at 1.5x this = 3x t
 # model; e1-cost (b) the top-level prompt cache is restored (reverses CHOICE-E1-5 (b)).
 MIN_LOOPS = 24
 TOP_CACHE = True
+# Deviation of 2026-11-05 21:40 UTC (Eleonora, e1-stop2 "recal", PLAN 74cdbb5): each model's overrun stop is reset to
+# 1.5x its measured mean cost per loop over the first 27 loops of run-2026-11-05b. Cap, guard and checkpoint unchanged.
+RECAL_STOP = {"claude-sonnet-5-5": 0.047, "claude-opus-5-5": 0.098, "claude-haiku-5-5": 0.0020}
+STOP_BASIS = {m: v / 1.5 for m, v in RECAL_STOP.items()}  # Budget stops at overrun (1.5) x this = RECAL_STOP
+
+
+def e1_spend_so_far(root: Path = HERE, exclude: Path | None = None) -> float:
+    """Spend logged in every live E1 run directory (run-*, not fake runs), except `exclude`."""
+    total = 0.0
+    for d in sorted(root.glob("run-*")):
+        if "fake" in d.name or (exclude is not None and d.resolve() == exclude.resolve()):
+            continue
+        f = d / "calls.jsonl"
+        if f.exists():
+            total += sum(json.loads(l).get("cost_usd", 0) for l in f.read_text().splitlines() if l.strip())
+    return total
 CHECKPOINT = 0.10
 
 
@@ -121,47 +137,77 @@ def plan(gold: dict, seed: int = SEED) -> list[dict]:
 
 
 def run(client, tools, call_tool, outdir: Path, models=pilot.MODELS, reps: int = REPS, budget=None,
-        baseline: str | None = None, approval: dict | None = None) -> dict:
+        baseline: str | None = None, approval: dict | None = None, resume: bool = False,
+        carried: float = 0.0) -> dict:
+    """carried: E1 spend in OTHER run directories, counted against the cap (and the guard) from the start.
+    resume: continue `outdir` after its last completed loop, in the same seeded order (e1-resume, 2026-11-05)."""
     gold = json.loads(GOLD.read_text())
     qs = plan(gold)
     if baseline:
         models, tools = [baseline], []
-    total_loops = len(qs) * len(models) * reps
-    budget = budget or pilot.Budget(cap=CAP_USD, assumed=dict(PLANNING), min_loops=MIN_LOOPS)
-    if (outdir / "calls.jsonl").exists():  # results are append-only: never overwrite a run
-        raise SystemExit(f"refusing: {outdir} already holds a run; pass a new --out")
-    outdir.mkdir(parents=True, exist_ok=True)
-    calls = (outdir / "calls.jsonl").open("w")
-    results, stop, done = [], None, 0
+    order = [(rep, q, m) for rep in range(1, reps + 1) for q in qs for m in models]
+    total_loops = len(order)
+    budget = budget or pilot.Budget(cap=CAP_USD, assumed=dict(STOP_BASIS), min_loops=MIN_LOOPS)
+    budget.total += carried
+    prior: list[dict] = []
+    if resume:
+        if not (outdir / "calls.jsonl").exists() or not (outdir / "results.jsonl").exists():
+            raise SystemExit(f"refusing: nothing to resume in {outdir}")
+        prior = [json.loads(l) for l in (outdir / "results.jsonl").read_text().splitlines() if l.strip()]
+        expect = [(r, q["id"], m) for r, q, m in order[:len(prior)]]
+        if [(x["rep"], x["qid"], x["model"]) for x in prior] != expect:
+            raise SystemExit("refusing: completed loops do not match the seeded plan's first loops")
+        old_calls = [json.loads(l) for l in (outdir / "calls.jsonl").read_text().splitlines() if l.strip()]
+        for m in models:  # spend of this run so far (incl. any interrupted loop), loops = completed loops
+            spent = sum(c.get("cost_usd", 0) for c in old_calls if c.get("model") == m)
+            budget.by_model[m] = [spent, sum(1 for x in prior if x["model"] == m)]
+            budget.total += spent
+        if (outdir / "summary.json").exists():
+            part = 1
+            while (outdir / f"summary_part{part}.json").exists():
+                part += 1
+            (outdir / "summary.json").rename(outdir / f"summary_part{part}.json")
+        calls = (outdir / "calls.jsonl").open("a")
+    else:
+        if (outdir / "calls.jsonl").exists():  # results are append-only: never overwrite a run
+            raise SystemExit(f"refusing: {outdir} already holds a run; pass a new --out")
+        outdir.mkdir(parents=True, exist_ok=True)
+        calls = (outdir / "calls.jsonl").open("w")
+    results, stop, done = list(prior), None, len(prior)
 
     def log(rec):
         rec["ts"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         calls.write(json.dumps(rec) + "\n")
         calls.flush()
 
+    if resume:
+        log({"resume": {"from_loop": done + 1, "of": total_loops, "carried_usd": round(budget.total, 6),
+                        "stops": RECAL_STOP, "approval": approval}})
     try:
-        for rep in range(1, reps + 1):
-            for q in qs:
-                for m in models:
-                    loop = pilot.run_loop(client, m, q, tools, call_tool, budget, log, top_cache=TOP_CACHE, rep=rep)
-                    s = pilot.score(loop["final_text"], q)
-                    results.append({"qid": q["id"], "model": m, "rep": rep, "family": q["family"],
-                                    "difficulty": q["difficulty"], **{k: v for k, v in loop.items() if k != "final_text"},
-                                    "truncated": loop["stop_reason"] == "tool_use", **s})
-                    done += 1
-                    if done == max(1, int(total_loops * CHECKPOINT)):
-                        proj = budget.total / done * total_loops
-                        log({"checkpoint": done, "of": total_loops, "spent_usd": round(budget.total, 6),
-                             "projected_usd": round(proj, 4)})
-                        if proj > budget.cap:
-                            raise pilot.Stop(f"checkpoint: projected ${proj:.2f} > cap ${budget.cap:.2f} "
-                                             f"after {done}/{total_loops} loops")
+        for i, (rep, q, m) in enumerate(order):
+            if i < len(prior):
+                continue
+            loop = pilot.run_loop(client, m, q, tools, call_tool, budget, log, top_cache=TOP_CACHE, rep=rep)
+            s = pilot.score(loop["final_text"], q)
+            results.append({"qid": q["id"], "model": m, "rep": rep, "family": q["family"],
+                            "difficulty": q["difficulty"], **{k: v for k, v in loop.items() if k != "final_text"},
+                            "truncated": loop["stop_reason"] == "tool_use", **s})
+            done += 1
+            if done == max(1, int(total_loops * CHECKPOINT)):
+                proj = budget.total / done * total_loops
+                log({"checkpoint": done, "of": total_loops, "spent_usd": round(budget.total, 6),
+                     "projected_usd": round(proj, 4)})
+                if proj > budget.cap:
+                    raise pilot.Stop(f"checkpoint: projected ${proj:.2f} > cap ${budget.cap:.2f} "
+                                     f"after {done}/{total_loops} loops")
     except pilot.Stop as e:
         lines = (outdir / "calls.jsonl").read_text().splitlines()
         stop = {"reason": str(e), "at": json.loads(lines[-1]) if lines else None}
     finally:
         calls.close()
     summary = {"mode": "baseline (no tools)" if baseline else "main", "approval": approval, "cap_usd": budget.cap,
+               "resumed_from_loop": len(prior) + 1 if resume else None, "carried_usd": round(carried, 6),
+               "stops_usd": {m: round(budget.overrun * budget.assumed[m], 6) for m in models},
                "total_usd": round(budget.total, 6), "loops_planned": total_loops, "loops_done": done,
                "stop": stop, "per_model": {}}
     for m, (spent, loops) in budget.by_model.items():
@@ -184,6 +230,7 @@ def main() -> None:
     ap.add_argument("--cap", type=float, default=CAP_USD,
                     help="spend cap for this invocation (the baseline gets $31 minus the main run's spend)")
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--resume", action="store_true", help="continue --out after its last completed loop (e1-resume)")
     a = ap.parse_args()
     if a.cap > CAP_USD:
         raise SystemExit(f"refusing: cap ${a.cap} is above Eleonora's ${CAP_USD}")
@@ -202,8 +249,12 @@ def main() -> None:
     tag = ("baseline-" if a.baseline else "") + ("" if a.live else "fake-")
     out = a.out or (HERE / f"run-{tag}{date}")
     client = pilot.live_client() if a.live else pilot.FakeClient()
-    budget = pilot.Budget(cap=a.cap, assumed=dict(PLANNING), min_loops=MIN_LOOPS)
-    print(json.dumps(run(client, tools, call_tool, out, budget=budget, baseline=a.baseline, approval=approval), indent=1))
+    if a.resume and not a.out:
+        raise SystemExit("refusing: --resume needs --out RUN_DIR")
+    budget = pilot.Budget(cap=a.cap, assumed=dict(STOP_BASIS), min_loops=MIN_LOOPS)
+    carried = e1_spend_so_far(exclude=out) if a.live else 0.0  # all E1 spend counts against the one $31 cap
+    print(json.dumps(run(client, tools, call_tool, out, budget=budget, baseline=a.baseline, approval=approval,
+                         resume=a.resume, carried=carried), indent=1))
 
 
 if __name__ == "__main__":
