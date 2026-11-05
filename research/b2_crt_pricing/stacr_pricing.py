@@ -11,7 +11,8 @@ sources.md records the retrieval. One sheet, "STACR": one column per deal, rows 
 
 Output: stacr_tranches.csv (committed), one row per deal and tranche: deal, closing date, benchmark, tranche,
 issued amount ($), spread over the benchmark (decimal, as printed), initial credit enhancement of that tranche
-(decimal, the tranche's attachment point as printed), and each cell's text as printed (*_raw). "Retained" tranches
+(decimal, the tranche's attachment point as printed), its detachment point (detach: the initial CE of the next
+more senior listed class, A-H included; detach_from names that class), and each cell's text as printed (*_raw). "Retained" tranches
 have no amount (issued_note); "(Indicative)" spreads are flagged (spread_indicative); a dash, or the 2017-HRP1
 par/discount/IO three-way values, give no parsed value and keep the raw text. Any other text that does not parse
 raises; nothing is filled in.
@@ -89,6 +90,24 @@ def pct(s: str) -> float | None:
     raise ValueError(f"not a percentage: {s!r}")
 
 
+def detach_points(ce: dict[str, str]) -> dict[str, tuple[float, str]]:
+    """Each listed class's detachment point: the initial CE of the next more senior listed class (A-H included).
+
+    The workbook lists the CE of the sold classes and of the senior A-H, most senior first. Classes are assumed
+    contiguous between listed CEs: a retained class that is not listed would sit inside the gap and make the
+    detachment point too high (the 2019-FTR1/3/4 case is flagged downstream). Where a CE is not below the one listed
+    above it, the class gets no detachment point and detach_from says why.
+    """
+    vals = [(k, pct(v)) for k, v in ce.items()]
+    out = {}
+    for (hi, hv), (lo, lv) in zip(vals, vals[1:]):
+        if hv is None or lv is None:
+            continue
+        # out of order as printed (2014-DN2: A-H 3.00% above M-1 3.50%): no detachment point, the reason kept
+        out[lo] = (hv, hi) if lv < hv else (None, f"none: CE out of order ({hi} {hv:.4%} above {lo} {lv:.4%})")
+    return out
+
+
 def parse(path: Path) -> pd.DataFrame:
     d = pd.read_excel(path, sheet_name="STACR", header=None)
     lab = {str(v).strip(): i for i, v in d[0].items() if isinstance(v, str)}
@@ -104,6 +123,7 @@ def parse(path: Path) -> pd.DataFrame:
         size, spread, ce = (items(d.iat[lab[LABELS[k]], c]) for k in ("issuance", "spread", "ce"))
         # tranche names are matched without hyphens: 2018-DNA2 prints "M1" in one row and "M-1" in another
         spread, ce = ({k.replace("-", ""): v for k, v in x.items()} for x in (spread, ce))
+        above = detach_points(ce)
         for tr in size:
             key = tr.replace("-", "")
             rows.append({"deal": deal, "closing_date": pd.Timestamp(d.iat[lab["Closing Date"], c]).date().isoformat(),
@@ -113,6 +133,7 @@ def parse(path: Path) -> pd.DataFrame:
                          "spread": pct(spread[key]) if key in spread else None,
                          "spread_indicative": "indicative" in spread.get(key, "").lower(),
                          "initial_ce": pct(ce[key]) if key in ce else None,
+                         "detach": above.get(key, (None, ""))[0], "detach_from": above.get(key, (None, ""))[1],
                          "issued_raw": size[tr], "spread_raw": spread.get(key, ""), "initial_ce_raw": ce.get(key, "")})
     return pd.DataFrame(rows)
 
