@@ -365,3 +365,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Gap in the spend gate:** card option (b) approves the main run only, but the gate's pattern accepts any "OK" row for both runs. *Caught by Claude (coordinator).* Sent to infra.
 - Review queue round 17: rv-c3-final and rv-b2-stacr17 added beside rv-a8-holder.
 - **Error: register fold not committed.** The markets merge commit (7fe549b) removed `claims/tracks/markets.csv` but left the 147 folded rows unstaged, so 7fe549b through 02bebce lack them. The pre-commit check passed because it reads the working tree, not the index. The csv writer had also switched the file to CRLF line endings. *Error by Claude (coordinator); caught by the session's stop hook (uncommitted changes) and independently by Claude (infra track), whose commit the pre-commit check blocked on 02bebce.* Rows committed in the next commit with LF endings; register 1,854 rows.
+
+### 2026-11-05 ~21:00 UTC: coordinator, her e1-spend and review round 17 answers
+- Gate fix merged first (infra a43e37e): the baseline needs an e1-spend OK row that covers it; an option (b) row passes the main run only. 60 tests pass.
+- **Eleonora** (20:59 UTC) chose e1-spend (a): run the main run and the Opus baseline, $31 total cap. No recommendation was given on this card. Recorded in PLAN "Decisions taken". Infra's `spend_row` accepts the row for both runs (checked, no API calls).
+- **Eleonora** approved all three review items as Claude drafts she will rewrite: the A8 holder-share relabel copy (rv-a8-holder; editor points ana-e17, e19, e20 not taken up), the C3 final accuracy report (rv-c3-final) and the B2 STACR 2017+ section (rv-b2-stacr17).
+- Docket round 29 and review queue round 18 republished with nothing open. This commit is the approval commit infra passes to `run_e1.py --live --approval`.
