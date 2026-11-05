@@ -1,43 +1,43 @@
-design,h,candidate,benchmark,test,n,stat,p,candidate_lower_rmse,posthoc_p_bartlett8,p_holm,n_holdout,holdout_rel_rmse,holdout_candidate_lower,verdict
-latest-expanding,1,Z-DIR,no_change,CW,133,6.20326,2.76521e-10,True,0.00365248,1.10608e-08,12,1.158554651351055,False,does not beat
-latest-expanding,1,Z-DIR,ar_bic,CW,133,2.17116,0.0149596,True,0.0179539,0.40979,12,0.939845856816726,True,comparable
-latest-expanding,1,Z-DIR,seasonal_naive,DM-HLN,133,3.51741,0.000598118,True,0.0123236,0.0215322,12,0.873776857935705,True,beats
-latest-expanding,1,Z-DAMP,no_change,CW,133,6.44037,5.95921e-11,True,0.00300856,2.44328e-09,12,1.0983485867491052,False,does not beat
-latest-expanding,1,Z-DAMP,ar_bic,DM-HLN,133,1.20826,0.229107,True,0.371208,1.0,12,0.8910053292633677,True,comparable
-latest-expanding,1,Z-DAMP,seasonal_naive,DM-HLN,133,4.51459,1.39021e-05,True,0.000289962,0.000514378,12,0.8283697069694401,True,beats
-latest-expanding,1,ZC1-DIR,no_change,CW,18,3.13109,0.000870803,True,9.10121e-07,0.0304781,12,1.3149481244234473,False,does not beat
-latest-expanding,1,ZC1-DIR,ar_bic,CW,18,1.75783,0.039388,True,0.00248347,0.905923,12,1.0667157956054212,False,does not beat
-latest-expanding,1,ZC1-DIR,seasonal_naive,DM-HLN,18,1.49287,0.153798,True,0.062225,1.0,12,0.9917281322614253,True,comparable
-latest-expanding,4,Z-DIR,no_change,CW,130,2.75494,0.00293514,True,0.0039711,0.0968598,12,1.3957428583012812,False,does not beat
-latest-expanding,4,Z-DIR,ar_bic,DM-HLN,130,-0.0390093,0.968943,False,0.965534,1.0,12,0.9703616944545356,True,does not beat
-latest-expanding,4,Z-DIR,seasonal_naive,DM-HLN,130,0.835585,0.404934,True,0.367152,1.0,12,0.8257781550953357,True,comparable
-latest-expanding,4,Z-DAMP,no_change,CW,130,2.58785,0.0048289,True,0.00588808,0.144867,12,1.4163688916594994,False,does not beat
-latest-expanding,4,Z-DAMP,ar_bic,DM-HLN,130,0.100763,0.919895,True,0.916853,1.0,12,0.9847015225685161,True,comparable
-latest-expanding,4,Z-DAMP,seasonal_naive,DM-HLN,130,1.73284,0.0855145,True,0.0498159,1.0,12,0.8379813540385952,True,comparable
-latest-expanding,4,ZC1-DIR,no_change,CW,12,-0.257249,0.601507,False,0.610422,1.0,12,3.9819971605716558,False,does not beat
-latest-expanding,4,ZC1-DIR,ar_bic,DM-HLN,12,-0.36443,0.722446,False,0.641396,1.0,12,2.7684021373021372,False,does not beat
-latest-expanding,4,ZC1-DIR,seasonal_naive,DM-HLN,12,-0.128981,0.899701,False,0.869914,1.0,12,2.3559112262653867,False,does not beat
-latest-expanding,8,Z-DIR,no_change,CW,126,1.94093,0.0261334,True,0.00906711,0.653335,12,1.9002577056292982,False,does not beat
-latest-expanding,8,Z-DIR,ar_bic,DM-HLN,126,0.232014,0.816907,True,0.786532,1.0,12,1.019549600531996,False,does not beat
-latest-expanding,8,Z-DIR,seasonal_naive,DM-HLN,126,1.2808,0.202635,True,0.137053,1.0,12,0.6572501972406866,True,comparable
-latest-expanding,8,Z-DAMP,no_change,CW,126,1.86756,0.0309119,True,0.012717,0.741884,12,1.309414550558721,False,does not beat
-latest-expanding,8,Z-DAMP,ar_bic,DM-HLN,126,-0.166084,0.868359,False,0.85123,1.0,12,0.7025431750641516,True,does not beat
-latest-expanding,8,Z-DAMP,seasonal_naive,DM-HLN,126,1.77752,0.0779142,True,0.0426308,1.0,12,0.4528927676888645,True,comparable
-latest-rolling,1,Z-DIR,no_change,CW,133,6.08363,5.87459e-10,True,0.00407319,2.29109e-08,12,1.155261246565485,False,does not beat
-latest-rolling,1,Z-DIR,ar_bic,CW,133,2.2411,0.0125097,True,0.0313136,0.362781,12,0.9000477455386584,True,comparable
-latest-rolling,1,Z-DIR,seasonal_naive,DM-HLN,133,3.12783,0.0021672,True,0.0153629,0.0736847,12,0.8712929864307313,True,comparable
-latest-rolling,1,Z-DAMP,no_change,CW,133,6.4459,5.74599e-11,True,0.00293907,2.41331e-09,12,1.089725400939644,False,does not beat
-latest-rolling,1,Z-DAMP,ar_bic,DM-HLN,133,2.3267,0.0215042,True,0.0163599,0.559109,12,0.8489896924075011,True,comparable
-latest-rolling,1,Z-DAMP,seasonal_naive,DM-HLN,133,4.55451,1.1805e-05,True,0.000312886,0.000448591,12,0.8218661378946451,True,beats
-latest-rolling,4,Z-DIR,no_change,CW,130,2.65837,0.00392601,True,0.00549683,0.121706,12,1.3413497101309033,False,does not beat
-latest-rolling,4,Z-DIR,ar_bic,DM-HLN,130,0.438579,0.6617,True,0.631829,1.0,12,0.8380419021243747,True,comparable
-latest-rolling,4,Z-DIR,seasonal_naive,DM-HLN,130,-0.565831,0.572492,False,0.528699,1.0,12,0.7935969597706979,True,does not beat
-latest-rolling,4,Z-DAMP,no_change,CW,130,2.71435,0.00332027,True,0.00447807,0.106248,12,1.4163688916594994,False,does not beat
-latest-rolling,4,Z-DAMP,ar_bic,DM-HLN,130,1.08881,0.278269,True,0.275536,1.0,12,0.8849120189247897,True,comparable
-latest-rolling,4,Z-DAMP,seasonal_naive,DM-HLN,130,0.30065,0.764165,True,0.741115,1.0,12,0.8379813540385952,True,comparable
-latest-rolling,8,Z-DIR,no_change,CW,126,1.68234,0.0462518,True,0.0203254,1.0,12,2.1480480247835696,False,does not beat
-latest-rolling,8,Z-DIR,ar_bic,DM-HLN,126,-0.467191,0.641177,False,0.599349,1.0,12,1.207921215087572,False,does not beat
-latest-rolling,8,Z-DIR,seasonal_naive,DM-HLN,126,0.448917,0.654269,True,0.604229,1.0,12,0.7429544865357767,True,comparable
-latest-rolling,8,Z-DAMP,no_change,CW,126,2.17982,0.0146353,True,0.00528592,0.40979,12,1.309414550558721,False,does not beat
-latest-rolling,8,Z-DAMP,ar_bic,DM-HLN,126,1.21272,0.227522,True,0.162758,1.0,12,0.7363287955927341,True,comparable
-latest-rolling,8,Z-DAMP,seasonal_naive,DM-HLN,126,1.52306,0.130269,True,0.0888005,1.0,12,0.4528927676888645,True,comparable
+design,h,candidate,benchmark,test,n,stat,p,candidate_lower_rmse,posthoc_p_bartlett8,p_holm,n_holdout,holdout_rel_rmse,holdout_candidate_lower,verdict,verdict_a,dev_rel_rmse,verdict_by_alpha
+latest-expanding,1,Z-DIR,no_change,CW,133,6.20326,2.76521e-10,True,0.00365248,1.10608e-08,12,1.158554651351055,False,does not beat,does not beat,0.7476419209992172,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,1,Z-DIR,ar_bic,CW,133,2.17116,0.0149596,True,0.0179539,0.40979,12,0.939845856816726,True,comparable,comparable,0.9871350575355113,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,1,Z-DIR,seasonal_naive,DM-HLN,133,3.51741,0.000598118,True,0.0123236,0.0215322,12,0.873776857935705,True,beats,beats,0.8093961139229247,"{0.01: 'beats', 0.05: 'beats', 0.1: 'beats', 'kupiec 0.05': 'beats'}"
+latest-expanding,1,Z-DAMP,no_change,CW,133,6.44037,5.95921e-11,True,0.00300856,2.44328e-09,12,1.0983485867491052,False,does not beat,does not beat,0.7275604998747898,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,1,Z-DAMP,ar_bic,DM-HLN,133,1.20826,0.229107,True,0.371208,1.0,12,0.8910053292633677,True,comparable,comparable,0.9606209279230853,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,1,Z-DAMP,seasonal_naive,DM-HLN,133,4.51459,1.39021e-05,True,0.000289962,0.000514378,12,0.8283697069694401,True,beats,beats,0.787655995072395,"{0.01: 'beats', 0.05: 'beats', 0.1: 'short of (b): coverage clause failed under this reading', 'kupiec 0.05': 'beats'}"
+latest-expanding,1,ZC1-DIR,no_change,CW,18,3.13109,0.000870803,True,9.10121e-07,0.0304781,12,1.3149481244234473,False,does not beat,does not beat,0.7956873535280173,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,1,ZC1-DIR,ar_bic,CW,18,1.75783,0.039388,True,0.00248347,0.905923,12,1.0667157956054212,False,does not beat,does not beat,0.7355460605902356,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,1,ZC1-DIR,seasonal_naive,DM-HLN,18,1.49287,0.153798,True,0.062225,1.0,12,0.9917281322614253,True,comparable,comparable,0.6841826869815744,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,4,Z-DIR,no_change,CW,130,2.75494,0.00293514,True,0.0039711,0.0968598,12,1.3957428583012812,False,does not beat,does not beat,0.7047685361294596,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,4,Z-DIR,ar_bic,DM-HLN,130,-0.0390093,0.968943,False,0.965534,1.0,12,0.9703616944545356,True,does not beat,does not beat,1.0006297590452666,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,4,Z-DIR,seasonal_naive,DM-HLN,130,0.835585,0.404934,True,0.367152,1.0,12,0.8257781550953357,True,comparable,comparable,0.9287274159609438,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,4,Z-DAMP,no_change,CW,130,2.58785,0.0048289,True,0.00588808,0.144867,12,1.4163688916594994,False,does not beat,does not beat,0.6994368342461483,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,4,Z-DAMP,ar_bic,DM-HLN,130,0.100763,0.919895,True,0.916853,1.0,12,0.9847015225685161,True,comparable,comparable,0.9930598133151426,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,4,Z-DAMP,seasonal_naive,DM-HLN,130,1.73284,0.0855145,True,0.0498159,1.0,12,0.8379813540385952,True,comparable,comparable,0.921701424505712,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,4,ZC1-DIR,no_change,CW,12,-0.257249,0.601507,False,0.610422,1.0,12,3.9819971605716558,False,does not beat,does not beat,1.3998081464583696,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,4,ZC1-DIR,ar_bic,DM-HLN,12,-0.36443,0.722446,False,0.641396,1.0,12,2.7684021373021372,False,does not beat,does not beat,1.1647134686289213,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,4,ZC1-DIR,seasonal_naive,DM-HLN,12,-0.128981,0.899701,False,0.869914,1.0,12,2.3559112262653867,False,does not beat,does not beat,1.0694428316806577,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,8,Z-DIR,no_change,CW,126,1.94093,0.0261334,True,0.00906711,0.653335,12,1.9002577056292982,False,does not beat,does not beat,0.7899588411298951,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,8,Z-DIR,ar_bic,DM-HLN,126,0.232014,0.816907,True,0.786532,1.0,12,1.019549600531996,False,does not beat,does not beat,0.9965735660137202,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,8,Z-DIR,seasonal_naive,DM-HLN,126,1.2808,0.202635,True,0.137053,1.0,12,0.6572501972406866,True,comparable,comparable,0.7435252974837773,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-expanding,8,Z-DAMP,no_change,CW,126,1.86756,0.0309119,True,0.012717,0.741884,12,1.309414550558721,False,does not beat,does not beat,0.8070951520977653,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,8,Z-DAMP,ar_bic,DM-HLN,126,-0.166084,0.868359,False,0.85123,1.0,12,0.7025431750641516,True,does not beat,does not beat,1.0181919005906759,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-expanding,8,Z-DAMP,seasonal_naive,DM-HLN,126,1.77752,0.0779142,True,0.0426308,1.0,12,0.4528927676888645,True,comparable,comparable,0.7596543412348872,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,1,Z-DIR,no_change,CW,133,6.08363,5.87459e-10,True,0.00407319,2.29109e-08,12,1.155261246565485,False,does not beat,does not beat,0.7692268248088632,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,1,Z-DIR,ar_bic,CW,133,2.2411,0.0125097,True,0.0313136,0.362781,12,0.9000477455386584,True,comparable,comparable,0.9793133958215023,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,1,Z-DIR,seasonal_naive,DM-HLN,133,3.12783,0.0021672,True,0.0153629,0.0736847,12,0.8712929864307313,True,comparable,comparable,0.8327639010576778,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,1,Z-DAMP,no_change,CW,133,6.4459,5.74599e-11,True,0.00293907,2.41331e-09,12,1.089725400939644,False,does not beat,does not beat,0.7236764502462983,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,1,Z-DAMP,ar_bic,DM-HLN,133,2.3267,0.0215042,True,0.0163599,0.559109,12,0.8489896924075011,True,comparable,comparable,0.9213225788672301,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,1,Z-DAMP,seasonal_naive,DM-HLN,133,4.55451,1.1805e-05,True,0.000312886,0.000448591,12,0.8218661378946451,True,short of (b): coverage clause failed under this reading,beats,0.7834511282942144,"{0.01: 'beats', 0.05: 'short of (b): coverage clause failed under this reading', 0.1: 'short of (b): coverage clause failed under this reading', 'kupiec 0.05': 'beats'}"
+latest-rolling,4,Z-DIR,no_change,CW,130,2.65837,0.00392601,True,0.00549683,0.121706,12,1.3413497101309033,False,does not beat,does not beat,0.8022415247176259,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,4,Z-DIR,ar_bic,DM-HLN,130,0.438579,0.6617,True,0.631829,1.0,12,0.8380419021243747,True,comparable,comparable,0.9781897474168891,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,4,Z-DIR,seasonal_naive,DM-HLN,130,-0.565831,0.572492,False,0.528699,1.0,12,0.7935969597706979,True,does not beat,does not beat,1.0571750298607356,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,4,Z-DAMP,no_change,CW,130,2.71435,0.00332027,True,0.00447807,0.106248,12,1.4163688916594994,False,does not beat,does not beat,0.7398931252429934,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,4,Z-DAMP,ar_bic,DM-HLN,130,1.08881,0.278269,True,0.275536,1.0,12,0.8849120189247897,True,comparable,comparable,0.9021670494452217,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,4,Z-DAMP,seasonal_naive,DM-HLN,130,0.30065,0.764165,True,0.741115,1.0,12,0.8379813540385952,True,comparable,comparable,0.9750137741222423,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,8,Z-DIR,no_change,CW,126,1.68234,0.0462518,True,0.0203254,1.0,12,2.1480480247835696,False,does not beat,does not beat,0.9655962690205966,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,8,Z-DIR,ar_bic,DM-HLN,126,-0.467191,0.641177,False,0.599349,1.0,12,1.207921215087572,False,does not beat,does not beat,1.0220504787346534,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,8,Z-DIR,seasonal_naive,DM-HLN,126,0.448917,0.654269,True,0.604229,1.0,12,0.7429544865357767,True,comparable,comparable,0.9088388100649295,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,8,Z-DAMP,no_change,CW,126,2.17982,0.0146353,True,0.00528592,0.40979,12,1.309414550558721,False,does not beat,does not beat,0.8142442450614155,"{0.01: 'does not beat', 0.05: 'does not beat', 0.1: 'does not beat', 'kupiec 0.05': 'does not beat'}"
+latest-rolling,8,Z-DAMP,ar_bic,DM-HLN,126,1.21272,0.227522,True,0.162758,1.0,12,0.7363287955927341,True,comparable,comparable,0.8618495609102285,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"
+latest-rolling,8,Z-DAMP,seasonal_naive,DM-HLN,126,1.52306,0.130269,True,0.0888005,1.0,12,0.4528927676888645,True,comparable,comparable,0.766383212659295,"{0.01: 'comparable', 0.05: 'comparable', 0.1: 'comparable', 'kupiec 0.05': 'comparable'}"

@@ -181,6 +181,17 @@ def check_c1b_hold(nh: list[dict], c1b: dict, c1: dict) -> None:
         assert abs(c1row["rmse_pp"] - c1b["holdout"]["rmse_pp"][k]["bridge_c1"]) < 1e-12, k
 
 
+def check_holdout_table(hf: list[dict], hold: dict) -> None:
+    """The second opening's per-forecast table (D1) reproduces the committed holdout RMSEs (sign and units check)."""
+    assert len(hf) == 72
+    for sc in hold["c2"]["scores_holdout"]:
+        rows = [r for r in hf if r["design"] == sc["design"] and r["h"] == str(sc["h"]) and r[sc["model"]] != ""]
+        if sc["comparison"] == "Z+C1 holdout":
+            rows = [r for r in rows if r["ZC1-DIR"] != ""]
+        e = [100 * (float(r[sc["model"]]) - float(r["actual"])) for r in rows]
+        assert len(e) == sc["n"] and abs(rmse(e) - sc["rmse_pp"]) < 1e-9, (sc, len(e))
+
+
 def check_verdicts(verdicts: list[dict], tests: list[dict]) -> None:
     key = {(t["design"], t["h"], t["candidate"], t["benchmark"]): t for t in tests}
     assert len(key) == len(verdicts) == 42, (len(key), len(verdicts))
@@ -190,11 +201,18 @@ def check_verdicts(verdicts: list[dict], tests: list[dict]) -> None:
 
 
 # ----------------------------------------------------------------------------------------------- sections
-RULE_NOTE = ("The verdicts apply rule (a) as recorded in the protocol. The coordinator has since found that Eleonora "
-             "chose rule (b), which adds a 0.95 relative-loss bar in both samples and 80% coverage not rejected on "
-             "development. The protocol text is a transcription error, and card c3-rule asks her how to proceed. "
-             "Until she answers, every \"beats\", \"comparable\" and \"does not beat\" here is provisional and "
-             "has been left as computed.")
+RULE_NOTE = ("The verdicts apply the decision rule as corrected by `docs/decisions/scoring-protocol-erratum-2026-11-05.md`: "
+             "rule (b), which Eleonora chose at the freeze and confirmed on card c3-rule. Under (b) a model \"beats\" a "
+             "benchmark when three things hold: its development RMSE is lower and significant after Holm, and its "
+             "holdout RMSE is lower (rule (a)); its RMSE ratio is 0.95 or below in both samples; and its 80% coverage "
+             "is not rejected on development data. "
+             "The protocol sets no test level for \"not rejected\" and says nothing about models without intervals. "
+             "This report reads them as p below 0.05 on either test (Kupiec or Christoffersen, 80% level, h = 1) and as "
+             "\"undetermined\". Both are readings, not rules; they are open on Eleonora's docket as cards c3-b-level "
+             "and c3-b-nointv, and no verdict is final until she answers. Section 2 shows what the other readings "
+             "change, including Kupiec only, since Christoffersen tests independence rather than coverage.")
+ALPHA = 0.05            # reading of "not rejected" (card c3-b-level)
+ALPHAS = (0.01, 0.05, 0.10, "kupiec 0.05")   # last: reading (iv) on card c3-b-level, Kupiec only at 5%
 
 
 def banner(d: Doc) -> None:
@@ -330,6 +348,11 @@ def revision_counts(fr: list[dict], cal: list[dict]) -> tuple[int, int, int]:
     return min(hold), max(hold), min(dev)
 
 
+def beats_range(vb: list[dict]) -> str:
+    n = [sum(v["verdict_by_alpha"][a] == "beats" for v in vb) for a in ALPHAS]
+    return f"{min(n)} to {max(n)}" if min(n) != max(n) else str(min(n))
+
+
 def headline(d: Doc, verdicts: list[dict], c1b: dict, fc: list[dict], hold: dict, c1v: list[dict],
              sc1: list[dict], scores2: list[dict], revc: tuple[int, int, int]) -> None:
     nc = [v for v in verdicts if v["benchmark"] == "no_change"]
@@ -347,8 +370,9 @@ def headline(d: Doc, verdicts: list[dict], c1b: dict, fc: list[dict], hold: dict
     crps = {(s["model"], s["h"]): s["crps_pp"] for s in sh}
     crps_lower = all(crps[(m, h)] < crps[("no_change", h)] for m in ("Z-DIR", "Z-DAMP") for h in (1, 4, 8))
     c1_beats = [v for v in c1v if v["verdict"] == "beats"]
-    others = [v for v in c1v if c1_beats and v["candidate"] == c1_beats[0]["candidate"]
-              and v["benchmark"] == c1_beats[0]["benchmark"] and v not in c1_beats]
+    focus = c1_beats or [v for v in c1v if v["verdict"].startswith("undetermined")]
+    others = [v for v in c1v if focus and v["candidate"] == focus[0]["candidate"]
+              and v["benchmark"] == focus[0]["benchmark"] and v not in focus]
     d.text("- **C2 forecasts.** On point-forecast error (RMSE), no frozen candidate beats the no-change forecast or "
            "the AR benchmark at any horizon in either window design. In development, the Z candidates' RMSE is below "
            "no-change's at every horizon. In the holdout it is above at every horizon and in both designs (all ratios "
@@ -356,27 +380,36 @@ def headline(d: Doc, verdicts: list[dict], c1b: dict, fc: list[dict], hold: dict
            "from one three-year period and carries no test, and no explanation for the flip has been tested. "
            + ("On CRPS, a score of the whole forecast distribution, `Z-DIR` and `Z-DAMP` are below no-change in the "
               "holdout at every horizon (section 2), so the picture depends on the loss. " if crps_lower else "")
-           + f"The only \"beats\" verdicts ({len(beats)}) are against the seasonal naive at h = 1.",
+           + "Under rule (b) (erratum) every possible \"beats\" is against the seasonal naive at h = 1. How many there "
+           f"are depends on the open reading of the coverage clause (card c3-b-level): {beats_range(verdicts)} across "
+           f"the readings in section 2, {len(beats)} under the interim reading. No verdict is final.",
            f"- **Holdout targets are barely revised.** All samples are scored on the 2026-09-11 vintage. A holdout "
            f"target has had {revc[0]} to {revc[1]} later Z.1 releases since its first release; development targets "
            f"from 2016 on have had at least {revc[2]}. Development errors therefore include more revision than "
            "holdout errors, which affects any development-versus-holdout comparison (skeptic mkt-s45).",
            "- **C1 nowcast.** Under the same rule, " + (
-               "no C1 model beats no-change or AR(1) at any instant k" if not c1_beats else
+               ("under the interim readings no C1 comparison is a \"beats\"" + (
+                   "; " + ", ".join(f"{v['candidate']} vs {v['benchmark']} at k = {v['k']}" for v in c1v
+                                    if v["verdict"].startswith("undetermined"))
+                   + " meets every loss condition of rule (b) and is \"undetermined\", not a failure: C1 issues no "
+                   "intervals for the coverage clause (card c3-b-nointv)" if any(v["verdict"].startswith("undetermined")
+                                                                                 for v in c1v) else ""))
+               if not c1_beats else
                "one C1 comparison beats its benchmark: " + ", ".join(
                    f"{v['candidate']} vs {v['benchmark']} at k = {v['k']}" for v in c1_beats)) + ". "
            + ("At the other instants the same comparison has holdout ratios above one (section 2), and the three "
               "instants share the same 12 target quarters, so they are not independent. " if others and all(
                v["holdout_ratio"] > 1 for v in others) else "")
-           + "This report computed the verdict by applying rule (a) to C1's committed tests and holdout scores; no "
+           + "This report computed the verdicts by applying rule (b) to C1's committed tests and holdout scores; no "
            "frozen C1 code issues verdicts. " + c1_reg_note(hold, sc1),
            f"- **C1b.** Its verdict under the decision rules of `docs/decisions/c1b-prereg.md` is "
            f"\"{c1b['verdict_rule']}\". It rests on development tests significant after Holm (section 2) and on a "
            "lower pooled holdout RMSE over 35 instants in 12 target quarters, a comparison without a test.")
     fail_counts(d, fc)
-    d.text("- **Gaps.** C2's holdout per-forecast errors were not saved by the one run, so its ten largest holdout "
-           "errors cannot be listed (card c3-errors). The regime windows fall in development only. Cells with fewer "
-           "than ten forecasts are marked ‡. The unmarked holdout cells, with 11 or 12 forecasts, are also small.", "")
+    d.text("- **Holdout openings.** C2's individual holdout forecasts come from a second, separately gated opening "
+           "(deviation D1, Eleonora's c3-errors (b)). It reproduced the first run's scores exactly and wrote only the "
+           "per-forecast table (section 3). The regime windows fall in development only. Cells with fewer than ten "
+           "forecasts are marked ‡. The unmarked holdout cells, with 11 or 12 forecasts, are also small.", "")
 
 
 def registry(d: Doc, scores2: list[dict], placebo_old: dict, placebo: dict, sc1: list[dict], sc1_old: list[dict],
@@ -475,9 +508,9 @@ def holdout_count_note(hold: dict) -> str:
             "overlapping stretches of quarters, so their errors are not independent. The protocol's option text (holdout choice (b)) says \"origins 2023Q2 "
             "onward give 12, 9 and 5 holdout forecasts at h = 1, 4, 8\", which counts by origin. The two readings "
             "differ at h = 4 and 8, and this was not declared before the run. Every h = 4 and 8 holdout number in this "
-            "report uses the by-target count. Found by quant-reviewer (mkt-q32); it is on Eleonora's docket as card "
-            "c3-hcount. Because per-forecast holdout errors were not saved, the "
-            "origin-based subset cannot be scored without reopening the holdout.")
+            "report uses the by-target count, which Eleonora confirmed as the definition (card c3-hcount (b), deviation D2 "
+            "in `docs/decisions/scoring-protocol-deviations-2026-11-05.md`). Found by quant-reviewer (mkt-q32). The "
+            "origin-based subset is reported below, from the second opening's per-forecast table.")
 
 
 def c2_holdout(d: Doc, hold: dict) -> list[dict]:
@@ -523,6 +556,100 @@ def c2_holdout(d: Doc, hold: dict) -> list[dict]:
     return sh
 
 
+def rel_on_rows(rows: list[dict], c: str, b: str) -> tuple[float, int]:
+    rows = [r for r in rows if r[c] != "" and r[b] != "" and r["actual"] != ""]
+    ec = [float(r[c]) - float(r["actual"]) for r in rows]
+    eb = [float(r[b]) - float(r["actual"]) for r in rows]
+    return rmse(ec) / rmse(eb), len(rows)
+
+
+def label_b(lower_dev: bool, hold_rel: float, p_holm: float, dev_rel: float, cov: str) -> str:
+    """Rule (b) (erratum 2026-11-05) with the protocol's other wording, as holdout_run.py orders it."""
+    if not lower_dev or not hold_rel < 1:
+        return "does not beat"
+    if p_holm < 0.05 and dev_rel <= 0.95 and hold_rel <= 0.95:
+        return {"not rejected": "beats", "rejected": "short of (b): coverage clause failed under this reading"}.get(
+            cov, f"undetermined ({cov})")
+    if p_holm < 0.05:
+        return "short of (b): ratio above 0.95"       # wider than the protocol's "comparable" wording (mkt-q42)
+    return "comparable"
+
+
+def cov_status(cov_dev: list[dict], design: str, h: int, model: str, alpha: float) -> str:
+    if int(h) != 1:
+        return "no coverage test at h > 1"
+    r = [x for x in cov_dev if x["design"] == design and x["h"] == "1" and x["model"] == model and x["level"] == "0.8"]
+    if not r:
+        return "no intervals"
+    ps = [fl(r[0]["kupiec_p"]), fl(r[0]["christoffersen_p"])]
+    if alpha == "kupiec 0.05":
+        ps, alpha = ps[:1], 0.05
+    if any(p is None for p in ps):
+        return "coverage test missing"
+    return "rejected" if min(ps) < alpha else "not rejected"
+
+
+def verdicts_b(verdicts: list[dict], fc: list[dict], cov_dev: list[dict]) -> list[dict]:
+    """C2 verdicts under rule (b), recomputed from committed files (holdout_results.json, forecasts_dev.csv,
+    coverage_dev.csv). The (a) verdict of the frozen run is kept as verdict_a (superseded)."""
+    out = []
+    for v in verdicts:
+        rows = [r for r in fc if r["design"] == v["design"] and r["h"] == str(v["h"])]
+        dev_rel, n = rel_on_rows(rows, v["candidate"], v["benchmark"])
+        assert n == v["n"], (v, n)
+        by = {a: label_b(v["candidate_lower_rmse"], v["holdout_rel_rmse"], v["p_holm"], dev_rel,
+                         cov_status(cov_dev, v["design"], v["h"], v["candidate"], a)) for a in ALPHAS}
+        out.append({**v, "verdict_a": v["verdict"], "dev_rel_rmse": dev_rel, "verdict": by[ALPHA],
+                    "verdict_by_alpha": by})
+    return out
+
+
+def alpha_note(vb: list[dict], what: str) -> str:
+    parts = []
+    for a in ALPHAS:
+        bt = [f"{v.get('design', 'RT').replace('latest-', '')} h = {v.get('h', v.get('k'))} {v['candidate']} vs "
+              f"{v['benchmark']}" for v in vb if v["verdict_by_alpha"][a] == "beats"]
+        lab = "Kupiec only at p < 0.05" if isinstance(a, str) else f"at p < {a:g}"
+        parts.append(f"{lab}: {len(bt)} \"beats\"" + (f" ({'; '.join(bt)})" if bt else ""))
+    return f"{what} under the other readings of \"not rejected\": " + ", ".join(parts) + "."
+
+
+def origin_subset(d: Doc, hf: list[dict]) -> None:
+    """Deviation D2: the origin-based subset (origins T >= 2023Q2), from the second opening's table (D1)."""
+    d.text("### C2 holdout, origin-based subset (deviation D2)", "",
+           "The same holdout restricted to origins from 2023Q2 on, as the protocol's option text counted it: 12, 9 and "
+           "5 forecasts at h = 1, 4 and 8. Computed from `research/c2_forecast/holdout_forecasts.csv` (second "
+           "opening, D1). Descriptive. Cells: RMSE relative to no-change on the same forecasts; no-change RMSE in pp. "
+           "At h = 8 the subset has five overlapping forecasts and a very small no-change RMSE, so its ratios are "
+           "unstable and say little (mkt-q43).", "",
+           "| design | h | n | no-change RMSE | Z-DIR | Z-DAMP | ZC1-DIR | drift | AR (BIC) | seasonal naive |",
+           "|---|---|---|---|---|---|---|---|---|---|")
+    out = []
+    for des in ("latest-expanding", "latest-rolling"):
+        dn = des.replace("latest-", "")
+        for h in (1, 4, 8):
+            rows = [r for r in hf if r["design"] == des and r["h"] == str(h) and r["T"] >= "2023Q2"]
+            assert len(rows) == {1: 12, 4: 9, 8: 5}[h], (des, h, len(rows))
+            src = f"{C2D}/holdout_forecasts.csv [{des},h={h},T>=2023Q2]"
+            ncr = rmse([100 * float(r["actual"]) for r in rows])
+            cells = [cell(f"orig_{dn}_h{h}_nc", f"C2 holdout origin subset, {dn}, h={h}: no-change RMSE {{d}}.", ncr,
+                          "pp", "2023Q3-2026Q2", src + " RMSE(100*(no_change - actual))", f"n = {len(rows)}; D2 subset.",
+                          suffix=" pp")]
+            for m in ("Z-DIR", "Z-DAMP", "ZC1-DIR", "drift", "ar_bic", "seasonal_naive"):
+                if m == "ZC1-DIR" and dn == "rolling":
+                    cells.append(("—", None))
+                    continue
+                rel, n = rel_on_rows(rows, m, "no_change")
+                assert n == len(rows)
+                cells.append(cell(f"orig_{dn}_h{h}_{m}", f"C2 holdout origin subset, {dn}, h={h}: {m} RMSE relative "
+                                  "to no-change {d}.", rel, "ratio", "2023Q3-2026Q2", src + f" RMSE({m}) / RMSE(no_change)",
+                                  f"n = {n}; D2 subset; descriptive."))
+                out.append({"design": des, "h": h, "n": n, "model": m, "rel_rmse_vs_no_change": rel})
+            table_row(d, [dn, str(h), nmark(len(rows))], cells)
+    d.text("")
+    write_table("c2_holdout_origin_subset.csv", out)
+
+
 def verdict_table(d: Doc, verdicts: list[dict]) -> None:
     b8 = [v["posthoc_p_bartlett8"] for v in verdicts if v["h"] == 1 and v["benchmark"] == "no_change"
           and v["candidate"] in ("Z-DIR", "Z-DAMP")]
@@ -537,16 +664,37 @@ def verdict_table(d: Doc, verdicts: list[dict]) -> None:
            "for nested pairs (one-sided), DM-HLN otherwise (two-sided), HAC lag h − 1. \"Dev lower\" says whether "
            "the candidate's development RMSE is below the benchmark's; a two-sided p does not show that direction. "
            "The holdout ratio is descriptive: the holdout carries no test.", "",
-           "Verdict labels, as `holdout_run.py` applies the protocol's wording:",
-           "- **beats**: lower development RMSE, significant after Holm, and a lower holdout RMSE;",
+           "Verdict labels (rule (b), with the protocol's other wording in the order `holdout_run.py` applies it):",
            "- **does not beat**: the benchmark's RMSE is lower in development or in the holdout;",
-           "- **comparable**: the rest, that is lower in both samples but not significant after Holm.", "",
+           "- **beats**: rule (b) in full (see below);",
+           "- **comparable**: lower in both samples but not significant after Holm (the protocol's wording);",
+           "- **short of (b)**: lower in both samples and significant, but the ratio is above 0.95 in a sample, or the "
+           "coverage clause fails under the reading in force. The protocol has no word for this case;",
+           "- **undetermined**: every loss condition of (b) is met, but the coverage clause cannot be checked.", "",
            RULE_NOTE, "")
+    sup = [v for v in verdicts if v["verdict_a"] == "beats"]
+    d.text("Superseded: under rule (a) as recorded at the freeze, the frozen run's verdicts gave "
+           f"{len(sup)} \"beats\" (" + "; ".join(f"{v['design'].replace('latest-', '')} h = {v['h']} {v['candidate']} vs "
+                                                 f"{v['benchmark']}" for v in sup) + "). "
+           + alpha_note(verdicts, "C2 verdicts"), "")
+    th = [num(f"b_reading_p{str(a).replace('.', '')}", f"Reading of rule (b)'s coverage clause: rejected if p < {a:g} "
+              "(card c3-b-level).", f"p < {a:g}", a, "p", "n/a", "research/c3_accuracy/make_report.py ALPHAS",
+              "A reading of the protocol, not a result.") for a in ALPHAS if not isinstance(a, str)]
+    line = d.lines.pop(-2)
+    d.lines.pop()
+    d.add(line, th)
+    d.text("")
+    d.text("Under the interim reading (i), the coverage clause fails if either 80% test at h = 1 has p below 0.05. "
+           "The Christoffersen test in `forecast.py` tests whether misses come independently, not whether coverage "
+           "is right. So a candidate with correct coverage can fail on independence alone; reading (iv) on card "
+           "c3-b-level avoids that. Failing on either of two tests at 0.05 is also not a test at the 5% level. A "
+           "joint conditional-coverage test was not in the protocol and is not computed here (quant-reviewer "
+           "mkt-q40).", "")
     d.add("Bandwidth sensitivity: with a lag-8 Bartlett variance (`posthoc_p_bartlett8`, in `tables/c2_verdicts.csv`) "
           f"the h = 1 p-values of the Z candidates against no-change are {lo8[0]} to {hi8[0]}, against far smaller "
           "values at the protocol's lag. Their development significance is not robust to that choice.",
           [lo8[1], hi8[1]])
-    d.text("", "| design | h | candidate | benchmark | test | dev n | dev lower | raw p | Holm p | holdout ratio | verdict |",
+    d.text("", "| design | h | candidate | benchmark | test | dev n | dev ratio | raw p | Holm p | holdout ratio | verdict (b) |",
            "|---|---|---|---|---|---|---|---|---|---|---|")
     comp = f"{C2D}/holdout_run.py -> {HOLD} c2.verdicts"
     for v in verdicts:
@@ -559,8 +707,11 @@ def verdict_table(d: Doc, verdicts: list[dict]) -> None:
                       f"{comp}[{base}].p_holm", "Holm over 42 tests.", fmt=fp),
                  cell(f"t_{base}_hold", lab + ": holdout RMSE ratio {d}.", v.get("holdout_rel_rmse"), "ratio",
                       "2023Q3-2026Q2", f"{comp}[{base}].holdout_rel_rmse", f"n = {v['n_holdout']}; descriptive.")]
-        table_row(d, [dn, str(v["h"]), v["candidate"], v["benchmark"], v["test"], str(v["n"]),
-                      "yes" if v["candidate_lower_rmse"] else "no"], cells[:3] + [("**" + v["verdict"] + "**", None)])
+        dr = cell(f"t_{base}_devrel", lab + ": development RMSE ratio {d} (rule (b) margin).", v["dev_rel_rmse"],
+                  "ratio", "1990Q1-2023Q2", f"{C2D}/forecasts_dev.csv [{v['design']},h={v['h']}] RMSE({v['candidate']}) / "
+                  f"RMSE({v['benchmark']}) on the test's rows", f"n = {v['n']}.")
+        table_row(d, [dn, str(v["h"]), v["candidate"], v["benchmark"], v["test"], str(v["n"])],
+                  [dr] + cells[:3] + [("**" + v["verdict"] + "**", None)])
     d.text("")
 
 
@@ -667,9 +818,10 @@ def nowcast_holdout(d: Doc, hold: dict, c1b: dict) -> None:
     d.text("")
 
 
-def c1_verdicts(hold: dict, t1: list[dict]) -> list[dict]:
-    """C1 under rule (a), as C1's EVALUATION.md says ("Beats" follows C2's rule): the code mirrors holdout_run.py's
-    wording logic. Holdout losses come from the committed holdout scores (same instants for every model at each k)."""
+def c1_verdicts(hold: dict, t1: list[dict], nc1: list[dict]) -> list[dict]:
+    """C1 under rule (b) (C1's EVALUATION.md: wording follows C2's decided rule; erratum 2026-11-05). Development ratio on
+    the test's own rows; holdout losses from the committed holdout scores (same instants for every model at each k).
+    C1 issues no intervals, so the coverage clause is undetermined (card c3-b-nointv)."""
     out = []
     for t in t1:
         if t["sample"] != "RT" or t["primary_family"] != "True":
@@ -677,27 +829,43 @@ def c1_verdicts(hold: dict, t1: list[dict]) -> list[dict]:
         g = {s["model"]: s for s in hold["c1"]["scores"] if str(s["k"]) == t["k"]}
         assert g[t["candidate"]]["n"] == g[t["benchmark"]]["n"]
         ratio = g[t["candidate"]]["rmse_pp"] / g[t["benchmark"]]["rmse_pp"]
+        rows = [r for r in nc1 if r["sample"] == "RT" and r["k"] == t["k"]]
+        dev_rel, n = rel_on_rows(rows, t["candidate"], t["benchmark"])
+        assert n == int(t["n"]), (t, n)
+        lab = label_b(t["candidate_lower_rmse"] == "True", ratio, float(t["p_holm"]), dev_rel, "no intervals")
         dev_ok = float(t["p_holm"]) < 0.05 and t["candidate_lower_rmse"] == "True"
-        hold_lower = ratio < 1
-        v = "beats" if dev_ok and hold_lower else (
-            "does not beat" if t["candidate_lower_rmse"] != "True" or not hold_lower else "comparable")
+        va = "beats" if dev_ok and ratio < 1 else (
+            "does not beat" if t["candidate_lower_rmse"] != "True" or not ratio < 1 else "comparable")
         out.append({"k": t["k"], "candidate": t["candidate"], "benchmark": t["benchmark"], "p_holm": float(t["p_holm"]),
-                    "n_holdout": g[t["candidate"]]["n"], "holdout_ratio": ratio, "verdict": v})
+                    "n_holdout": g[t["candidate"]]["n"], "holdout_ratio": ratio, "dev_rel": dev_rel, "n_dev": n,
+                    "verdict": lab, "verdict_a": va, "verdict_by_alpha": {a: lab for a in ALPHAS}})
     return out
 
 
 def c1_verdict_table(d: Doc, c1v: list[dict]) -> None:
-    d.text("### C1 verdicts under rule (a)", "",
-           "C1's EVALUATION.md says its wording follows C2's rule (a); the labels are as defined for C2 above. "
-           "Development Holm p is in the table above. Holdout ratio = candidate RMSE / benchmark RMSE on the same "
-           "holdout instants (descriptive). This report computes these verdicts; no frozen code does. " + RULE_NOTE, "",
-           "| k | candidate | benchmark | holdout n | holdout ratio | verdict |", "|---|---|---|---|---|---|")
+    d.text("### C1 verdicts under rule (b)", "",
+           "C1's EVALUATION.md says its wording follows C2's decided rule, now (b) by the erratum. The labels are as "
+           "defined for C2 above. Development Holm p is in the table above. The ratios are candidate RMSE over "
+           "benchmark RMSE on the same development targets and on the same holdout instants; the holdout ratio is "
+           "descriptive. This report computes these verdicts; no frozen code does. C1 issues no intervals, so where "
+           "every loss condition is met the verdict is \"undetermined\" (card c3-b-nointv).", "")
+    sup = [v for v in c1v if v["verdict_a"] == "beats"]
+    d.text("Superseded: under rule (a), this report's earlier draft gave " + str(len(sup)) + " \"beats\""
+           + (" (" + "; ".join(f"k = {v['k']} {v['candidate']} vs {v['benchmark']}" for v in sup) + ")" if sup else "")
+           + ".", "", "| k | candidate | benchmark | dev n | dev ratio | holdout n | holdout ratio | verdict (b) |",
+           "|---|---|---|---|---|---|---|---|")
     for v in c1v:
-        c = cell(f"c1v_k{v['k']}_{v['candidate']}_{v['benchmark']}", f"C1 holdout, k={v['k']}: {v['candidate']} RMSE "
-                 f"relative to {v['benchmark']} {{d}} (verdict {v['verdict']}).", v["holdout_ratio"], "ratio",
-                 "2023Q3-2026Q2", f"{HOLD} c1.scores[k={v['k']}] rmse_pp({v['candidate']}) / rmse_pp({v['benchmark']})",
+        base = f"c1v_k{v['k']}_{v['candidate']}_{v['benchmark']}"
+        c = cell(base, f"C1 holdout, k={v['k']}: {v['candidate']} RMSE relative to {v['benchmark']} {{d}}.",
+                 v["holdout_ratio"], "ratio", "2023Q3-2026Q2",
+                 f"{HOLD} c1.scores[k={v['k']}] rmse_pp({v['candidate']}) / rmse_pp({v['benchmark']})",
                  "Real time; descriptive.", SER_C1)
-        table_row(d, [v["k"], v["candidate"], v["benchmark"], str(v["n_holdout"])], [c, ("**" + v["verdict"] + "**", None)])
+        dv = cell(base + "_dev", f"C1 development, k={v['k']}: {v['candidate']} RMSE relative to {v['benchmark']} {{d}} "
+                  "on the test's targets.", v["dev_rel"], "ratio", "2016Q3-2023Q2",
+                  f"{C1D}/nowcasts_dev.csv [RT,k={v['k']}] RMSE({v['candidate']}) / RMSE({v['benchmark']})",
+                  f"n = {v['n_dev']}.", SER_C1)
+        table_row(d, [v["k"], v["candidate"], v["benchmark"], str(v["n_dev"])],
+                  [dv, (str(v["n_holdout"]), None), c, ("**" + v["verdict"] + "**", None)])
     d.text("")
 
 
@@ -780,36 +948,38 @@ def dev_tests_c1(d: Doc, t1: list[dict], t1b: list[dict]) -> None:
     d.text("")
 
 
-def largest_errors(d: Doc, fc: list[dict], nc1: list[dict], nh: list[dict]) -> None:
+def largest_errors(d: Doc, fc: list[dict], nc1: list[dict], nh: list[dict], hf: list[dict]) -> None:
     d.text("## 3. Failure cases: the ten largest errors per horizon", "",
            "Error = forecast − outcome, in pp of the share; ranked by size. Negative: the forecast was below the "
            "outcome.", "",
-           "**C2 holdout: not available.** The one holdout run saved scores, coverage and verdicts but not the "
-           "individual forecasts, and the holdout may not be reopened. Card c3-errors asks Eleonora how to treat "
-           "this. C2's errors below are from development (latest vintage, expanding design). The C1 and C1b holdout "
+           "C2's holdout errors come from the second opening's per-forecast table (deviation D1). With 12 forecasts "
+           "per horizon, its \"ten largest\" are nearly the whole holdout. The C1 and C1b holdout "
            "has only 12 instants at k = 1 and 2 and 11 at k = 3, so its \"ten largest\" lists are nearly the whole "
            "sample, not a selection of failures. `bridge` (C1's table) and `bridge_c1` (C1b's table) are the same "
            "C1 accounting-bridge nowcast.", "")
     out = []
-    for h in (1, 4, 8):
+    for smp, src_rows, sname, fname, tagid in (
+            ("development", fc, "C2 development", "forecasts_dev.csv", ""),
+            ("holdout", hf, "C2 holdout (second opening, D1)", "holdout_forecasts.csv", "hold")):
+      for h in (1, 4, 8):
         cols = {}
         for m in ("Z-DIR", "Z-DAMP"):
-            rows = [r for r in fc if r["design"] == "latest-expanding" and r["h"] == str(h) and r[m] != ""]
+            rows = [r for r in src_rows if r["design"] == "latest-expanding" and r["h"] == str(h) and r[m] != ""]
             e = sorted(((100 * (float(r[m]) - float(r["actual"])), r["T"]) for r in rows), key=lambda x: -abs(x[0]))[:10]
             cols[m] = e
-            out += [{"task": "C2", "sample": "development latest-expanding", "horizon": h, "model": m, "rank": i + 1,
+            out += [{"task": "C2", "sample": f"{smp} latest-expanding", "horizon": h, "model": m, "rank": i + 1,
                      "origin": T, "target": qadd(T, h), "error_pp": x} for i, (x, T) in enumerate(e)]
-        d.text(f"C2, h = {h} (origin T, target T+{h}):", "", "| rank | Z-DIR target | Z-DIR error | Z-DAMP target | Z-DAMP error |",
-               "|---|---|---|---|---|")
+        d.text(f"{sname}, h = {h} (origin T, target T+{h}):", "",
+               "| rank | Z-DIR target | Z-DIR error | Z-DAMP target | Z-DAMP error |", "|---|---|---|---|---|")
         for i in range(10):
             cells = []
             lab = [str(i + 1)]
             for m in ("Z-DIR", "Z-DAMP"):
                 x, T = cols[m][i]
-                c = cell(f"err_c2_h{h}_{m}_r{i+1}", f"C2 development, expanding, h={h}: {m} error ranked {i+1}, target "
+                c = cell(f"err_c2{tagid}_h{h}_{m}_r{i+1}", f"{sname}, expanding, h={h}: {m} error ranked {i+1}, target "
                          f"{qadd(T, h)}, {{d}}.", x, "pp", qadd(T, h),
-                         f"{C2D}/forecasts_dev.csv [latest-expanding,h={h},T={T}] 100*({m} - actual)",
-                         "Development, latest vintage.", suffix=" pp")
+                         f"{C2D}/{fname} [latest-expanding,h={h},T={T}] 100*({m} - actual)",
+                         f"{smp.capitalize()}, latest vintage.", suffix=" pp")
                 cells.append((qadd(T, h), None))
                 cells.append(c)
             table_row(d, lab, cells)
@@ -1028,24 +1198,35 @@ def indicators_and_deviations(d: Doc, scores2: list[dict], hold: dict) -> None:
            "decision): the first joint holdout run (approval 77460b4) stopped on a target quarter no Z.1 had published, "
            "before writing or printing anything. Such instants are now \"no target\"; the freeze was redone, and the "
            "one run used the new approval 432fed0.",
-           "- **2026-11-05, holdout counting** (found in this report's review, mkt-q32; not declared before the run): the "
-           "run counted holdout forecasts by target quarter (12 at every h), while the protocol's option text counts "
-           "by origin (12, 9 and 5). Sent to the coordinator as a proposed card.",
-           "- **2026-11-05, this report** (not yet a recorded deviation): C2's holdout per-forecast errors were not saved, "
-           "so item \"ten largest errors per horizon\" is met for development and for the C1/C1b holdout only (card "
-           "c3-errors). The regime split is shown both by target and by origin quarter, because the protocol does not "
-           "say which.", "",
+           "- **2026-11-05, erratum: the decision rule is (b)** (`docs/decisions/scoring-protocol-erratum-2026-11-05.md`, "
+           "Eleonora's c3-rule (b)): the freeze recorded (a) by a coordinator transcription error. The erratum also "
+           "corrects SPECS.md's Holm split to 28 + 14. Verdicts here are recomputed under (b), with two readings open "
+           "on cards c3-b-level and c3-b-nointv.",
+           "- **2026-11-05, D1: second holdout opening** (`docs/decisions/scoring-protocol-deviations-2026-11-05.md`, "
+           "Eleonora's c3-errors (b)): one separately gated run of the frozen C2 holdout step "
+           "(`holdout_forecasts_run.py`, approval ccc1fc6), committed after the deviation. It reproduced the committed "
+           "holdout scores exactly and wrote only the per-forecast table (8d60d86). Its once-only guard records successful "
+           "runs only. One earlier invocation, refused by the clean-tree gate before any data was read, is recorded "
+           "in that commit's message. The two checks compare scores per design and horizon, not single rows. The "
+           "quant-reviewer's read-only row check found that all 72 outcomes match the 2026-09-11 vintage, and that "
+           "coverage, MAE, interval scores and CRPS reproduce from the table (mkt-q44).",
+           "- **2026-11-05, D2: holdout by target quarter** (same file, Eleonora's c3-hcount (b)): the definition the "
+           "run used (12 at every h) stands; the origin-based subset (12, 9 and 5) is reported in section 2.",
+           "- **2026-11-05, this report:** the regime split is shown both by target and by origin quarter, because the "
+           "protocol does not say which.", "",
            "## Sources", "",
            "`research/c2_forecast/` (`holdout_results.json`, `scores_dev.csv`, `tests_dev.csv`, `coverage_dev.csv`, "
            "`forecasts_dev.csv`, `placebo_dev.json` and its version at 0bc647b), `research/c1_nowcast/` (`scores_dev.csv`, "
            "`tests_dev.csv`, `nowcasts_dev.csv`, and `scores_dev.csv` at 58a93d8), `research/c1b_nowcast/` "
            "(`holdout_results.json`, `nowcasts_holdout.csv`, `scores_dev.csv`, `tests_dev.csv`, `nowcasts_dev.csv`). "
-           "Specifications and rules: `docs/decisions/scoring-protocol.md`, `docs/decisions/c1b-prereg.md`, "
+           "Second holdout opening: `research/c2_forecast/holdout_forecasts.csv` and `holdout_forecasts_run.json`. "
+           "Specifications and rules: `docs/decisions/scoring-protocol.md`, its erratum and deviations of 2026-11-05, `docs/decisions/c1b-prereg.md`, "
            "`research/c2_forecast/SPECS.md`, `research/c1_nowcast/EVALUATION.md`. Real-time check (section 5): "
            "`research/c2_forecast/forecasts_realtime_dev.csv`, `research/c1_nowcast/first_release.csv` and "
            "`z1_calendar.csv`. Reviews: `claims/tracks/markets-review-log.md`. "
            "Full tables written by this script: `tables/c2_holdout_scores.csv`, `tables/c2_coverage.csv`, "
-           "`tables/c2_verdicts.csv`, `tables/largest_errors.csv`, `tables/regimes.csv`.", "")
+           "`tables/c2_verdicts.csv`, `tables/c2_holdout_origin_subset.csv`, `tables/largest_errors.csv`, "
+           "`tables/regimes.csv`.", "")
 
 
 def split_rows(rows: list[dict]) -> tuple[list[dict], list[dict], list[str]]:
@@ -1083,25 +1264,29 @@ def main() -> int:
     sc1b, t1b = read_csv(f"{C1BD}/scores_dev.csv"), read_csv(f"{C1BD}/tests_dev.csv")
     nc1b, nh = read_csv(f"{C1BD}/nowcasts_dev.csv"), read_csv(f"{C1BD}/nowcasts_holdout.csv")
     verdicts = hold["c2"]["verdicts"]
+    hf = read_csv(f"{C2D}/holdout_forecasts.csv")
     check_c2_dev_errors(fc, scores2)
     check_c1_dev_errors(nc1, sc1)
     check_c1b_hold(nh, c1b, hold["c1"])
     check_verdicts(verdicts, tests2)
+    check_holdout_table(hf, hold)
+    verdicts = verdicts_b(verdicts, fc, cov_dev)
 
     d = Doc()
     banner(d)
-    c1v = c1_verdicts(hold, t1)
+    c1v = c1_verdicts(hold, t1, nc1)
     revc = revision_counts(read_csv(f"{C1D}/first_release.csv"), read_csv(f"{C1D}/z1_calendar.csv"))
     headline(d, verdicts, c1b, fc, hold, c1v, sc1, scores2, revc)
     registry(d, scores2, placebo_old, placebo, sc1, sc1_old, sc1b)
     sh = c2_holdout(d, hold)
+    origin_subset(d, hf)
     verdict_table(d, verdicts)
     coverage(d, hold, cov_dev)
     nowcast_holdout(d, hold, c1b)
     dev_tests_c1(d, t1, t1b)
     c1_verdict_table(d, c1v)
     c1b_bias(d, nc1b, nh, read_csv(f"{C1BD}/bias_dev.csv"))
-    largest_errors(d, fc, nc1, nh)
+    largest_errors(d, fc, nc1, nh, hf)
     regimes(d, fc, nc1, nc1b)
     revisions(d, scores2, sc1)
     indicators_and_deviations(d, scores2, hold)

@@ -26,3 +26,14 @@ def test_values():
     assert sp.pct("0.0") == 0.0 and sp.pct("2.45%/1.250%/–") is None
     with pytest.raises(ValueError):
         sp.pct("abc")
+
+
+def test_detach_points():
+    ce = {"AH": "4.50%", "M1A": "3.00%", "M1B": "2.00%", "M2": "1.25%", "B1": "0.75%", "B2": "0.25%"}
+    out = sp.detach_points(ce)
+    assert out["M1A"] == (pytest.approx(0.045), "AH")
+    assert out["B2"] == (pytest.approx(0.0075), "B1")
+    assert "AH" not in out
+    bad = sp.detach_points({"AH": "3.00%", "M1": "3.50%", "M2": "2.00%"})
+    assert bad["M1"][0] is None and bad["M1"][1].startswith("none: CE out of order")
+    assert bad["M2"] == (pytest.approx(0.035), "M1")
