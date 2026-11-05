@@ -194,7 +194,8 @@ def run(client, tools, call_tool, outdir: Path, models=pilot.MODELS, reps: int =
                             "truncated": loop["stop_reason"] == "tool_use", **s})
             done += 1
             if done == max(1, int(total_loops * CHECKPOINT)):
-                proj = budget.total / done * total_loops
+                # project this run's own spend; spend carried in from other runs is added once, not scaled
+                proj = carried + (budget.total - carried) / done * total_loops
                 log({"checkpoint": done, "of": total_loops, "spent_usd": round(budget.total, 6),
                      "projected_usd": round(proj, 4)})
                 if proj > budget.cap:

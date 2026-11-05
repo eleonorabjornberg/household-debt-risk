@@ -70,6 +70,17 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-05 ~22:50 UTC, same session.
+  - **Main run complete:** `run-2026-11-05b` resumed from loop 80 (approval `74cdbb5`), 720/720 loops, no stop. 1,760 calls, 0 errors, served models as requested. E1 spend after it: $17.904212 ($0.003634 from the stopped run plus $17.900578 for `run-2026-11-05b`; Opus $12.11, Sonnet $5.47, Haiku $0.32).
+  - **Pre-registered analysis** (`analysis.json`; bootstrap; T = R = 70%):
+    - H1 supported for all three: Sonnet 96.1%, Haiku 92.8%, Opus 91.7%.
+    - H3: Opus supported (91.7%), Sonnet null (68.3%), Haiku against (40.0%).
+    - H2: both null after Holm.
+  - **Miss check** (by Claude, so that no miss is a scorer artifact): all 35 answerable misses are genuine.
+    - Opus declined three NY Fed vs Z.1 cross-source questions (q128, q173, q175) six times, saying the sources aren't comparable.
+    - Truncations at 4 turns: q122, q184 and others.
+    - Four answers of "36.2" on q156 (gold 36.216, tolerance 0.01) miss by rounding, under the frozen tolerance.
+  - **Opus baseline stopped falsely** at its 10% checkpoint (projected $181.32), after 24/240 loops and $0.227444 spent. **Bug (mine, caught by the stop itself):** the projection divided the total, including $17.90 carried from other runs, by this run's 24 loops. Correct projection: $2.27 for the baseline, so E1 would total about $20.18. Fixed (carried spend is added once), with a test; the live-spend test now sums the run directories independently. 73 tests pass. Baseline not resumed: waiting for an OK.
 - 2026-11-05 ~22:00 UTC, same session, no spend yet. Her e1-stop2 "recal" and e1-resume (21:40 UTC, PLAN `74cdbb5`; checked). Prereg Deviations D4 (recalibrated stops: Sonnet $0.047, Opus $0.098, Haiku $0.0020) and D5 (resume from loop 80; the first 79 loops ran under the earlier stops; one $31 cap for all E1 spend). The prereg is now pinned in `snapshot_hashes.json`.
   - `run_e1.py --resume`: it checks that the completed loops match the seeded plan, skips them, appends to the logs, keeps the earlier summary as `summary_part1.json`, and logs a resume record.
   - Every `--live` run now carries the spend logged in earlier E1 run directories into the cap and the guard. The baseline therefore runs with `--cap 31` and needs no remainder arithmetic.
