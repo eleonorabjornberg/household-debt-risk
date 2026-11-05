@@ -70,6 +70,20 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-05 ~21:40 UTC, same session. **E1 main run `run-2026-11-05b` STOPPED after 79 of 720 loops; $2.586701 spent.** It ran with her deviations D2 and D3 and approval `32ec93a`.
+  - **Checkpoint:** the 10% checkpoint passed: $1.34 after 72 loops, projected $13.40 against the $31 cap.
+  - **Stop:** then the per-model overrun stop fired on Sonnet, applying from its 25th loop: mean $0.0313 per loop over 27 loops, against a stop of $0.0305 (3× its pilot mean of $0.0102). Opus averaged $0.0656 (stop $0.121) and Haiku $0.00135 (stop $0.0025).
+  - **Calls:** 194, no errors.
+  - **Tokens:** cache creation dominates. Sonnet wrote 296k cache tokens ($0.74 of its $0.85), Opus 277k, Haiku 197k.
+  - **Partial accuracy** (repetition 1 only, first 27 questions in the seeded order, PARTIAL, not an E1 result):
+    - Opus: 18/20 answerable, 5/6 refusals
+    - Sonnet: 20/20 answerable, 4/6 refusals
+    - Haiku: 20/21 answerable, 1/6 refusals
+  - Not rerun, and the Opus baseline was not started (the main run stopped midway). The hypothesis tests were not run on partial data.
+  - **E1 spend so far:** $0.003634 + $2.586701 = $2.590335. Track total with the pilot: $3.1027.
+  - The in-progress snapshot commits (`aff27fd`, `4d92d19`, `423808a`) were made because the stop hook requires a clean tree at every turn end.
+  - Main model, no subagents.
+- 2026-11-05 ~21:30 UTC, same session. Her e1-stoprule (a) and e1-cost (b) (21:15 UTC, PLAN `32ec93a`; checked) are implemented: `Budget.min_loops` = 24 (the overrun stop applies from a model's 25th loop), and the top-level cache is restored in `run_e1.py`. The prereg's Deviations section now has D1 (the scorer % fix, an implementation fix), D2 and D3, and a run-directory note; nothing else in the frozen file changed. 2 new tests (66 in the folder). Next: main run to `run-2026-11-05b`, then the Opus baseline with the remaining cap (31 − 0.003634 − main), then `analyze_e1.py`.
 - 2026-11-05 ~21:10 UTC, same session. **E1 main run started and stopped itself after one loop: $0.003634 spent** (Haiku, q128, 4 calls). Approval: her e1-spend (a), PLAN `4b0fd66`; I checked it, the gate passed for both runs, the key returned 200, and the live prices were unchanged since 2026-11-04.
   - **Why it stopped:** the pre-registered overrun stop checks a model's mean cost per loop after every call. After one loop that mean is a single loop. The first Haiku loop (a two-tool question, 4 turns, about 24k uncached input tokens because the top-level cache is dropped per CHOICE-E1-5 (b)) cost $0.0036, above Haiku's stop at $0.0025 (1.5× the planning figure). Output kept in `run-2026-11-05/` (stopped, 0 loops scored). Not rerun: waiting for her.
   - **Errors caught by Claude** (in the run's transcript):
