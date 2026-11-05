@@ -332,3 +332,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 
 ### 2026-11-05 ~16:45 UTC: coordinator, recommendations on the docket
 - She asked for recommendations on the docket. Round 26c marks one option per card as the coordinator's recommendation (Claude's, not the tracks'), with the reason in the card text: c3-b-level (iv), c3-b-nointv (c), a8-holder (b), b2-sofr-src (a), b2-upb (a), b2-empty (a). These are not decisions: nothing is recorded until she taps. For c3-b-level, the card says (iv) is the most lenient option and that rolling Z-DAMP's independence result should be reported next to it.
+
+### 2026-11-05 ~19:00 UTC: coordinator, her answers to round 26c and review round 14
+- Eleonora answered every open card (18:54–18:55 UTC), with no notes. Recorded in PLAN "Decisions taken", credited to her:
+  - Docket: c3-b-level (iv), c3-b-nointv (c), a8-holder (b), b2-sofr-src (a), b2-upb (a), b2-empty (a). Each is the option the coordinator recommended in round 26c. The decisions are hers.
+  - Review queue: rv-e1-redraft ok, rv-holdout ok (accepted as a draft to rewrite), rv-a8-promo ok.
+- Relayed to the tracks: markets finalizes C3 and writes the B2 2017+ section; analysis applies a8-holder (b); infra runs the E1 freeze sequence.
+- Both card pages republished with nothing open.
