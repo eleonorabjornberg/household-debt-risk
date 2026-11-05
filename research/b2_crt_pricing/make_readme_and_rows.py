@@ -7,6 +7,15 @@ B, M, C, Y = R['baseline'], R['multiple'], R['credit_cost_bp'], R['by_year']
 f1 = lambda x: f"{x:.1f}"; f0 = lambda x: f"{x:.0f}"
 rows_y = "\n".join(f"| {y} | {int(v['n_priced'])} of {int(v['n_deals'])} | {f1(v['upb_weighted_cost_bp'])} | {f1(v['cost_per_tranche_pct'])}% | {f0(100*v['sold_share_of_tranche'])}% | {f0(100*v['priced_share_of_crt_upb'])}% |" for y, v in sorted(Y.items()))
 lo, hi = R['cost_per_tranche_pct_range']
+import pandas as pd
+FR = pd.read_csv('research/b2_crt_pricing/freddie_crt_cost.csv').set_index('year')
+FN = pd.read_csv('research/b2_crt_pricing/fannie_crt_cost.csv').set_index('year')
+m0 = lambda x: f"{x:,.0f}"; p1 = lambda x: f"{100*x:.1f}%"
+fr_rows = "\n".join(f"| {y} | {r.scope} | {m0(r.ce_expense)} | {m0(r.crt_debt_interest) if pd.notna(r.crt_debt_interest) else 'not printed'} | "
+                    f"{m0(r.gross_cost_musd) if pd.notna(r.gross_cost_musd) else 'n/a'} | {m0(r.net_cost_musd) if pd.notna(r.net_cost_musd) else 'n/a'} | "
+                    f"{p1(r.gross_cost_per_maxcov) if pd.notna(r.gross_cost_per_maxcov) else 'n/a'} | {p1(r.ce_expense_per_maxcov)} |" for y, r in FR.iterrows())
+fn_rows = "\n".join(f"| {y} | {m0(r.cas)} | {m0(r.cirt)} | {m0(r.cas_cirt_musd)} | {p1(r.cas_cirt_per_rif) if pd.notna(r.cas_cirt_per_rif) else 'n/a'} |" for y, r in FN.iterrows())
+g4 = FR.loc[2017:2020, 'gross_cost_per_maxcov']
 EL = R['zero_attach_el_bp']; CR = R['credit_cost_bp_range_zero_attach']
 txt = f"""# B2: What the market charges for the credit risk the GSEs pass back
 
@@ -18,7 +27,7 @@ txt = f"""# B2: What the market charges for the credit risk the GSEs pass back
 
 Only one free source gives numbers for the price of CRT: FHFA's *CRT Progress Report* of December 2016. For each CAS (Fannie Mae) and STACR (Freddie Mac) deal from 2013 to 2016, it gives an "estimated credit cost", an estimated guarantee fee, and the deal's structure. FHFA estimated each cost from issuance pricing under one baseline loss scenario: 10% prepayment, 0.2% annual defaults, 25% loss given default, and redemption at 10 years. {R['n_deals_priced']} deals have a published cost.
 
-Later FHFA reports show issuance spreads only as charts. Deal-level data from the GSEs and SEC filings are blocked from this environment, and secondary-market spreads are paywalled (`sources.md`). So B2 covers 2013–2016 deals only.
+Later FHFA reports show issuance spreads only as charts. Deal-level data from the GSEs and SEC filings are blocked from this environment, and secondary-market spreads are paywalled (`sources.md`). So B2's deal-level pricing covers 2013–2016 deals only. For 2017–2023 the GSEs' 10-Ks give a coarser, aggregate annual cost (section below).
 
 ## Result
 
@@ -49,12 +58,38 @@ The weighted cost rose from 2014 to 2016. Over that period the GSEs moved to sel
 - **This is FHFA's estimate, not a market spread series.** The cost is derived from issuance pricing under one scenario, and it assumes the whole slice is sold.
 - **A multiple above 1 is the premium over FHFA's baseline, not over expected losses in general.** It mixes investors' risk aversion with any belief that losses will exceed the baseline, and the two cannot be separated here. It also depends on the loss basis (about {f1(M['zero_attach_median'])} or {f1(M['zero_attach_median_original_basis'])}).
 - **Tie to A2.** The priced deals cover most of each year's CRT reference UPB (last column). The rest is insurance (CIRT, ACIS) and unpriced deals. The two sources are not reconciled deal by deal. A2's net-exposure bounds (`research/a2_net_exposure/`) are the quantity this price applies to. B2 does not recompute them.
-- **2017 onward is a gap.** Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error. It is listed as a choice for Eleonora, not done.
+- **2017 onward has no deal-level prices.** Only the aggregate 10-K measure above. Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error; it was not done.
+
+## 2017–2023: aggregate annual cost from the GSEs' 10-Ks
+
+Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no longer prints deal-level credit costs, and the GSEs' deal data are not reachable from here (crt.freddiemac.com, capitalmarkets.freddiemac.com; `sources.md`). What the 10-Ks give instead is the yearly cost of each GSE's whole CRT programme. It is a coarser measure than the deal table above: a cost per dollar of protection outstanding, pooled over every vintage still in force, not a price set at issuance. It is not set against FHFA's expected loss. Code: `gse_10k.py`; data: `freddie_crt_cost.csv`, `fannie_crt_cost.csv`.
+
+**Freddie Mac** ($ millions a year; each year from the first 10-K that prints it):
+
+| Year | Scope | Credit-enhancement expense | Interest on CRT debt | Total | Total less Freddie's reinvestment estimate | Total per dollar of CRT maximum coverage | Credit-enhancement expense per dollar of cover |
+|---|---|---|---|---|---|---|---|
+{fr_rows}
+
+**Fannie Mae** (cash paid or transferred to investors, $ millions a year):
+
+| Year | CAS | CIRT | CAS + CIRT | Per dollar of CRT risk in force |
+|---|---|---|---|---|
+{fn_rows}
+
+- **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was ${m0(FR.loc[2020, 'crt_debt_interest'])} million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure, which includes a small multifamily part. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The last column is the one measure that runs through all seven years, and it rises partly because Freddie moved from debt notes to trust and insurance structures whose cost is booked as credit-enhancement expense (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy").
+- **Gross against net.** Freddie's interest on CRT debt is gross interest; Fannie's CAS figure is interest net of LIBOR or SOFR, plus CAS REMIC and CLN payments. Freddie prints its own estimate of reinvestment income on the debt proceeds, shown in the "less" column. The two GSEs are not compared directly.
+- **Different denominators.** Freddie: maximum coverage of its CRT, from the 10-K coverage tables (A2, `research/a2_net_exposure/freddie_ce_outstanding.csv`), averaged over the two year ends. Fannie: CRT risk in force, printed rounded to whole billions and found at both year ends only for 2021–2023 (A2, `fannie_ce_outstanding.csv`); other years are n/a.
+- **Excluded.** Fannie's lender risk-sharing payments (in `fannie_crt_cost.csv`) and mortgage insurance.
+- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both.
+- **Against 2013–2016.** Freddie's 2017–2020 total per dollar of cover, {p1(g4.min())}–{p1(g4.max())} a year, falls inside the {f1(lo)}–{f1(hi)}% range of FHFA's 2013–2016 cost per dollar of tranche. The bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is a consistency check, not a test of the earlier result.
 
 ## Reproduce
 
 ```bash
 uv run --project pipeline python research/b2_crt_pricing/b2.py
+uv run --project pipeline python research/a2_net_exposure/freddie_10k.py      # Freddie 10-K PDFs (freddiemac.com)
+SEC_USER_AGENT='<declared>' uv run --project pipeline python research/a2_net_exposure/fannie_10k.py   # Fannie 10-Ks (EDGAR)
+uv run --project pipeline python research/b2_crt_pricing/gse_10k.py
 uv run --project pipeline pytest -q research/b2_crt_pricing
 ```
 """
@@ -65,8 +100,9 @@ lines = txt.splitlines(); fence = False; ok = []
 for i, l in enumerate(lines):
     if l.startswith("```"): fence = not fence; continue
     if not fence: ok.append((i + 1, l))
-def loc(tok):
-    L = [f"research/b2_crt_pricing/README.md:{i}" for i, l in ok if tok in l]
+NEW = next(i for i, l in ok if l.startswith("## 2017–2023: aggregate annual cost"))
+def loc(tok):   # the 2013-2016 rows point only at lines above the 2017-2023 section
+    L = [f"research/b2_crt_pricing/README.md:{i}" for i, l in ok if tok in l and i < NEW]
     assert L, tok; return ";".join(L)
 P = "research/b2_crt_pricing/b2.py -> results.json "
 SRC = "FHFA CRT Progress Report Dec 2016 (deal and credit-cost tables)"
@@ -102,8 +138,48 @@ for y, v in sorted(Y.items()):
     add(f"b2_{y}_n_priced", f"{y}: {t} deals have a published credit cost.", t, v['n_priced'], P+f"by_year.{y}.n_priced / n_deals", "count", period=y)
 for nm, x in [("lo", lo), ("hi", hi)]:
     add(f"b2_per_tranche_{nm}", f"Cost per dollar of tranche, {'lowest' if nm=='lo' else 'highest'} year: {f1(x)}%.", f1(x) if nm=='lo' else f"{f1(x)}%", x/100, P+f"cost_per_tranche_pct_range[{0 if nm=='lo' else 1}]", "share", status="ESTIMATE", tok=f"{f1(x)}–" if nm=='lo' else f"–{f1(x)}%")
+def loc_after(head, key):
+    st = next(i for i, l in ok if l.startswith(head))
+    L = [f"research/b2_crt_pricing/README.md:{i}" for i, l in ok if i > st and l.startswith(key)]
+    assert L, (head, key); return L[0]
+FS, NS = "Freddie Mac 10-K FY2019 Table 22, FY2020 Table 24, FY2021 segment table, FY2022-23 statements", "Fannie Mae 10-K FY2017-2023 (SEC EDGAR)"
+def add2(cid, claim, disp, val, comp, unit, period, line, sids, status="UNVERIFIED", notes=""):
+    out.append(dict(zip(header, [cid, claim, disp, f"{val:.6g}", unit, period, line, comp, sids, "10k:2026-11-04", status, "", notes])))
+FH, NH = "| Year | Scope", "| Year | CAS |"
+for y, r in FR.iterrows():
+    ln = loc_after(FH, f"| {y} |")
+    C = "research/b2_crt_pricing/gse_10k.py -> freddie_crt_cost.csv "
+    add2(f"b2_fre_{y}_ce", f"Freddie {y}: credit-enhancement expense ${m0(r.ce_expense)}M ({r.scope}).", m0(r.ce_expense), r.ce_expense, C+"ce_expense", "usd_m", str(y), ln, FS)
+    for col, nm in [("crt_debt_interest", "interest on CRT debt"), ("gross_cost_musd", "total CRT cost"), ("net_cost_musd", "total less reinvestment estimate")]:
+        if pd.notna(r[col]):
+            add2(f"b2_fre_{y}_{col}", f"Freddie {y}: {nm} ${m0(r[col])}M.", m0(r[col]), r[col], C+col, "usd_m", str(y), ln, FS)
+    if pd.notna(r.gross_cost_per_maxcov):
+        add2(f"b2_fre_{y}_gross_rate", f"Freddie {y}: total CRT cost per dollar of CRT maximum coverage {p1(r.gross_cost_per_maxcov)}.", p1(r.gross_cost_per_maxcov), r.gross_cost_per_maxcov, C+"gross_cost_per_maxcov", "share", str(y), ln, FS+"; A2 freddie_ce_outstanding.csv", "ESTIMATE")
+    add2(f"b2_fre_{y}_ce_rate", f"Freddie {y}: credit-enhancement expense per dollar of CRT maximum coverage {p1(r.ce_expense_per_maxcov)}.", p1(r.ce_expense_per_maxcov), r.ce_expense_per_maxcov, C+"ce_expense_per_maxcov", "share", str(y), ln, FS+"; A2 freddie_ce_outstanding.csv", "ESTIMATE",
+         "2021-23 not comparable with 2017-20 (series break)" if y >= 2021 else "")
+for y, r in FN.iterrows():
+    ln = loc_after(NH, f"| {y} |")
+    C = "research/b2_crt_pricing/gse_10k.py -> fannie_crt_cost.csv "
+    for col, nm in [("cas", "CAS cash paid"), ("cirt", "CIRT cash paid"), ("cas_cirt_musd", "CAS + CIRT cash paid")]:
+        add2(f"b2_fnm_{y}_{col}", f"Fannie {y}: {nm} ${m0(r[col])}M.", m0(r[col]), r[col], C+col, "usd_m", str(y), ln, NS)
+    if pd.notna(r.cas_cirt_per_rif):
+        add2(f"b2_fnm_{y}_rate", f"Fannie {y}: CAS + CIRT cash per dollar of CRT risk in force {p1(r.cas_cirt_per_rif)}.", p1(r.cas_cirt_per_rif), r.cas_cirt_per_rif, C+"cas_cirt_per_rif", "share", str(y), ln, NS+"; A2 fannie_ce_outstanding.csv", "ESTIMATE")
+brk = next(i for i, l in ok if l.startswith("- **Freddie's series breaks in 2021.**"))
+add2("b2_fre_2020_crt_debt_interest_note", f"Freddie 2020 interest on CRT debt ${m0(FR.loc[2020, 'crt_debt_interest'])}M (series-break note).", f"${m0(FR.loc[2020, 'crt_debt_interest'])} million", FR.loc[2020, 'crt_debt_interest'], "research/b2_crt_pricing/gse_10k.py -> freddie_crt_cost.csv crt_debt_interest", "usd_m", "2020", f"research/b2_crt_pricing/README.md:{brk}", FS)
+ag = next(i for i, l in ok if l.startswith("- **Against 2013–2016.**"))
+add2("b2_fre_1720_rate_lo", f"Freddie 2017-2020 total CRT cost per dollar of cover, lowest year {p1(g4.min())}.", p1(g4.min()), g4.min(), "gse_10k.py -> freddie_crt_cost.csv min(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
+add2("b2_fre_1720_rate_hi", f"Freddie 2017-2020 total CRT cost per dollar of cover, highest year {p1(g4.max())}.", p1(g4.max()), g4.max(), "gse_10k.py -> freddie_crt_cost.csv max(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
+assert all(float(r['value']) >= 0 for r in out)
 p = 'claims/tracks/markets.csv'
 old = [r for r in csv.DictReader(open(p)) if not r['claim_id'].startswith('b2_')]
+# Rows the coordinator has already folded into claims/register.csv stay there (no duplicate ids); they must still
+# match what this script would write, apart from the location if the README moved (checked, not silently kept).
+reg = {r['claim_id']: r for r in csv.DictReader(open('claims/register.csv'))}
+for r in out:
+    if r['claim_id'] in reg:
+        g = reg[r['claim_id']]
+        assert (g['display'], g['value'], g['locations']) == (r['display'], r['value'], r['locations']), (r['claim_id'], g['locations'], r['locations'])
+out = [r for r in out if r['claim_id'] not in reg]
 with open(p, 'w', newline='') as f:
     w = csv.DictWriter(f, fieldnames=header); w.writeheader(); w.writerows(old + out)
 print(len(out), "B2 rows")
