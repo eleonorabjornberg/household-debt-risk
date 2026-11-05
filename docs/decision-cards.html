@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 32: E1 stopped again (2 cards).</p>
+      <p class="sub">Round 33: nothing open. All earlier cards answered; decisions are in PLAN.md.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,7 +88,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "e1-stop2", "group": "E1 benchmark", "tag": "E1", "title": "E1: the rerun stopped on Sonnet's cost stop. What now?", "ctx": "With your stoprule (a) and cost (b) in place, run-2026-11-05b passed the 10% checkpoint ($1.34 after 72 loops, projected $13.40 against the $31 cap). Once Sonnet passed 24 loops, its mean cost was $0.0313 per loop over 27 loops, just over its stop of $0.0305 (3× its pilot mean of $0.0102), so the run stopped after 79 of 720 loops. Opus ($0.0656, stop $0.121) and Haiku ($0.00135, stop $0.0025) were well inside. 194 calls, no errors, $2.59 spent; E1 total so far $2.59 of the $31. Infra's estimate from these 27 loops per model (an estimate, not a measurement): a full main run about $24, plus the baseline $2–4, so E1 would total about $28–30, close to the cap. Partial accuracy (repetition 1, first 27 of 80 questions; PARTIAL, not an E1 result): Opus 18/20 answerable and 5/6 refusals, Sonnet 20/20 and 4/6, Haiku 20/21 and 1/6. No tests were run on partial data. Each option is another dated deviation from the frozen prereg.", "opts": [["recal", "(a) Reset each model's stop to 1.5× its measured mean from these 27 loops (Sonnet $0.047, Opus $0.098, Haiku $0.0020); keep the $31 cap, pre-call guard and 10% checkpoint"], ["nostop", "(b) Drop the per-model stop; keep the $31 cap, pre-call guard and 10% checkpoint"], ["end", "(c) End E1 here and report the partial results as partial"], ["later", "Later"]], "where": "evals/e1_sql_benchmark/run-2026-11-05b/; tracks/infra.md log", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/tracks/infra.md"}, {"id": "e1-resume", "group": "E1 benchmark", "tag": "E1", "title": "E1: if it continues, fresh run or resume?", "ctx": "Only applies if you chose (a) or (b) on the card above. Infra's estimates: (a) a fresh run in run-2026-11-05c from loop 1, about $24 more, repeating the 79 completed loops; (b) resume run-2026-11-05b from loop 80 in the same seeded order, about $21.50 more. Resume needs a small feature in run_e1.py, built and tested offline first. It reuses 79 loops run under the earlier stop rule, and the write-up must say so. Both stay under the $31 cap on these estimates, with little margin.", "opts": [["fresh", "(a) Fresh run in run-2026-11-05c"], ["resume", "(b) Resume run-2026-11-05b from loop 80 (resume feature tested offline first)"], ["na", "Not applicable (I chose end)"], ["later", "Later"]], "where": "evals/e1_sql_benchmark/run_e1.py", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/evals/e1_sql_benchmark/run_e1.py"}];
+const DECISIONS = [];
 
 const GROUPS = ["E1 benchmark"];
 const answers = {};          // id -> {choice, note}

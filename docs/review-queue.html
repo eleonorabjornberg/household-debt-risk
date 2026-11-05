@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 19: B3 scenario page in the browser (2 items).</p>
+      <p class="sub">Round 20: nothing open. All earlier cards answered; decisions are in PLAN.md.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,7 +88,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-b3-page", "group": "B3 scenarios", "tag": "B3", "title": "B3: /scenarios page and its copy (Claude draft)", "ctx": "Markets built the scenario engine into web/ at route /scenarios, reachable by URL only (not in the nav), merged in bb3a731. It runs the same engine.mjs as research/b3_scenarios; a sync step copies the engine, fixed cases, exposures and presets with SHA-256s, and tests fail if a copy drifts. Browser parity tests in Chromium check every fixed case, every preset and the typed-input path against engine.py (results match to 1e-9). The page carries no hard-coded figures: every number is computed from the synced inputs, and it states its proxies and the holder-versus-risk caveat. All copy is Claude's and carries the draft banner. Skeptic points mkt-s55 to s59 and editor points mkt-e26 to e32 were addressed (claims/tracks/markets-review-log.md). Known detail: the bundler re-serialises imported JSON, so one replay timing weight arrives one unit in the last place off; results are unaffected. No preview URL to give: the Vercel connector is not authorised for the team scope from here, so I did not look one up; screenshots are in the markets session. Run locally with: cd web && npm run dev, then open /scenarios.", "opts": [["ok", "Approve the page and copy as Claude drafts"], ["changes", "Needs changes (say which in the note)"], ["later", "Later"]], "where": "web/app/scenarios/page.tsx; web/components/scenarios/ScenarioTool.tsx; research/b3_scenarios/README.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/web/app/scenarios/page.tsx"}, {"id": "rv-b3-nav", "group": "B3 scenarios", "tag": "B3", "title": "B3: add a 'Scenarios' link to the site nav?", "ctx": "Proposed diff only, not applied. In web/app/layout.tsx, after the Methods link, add <Link href=\"/scenarios\">Scenarios<\/Link>. Applying it makes the page discoverable from every page of the story site once a branch is merged to main; it does not by itself deploy anything. Without it the page stays reachable by URL only.", "opts": [["add", "Add the nav link on the branch"], ["hold", "Keep it URL only for now"], ["later", "Later"]], "where": "web/app/layout.tsx (nav)", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/web/app/layout.tsx"}];
+const DECISIONS = [];
 
 const GROUPS = ["B3 scenarios"];
 const answers = {};          // id -> {choice, note}
