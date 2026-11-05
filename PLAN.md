@@ -192,6 +192,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-05 | E1 set vs H3 (e1-set-h3): **replace** about 10 answerable questions with unanswerable ones (still 100); she reviews only the changed questions before the freeze. | Eleonora |
 | 2026-11-05 | E1 H3 threshold (e1-R2): **R = 70%**. | Eleonora |
 | 2026-11-05 | E1 holdout share of unanswerable questions (e1-holdback): hold back **about 5**, in proportion. | Eleonora |
+| 2026-11-05 | C1b holdout rerun approval (c1b-dev-1 (a), chosen 14:10 UTC): unseal the joint C2 + C1b holdout and run it once, with the dated "no target" deviation in cddd3ca and the re-hashed FREEZE.json. | Eleonora |
 
 ## Environment prerequisites
 
