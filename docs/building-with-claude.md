@@ -332,3 +332,11 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 
 ### 2026-11-05 ~16:45 UTC: coordinator, recommendations on the docket
 - She asked for recommendations on the docket. Round 26c marks one option per card as the coordinator's recommendation (Claude's, not the tracks'), with the reason in the card text: c3-b-level (iv), c3-b-nointv (c), a8-holder (b), b2-sofr-src (a), b2-upb (a), b2-empty (a). These are not decisions: nothing is recorded until she taps. For c3-b-level, the card says (iv) is the most lenient option and that rolling Z-DAMP's independence result should be reported next to it.
+
+### 2026-11-05 ~19:20 UTC: analysis track, a8-holder (b) applied
+- Same session. Merged claude/sweet-gates-avwrcs (16e65d5). Main model plus skeptic and editor subagents. Cost not measured.
+- Applied her a8-holder choice (b), relayed by the coordinator: on the holder measure, 29.1% is shown as the publicly owned figure with 1.1% beside it as unclassified, and 30.3% as their sum with the DZ Bank caveat. README, CROSSWALK and the compare.py note were updated. No number changed (`results.json` identical). One new track register row.
+- **Error: unsourced label in the table.** The new holder cell called the 29.1% "publicly owned" without the README's own caveat that savings banks' and Landesbanken's ownership is not sourced. *Caught by skeptic* (ana-54) and *editor* (ana-e13); fixed.
+- **Error: displayed parts don't add up.** 29.1% + 1.1% displays as 30.2%, not 30.3%. *Caught by skeptic* (ana-55) and *editor* (ana-e16); "(sum of unrounded shares)" added.
+- **Pre-existing, found by editor (ana-e12):** claim-check reads the 1.1% as a MISMATCH because the register stores the rounded 0.0115. Proposed to the coordinator.
+- The first a8-promo push this session met repeated GitHub server errors ("fatal error in commit_refs_rules"). Retries with backoff succeeded.

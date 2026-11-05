@@ -89,6 +89,8 @@ Options for Eleonora (no recommendation; the split is unknown):
 
 **Decision (Eleonora, 2026-11-05 14:44 UTC, card a8-promo): option (b)**, as worded on the card: relabel as in (a), plus a context note on the four liability guarantees. Applied in `compare.py` (column renamed `special_tasks_banks_unclassified`; the input id `promotional_banks_lending_individuals` and register id `a8_de_promotional_banks_unclassified` are kept), `results.json` and README line 18. No number changed.
 
+**Decision (Eleonora, 2026-11-05 18:54 UTC, card a8-holder): option (b).** On the holder measure, savings banks and Landesbanken (29.1%) are shown as the publicly owned figure, with the special-tasks category (1.1%) beside it as unclassified; the 30.3% in the Context line above is their sum and includes DZ Bank and others whose public ownership is not sourced. Applied in the README and CROSSWALK; no number changed.
+
 ## What would make the choice firmer
 
 - The Commission's 2001 understanding and 2004 decision texts (EUR-Lex), and the state-aid decisions for the three banks (Commission case pages), once those hosts answer.
