@@ -189,6 +189,9 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-05 | E1 no-tools baseline model (e1-base): **Opus**. Not a spend OK. | Eleonora |
 | 2026-11-05 | Access (acc-lbank, acc-eu, acc-bbk): **add** www.l-bank.info, **add** publications.europa.eu (both added by her), **go** search bundesbank.de. She also added capitalmarkets.freddiemac.com (crt-host). | Eleonora |
 | 2026-11-05 | Reviews: rv-c1b-frozen **ok**, rv-b4-gse **ok**, rv-e1-pilot **ok**, rv-b2-1723 **ok**, rv-e1-set **ok** (approved as is, after choosing h3 (b); see card e1-set-h3). | Eleonora |
+| 2026-11-05 | E1 set vs H3 (e1-set-h3): **replace** about 10 answerable questions with unanswerable ones (still 100); she reviews only the changed questions before the freeze. | Eleonora |
+| 2026-11-05 | E1 H3 threshold (e1-R2): **R = 70%**. | Eleonora |
+| 2026-11-05 | E1 holdout share of unanswerable questions (e1-holdback): hold back **about 5**, in proportion. | Eleonora |
 
 ## Environment prerequisites
 
