@@ -46,10 +46,11 @@ def test_unknown_tranche_name_raises():
 
 
 def test_libor_adjustment_only_on_libor_deals():
-    t = s.frame(DF).set_index(["deal", "tranche"])
-    assert pd.isna(t.loc[("2018-DNA2", "M1"), "spread_sofr_bp"])       # pending: no value invented
+    assert s.LIBOR_1M_ADJ_BP == 11.448                                   # Regulation ZZ, approved b2-sofr-src (a)
+    t = s.frame(DF, adj_bp=None).set_index(["deal", "tranche"])
+    assert pd.isna(t.loc[("2018-DNA2", "M1"), "spread_sofr_bp"])       # unset: no value invented
     assert t.loc[("2022-DNA2", "B-2"), "spread_sofr_bp"] == pytest.approx(850)
-    t = s.frame(DF, adj_bp=11.448).set_index(["deal", "tranche"])
+    t = s.frame(DF).set_index(["deal", "tranche"])
     assert t.loc[("2018-DNA2", "M1"), "spread_sofr_bp"] == pytest.approx(80 + 11.448)
     assert t.loc[("2022-DNA2", "B-2"), "spread_sofr_bp"] == pytest.approx(850)
 
