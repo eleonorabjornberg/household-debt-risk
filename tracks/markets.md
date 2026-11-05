@@ -8,41 +8,27 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
-## Handoff note (2026-11-05 ~05:45 UTC, for the next markets session)
+## Handoff note (2026-11-05 ~15:00 UTC, for the next markets session)
 
-**Where every task stands**
-- **C1b:** frozen at 8c46906 (`research/c1b_nowcast/FREEZE.json`), Freddie only.
-  - Eleonora approved the joint holdout at 77460b4.
-  - The run FAILED at its first step: `research/c2_forecast/holdout_run.py` raised `KeyError: '2026Q3'` at `research/c1_nowcast/nowcast.py:199`. In holdout mode, the instants after the 2026-09-11 release have a target quarter that is not published yet.
-  - Nothing was written, printed, fixed or rerun.
-  - Deviation card **c1b-dev-1** is on her docket. Its options: (a) record those rows as "target not yet published"; (b) stop the instant grid at the last published target; or stop.
-  - Either fix touches frozen files. That means a dated deviation in the C2 protocol, C1's EVALUATION.md and the C1b prereg, re-hashed FREEZE files, and a NEW approval commit before one rerun.
-  - Do not touch frozen files until the coordinator relays her answer.
-- **B2:** 2013–16 FHFA deal costs, accepted. The 2017–2023 aggregate section (10-Ks; `gse_10k.py`, `freddie_crt_cost.csv`, `fannie_crt_cost.csv`) is done and skeptic-reviewed (s38–s43 resolved). It is on her review queue (round 9).
-  - Deal-level STACR waits on her host change (capitalmarkets.freddiemac.com, re-check of crt.freddiemac.com). Retry only after the coordinator says so; no workarounds.
-- **B3:** accepted.
-- **B4:** recession range accepted. GSE-release range done and skeptic-reviewed, on her review queue (rv-b4-gse). Student loans are left out until a reachable CBO estimate exists (b4-student-2 (iii)).
-- **C1, C2:** development results accepted. Holdout as under C1b above.
-- **C3:** not started; it needs the joint holdout results.
+**Done this session**
+- c1b-dev-1 (a) fix at cddd3ca: "no target" rows, dated deviations, re-freeze. `holdout_run.check_order()` was added (mkt-q29), and q29 and q30 are resolved.
+- The joint holdout ran ONCE at approval 432fed0. Results are in a0d9151 (C2 `holdout_results.json`, C1b `holdout_results.json` + `nowcasts_holdout.csv`). **Never rerun either script.**
+- The Claude-draft summary is `research/joint_holdout/README.md`, from `make_readme_and_rows.py`. Its 59 hold_* rows were folded into the register by the coordinator (65e68f5), and `claims/tracks/markets.csv` is gone again. It is on her review queue as rv-holdout.
+- STACR pricing workbook parsed (1e401cf). B2 2017+ work is on HOLD until she answers cards b2-1723-measure, -tranches, -indic and -sofr.
 
-**How to resume**
-1. `git config core.hooksPath .githooks`. Merge `origin/claude/sweet-gates-avwrcs` first.
-2. Register rows: `claims/tracks/markets.csv` was deleted after the coordinator folded every markets row into `claims/register.csv` (17dfd01). Create it again only for new rows, and never duplicate an id that is already in the register.
-   - The B2 and B4 generators (`make_readme_and_rows.py`) still write the track file. B2's skips ids already in the register; B4's does not yet. Check both before rerunning.
-3. Review log: use the TRACK log, `claims/tracks/markets-review-log.md`. The next ids are mkt-s44 and mkt-q29. Tell reviewers so explicitly; this session's reviewers first wrote to the shared log.
-4. Data caches (git-ignored), each rebuilt by its own script:
-   - `research/c1_nowcast/z1_vintages.py` (41 Z.1 releases)
-   - ALFRED through `pit.py`
-   - `research/c1b_nowcast/freddie_mvs.py` (129 Freddie PDFs)
-   - `validation/run.py ensure_zip` (latest Z.1)
-   - `research/a2_net_exposure/freddie_10k.py`
-   - `research/a2_net_exposure/fannie_10k.py`, which needs the SEC User-Agent from the coordinator, as a per-command prefix only
-5. SEC: never write the User-Agent to a file. `git grep` for the address before each commit; the coordinator has the search term.
+**Next: C3** (PLAN, "next (markets)"). Start from a0d9151, write Claude-draft text with register rows, and run no new holdout. The required contents are listed in `docs/decisions/scoring-protocol.md` "What C3 must publish":
+- the specification registry, including abandoned specs (see the C2 and C1 git history and the deviations);
+- holdout results for every frozen candidate;
+- all benchmarks, horizons and losses, plus coverage with binomial intervals;
+- raw and adjusted p-values (development tests in `research/c2_forecast/tests_dev.csv`);
+- the ten largest errors per horizon;
+- the regime splits 2007Q4–2011Q4 and 2020, which fall in development (the holdout is 2023Q3–2026Q2);
+- the revision effect (C1 first-release vs latest; C2 `forecasts_realtime_dev.csv`);
+- whether C1 indicators were used, and every deviation.
 
-**Gotchas**
-- The freeze checks hash `data/c1/z1_cells.csv`. Rebuilding it from the same archive reproduced the hash on 2026-11-04.
-- `nowcast_c1b.py --holdout` requires C2's fresh `holdout_results.json` as the ONLY change in the tree, made with the same approval commit.
-- The register checker ignores minus signs, and its tokenizer reads "1 of 2026" in prose as an "n of m" count. Rephrase such sentences.
+Check first whether `holdout_results.json` holds per-forecast errors or only scores. If only scores, per-forecast holdout errors would need a rerun, which is NOT allowed. In that case, report the gap to the coordinator as a proposed card.
+
+**How to resume:** `git config core.hooksPath .githooks`. Merge `origin/claude/sweet-gates-avwrcs`. Rebuild the caches with the scripts listed in the earlier handoff in git history (z1_vintages.py, pit.py, freddie_mvs.py). The next review-log ids are mkt-s44 and mkt-q31.
 
 ## Decisions received (Eleonora, decision cards 2026-11-04 16:35–16:41 UTC; PLAN.md "Decisions taken", coordinator 543d96a)
 | Item | Decision | Applied |
