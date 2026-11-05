@@ -340,3 +340,15 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Relayed to the tracks: markets finalizes C3 and writes the B2 2017+ section; analysis applies a8-holder (b); infra runs the E1 freeze sequence.
 - Both card pages republished with nothing open.
 - E1 freeze, step 2: deleted the 10 retired register rows (e1_q102, q110, q118, q125, q135, q137, q147, q153, q165, q168), matching infra's `retired:` list; register 1,706 rows. Corrected the stale E1 status cell: it still listed R and the h3 handling as open, although PLAN already records e1-R2 (R 70%) and e1-set-h3 (replace). *Error by Claude (coordinator, stale status cell); caught by Claude (infra track).*
+### 2026-11-05 ~19:00 UTC: analysis track, a8-holder (b) applied
+- Same session. Merged claude/sweet-gates-avwrcs (16e65d5). Main model plus skeptic and editor subagents. Cost not measured.
+- Applied her a8-holder choice (b), relayed by the coordinator: on the holder measure, 29.1% is shown as the publicly owned figure with 1.1% beside it as unclassified, and 30.3% as their sum with the DZ Bank caveat. README, CROSSWALK and the compare.py note were updated. No number changed (`results.json` identical). One new track register row.
+- **Error: unsourced label in the table.** The new holder cell called the 29.1% "publicly owned" without the README's own caveat that savings banks' and Landesbanken's ownership is not sourced. *Caught by skeptic* (ana-54) and *editor* (ana-e13); fixed.
+- **Error: displayed parts don't add up.** 29.1% + 1.1% displays as 30.2%, not 30.3%. *Caught by skeptic* (ana-55) and *editor* (ana-e16); "(sum of unrounded shares)" added.
+- **Pre-existing, found by editor (ana-e12):** claim-check reads the 1.1% as a MISMATCH because the register stores the rounded 0.0115. Proposed to the coordinator.
+- The first a8-promo push this session met repeated GitHub server errors ("fatal error in commit_refs_rules"). Retries with backoff succeeded.
+
+### 2026-11-05 ~19:10 UTC: coordinator, A8 a8-holder merged
+- Merged analysis 7ae5ec1 (a8-holder (b) applied; skeptic ana-53–57, editor ana-e12–e20). Folded its track row a8_de_holder_public_owned_public_law_banks and applied its three proposed edits to existing rows: the a8_de_public_owned_share claim text; "unclassified on both measures" on a8_de_promotional_banks_unclassified; and that row's value 0.0115 → 0.011484 (17,817 / 1,551,414; the stored value was itself rounded, *caught by editor* ana-e12). Register 1,707 rows.
+- **Error: wrong log heading time.** The analysis entry was headed ~19:20 UTC; its commits are 19:01–19:02. *Error by Claude (analysis track); caught by Claude (coordinator)* against `git log`. Corrected to ~19:00.
+- Review queue round 16: the A8 relabel (rv-a8-holder), with the editor's two flagged points (unsourced CROSSWALK:12 sentence, long caveats) on the card.
