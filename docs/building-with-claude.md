@@ -339,3 +339,4 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - Review queue: rv-e1-redraft ok, rv-holdout ok (accepted as a draft to rewrite), rv-a8-promo ok.
 - Relayed to the tracks: markets finalizes C3 and writes the B2 2017+ section; analysis applies a8-holder (b); infra runs the E1 freeze sequence.
 - Both card pages republished with nothing open.
+- E1 freeze, step 2: deleted the 10 retired register rows (e1_q102, q110, q118, q125, q135, q137, q147, q153, q165, q168), matching infra's `retired:` list; register 1,706 rows. Corrected the stale E1 status cell: it still listed R and the h3 handling as open, although PLAN already records e1-R2 (R 70%) and e1-set-h3 (replace). *Error by Claude (coordinator, stale status cell); caught by Claude (infra track).*
