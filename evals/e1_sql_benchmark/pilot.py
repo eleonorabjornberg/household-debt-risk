@@ -91,6 +91,7 @@ class Budget:
     by_model: dict = field(default_factory=dict)  # model -> [cost, loops started]
     assumed: dict = field(default_factory=lambda: dict(ASSUMED_PER_LOOP))  # per-loop figure the overrun stop uses
     overrun: float = OVERRUN
+    min_loops: int = 0  # the overrun stop applies only once a model has started MORE than this many loops
 
     def start_loop(self, model: str) -> None:
         self.by_model.setdefault(model, [0.0, 0])[1] += 1
@@ -109,7 +110,7 @@ class Budget:
             raise Stop(f"cap: running total ${self.total:.4f} >= ${self.cap:.2f}")
         spent, loops = self.by_model[model]
         mean = spent / loops
-        if mean > self.overrun * self.assumed[model]:
+        if loops > self.min_loops and mean > self.overrun * self.assumed[model]:
             raise Stop(f"overrun: {model} mean ${mean:.4f}/loop over {loops} loop(s) > "
                        f"{self.overrun}x assumption ${self.assumed[model]}")
 
