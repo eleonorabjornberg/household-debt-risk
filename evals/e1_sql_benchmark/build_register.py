@@ -83,9 +83,19 @@ def main() -> None:
             "notes": "E1 benchmark gold, not published copy. Draft question set awaiting Eleonora's approval.",
         })
     VALUES.write_text("\n".join(values) + "\n")
+    main_reg = {r["claim_id"]: r for r in csv.DictReader((ROOT / "claims" / "register.csv").open())}
+    changed = [r["claim_id"] for r in rows if r["claim_id"] in main_reg
+               and (main_reg[r["claim_id"]]["value"], main_reg[r["claim_id"]]["validation"]) != (r["value"], r["validation"])]
+    if changed:  # the coordinator owns register.csv: report, never overwrite
+        raise SystemExit(f"register.csv rows differ from the rebuild (coordinator must update them): {changed}")
+    rows = [r for r in rows if r["claim_id"] not in main_reg]  # already folded into register.csv on merge
     keep = []
     if TRACK.exists():
         keep = [r for r in csv.DictReader(TRACK.open()) if not r["claim_id"].startswith("e1_q")]
+    if not keep and not rows:
+        TRACK.unlink(missing_ok=True)
+        print("all E1 rows are already in claims/register.csv and match; no track rows written")
+        return
     with TRACK.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=SCHEMA)
         w.writeheader()

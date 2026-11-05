@@ -71,17 +71,17 @@ def test_holdout_is_seeded_and_stratified():
 
 def test_disagreement_is_caught(tmp_path):
     import csv
-    src = ROOT / "claims" / "tracks" / "infra.csv"
+    src = ROOT / "claims" / "register.csv"  # the E1 rows were folded in here on merge
     rows = list(csv.DictReader(src.open()))
     for r in rows:
         if r["claim_id"] == "e1_q101":
             r["value"] = f"{float(r['value']) + 0.001:.6f}"
-    bad = tmp_path / "infra.csv"
+    bad = tmp_path / "register.csv"
     with bad.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=rows[0].keys())
         w.writeheader()
         w.writerows(rows)
-    res = verify_set.verify(registers=[ROOT / "claims" / "register.csv", bad])
+    res = verify_set.verify(registers=[bad])
     assert [r["id"] for r in res if not r["ok"]] == ["q101"]
 
 
