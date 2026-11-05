@@ -96,3 +96,38 @@ def test_live_refuses_until_frozen(tmp_path):
     frozen.write_text("# x\nStatus: **frozen** on 2026-11-05.\n")
     assert not run_e1.is_frozen(draft) and run_e1.is_frozen(frozen)
     assert run_e1.snapshot_ok() == []  # snapshot, questions and gold match the recorded hashes
+
+
+PLAN_ROWS = """| Date | Decision | Who |
+|---|---|---|
+| 2026-11-05 | E1 no-tools baseline model (e1-base): **Opus**. Not a spend OK. | Eleonora |
+| 2026-11-05 | E1 cost cap (e1-cap): **$31**. The cap card sets the ceiling only. | Eleonora |
+"""
+
+
+@pytest.mark.parametrize("row,ok", [
+    ("| 2026-11-06 | E1 full-run spend (e1-spend): **go**, cap $31, main run and Opus baseline. | Eleonora |", True),
+    ("| 2026-11-06 | E1 spend (e1-spend, docket round 28): **approved**. | Eleonora |", True),
+    ("| 2026-11-06 | E1 spend (e1-spend): **no**, not now. | Eleonora |", False),
+    ("| 2026-11-06 | E1 spend (e1-spend): **later**. | Eleonora |", False),
+    ("| 2026-11-06 | E1 spend (e1-spend): **go**. | Coordinator |", False),  # must be her row
+])
+def test_spend_row(row, ok):
+    assert (run_e1.spend_row(PLAN_ROWS + row + "\n") is not None) is ok
+
+
+def test_existing_rows_are_not_a_spend_ok():
+    assert run_e1.spend_row(PLAN_ROWS) is None
+    assert run_e1.spend_row((run_e1.ROOT / "PLAN.md").read_text()) is None  # no spend OK recorded yet
+
+
+def test_approval_must_postdate_the_freeze():
+    with pytest.raises(SystemExit, match="after the freeze"):
+        run_e1.check_spend_approval(run_e1.FREEZE_COMMIT)
+    with pytest.raises(SystemExit, match="after the freeze"):
+        run_e1.check_spend_approval("134ee11")  # before the freeze
+
+
+def test_head_has_no_approval_yet():
+    with pytest.raises(SystemExit, match="no Eleonora row"):
+        run_e1.check_spend_approval("HEAD")
