@@ -220,3 +220,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - Infra raised CHOICE-E1-17: how clustering by question enters the tests (design effect vs question bootstrap), and the rule for "supported" (interval plus Holm p, or Holm-widened intervals). It also raised how many unanswerable questions to hold back under replace or add (3 or about 5).
   - The coordinator rechecked infra's Wilson bounds from ICC 0 to ICC 1. They match to within 0.1 point of rounding. One example: R = 90% cannot be met at ICC 1 with about 20 scored questions.
   - Docket round 19 adds these to the e1-R2 card context and adds three cards: e1-holdback, e1-cluster and e1-support. None carries a recommendation. The ids e1-set-h3 and e1-R2 are unchanged.
+- **2026-11-05 14:35 UTC, coordinator: round 19 answers.**
+  - Correction to the 14:30 entry: her e1-set-h3 and e1-R2 taps were saved at 14:22:24 and 14:22:29 UTC. That was just after the coordinator's read, not "kept on her device". The coordinator read the store too early, and asking her to tap again was unnecessary (*caught by Claude, coordinator*).
+  - Choices: e1-set-h3 **replace**, e1-R2 **70%**, e1-holdback **about 5**. Recorded in PLAN "Decisions taken", credited to her.
+  - e1-cluster and e1-support have no answer in the store and stay open on the docket. Nothing was assumed.
+  - Relayed to infra: redraft about 10 answerable questions as unanswerable, hold back about 5, put R = 70% in the prereg, and have the changed questions reviewed by her before any freeze. No spend.
+  - Docket round 20 keeps e1-cluster and e1-support open.
