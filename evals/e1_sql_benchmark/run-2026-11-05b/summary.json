@@ -1,0 +1,66 @@
+{
+ "mode": "main",
+ "approval": {
+  "commit": "32ec93ad1e768bbb69746d7ce123853c2dd73f3a",
+  "row": "| 2026-11-05 | E1 spend (e1-spend, chosen 20:59 UTC): **OK** (a): run the main run and the Opus baseline, $31 total cap. No recommendation was given on this card. | Eleonora |"
+ },
+ "cap_usd": 31.0,
+ "total_usd": 2.586701,
+ "loops_planned": 720,
+ "loops_done": 79,
+ "stop": {
+  "reason": "overrun: claude-sonnet-5-5 mean $0.0313/loop over 27 loop(s) > 1.5x assumption $0.020308",
+  "at": {
+   "qid": "q154",
+   "model": "claude-sonnet-5-5",
+   "served_model": "claude-sonnet-5-5",
+   "rep": 1,
+   "turn": 2,
+   "usage": {
+    "input_tokens": 2,
+    "output_tokens": 97,
+    "cache_read_input_tokens": 2272,
+    "cache_creation_input_tokens": 29734
+   },
+   "cost_usd": 0.075536,
+   "latency_s": 1.144,
+   "stop_reason": "tool_use",
+   "text": "",
+   "tool_calls": [
+    {
+     "name": "describe_series",
+     "input": {
+      "id": "FL155035015"
+     }
+    }
+   ],
+   "ts": "2026-11-05T21:26:30+00:00"
+  }
+ },
+ "per_model": {
+  "claude-haiku-5-5": {
+   "loops": 27,
+   "spent_usd": 0.036558,
+   "mean_per_loop_usd": 0.001354,
+   "correct": 21,
+   "scored": 27,
+   "truncated": 0
+  },
+  "claude-sonnet-5-5": {
+   "loops": 27,
+   "spent_usd": 0.845846,
+   "mean_per_loop_usd": 0.031328,
+   "correct": 24,
+   "scored": 26,
+   "truncated": 0
+  },
+  "claude-opus-5-5": {
+   "loops": 26,
+   "spent_usd": 1.704297,
+   "mean_per_loop_usd": 0.06555,
+   "correct": 23,
+   "scored": 26,
+   "truncated": 1
+  }
+ }
+}
