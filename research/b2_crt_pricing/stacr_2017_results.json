@@ -1,0 +1,33 @@
+{
+  "source": "stacr_tranches.csv (Freddie Mac STACR pricing workbook, sha256 e10971eb...; sources.md)",
+  "scope": "STACR deals closing on or after 2017-01-01",
+  "baseline": {
+    "CPR": 0.1,
+    "CDR": 0.002,
+    "LGD": 0.25,
+    "horizon_months": 120,
+    "cum_loss_bp_of_original": 30.82,
+    "label": "FHFA's December 2016 baseline, applied to 2017+ deals as an assumption"
+  },
+  "libor_1m_adj_bp": null,
+  "libor_adj_status": "pending: source held as a proposed card",
+  "deals": 78,
+  "tranches": 289,
+  "tranches_her_classes": 274,
+  "tranches_outside_classes": 15,
+  "tranches_no_spread": 3,
+  "retained_indicative": 8,
+  "with_multiple": 50,
+  "with_multiple_by_class": {
+    "M-1": 0,
+    "M-2": 0,
+    "B": 50
+  },
+  "detach_unknown": [
+    "2019-FTR1",
+    "2019-FTR3",
+    "2019-FTR4"
+  ],
+  "multiple_out_median": 2.362,
+  "multiple_orig_median": 3.835
+}

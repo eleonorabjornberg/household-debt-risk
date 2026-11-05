@@ -59,3 +59,11 @@ Still not reachable (2026-11-05 14:15 UTC): crt.freddiemac.com (proxy CONNECT 50
 - **STACR 2016-DNA1** is dated 01/21/16 in the deal table and 01/01/16 in the credit-cost table. `deals.csv` keeps both and flags the row with `date_tables_disagree`.
 - **CAS 2016-6** has no estimated credit cost: the cell is blank in FHFA's table. It is recorded as absent.
 - **Two deal-table rows print no deal name** (CAS 2016-3 (1), STACR 2016-HQA4). They are matched by program, date, attach/detach and position; the match is asserted.
+
+## LIBOR–SOFR spread adjustment for B2 STACR 2017+ (checked 2026-11-05; NOT used until the coordinator's card is approved)
+
+| What | Publisher, document | URL | Retrieved (UTC) | Bytes | SHA-256 | Quoted passage |
+|---|---|---|---|---|---|---|
+| Tenor spread adjustment for one-month LIBOR | Board of Governors of the Federal Reserve System, final rule "Regulations Implementing the Adjustable Interest Rate (LIBOR) Act" (Regulation ZZ, 12 CFR part 253), press release of 2022-12-16 | https://www.federalreserve.gov/newsevents/pressreleases/files/bcreg20221216a1.pdf | 2026-11-05 16:25 | 534872 | `6eb9a375f030b0fe748c0ead3dddde6d15900108a89ab0bf4510d998011dd7e9` | "(c) Tenor spread adjustments. The following tenor spread adjustments shall be included as part of the Board-selected benchmark replacements as indicated in paragraphs (a) and (b): ... (2) 0.11448 percent for one-month LIBOR;" (rule text, §253.4(c)); preamble: "11.448 bps (0.11448 percent) for one-month LIBOR" |
+
+Free; host www.federalreserve.gov is already approved. Plain request, no extra headers. The PDF is not committed.

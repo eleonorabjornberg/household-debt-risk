@@ -14,8 +14,11 @@ Germany's publicly owned banks (Eleonora, 2026-11-04, Q7 card q7-2, option c): o
 lending is a third category, "publicly owned, not guaranteed", reported in its own column (no US counterpart) and
 never added to the public (b) share or subtracted from it. Evidence: Q7_EVIDENCE.md. The end of state guarantees in
 2005 is sourced for public-law banks (savings banks, Landesbanken), so the category holds those two only (Eleonora,
-card q7-promo-2, option c). Promotional banks stay unclassified (de_promotional_banks_unclassified) until the Länder
-promotional-bank statutes can be reached; KfW's funding-side federal guarantee (KfW law Art. 1a) is context only.
+card q7-promo-2, option c). The rest of the holder share stays unclassified (de_special_tasks_banks_unclassified):
+the Bundesbank category "banks with special, development and other central support tasks", which holds promotional
+banks, DZ Bank and others (Eleonora, card a8-promo, option b, 2026-11-05; Q7_EVIDENCE.md follow-up 3). Context only:
+KfW, Rentenbank, NRW.BANK and L-Bank each carry a state guarantee of their own liabilities, which backs their creditors,
+not their borrowers.
 
 Output: comparison.csv, results.json.
 """
@@ -81,21 +84,21 @@ def compare(f: pd.DataFrame, a2: dict) -> pd.DataFrame:
               + v(f, "DE", "promotional_banks_lending_individuals"))
     assert 0 < de_pub < de_tot
     # Q7 (c): the same banks' lending is the third category on the risk-bearer measure; it stays out of risk_b_*.
-    de_promo = v(f, "DE", "promotional_banks_lending_individuals")
+    de_special = v(f, "DE", "promotional_banks_lending_individuals")  # input id kept; the cell is the whole category
     rows.append(dict(country="DE", date="2025Q4", holder_a=de_pub / de_tot, risk_b_low=math.nan, risk_b_high=math.nan,
-                     public_owned_not_guaranteed=(de_pub - de_promo) / de_tot,
-                     promotional_banks_unclassified=de_promo / de_tot,
+                     public_owned_not_guaranteed=(de_pub - de_special) / de_tot,
+                     special_tasks_banks_unclassified=de_special / de_tot,
                      household_credit_lcu_m=de_tot,
-                     note="(a) savings banks + Landesbanken + promotional banks (public building-savings banks not separable), bank lending to employees and other individuals; "
-                          "(b) savings banks + Landesbanken are a third category, publicly owned, not guaranteed (Q7 c); promotional banks unclassified (q7-promo-2 c); public (b) share not computed: "
+                     note="(a) savings banks + Landesbanken + banks with special, development and other central support tasks (public building-savings banks not separable), bank lending to employees and other individuals; "
+                          "(b) savings banks + Landesbanken are a third category, publicly owned, not guaranteed (Q7 c); banks with special, development and other central support tasks (promotional banks, DZ Bank and others) unclassified (a8-promo b); public (b) share not computed: "
                           "BAföG not sourced; KfW loans carry the on-lending bank's liability"))
     t = pd.DataFrame(rows).set_index("country")
     for c in ("holder_a", "risk_b_low", "risk_b_high", "public_owned_not_guaranteed",
-              "promotional_banks_unclassified"):
+              "special_tasks_banks_unclassified"):
         ok = t[c].dropna()
         assert ((ok >= 0) & (ok <= 1)).all(), c
     de = t.loc["DE"]
-    assert math.isclose(de.public_owned_not_guaranteed + de.promotional_banks_unclassified, de.holder_a)
+    assert math.isclose(de.public_owned_not_guaranteed + de.special_tasks_banks_unclassified, de.holder_a)
     us = t.loc["US"]
     assert us.risk_b_low <= us.risk_b_high <= us.public_bucket_incl_pools
     return t
