@@ -569,3 +569,87 @@
 - **Evidence:** stacr_2017.py comment "bps a year per dollar of tranche"; README.md:89, 92.
 - **Proposed resolution:** Write "every listed tranche (sold, and retained with an indicative spread)" and "expected loss per dollar of tranche per year".
 - **Status:** addressed: "the spread at issuance and the credit enhancement of every tranche it lists (sold, and a few retained)"; "expected loss a year per dollar of tranche".
+
+### R-20261105-mkt-s55 · skeptic · web/components/scenarios/ScenarioTool.tsx:96-97, 177 ("Public share of balances")
+- **Objection:** The page puts "Public share of balances" (computed over every exposure, federal student loans included) next to "Public share of losses" from presets that leave federal student loans out. On the default DFAST preset it shows 23% against 56%, and on the replay 42% against 56%. The like-for-like figure is 52%, which is the one the README uses ("52.4% once federal student loans are excluded"). The same mismatch shows in "Your own" whenever a class is unchecked. A reader will quote the 56 vs 23 gap, which overstates it by about 4 points.
+- **Severity:** major
+- **Evidence:** Playwright on /scenarios (local `next start`): DFAST shows "Public share of losses 23% | Public share of balances 56%", replay "42% | 56%". Recomputed from web/lib/b3/exposures.json: all classes 0.5638; excluding student_federal 0.5238. README.md "Like for like … 52.4%".
+- **Proposed resolution:** Compute the balance share over the classes that are switched on in the active scenario (classes with pd>0 and present in `classes`), and label it as such, e.g. "Public share of balances in the classes covered". Or show both values with labels.
+- **Status:** addressed: the tile now covers only the loan classes in the scenario and says which are left out ("Public share of balances, without federal student loans": 52% for the stress-test and replay presets, 56% with student loans), checked in the browser.
+
+### R-20261105-mkt-s56 · skeptic · web/components/scenarios/ScenarioTool.tsx:160-166, page.tsx:46-48; research/b3_scenarios/engine.py:102 (transfer base)
+- **Objection:** The transfer applies to the whole `gse_agency` mortgage bucket (transfer_eligible = mortgage and gse_agency). That bucket includes FL413065105 "Agency- and GSE-backed mortgage pools", which holds the Ginnie (FHA/VA) pools. FHA/VA risk is federal and is not covered by GSE CRT or private mortgage insurance. Yet the checkbox says "GSE mortgage losses" and the caveat says "only on GSE mortgages". The share input also goes up to 100% with no cap guidance, so the page can move every public mortgage loss to private hands: replay at 100% with an uncapped limit gives public $16.2B, 1%, and $784B moved. That reads as private investors bearing the losses on FHA/VA books.
+- **Severity:** major
+- **Evidence:** pipeline/series_catalog.yaml:51 (FL413065105 → gse_agency); engine.py:102; Playwright: replay + transfer share 100, cap 100000 → "Held on public books $16.2B … Public share of losses 1% … Moved by transfer $784B". README "Upper bound" bullet itself says the bucket includes Ginnie (FHA, VA) pools.
+- **Proposed resolution:** Either restrict the transfer base to the GSE (Fannie/Freddie) share of the bucket, which needs a split of the pools series, or relabel it "mortgages in GSE and agency pools, including Ginnie (FHA/VA), on which CRT/MI do not apply" and say that the share should reflect cover on the GSE part only. Until A2's caps exist, consider bounding the share or labelling large values as illustrative.
+- **Status:** addressed: the transfer is labelled "mortgages held by the GSEs and in agency pools", and the hint says the group includes Ginnie Mae (FHA and VA) pools, so a large uncapped share overstates what transfer can move.
+
+### R-20261105-mkt-s57 · skeptic · web/app/scenarios/page.tsx:49-53 (proxy caveats omit bias directions)
+- **Objection:** The page states that the presets are proxies but leaves out the bias directions the README records. The replay's 42% public share is "probably an upper bound" (bank charge-offs from subprime and option-ARM loans applied to GSE and Ginnie books). In DFAST, the first-lien rate on every mortgage biases the public share up, and FFEL loans counted as private bias it down. The presets apply no CRT/MI. A reader of the page sees 42% and 23% as point figures, with no sign that one is an upper bound, and the preset note has no direction either.
+- **Severity:** major
+- **Evidence:** research/b3_scenarios/README.md "Upper bound", "Junior liens", "FFEL loans", "No transfer" bullets; page.tsx bullet "whose losses would differ" (no direction); preset notes in the Playwright output carry no bound language.
+- **Proposed resolution:** Add one line per preset, in the preset note or the caveat list: replay public share likely an upper bound; DFAST public share biased up by junior liens and down by FFEL; no transfer applied.
+- **Status:** addressed: a caveat bullet "Known biases in the presets" gives the four bias directions from the README (replay public share probably an upper bound; junior liens push the DFAST public share up; FFEL pushes it down; no transfer), with no figures.
+
+### R-20261105-mkt-s58 · skeptic · web/components/scenarios/ScenarioTool.tsx:131-139 (preset loss rates shown as "Default rate")
+- **Objection:** The presets hold loss rates with lgd = 1.0, so the form shows, for example, "Default rate 1.5%, Loss given default 100%" for DFAST mortgages and 10.9% for consumer credit. These are net loss rates, not default rates, and a reader could quote "a 10.9% default rate" or "100% severity".
+- **Severity:** minor
+- **Evidence:** web/lib/b3/preset_dfast2026.json: mortgage pd 0.015 lgd 1.0; consumer_other pd 0.1095 lgd 1.0; replay pd 0.0874/0.189 lgd 1.0. The preset label itself says "loss rates".
+- **Proposed resolution:** When a preset is active, add a hint such as "Presets give a loss rate: entered as the default rate with 100% severity", or relabel the column "Default (or loss) rate".
+- **Status:** addressed: with a preset, the column reads "Loss rate, % (as default rate)" and the hint says presets enter a loss rate as a default rate with 100% loss given default.
+
+### R-20261105-mkt-s59 · skeptic · web/app/scenarios/page.tsx:25-27 with ?case= (synthetic balances under a Z.1 header)
+- **Objection:** With `?case=` the tool uses synthetic balances, and the b3-case note says so. The header above it still states that the tool applies scenarios to Z.1 balances "as of 2026-06-30", and "Public share of balances" is then synthetic. The hook is reachable on any deployment. The note is adequate, but a screenshot of the totals plus the header could circulate as Z.1 numbers.
+- **Severity:** minor
+- **Evidence:** ScenarioTool.tsx:62-63, 108; page.tsx header renders unconditionally.
+- **Proposed resolution:** Place the test-case note inside or next to the totals block, or render the hook only in non-production builds.
+- **Status:** addressed: the test-case note now says the synthetic balances replace the Z.1 balances described above and that nothing shown is Z.1 data. The header stays static (server-rendered); the hook is for tests only.
+
+### R-20261105-mkt-e26 · editor · web/components/scenarios/ScenarioTool.tsx:152-155, 163-168, 172; page.tsx:64-66 (transfer cap)
+- **Objection:** The cap input defaults to 0, and in the engine a cap of 0 means no transfer at all (engine.py:64 needs cap_musd > 0). The hint says 'a large share with no cap overstates what transfer can move', which reads as if leaving the cap empty or 0 means uncapped. A reader who ticks the box, enters a 60% share and leaves the cap at 0 sees nothing moved and 'Moved by transfer $0' with no explanation. Also the checkbox says the losses pass 'to private investors', but mortgage insurers are not investors, and 'credit-risk transfer' and 'mortgage insurance' are never defined for a general reader.
+- **Severity:** major
+- **Evidence:** ScenarioTool.tsx:160-167, 172; engine.py:64-65; README.md:10 ('the cap is 0' in the DFAST bias list means no cover).
+- **Proposed resolution:** State what cap 0 does, and how to get 'no cap' (a very large number). Say in plain words what credit-risk transfer and mortgage insurance are, and replace 'investors' with something that covers insurers. Author's wording.
+- **Status:** addressed: the transfer is "Move part of the losses ... to private risk-takers"; the hint defines credit-risk transfer and says a cap of zero moves nothing, so set both; "a large share with a high cap" replaces "no cap".
+
+### R-20261105-mkt-e27 · editor · web/app/scenarios/page.tsx:25-26, 50-52; ScenarioTool.tsx:26-31, 118 (preset names and what 'stress test' is)
+- **Objection:** Page and README name the same presets differently and the page never says what they are. The page says 'Stress test 2026 (proxy)' and 'the Fed's stress-test projections'; the README says 'DFAST'. A reader cannot tell it is a hypothetical severely adverse scenario for the largest banks, not a Fed forecast or a sector-wide result, so 'Stress test 2026' can be quoted as what the Fed expects. 'Realised charge-offs' (spelled British, README uses the same) and 'proxy' are not explained either: a proxy of what, and why it is used for holders who are not banks. 'Proxy' appears in every label but its meaning is only implicit in the second bullet.
+- **Severity:** major
+- **Evidence:** page.tsx:50-52; ScenarioTool.tsx:26, 28, 30; README.md:17-19 ('severely adverse', 'largest banks'); rule 'proxies must be labelled as proxies' is met only by the word.
+- **Proposed resolution:** Use one name on page and README and expand it once. Say on the page that the stress case is a hypothetical severe recession for the largest banks, and what a charge-off is. Add one sentence on what 'proxy' means here (bank loss rates standing in for rates on the GSE, federal and other books). Author's wording.
+- **Status:** addressed: preset labels "Fed stress test 2026, hypothetical (proxy)" and "2008–12 replay of bank write-offs (proxy)"; the caveats explain the severely adverse scenario ("a test, not a forecast"), what write-offs are, and what "proxy" means.
+
+### R-20261105-mkt-e28 · editor · web/app/scenarios/page.tsx:51-52, 66; ScenarioTool.tsx:154; README.md:66-73 (hard-coded figures; horizon caveat)
+- **Objection:** Three consistency gaps. (1) The rule is no hard-coded figures in the copy, and the README says 'Every number on the page is computed' (README.md:73), but page.tsx:51-52 writes 'nine quarters' and 'twenty' and the labels hard-code '2026' and '2008-12'. These are not computed from the preset files. (2) The tool hint says 'The default rate is cumulative over the whole horizon' for every scenario, but README.md:51 says the replay's cumulative figure is a sum of twenty quarterly rates applied to today's balances, 'an approximation, not a share of a starting balance'. The page tells the reader about the horizon difference but not that approximation. (3) README.md:73 therefore overstates what the copy does.
+- **Severity:** major
+- **Evidence:** page.tsx:51-52; ScenarioTool.tsx:26-30, 154; README.md:51, 73.
+- **Proposed resolution:** Either derive the quarter counts and years from the preset JSON or change the README sentence to say which labels are fixed text. Add the replay approximation to the horizon bullet or the hint. Author's decision.
+- **Status:** addressed: the horizons and the preset years are read from the preset files in page.tsx; the cumulative-rate approximation for the replay is stated; the README says what is computed.
+
+### R-20261105-mkt-e29 · editor · web/app/scenarios/page.tsx:61-63; ScenarioTool.tsx:28 (federal student loans left out)
+- **Objection:** 'Federal student loans have no bank loss series. They are left out of the main presets' does not say what leaving out means: a zero loss on the largest public holding after mortgages. A reader will compare the public share of losses with a public share of balances and not see that the omitted class is almost all public, so the main-preset public share is biased down on that count (the README says so only for the weak-proxy variant, and for FFEL the other way). The page also does not say which rate the 'weak proxy' uses (the 'other consumer' rate, README.md:22), so the label cannot be judged.
+- **Severity:** minor
+- **Evidence:** page.tsx:61-63; README.md:22, 29-32 (23% vs 36%); exposures.json (student_federal is all federal_direct).
+- **Proposed resolution:** Say that the omission lowers the public share of losses and name the stand-in rate. Author's wording.
+- **Status:** addressed: the student-loan bullet says leaving them out lowers the public share of losses and names the stand-in rate (the stress test's other-consumer rate).
+
+### R-20261105-mkt-e30 · editor · web/components/scenarios/ScenarioTool.tsx:181-186, 213 (totals tiles and table note carry no estimate label)
+- **Objection:** The proxy and estimate label sits only in the preset note above the form. The totals ('Total losses', 'Held on public books', 'Public share of losses') are the numbers most likely to be screenshotted and carry no 'estimate' or 'proxy' marker and no unit basis. The table note 'dollars of today's balances' does not say that they are nominal, undiscounted and not a forecast, and 'Held on public books' next to 'Public share of losses' invites reading the share as who bears it, which the page itself warns against. 'Your own' mode shows the totals with no label that they are illustrative.
+- **Severity:** minor
+- **Evidence:** ScenarioTool.tsx:181-186, 213; page.tsx:45-47 ('Who holds is not who bears').
+- **Proposed resolution:** Put an 'estimate under a proxy' marker (or 'illustrative' in Your own) in or next to the totals block and state nominal dollars in the table note. Author's wording.
+- **Status:** addressed: tiles are "Losses on public/private books" and "Public books' share of losses/balances", with a note under them (estimates, today's dollars, not discounted, holder not bearer); the table note says not discounted.
+
+### R-20261105-mkt-e31 · editor · web/components/scenarios/ScenarioTool.tsx:123, 127-129; page.tsx:26-29 (undefined terms)
+- **Objection:** Terms a general reader will not know and the page never defines: 'loss given default' (field label, aria-labels, hint), 'GSEs' and 'agency pools' (intro, transfer legend), 'Z.1' and 'Financial Accounts' (intro), 'Ginnie Mae (FHA and VA)', 'FFEL' is avoided but 'federally guaranteed student loans held by private lenders' is not linked to the Z.1 'private' class, and 'private securitization'. 'Spread over quarters' is a column of counts of quarters, so the heading does not match its content. The intro also says 'Pick a scenario' for what the bullets say are proxies applied to today's balances; 'scenario' is fine but the heading 'whose books take the loss?' again reads as who bears.
+- **Severity:** minor
+- **Evidence:** page.tsx:25-29; ScenarioTool.tsx:123, 127-129, 152-155, 164-166.
+- **Proposed resolution:** Gloss each term once, in plain words, or link to a short glossary. Rename the quarters column. Author's wording.
+- **Status:** addressed: the intro explains Z.1, GSEs, agency pools (incl. Ginnie Mae) and private securitization; the hint defines default rate and loss given default; the column reads "Number of quarters"; the heading asks which lenders' books record the losses.
+
+### R-20261105-mkt-e32 · editor · web/app/scenarios/page.tsx:69-72; research/b3_scenarios/README.md:66-78 (closing line and README section)
+- **Objection:** The closing line says the engine 'is the same code that is tested there against the Python version, case by case'. The tests cover five fixed cases plus the presets to 1e-9, and README.md:72 records that one timing weight reaches the page one unit in the last place away from the file, so 'the same code ... case by case' is slightly stronger than what was tested, and it says nothing of the bundler's re-serialising. The path 'research/b3_scenarios/' is not a link a visitor to the site can open, and the README it points to is itself a Claude draft. In the README section, 'unit in the last place' is unexplained and the 'In the browser' text does not say that the page's presets are still proxies pending her review.
+- **Severity:** minor
+- **Evidence:** page.tsx:69-72; README.md:70-73; web/lib/b3/engine.test.ts as described in README.md:71.
+- **Proposed resolution:** Say what was compared and to what tolerance, and link or name where the method is published. Define or drop 'unit in the last place'. Author's wording.
+- **Status:** addressed: the closing line says the page runs a copy of the tested code that matches the Python version on fixed test cases up to computer rounding; the README explains "unit in the last place". The repository path stays text (no public link is known to be available).

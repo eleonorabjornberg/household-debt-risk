@@ -81,6 +81,17 @@ def test_browser_engine_matches_python():
     assert out.returncode == 0, out.stdout + out.stderr
 
 
+WEB_BUILD = HERE.parents[1] / "web" / ".next" / "BUILD_ID"
+
+
+@pytest.mark.skipif(shutil.which("node") is None or not WEB_BUILD.exists(),
+                    reason="node missing or web/ not built (cd web && npm run build)")
+def test_scenarios_page_matches_python_in_a_browser():
+    """PLAN B3: the /scenarios page in Chromium reproduces engine.py (test_browser.mjs; local server, no deployment)."""
+    out = subprocess.run(["node", str(HERE / "test_browser.mjs")], capture_output=True, text=True, timeout=300)
+    assert out.returncode == 0, out.stdout + out.stderr
+
+
 EXPOSURES = HERE / "exposures.json"
 
 

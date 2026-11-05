@@ -1,0 +1,28 @@
+{
+ "as_of": "2026-06-30",
+ "units": "USD millions",
+ "label": "PROXY: bank portfolio loss rates applied to all holders",
+ "dfast2026_proxy": {
+  "public_musd": 137436.9017226215,
+  "private_musd": 457100.8682773784,
+  "total_musd": 594537.7699999998,
+  "public_share_of_losses": 0.23116597238661818,
+  "by_class": {
+   "mortgage": 209654.06999999998,
+   "consumer_other": 384883.7
+  }
+ },
+ "dfast2026_proxy_with_student": {
+  "public_musd": 254611.68372262147,
+  "private_musd": 457100.8682773784,
+  "total_musd": 711712.5519999998,
+  "public_share_of_losses": 0.35774510791910485,
+  "by_class": {
+   "mortgage": 209654.06999999998,
+   "consumer_other": 384883.7,
+   "student_federal": 117174.78199999999
+  }
+ },
+ "public_share_of_holdings": 0.5638311569322236,
+ "public_share_of_holdings_ex_federal_student": 0.523806748160476
+}
