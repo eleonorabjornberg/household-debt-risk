@@ -210,8 +210,8 @@ RULE_NOTE = ("The verdicts apply the decision rule as corrected by `docs/decisio
              "Eleonora settled both on 2026-11-05 (18:54 UTC): \"not rejected\" means the Kupiec coverage test at the "
              "80% level, h = 1, has p of 0.05 or more (card c3-b-level, reading (iv)); Christoffersen's independence "
              "test is reported but does not enter the verdict. A model without intervals is \"undetermined\" (card "
-             "c3-b-nointv (c)). Reading (iv) is the most lenient of the readings compared in section 2: it gives the "
-             "most \"beats\". Section 2 shows what the other readings would give.")
+             "c3-b-nointv (c)). No reading compared in section 2 gives more \"beats\" than (iv); p < 0.01 on either test "
+             "gives the same three. Section 2 shows what the other readings would give.")
 ALPHA = "kupiec 0.05"   # reading of "not rejected": Eleonora's c3-b-level (iv), 2026-11-05 18:54 UTC
 ALPHAS = (0.01, 0.05, 0.10, "kupiec 0.05")   # last: reading (iv) on card c3-b-level, Kupiec only at 5%
 
@@ -372,30 +372,37 @@ def beats_range(vb: list[dict]) -> str:
 
 
 def indep_note(vb: list[dict], cov_dev: list[dict]) -> tuple[str, list[dict]]:
-    """Christoffersen (independence) result beside each "beats" under (iv), as Eleonora asked (c3-b-level (iv))."""
-    nums, parts = [], []
+    """Christoffersen (independence) result beside each "beats" under (iv), as Eleonora asked (c3-b-level (iv)).
+    Wording per quant-reviewer mkt-q45/q47: which readings would still count it, one uncorrected test, and every
+    "beats" candidate's independence p shown, not only the one below 0.05."""
+    nums, parts, fails = [], [], []
     for v in vb:
         if v["verdict"] != "beats":
             continue
         r = [x for x in cov_dev if x["design"] == v["design"] and x["h"] == "1" and x["model"] == v["candidate"]
              and x["level"] == "0.8"][0]
         ch, ku = fl(r["christoffersen_p"]), fl(r["kupiec_p"])
-        if ch >= 0.05:
-            continue
         des = v["design"].replace("latest-", "")
         base = f"iv_{des}_h1_{v['candidate']}_80"
         comp = f"{C2D}/forecast.py -> {C2D}/coverage_dev.csv"
-        nums += [num(base + "_christoffersen_p", f"C2 development, {des}, h=1, {v['candidate']}: Christoffersen p "
-                     f"(80%) {fp(ch)}.", f"p = {fp(ch)}", ch, "p", "1990Q1-2023Q2", comp, "Independence of misses; not in the "
-                     "verdict under reading (iv)."),
-                 num(base + "_kupiec_p", f"C2 development, {des}, h=1, {v['candidate']}: Kupiec p (80%) {fp(ku)}.",
-                     f"p = {fp(ku)}", ku, "p", "1990Q1-2023Q2", comp, "Coverage test that decides under reading (iv).")]
-        parts.append(f"{des} `{v['candidate']}`: its 80% coverage passes (Kupiec p = {fp(ku)}), but its misses fail "
-                     f"the independence test (Christoffersen p = {fp(ch)})")
+        nums.append(num(base + "_christoffersen_p", f"C2 development, {des}, h=1, {v['candidate']}: Christoffersen p "
+                        f"(80%) {fp(ch)}.", f"p = {fp(ch)}", ch, "p", "1990Q1-2023Q2", comp, "Independence of misses; "
+                        "not in the verdict under reading (iv)."))
+        if ch < 0.05:
+            nums.append(num(base + "_kupiec_p", f"C2 development, {des}, h=1, {v['candidate']}: Kupiec p (80%) "
+                            f"{fp(ku)}.", f"p = {fp(ku)}", ku, "p", "1990Q1-2023Q2", comp,
+                            "Coverage test that decides under reading (iv)."))
+            still = [f"p < {a:g}" for a in ALPHAS if not isinstance(a, str) and v["verdict_by_alpha"][a] == "beats"]
+            lost = [f"p < {a:g}" for a in ALPHAS if not isinstance(a, str) and v["verdict_by_alpha"][a] != "beats"]
+            fails.append(f"{des.capitalize()} `{v['candidate']}`'s 80% coverage passes (Kupiec p = {fp(ku)}), but the independence "
+                         f"test rejects at 5% (Christoffersen p = {fp(ch)}; one test, not corrected for the three "
+                         f"\"beats\"). On either test it would still count at {', '.join(still) or 'no level'} and "
+                         f"not at {' or '.join(lost)}")
+        parts.append(f"{des} `{v['candidate']}` p = {fp(ch)}")
     if not parts:
         return "", []
-    return (" Next to a \"beats\" under (iv): " + "; ".join(parts) + ". Under the two-test readings in section 2 "
-            "it would not count. Reading (iv) leaves independence out, which is why it is the most lenient.", nums)
+    return (" Independence of 80% misses (Christoffersen, not in the verdict under (iv)) for the \"beats\": "
+            + "; ".join(parts) + ". " + ". ".join(fails) + ("." if fails else ""), nums)
 
 
 def headline(d: Doc, verdicts: list[dict], c1b: dict, fc: list[dict], hold: dict, c1v: list[dict],
@@ -418,7 +425,10 @@ def headline(d: Doc, verdicts: list[dict], c1b: dict, fc: list[dict], hold: dict
     focus = c1_beats or [v for v in c1v if v["verdict"].startswith("undetermined")]
     others = [v for v in c1v if focus and v["candidate"] == focus[0]["candidate"]
               and v["benchmark"] == focus[0]["benchmark"] and v not in focus]
-    assert n_by_reading(verdicts)[ALPHAS.index(ALPHA)] == max(n_by_reading(verdicts))   # "most lenient" in the text
+    nb = n_by_reading(verdicts)
+    assert nb[ALPHAS.index(ALPHA)] == max(nb) and nb[ALPHAS.index(0.01)] == max(nb)       # "none gives more ... same three"
+    assert {(v["design"], v["candidate"]) for v in verdicts if v["verdict_by_alpha"][0.01] == "beats"} == \
+        {(v["design"], v["candidate"]) for v in verdicts if v["verdict"] == "beats"}
     ind, ind_nums = indep_note(verdicts, cov_dev)
     d.add("- **C2 forecasts.** On point-forecast error (RMSE), no frozen candidate beats the no-change forecast or "
            "the AR benchmark at any horizon in either window design. In development, the Z candidates' RMSE is below "
@@ -429,7 +439,8 @@ def headline(d: Doc, verdicts: list[dict], c1b: dict, fc: list[dict], hold: dict
               "holdout at every horizon (section 2), so the picture depends on the loss. " if crps_lower else "")
            + "Under rule (b) (erratum) every \"beats\" is against the seasonal naive at h = 1. Under Eleonora's "
            f"reading of the coverage clause (card c3-b-level (iv), Kupiec only at 5%) there are {len(beats)}; the "
-           f"readings compared in section 2 give {beats_range(verdicts)}, and (iv) is the most lenient of them." + ind,
+           f"readings compared in section 2 give {beats_range(verdicts)}; none gives more than (iv), and p < 0.01 on "
+           "either test gives the same three." + ind,
           ind_nums + count_nums(verdicts, beats))
     d.text(
            f"- **Holdout targets are barely revised.** All samples are scored on the 2026-09-11 vintage. A holdout "
@@ -735,8 +746,8 @@ def verdict_table(d: Doc, verdicts: list[dict]) -> None:
     d.text("")
     d.text("Under Eleonora's reading (iv), the coverage clause fails only if the Kupiec test of 80% coverage at "
            "h = 1 has p below 0.05. The Christoffersen test in `forecast.py` tests whether misses come independently, "
-           "not whether coverage is right, so under (iv) it is reported but does not decide. That makes (iv) the most "
-           "lenient of the readings above. A joint conditional-coverage test was not in the protocol and is not "
+           "not whether coverage is right, so under (iv) it is reported but does not decide. No reading above gives more "
+           "\"beats\" than (iv); p < 0.01 on either test gives the same three. The readings are not nested. A joint conditional-coverage test was not in the protocol and is not "
            "computed here (quant-reviewer mkt-q40).", "")
     d.add("Bandwidth sensitivity: with a lag-8 Bartlett variance (`posthoc_p_bartlett8`, in `tables/c2_verdicts.csv`) "
           f"the h = 1 p-values of the Z candidates against no-change are {lo8[0]} to {hi8[0]}, against far smaller "
