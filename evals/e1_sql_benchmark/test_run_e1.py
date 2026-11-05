@@ -52,7 +52,7 @@ def test_new_units(text, unit, gold, tol, ok):
     assert pilot.score(text, {"unit": unit, "gold": gold, "tolerance": tol})["correct"] is ok
 
 
-def test_fake_run_uses_no_top_level_cache(tmp_path):
+def test_fake_run_uses_the_restored_top_level_cache(tmp_path):
     seen = []
 
     class C(pilot.FakeClient):
@@ -62,7 +62,7 @@ def test_fake_run_uses_no_top_level_cache(tmp_path):
 
     s = run_e1.run(C(), TOOLS, call_tool, tmp_path, reps=1)
     assert s["stop"] is None and s["loops_done"] == 240
-    assert seen and all("cache_control" not in kw for kw in seen)
+    assert seen and all(kw.get("cache_control") == {"type": "ephemeral"} for kw in seen)  # e1-cost (b)
     assert all(kw["system"][0]["cache_control"] == {"type": "ephemeral"} for kw in seen)
 
 
@@ -86,7 +86,7 @@ def test_checkpoint_stops_on_projection(tmp_path):
 
 
 def test_overrun_stop_uses_planning_figure():
-    b = pilot.Budget(cap=31, assumed=dict(run_e1.PLANNING))
+    b = pilot.Budget(cap=31, assumed=dict(run_e1.PLANNING))  # min_loops 0: the rule as frozen
     b.start_loop("claude-opus-5-5")
     b.add("claude-opus-5-5", 0.12)  # 2.98x the pilot mean: under 3x
     with pytest.raises(pilot.Stop, match="overrun"):
@@ -170,3 +170,22 @@ def test_never_overwrites_a_run(tmp_path):
     (tmp_path / "calls.jsonl").write_text("{}\n")
     with pytest.raises(SystemExit, match="already holds a run"):
         run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1)
+
+
+def test_overrun_stop_waits_for_24_loops():  # e1-stoprule (a)
+    b = pilot.Budget(cap=31, assumed=dict(run_e1.PLANNING), min_loops=run_e1.MIN_LOOPS)
+    m = "claude-haiku-5-5"
+    for _ in range(24):  # the first loop of the stopped run cost $0.003634, over the $0.0025 stop: no stop now
+        b.start_loop(m)
+        b.add(m, 0.003634)
+    b.start_loop(m)
+    with pytest.raises(pilot.Stop, match="overrun"):
+        b.add(m, 0.003634)  # loop 25: the mean is over the stop, and the rule now applies
+
+
+def test_cache_tokens_are_logged_and_priced(tmp_path):
+    u = {"input_tokens": 100, "output_tokens": 10, "cache_read_input_tokens": 5000, "cache_creation_input_tokens": 2000}
+    run_e1.run(pilot.FakeClient(usage=u), TOOLS, call_tool, tmp_path, reps=1)
+    rec = json.loads((tmp_path / "calls.jsonl").read_text().splitlines()[0])
+    assert rec["usage"] == u
+    assert rec["cost_usd"] == pytest.approx(pilot.call_cost(rec["model"], u), abs=1e-6)

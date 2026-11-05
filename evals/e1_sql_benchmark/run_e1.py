@@ -9,10 +9,11 @@
     uv run --project mcp/household-credit-mcp --with anthropic python evals/e1_sql_benchmark/run_e1.py --live --approval COMMIT \
         --baseline claude-opus-5-5 --cap <31 minus the main run's spend>
 
-Settings are Eleonora's choices of 2026-11-05 (prereg "Decisions"): turn limit 4, effort medium, 3 repetitions, no
-top-level cache, all 10 tools, seed 20261104, pilot scoring rule, holdout of 20 not run, cap $31 shared by the main
+Settings are Eleonora's choices of 2026-11-05 (prereg "Decisions" and "Deviations"): turn limit 4, effort medium,
+3 repetitions, top-level cache restored (deviation, e1-cost (b)), all 10 tools, seed 20261104, pilot scoring rule, holdout of 20 not run, cap $31 shared by the main
 run and the baseline. Stops: the cap (with a pre-call guard), a model's mean cost per loop above 1.5x its planning
-figure (2x the pilot mean, so 3x the pilot), and a projection checkpoint after 10% of loops.
+figure (2x the pilot mean, so 3x the pilot), applied only after 24 loops per model (deviation, e1-stoprule (a)), and a
+projection checkpoint after 10% of loops.
 Key and client handling are pilot.py's (HHDEBT_ANTHROPIC_API_KEY, explicit first-party base URL, nothing logged).
 This script records answers and scores only; the hypothesis tests (T, R, McNemar, Holm) are a separate analysis
 step under the frozen prereg.
@@ -43,6 +44,10 @@ REPS = 3
 CAP_USD = 31.0
 PILOT_MEAN = {"claude-opus-5-5": 0.040264, "claude-sonnet-5-5": 0.010154, "claude-haiku-5-5": 0.000821}
 PLANNING = {m: 2 * v for m, v in PILOT_MEAN.items()}  # stop at 1.5x this = 3x the pilot mean
+# Deviations of 2026-11-05 (Eleonora, PLAN 32ec93a): e1-stoprule (a) the overrun stop applies only after 24 loops per
+# model; e1-cost (b) the top-level prompt cache is restored (reverses CHOICE-E1-5 (b)).
+MIN_LOOPS = 24
+TOP_CACHE = True
 CHECKPOINT = 0.10
 
 
@@ -122,7 +127,7 @@ def run(client, tools, call_tool, outdir: Path, models=pilot.MODELS, reps: int =
     if baseline:
         models, tools = [baseline], []
     total_loops = len(qs) * len(models) * reps
-    budget = budget or pilot.Budget(cap=CAP_USD, assumed=dict(PLANNING))
+    budget = budget or pilot.Budget(cap=CAP_USD, assumed=dict(PLANNING), min_loops=MIN_LOOPS)
     if (outdir / "calls.jsonl").exists():  # results are append-only: never overwrite a run
         raise SystemExit(f"refusing: {outdir} already holds a run; pass a new --out")
     outdir.mkdir(parents=True, exist_ok=True)
@@ -138,7 +143,7 @@ def run(client, tools, call_tool, outdir: Path, models=pilot.MODELS, reps: int =
         for rep in range(1, reps + 1):
             for q in qs:
                 for m in models:
-                    loop = pilot.run_loop(client, m, q, tools, call_tool, budget, log, top_cache=False, rep=rep)
+                    loop = pilot.run_loop(client, m, q, tools, call_tool, budget, log, top_cache=TOP_CACHE, rep=rep)
                     s = pilot.score(loop["final_text"], q)
                     results.append({"qid": q["id"], "model": m, "rep": rep, "family": q["family"],
                                     "difficulty": q["difficulty"], **{k: v for k, v in loop.items() if k != "final_text"},
@@ -197,7 +202,7 @@ def main() -> None:
     tag = ("baseline-" if a.baseline else "") + ("" if a.live else "fake-")
     out = a.out or (HERE / f"run-{tag}{date}")
     client = pilot.live_client() if a.live else pilot.FakeClient()
-    budget = pilot.Budget(cap=a.cap, assumed=dict(PLANNING))
+    budget = pilot.Budget(cap=a.cap, assumed=dict(PLANNING), min_loops=MIN_LOOPS)
     print(json.dumps(run(client, tools, call_tool, out, budget=budget, baseline=a.baseline, approval=approval), indent=1))
 
 
