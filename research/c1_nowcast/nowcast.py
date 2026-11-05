@@ -151,6 +151,18 @@ def qadd(q: str, n: int) -> str:
     return str(pd.Period(q, "Q") + n)
 
 
+NO_TARGET = "no target: no Z.1 has published this quarter yet"
+
+
+def target_latest(latest: pd.Series, q: str, T: str) -> dict:
+    """Latest-vintage target for q. Deviation c1b-dev-1 (a), Eleonora 2026-11-05: an instant whose target quarter
+    no Z.1 has published yet (holdout instants after the last release) is kept and labelled "no target"; it has no
+    actual and is never scored. Only the presence of q in the latest vintage is checked; nothing else is read."""
+    if q not in latest.index:
+        return {"actual_latest": np.nan, "target": NO_TARGET}
+    return {"actual_latest": latest[q] - latest[T]}
+
+
 def run(sample: str, z: Z1, vint: dict, holdout: bool) -> pd.DataFrame:
     rt = sample == "RT"
     mapping = MAP_2A if sample == "P2a" else MAP_2B
@@ -196,7 +208,7 @@ def run(sample: str, z: Z1, vint: dict, holdout: bool) -> pd.DataFrame:
             frel = z.fr.loc[q, "first_release"]
             row["actual_first"] = z.fr.loc[q, "share_first"] - z.shares(frel)[T]
             row["first_release_date"] = frel
-        row["actual_latest"] = latest[q] - latest[T]
+        row |= target_latest(latest, q, T)
         rows.append(row)
     df = pd.DataFrame(rows)
     df["actual"] = df["actual_first"] if rt else df["actual_latest"]
