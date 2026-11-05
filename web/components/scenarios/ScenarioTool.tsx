@@ -23,11 +23,11 @@ const CLASS_ORDER: LoanClass[] = ["mortgage", "student_federal", "consumer_other
 
 interface PresetDef { classes: Classes; note?: string }
 const PRESETS: { key: string; label: string; source: string; proxy: string; def: PresetDef }[] = [
-  { key: "dfast2026_proxy", label: "Stress test 2026 (proxy)", source: dfast.source, proxy: dfast.label,
+  { key: "dfast2026_proxy", label: "Fed stress test 2026, hypothetical (proxy)", source: dfast.source, proxy: dfast.label,
     def: dfast.presets.dfast2026_proxy as PresetDef },
-  { key: "dfast2026_proxy_with_student", label: "Stress test 2026 + federal student loans (weak proxy)", source: dfast.source,
+  { key: "dfast2026_proxy_with_student", label: "Fed stress test 2026 + federal student loans (weak proxy)", source: dfast.source,
     proxy: dfast.label, def: dfast.presets.dfast2026_proxy_with_student as PresetDef },
-  { key: "replay_2008_2012_proxy", label: "2008–12 replay (proxy)", source: replay.source, proxy: replay.label,
+  { key: "replay_2008_2012_proxy", label: "2008–12 replay of bank write-offs (proxy)", source: replay.source, proxy: replay.label,
     def: replay.presets.replay_2008_2012_proxy as PresetDef },
 ];
 
@@ -126,7 +126,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
             <span role="columnheader">Loan class</span>
             <span role="columnheader">{preset ? "Loss rate, % (as default rate)" : "Default rate, %"}</span>
             <span role="columnheader">Loss given default, %</span>
-            <span role="columnheader">Spread over quarters</span>
+            <span role="columnheader">Number of quarters</span>
           </div>
           {CLASS_ORDER.map((c) => {
             const v = shown[c];
@@ -151,20 +151,22 @@ function Tool({ testCase }: { testCase: Case | null }) {
         </div>
         <p className={styles.hint}>
           {preset ? "Presets give a loss rate directly, entered here as a default rate with 100% loss given default, and keep their own quarter-by-quarter timing. " : "Your own scenario spreads each class’s losses evenly over its quarters. "}
-          The default rate is cumulative over the whole horizon.
+          The default rate is the share of today’s balance that defaults over the whole scenario; loss given default is the
+          share of a defaulted loan that is lost after recoveries.
         </p>
       </fieldset>
 
       <fieldset className={styles.fields}>
         <legend>
           <label><input type="checkbox" checked={transferOn} data-testid="b3-transfer-on"
-                        onChange={(e) => setTransferOn(e.target.checked)} /> Pass part of the losses on GSE and agency-pool mortgages to private investors</label>
+                        onChange={(e) => setTransferOn(e.target.checked)} /> Move part of the losses on GSE and agency-pool mortgages to private risk-takers</label>
         </legend>
         <p className={styles.hint}>
-          Stands for credit-risk transfer and mortgage insurance: a share of the losses on mortgages held by the GSEs and in
-          agency pools moves from the public to the private side, up to a cap. That group also includes Ginnie Mae (FHA and
-          VA) pools, whose cover works differently, so a large share with no cap overstates what transfer can move. Off by
-          default; the presets apply no transfer.
+          Stands for credit-risk transfer (deals in which the GSEs pay private investors to absorb part of their mortgage
+          losses) and private mortgage insurance: a share of the losses on mortgages held by the GSEs and in agency pools moves
+          from the public to the private side, up to a cap. A cap of zero moves nothing, so set both. The group also includes
+          Ginnie Mae pools of FHA and VA loans, whose cover works differently, so a large share with a high cap overstates what
+          transfer can move. Off by default; the presets apply no transfer.
         </p>
         <div className={styles.pair}>
           <label>Share moved, % <input type="number" min={0} max={100} step="any" value={sharePct} disabled={!transferOn}
@@ -179,12 +181,16 @@ function Tool({ testCase }: { testCase: Case | null }) {
         <>
           <dl className={styles.totals} aria-live="polite">
             <div><dt>Total losses</dt><dd data-testid="b3-total">{usdFromMillions(r.sum.total)}</dd></div>
-            <div><dt>Held on public books</dt><dd data-testid="b3-public">{usdFromMillions(r.sum.public)}</dd></div>
-            <div><dt>Held on private books</dt><dd data-testid="b3-private">{usdFromMillions(r.sum.private)}</dd></div>
-            <div><dt>Public share of losses</dt><dd data-testid="b3-share-losses">{pct(shareOfLosses, 0)}</dd></div>
-            <div><dt>Public share of balances{leftOut.length ? `, without ${leftOut.join(" and ")}` : ""}</dt><dd data-testid="b3-share-balances">{pct(allBalance > 0 ? publicBalance / allBalance : null, 0)}</dd></div>
+            <div><dt>Losses on public books</dt><dd data-testid="b3-public">{usdFromMillions(r.sum.public)}</dd></div>
+            <div><dt>Losses on private books</dt><dd data-testid="b3-private">{usdFromMillions(r.sum.private)}</dd></div>
+            <div><dt>Public books’ share of losses</dt><dd data-testid="b3-share-losses">{pct(shareOfLosses, 0)}</dd></div>
+            <div><dt>Public books’ share of balances{leftOut.length ? `, without ${leftOut.join(" and ")}` : ""}</dt><dd data-testid="b3-share-balances">{pct(allBalance > 0 ? publicBalance / allBalance : null, 0)}</dd></div>
             {transferOn && <div><dt>Moved by transfer</dt><dd data-testid="b3-transferred">{usdFromMillions(r.sum.transferred)}</dd></div>}
           </dl>
+          <p className={styles.hint}>
+            Estimates under the chosen scenario, in today’s dollars, not discounted. Public and private refer to who holds
+            the loans, not who finally bears the loss.
+          </p>
           {n > 0 && r.sum.total > 0 && (
             <figure className={`figure chart ${styles.figure}`}>
               <Legend items={[{ key: "public", label: "Public books", color: "var(--b-federal_direct)" },
@@ -210,7 +216,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
                 columns={["Quarter", "Public books", "Private books", "Total", ...(transferOn ? ["Moved by transfer"] : [])]}
                 rows={x.map((q, i) => [`Q${q}`, usdFromMillions(r.public[i]), usdFromMillions(r.private[i]), usdFromMillions(r.total[i]),
                                        ...(transferOn ? [usdFromMillions(r.transferred[i])] : [])])}
-                note="Figures in dollars of today's balances; a quarter is one step of the scenario, not a calendar date."
+                note="Today's dollars, not discounted. A quarter is one step of the scenario, not a calendar date."
               />
             </figure>
           )}

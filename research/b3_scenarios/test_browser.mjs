@@ -29,9 +29,9 @@ const results = {
   ...JSON.parse(readFileSync(join(here, "results_replay_2008_2012.json"), "utf8")),
 };
 const PRESET_BUTTON = {
-  dfast2026_proxy: "Stress test 2026 (proxy)",
-  dfast2026_proxy_with_student: "Stress test 2026 + federal student loans (weak proxy)",
-  replay_2008_2012_proxy: "2008–12 replay (proxy)",
+  dfast2026_proxy: "Fed stress test 2026, hypothetical (proxy)",
+  dfast2026_proxy_with_student: "Fed stress test 2026 + federal student loans (weak proxy)",
+  replay_2008_2012_proxy: "2008–12 replay of bank write-offs (proxy)",
 };
 
 let fail = 0, checks = 0;

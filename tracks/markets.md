@@ -8,6 +8,18 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## B3 browser page (2026-11-05, scope confirmed by the coordinator ~21:10 UTC)
+
+- Built `web/` route `/scenarios` (URL only; no nav link, no web/content or layout edits): `web/scripts/sync-b3.mjs` → `web/lib/b3/` (SHA-256 manifest), `web/app/scenarios/page.tsx` (Claude-draft banner and copy, no hard-coded figures; horizons and years read from the preset files), `web/components/scenarios/ScenarioTool.tsx` (+ CSS module). Commits 377b309, fd13598 and the editor commit.
+- Tests: `web/lib/b3/sync.test.ts`, `web/lib/b3/engine.test.ts` (vitest 31/31 overall), `research/b3_scenarios/test_browser.mjs` (Chromium on localhost, 123 checks incl. screenshots; pytest runs it when web/ is built). No deployment run; Vercel deployments endpoint answered 403 for the team scope from this session, so no preview URL is confirmed.
+- Reviews: skeptic mkt-s55–s59, editor mkt-e26–e32, all addressed. Next ids: mkt-s60, mkt-q49, mkt-e33.
+- **Errors:**
+  - The chart first rendered about 260 px wide on desktop: the figure shrank inside the grid. Caught by Claude from the screenshot.
+  - The preset-input check failed on one replay timing weight one unit in the last place off, because the bundler re-serialises JSON. Caught by the browser test; the check is now numeric at 1e-12 and the finding is in the README.
+  - The old B3 README generator rewrote claims/tracks/markets.csv with 21 already-folded rows. Caught by Claude; the file was deleted and the register check passes.
+  - Data labels (skeptic): balance share not like for like, transfer group including Ginnie pools, missing bias directions, loss rate shown as a default rate, and the test-case note.
+  - Copy (editor): ambiguous cap, stress test not described as hypothetical, hard-coded horizons, unexplained terms.
+
 ## Review round (2026-11-05, after 392a1bf)
 
 - quant-reviewer mkt-q45–q48 (C3) and skeptic mkt-s49–s54 (B2): all addressed. C3 fixes are in 5c8bb4f; B2 fixes and the log statuses are in the next commit. Details are in claims/tracks/markets-review-log.md.
