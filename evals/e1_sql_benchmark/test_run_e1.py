@@ -255,6 +255,15 @@ def test_e1_spend_so_far_counts_live_runs_only(tmp_path):
         (tmp_path / name / "calls.jsonl").write_text(json.dumps({"cost_usd": cost}) + "\n" + json.dumps({"checkpoint": 1}) + "\n")
     assert run_e1.e1_spend_so_far(tmp_path) == pytest.approx(1.75)
     assert run_e1.e1_spend_so_far(tmp_path, exclude=tmp_path / "run-b") == pytest.approx(1.5)
-    # the two real runs so far: logged per-call costs are rounded to 6 decimals, so the sum differs from the
-    # unrounded run totals ($2.590335) by about $0.00001
-    assert run_e1.e1_spend_so_far() == pytest.approx(0.003634 + 2.586701, abs=1e-4)
+    # the real live runs: the same as summing every non-fake run directory's logged costs directly
+    direct = sum(json.loads(l).get("cost_usd", 0) for d in run_e1.HERE.glob("run-*") if "fake" not in d.name
+                 for l in (d / "calls.jsonl").read_text().splitlines() if (d / "calls.jsonl").exists() and l.strip())
+    assert run_e1.e1_spend_so_far() == pytest.approx(direct, abs=1e-9) and direct >= 2.590335
+
+
+def test_checkpoint_does_not_scale_carried_spend(tmp_path):
+    # the 2026-11-05 baseline stopped at a false checkpoint: $17.90 carried from other runs was divided by 24 loops
+    # and scaled to 240 (projected $181). The projection must add carried spend once.
+    s = run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1, baseline="claude-haiku-5-5", carried=17.9)
+    cp = [json.loads(l) for l in (tmp_path / "calls.jsonl").read_text().splitlines() if "checkpoint" in l][0]
+    assert s["stop"] is None and cp["projected_usd"] < 31
