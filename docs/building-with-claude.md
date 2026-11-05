@@ -275,3 +275,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
     1. A headline sentence said the candidates "did better inside the crisis windows". That holds only for the GFC window. *Caught by Claude (main session)* before commit; now computed.
     2. The first register rewrite changed line endings and quoting across the whole file. *Caught by Claude (main session)* from the diff, before commit; redone line by line.
     3. Section 5 compared C2's and C1's "first release" as if they were the same. *Caught by skeptic* (s44).
+
+### 2026-11-05 ~16:30 UTC: coordinator, C3 review round merged
+- The review edits moved lines in the C3 README, so the 907 folded `c3_` register rows had stale locations and the pre-commit hook blocked the track. Coordinator call (process, not analysis): the track may replace only the `c3_` rows in `claims/register.csv`, with every value unchanged.
+- Merged markets `f462172`: skeptic round mkt-s44 to s48 and editor round mkt-e1 to e25, all addressed. The verdicts are unchanged and labelled provisional until c3-rule is answered. Nothing was rerun and no frozen file was edited.
+- Coordinator checks: no register line outside `c3_` changed; the claim_id+value pairs over the `c3_` rows match 8e7d86c (907/907, symmetric difference 0). Folded the 4 new rows (register now 1,560 rows, check OK).
+- The track caught its own errors before committing: its first register rewrite changed quoting and line endings across the whole file and was redone line by line; a "did better in the crisis windows" sentence held for the 2008–09 window only and was corrected.
+- s45 (holdout targets have had fewer later Z.1 releases than the development targets) is relevant to c3-rule.
