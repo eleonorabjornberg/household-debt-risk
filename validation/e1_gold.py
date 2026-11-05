@@ -192,7 +192,8 @@ def _fmt(v) -> str:
 
 def run_checks(df, cat, groups, res, Check, nyfed_path: Path | None = None, questions: Path = QUESTIONS) -> list:
     doc = yaml.safe_load(questions.read_text())
-    qs = [q for q in doc["questions"] + doc.get("retired", []) if not q.get("refuse") and not q.get("register")]
+    qs = [q for q in doc["questions"] + doc.get("retired", [])
+          if not q.get("refuse") and not q.get("register") and "check" in q]
     # retired questions (2026-11-05) stay checked so their register rows remain valid until they are removed
     raw = z1_tables(df, cat, groups, res)
     nyfed_path = nyfed_path or ensure_nyfed()

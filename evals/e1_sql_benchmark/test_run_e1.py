@@ -90,6 +90,9 @@ def test_overrun_stop_uses_planning_figure():
         b.add("claude-opus-5-5", 0.01)  # 3.23x
 
 
-def test_live_refuses_until_frozen():
-    assert not run_e1.is_frozen()  # the prereg is a draft
-    assert run_e1.snapshot_ok() == []
+def test_live_refuses_until_frozen(tmp_path):
+    draft, frozen = tmp_path / "d.md", tmp_path / "f.md"
+    draft.write_text("# x\nStatus: **draft**, not frozen.\n")
+    frozen.write_text("# x\nStatus: **frozen** on 2026-11-05.\n")
+    assert not run_e1.is_frozen(draft) and run_e1.is_frozen(frozen)
+    assert run_e1.snapshot_ok() == []  # snapshot, questions and gold match the recorded hashes
