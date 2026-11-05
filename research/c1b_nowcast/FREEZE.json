@@ -3,7 +3,7 @@
  "run": "Freddie only (Fannie and Ginnie carried flat)",
  "prereg": "docs/decisions/c1b-prereg.md",
  "files": {
-  "docs/decisions/c1b-prereg.md": "a23cd7956cfb45dbfcfac8644ce7f6a8ad9d0b0f9d435cd472722133edd862a7",
+  "docs/decisions/c1b-prereg.md": "2da1ddbba24cf81e4ab7bef6d6c4aae40f716c1cab896734ddd0a87726dbdf82",
   "research/c1b_nowcast/nowcast_c1b.py": "867bcf513a474afaa053d7093cd734388e89efca20ff0f16da6c59bcb4a8f8fb",
   "research/c1b_nowcast/freddie_mvs.py": "3f0adddfdd8c163b7bcf647d0d08cf3d943b7a075689469db190d3f1ffa9c555",
   "research/c1b_nowcast/test_c1b.py": "833ad40708a1a88a8935519c04344b736e5345c8b187ff3582f3632fc957151b",
@@ -14,7 +14,7 @@
   "research/c1b_nowcast/tests_dev.csv": "c0a495c7c1299350e823742d11eae432569aa5a9606970d638838c755d9e2a7b",
   "research/c1b_nowcast/bias_dev.csv": "bfa2a981bbd1adaaec9deb5731f75c7ca3620971a0eada22eb9c0c2c4ceebccf",
   "research/c1b_nowcast/results_dev.json": "054497785494ca734d552feb5460fe3411aa959732efcf11a954f3d156d077f7",
-  "research/c1_nowcast/nowcast.py": "491d1ef3831450b943bc13ed8941f922b33c13c3f2ec721f6352f5c2ae57f394",
+  "research/c1_nowcast/nowcast.py": "934c25ac39b6af52ca3bd28f1e1ea15b8612e9300e29027f468bdf9cd6636199",
   "research/c1_nowcast/pit.py": "0eb0fac312c0a3c5fcc15d50fa7b3960722aff86dd92dda363dda09c5882bd2f",
   "research/c1_nowcast/z1_vintages.py": "ae5a1894b5e40b2f9639699fa7b3330d0f358385b06d0d74b9814a4bb435a687",
   "research/c1_nowcast/inputs.yaml": "2387a7eb92875640e69f2b6228bcd5d4bd5e12bdcac368c9a6dd6bea0b30292a",
@@ -24,5 +24,8 @@
   "research/c1_nowcast/z1_vintage_notes.csv": "7a8418738d5e32ff56680e14a5fe8c71e78096e983f55220c0118f36767e02f8",
   "research/common/fred.py": "3607785a0453bf3058267881e5c2ce58300f73d92761b3a01bed553271924d9b",
   "data/c1/z1_cells.csv": "958a3480f037bebbf8ad80e4ea8885351b30d2a7de061761d68faa466f0cceb1"
- }
+ },
+ "deviations": [
+  "2026-11-05 c1b-dev-1 (a), Eleonora: rows whose target quarter no Z.1 has published are 'no target'; re-hashed: docs/decisions/c1b-prereg.md, research/c1_nowcast/nowcast.py. holdout_run.py also gains the approval-order check (mkt-q29). A new approval commit after this one is required before the one holdout run."
+ ]
 }

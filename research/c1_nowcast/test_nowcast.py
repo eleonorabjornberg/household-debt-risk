@@ -124,3 +124,12 @@ def test_holm():
     p = pd.Series([0.01, 0.04, 0.03], index=list("abc"))
     adj = nc.holm(p)
     assert adj["a"] == pytest.approx(0.03) and adj["c"] == pytest.approx(0.06) and adj["b"] == pytest.approx(0.06)
+
+
+def test_unpublished_target_is_no_target_not_keyerror():
+    # deviation c1b-dev-1 (a): a target quarter missing from the latest vintage gives no actual, labelled
+    latest = pd.Series([0.50, 0.51], index=["2026Q1", "2026Q2"])
+    r = nc.target_latest(latest, "2026Q3", "2026Q2")
+    assert math.isnan(r["actual_latest"]) and r["target"] == nc.NO_TARGET
+    r = nc.target_latest(latest, "2026Q2", "2026Q1")
+    assert r["actual_latest"] == pytest.approx(0.01) and "target" not in r

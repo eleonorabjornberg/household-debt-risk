@@ -74,4 +74,14 @@ C1's holdout numbers appear in both outputs (C1b's as the comparison column `bri
 - s is a proxy (multifamily inside Freddie's total; Freddie's total also includes Freddie-guaranteed securities held outside the pools cell). It matters only as the weight on Freddie's growth.
 
 ## Deviations (dated, after freezing)
-None.
+### 2026-11-05: c1b-dev-1 (a), instants with no published target (Eleonora's decision; markets track wrote it)
+*Before any holdout value was seen.* The first joint holdout run, approved at 77460b4, stopped with `KeyError: '2026Q3'` in `research/c1_nowcast/nowcast.py` `run()`. By the code order, C2's holdout step had already run in memory; nothing from it or from C1 was written or printed, and no file was left. The instant grid runs to 2026-10-01. The 2026-09-15 and 2026-10-01 instants follow the 2026-09-11 release, whose last quarter is 2026Q2, so their target is 2026Q3, and no Z.1 has published 2026Q3 yet. The frozen code looked that target up in the latest vintage without checking that it was there.
+
+Eleonora chose option (a) on card c1b-dev-1 (PLAN.md "Decisions taken", 2026-11-05):
+- Such rows are kept in the nowcast table and labelled "no target" (`target` column, `nowcast.NO_TARGET`). Their `actual` is empty, so they are never scored or tested. They do not count as holdout targets (`holdout_run.py` reports `n_targets` on scored rows only, plus `n_no_target_instants` and `no_target_quarters`).
+- Code change: `nowcast.target_latest()` checks only whether q is in the latest vintage before the lookup. Nothing else in the models, instants, benchmarks, inputs, tests or holdout window changes. Development outputs are unchanged, since every development target is published.
+- 2026Q3 lies outside the pre-registered holdout window (2023Q3–2026Q2), so these rows could never have been scored. The holdout filter (`q > DEV_END`) has no upper bound; they drop out only because they have no actual.
+- In C1b's holdout table (`nowcast_c1b.py`, unchanged) these rows carry an empty `actual` but not the `target` label.
+- Frozen files changed: `research/c1_nowcast/nowcast.py`, `research/c2_forecast/holdout_run.py` (the count above, and the order check below) and `docs/decisions/c1b-prereg.md` (this entry). `research/c1b_nowcast/FREEZE.json` and `research/c2_forecast/FREEZE.json` are re-hashed in the fix commit. C2's FREEZE still names the protocol as `scoring-protocol.md @ 192d60c` (the `--prereg` value the run requires). This entry is appended after that commit and changes no scoring rule.
+- Order check (quant-reviewer mkt-q29): `holdout_run.py` now refuses an approval commit that is not strictly after the last commit that changed C2's FREEZE.json, as C1b already did. An approval from before this fix, such as 77460b4, cannot open the rerun.
+- The holdout is run once more, with a NEW approval commit from Eleonora that comes after the fix commit. The crashed run does not count as an opening: no holdout result exists from it.
