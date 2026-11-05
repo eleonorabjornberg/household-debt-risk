@@ -45,7 +45,7 @@ def _results(acc: dict, n_q=68, n_un=12, reps=3):
 
 @pytest.mark.parametrize("method", ["deff", "bootstrap"])
 def test_verdicts(method):
-    res = an.analyze(_results({"claude-opus-5-5": 0.99, "claude-sonnet-5-5": 0.95, "claude-haiku-5-5": 0.3}), method)
+    res = an.analyze(_results({"claude-opus-5-5": 0.99, "claude-sonnet-5-5": 0.95, "claude-haiku-5-5": 0.3}), method, r=None)
     assert res["H1"]["claude-opus-5-5"]["verdict"] == "supported"
     assert res["H1"]["claude-haiku-5-5"]["verdict"] == "against"
     assert res["H3"] == {"status": "not tested: R not given"}
@@ -63,3 +63,11 @@ def test_clustering_widens_the_interval():
 def test_bootstrap_is_seeded():
     res = _results({"claude-opus-5-5": 0.8, "claude-sonnet-5-5": 0.8, "claude-haiku-5-5": 0.8})
     assert an.analyze(res, "bootstrap") == an.analyze(res, "bootstrap")
+
+
+def test_h3_runs_at_her_r():
+    assert an.R == 0.70 and an.T == 0.70
+    res = an.analyze(_results({"claude-opus-5-5": 0.99, "claude-sonnet-5-5": 0.95, "claude-haiku-5-5": 0.3},
+                              n_q=60, n_un=20), "deff")
+    assert res["H3"]["claude-opus-5-5"]["verdict"] == "supported"
+    assert res["H3"]["claude-opus-5-5"]["n_questions"] == 20

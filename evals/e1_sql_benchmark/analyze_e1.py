@@ -5,15 +5,15 @@
 
 Reads RUN_DIR/results.jsonl (run_e1.py) and writes RUN_DIR/analysis.json. Settings are Eleonora's:
   unit of analysis (e1-unit (ii)): every repetition counted, clustered by question;
-  T = 0.70 (e1-T); R: NOT YET GIVEN (e1-R2): H3 is reported as "not tested" until R is set below;
+  T = 0.70 (e1-T); R = 0.70 (e1-R2);
   alpha 0.05, Holm within each family (H1: 3 tests, H2: 2, H3: 3).
-How the clustering enters (CHOICE-E1-17, open; both are implemented, the prereg will name one):
+How the clustering enters (e1-cluster, CHOICE-E1-17, open; both are implemented, the prereg will name one):
   deff       Wilson 95% interval on the pooled rate with n replaced by n / DEFF, DEFF = 1 + (m - 1) * ICC
              (one-way ANOVA ICC, floored at 0, m = repetitions per question); H2 by the clustered McNemar test
              of Durkalski et al. (2003): chi2 = (sum_k b_k - sum_k c_k)^2 / sum_k (b_k - c_k)^2.
   bootstrap  resample questions with replacement (10,000 draws, random.Random(20261104)); percentile 95%
              interval for the rate; H2 from the bootstrap distribution of the paired difference.
-Verdicts, H1 and H3: supported if the lower bound >= threshold; against if the upper bound < threshold; else null.
+Verdicts (e1-support (i) as implemented; (ii) Holm-widened intervals is still open), H1 and H3: supported if the lower bound >= threshold; against if the upper bound < threshold; else null.
 H1/H3 p-values for Holm are one-sided (H0: rate <= threshold): z test on n_eff (deff) or the bootstrap share at
 or below the threshold (bootstrap). H2: supported if the Holm-adjusted p < 0.05, else null.
 """
@@ -27,7 +27,7 @@ from collections import defaultdict
 from pathlib import Path
 
 T = 0.70
-R: float | None = None  # e1-R2 not yet answered; set only from her recorded decision
+R: float | None = 0.70  # e1-R2, Eleonora 2026-11-05 (PLAN c55701b)
 ALPHA = 0.05
 Z = 1.959963984540054
 SEED = 20261104

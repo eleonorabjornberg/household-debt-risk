@@ -25,7 +25,7 @@ def test_plan_excludes_holdout_and_is_seeded():
     p1, p2 = run_e1.plan(gold), run_e1.plan(gold)
     assert [q["id"] for q in p1] == [q["id"] for q in p2] and len(p1) == 80
     assert not any(q["holdout"] for q in p1)
-    assert sum(q["gold"] == "refuse" for q in p1) == 12
+    assert sum(q["gold"] == "refuse" for q in p1) == 20
 
 
 @pytest.mark.parametrize("text,ok", [
