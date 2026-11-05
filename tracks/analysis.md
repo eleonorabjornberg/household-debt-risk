@@ -10,7 +10,14 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A3 | ready for review: 1925–1952 (Z.1 annual 1945–51, exact splice; Historical Statistics 1925–44 with overlap 1945–51 and an adjusted estimate); statute-checked timeline 1933–1970; skeptic done | `research/a3_pre1952/` |
 | A4 | ready for review: run to prereg 02cc47f; break at 1966Q1; no evidence at the 2008–10 dates; R strucchange cross-check within tolerance; deviations accepted by Eleonora | `research/a4_breaks/` |
 | A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
-| A8 | done, partial by design (accepted 17:00 UTC). Q7 (c) applied and accepted (rv-q7c); q7-promo-2 (c): the category holds public-law banks only (29.1%), promotional banks (1.1%) unclassified, KfW Art. 1a as context | `research/a8_international/` |
+| A8 | done, partial by design (accepted 17:00 UTC). Q7 (c) applied and accepted (rv-q7c); q7-promo-2 (c): the category holds public-law banks only (29.1%), promotional banks (1.1%) unclassified, KfW Art. 1a as context | `research/a8_international/`. Follow-ups 2–3 (statutes, L-Bank report, CRD V list, Bundesbank composition) in 7e16722; the 1.1% label waits on card a8-promo |
+
+## Handoff (2026-11-05, about 14:35 UTC)
+- **A8: stopping point.** Nothing on A8 is left that doesn't depend on card **a8-promo** (relabel the 1.1%: options (a)/(b)/(c), no recommendation). Leave the README line 18 label and register row `a8_de_promotional_banks_unclassified` as they are until she answers; then apply her choice to `compare.py`, regenerate `results.json` with its script (no hand edits), and update the README and the register row.
+- **Sources on file for Q7:** KfW, Rentenbank, NRW.BANK (law + statute) and L-Bank (2025 annual report) guarantees; the CRD V Art. 2(5) list; Bundesbank Monthly Reports Sept 2017 and Sept 2023 on the category's composition (DZ Bank AG in it). See `research/a8_international/sources.md` and `Q7_EVIDENCE.md` follow-ups 2–3.
+- **Do not:** pass the l-bank.info "not a US person" disclaimer; retry refused hosts with different headers; contact the Bundesbank (acc-bbk was search only).
+- **Still unsourced:** the 2002 Verständigung II text; any member list or split of the 1.1%.
+- **Register:** the track file `claims/tracks/analysis.csv` was folded and removed by the coordinator (3ead338); start a fresh one for new rows.
 
 ## Handoff (2026-11-04, about 17:15 UTC)
 - **Accepted as is by Eleonora (PLAN.md, review round 1, 17:00 UTC):** A2 Freddie part, A3, A4, A5, A8 (partial by design). The coordinator marks them done.
