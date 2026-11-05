@@ -226,3 +226,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - e1-cluster and e1-support have no answer in the store and stay open on the docket. Nothing was assumed.
   - Relayed to infra: redraft about 10 answerable questions as unanswerable, hold back about 5, put R = 70% in the prereg, and have the changed questions reviewed by her before any freeze. No spend.
   - Docket round 20 keeps e1-cluster and e1-support open.
+- **2026-11-05 14:40 UTC, coordinator: analysis merge.**
+  - Merged A8 Q7 follow-up 3 from analysis (7e16722, 45dcfc4) and folded 25 rows from `claims/tracks/analysis.csv` into the register (590 rows, check OK).
+  - Sources found: L-Bank's state guarantee (2025 annual report), the CRD V exemption list (Dir. 2019/878, via EU Publications), and the Bundesbank category including DZ Bank since 2016 (Monthly Reports). The L-Bank statute sits behind a page asking readers to confirm they are not a US person. Analysis did not pass it. Verständigung II was not found.
+  - Analysis flagged that the published label "Promotional banks hold 1.1%" is too narrow. It did not edit the label. Docket card a8-promo offers (a) relabel, (b) relabel plus a guarantees note, or (c) she asks the Bundesbank herself. No recommendation.
+  - Errors: the pre-commit hook caught 4 format errors in the analysis track's new register rows. The analysis track caught two of its own unsourced phrasings before committing (*caught by Claude, analysis track*).
