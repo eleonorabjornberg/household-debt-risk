@@ -10,8 +10,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-05 14:28:52 |
-| Result | 123 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
+| Run timestamp (UTC) | 2026-11-05 19:03:16 |
+| Result | 113 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
 
@@ -133,16 +133,6 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q183 | **PASS** | E1 gold q183 (RG/M): raw vs snapshot | 5.02386783 | 5.023867828 | 0.005 |  |
 | E1-q184 | **PASS** | E1 gold q184 (RG/M): raw vs snapshot | 3.109550176 | 3.109550177 | 0.001 |  |
 | E1-q185 | **PASS** | E1 gold q185 (RG/M): raw vs snapshot | 8.65592129 | 8.655921295 | 0.005 |  |
-| E1-q102 | **PASS** | E1 gold q102 (PS/L): raw vs snapshot | 0.4638354504 | 0.4638354504 | 5e-05 |  |
-| E1-q110 | **PASS** | E1 gold q110 (PS/C): raw vs snapshot | 0.5679942338 | 0.5679942338 | 5e-05 |  |
-| E1-q118 | **PASS** | E1 gold q118 (HB/L): raw vs snapshot | 0.0062402349 | 0.006240234858 | 5e-05 |  |
-| E1-q125 | **PASS** | E1 gold q125 (HB/C): raw vs snapshot | 9.468381592 | 9.468381595 | 0.001 |  |
-| E1-q135 | **PASS** | E1 gold q135 (CW/L): raw vs snapshot | 4.936832406 | 4.936832406 | 0.001 |  |
-| E1-q137 | **PASS** | E1 gold q137 (CW/C): raw vs snapshot | 4.928565689 | 4.928565689 | 0.001 |  |
-| E1-q147 | **PASS** | E1 gold q147 (CC/L): raw vs snapshot | 5.788106684 | 5.788106684 | 0.001 |  |
-| E1-q153 | **PASS** | E1 gold q153 (CC/C): raw vs snapshot | 0.9986954474 | 0.9986954474 | 0.001 |  |
-| E1-q165 | **PASS** | E1 gold q165 (NY/L): raw vs snapshot | 2.36 | 2.36 | 0.001 |  |
-| E1-q168 | **PASS** | E1 gold q168 (NY/C): raw vs snapshot | 36.24595469 | 36.24595469 | 0.01 |  |
 
 ## Method
 

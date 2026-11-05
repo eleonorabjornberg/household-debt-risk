@@ -5,7 +5,7 @@
     "zip_name": "FRB_Z1_csv.zip",
     "zip_bytes": 64219006,
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
-    "run_at": "2026-11-05 14:28:52"
+    "run_at": "2026-11-05 19:03:16"
   },
   "checks": [
     {
@@ -1051,96 +1051,6 @@
       "tolerance": "0.005",
       "status": "PASS",
       "note": ""
-    },
-    {
-      "id": "E1-q102",
-      "description": "E1 gold q102 (PS/L): raw vs snapshot",
-      "expected": "0.4638354504",
-      "observed": "0.4638354504",
-      "tolerance": "5e-05",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q110",
-      "description": "E1 gold q110 (PS/C): raw vs snapshot",
-      "expected": "0.5679942338",
-      "observed": "0.5679942338",
-      "tolerance": "5e-05",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q118",
-      "description": "E1 gold q118 (HB/L): raw vs snapshot",
-      "expected": "0.0062402349",
-      "observed": "0.006240234858",
-      "tolerance": "5e-05",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q125",
-      "description": "E1 gold q125 (HB/C): raw vs snapshot",
-      "expected": "9.468381592",
-      "observed": "9.468381595",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q135",
-      "description": "E1 gold q135 (CW/L): raw vs snapshot",
-      "expected": "4.936832406",
-      "observed": "4.936832406",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q137",
-      "description": "E1 gold q137 (CW/C): raw vs snapshot",
-      "expected": "4.928565689",
-      "observed": "4.928565689",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q147",
-      "description": "E1 gold q147 (CC/L): raw vs snapshot",
-      "expected": "5.788106684",
-      "observed": "5.788106684",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q153",
-      "description": "E1 gold q153 (CC/C): raw vs snapshot",
-      "expected": "0.9986954474",
-      "observed": "0.9986954474",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q165",
-      "description": "E1 gold q165 (NY/L): raw vs snapshot",
-      "expected": "2.36",
-      "observed": "2.36",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q168",
-      "description": "E1 gold q168 (NY/C): raw vs snapshot",
-      "expected": "36.24595469",
-      "observed": "36.24595469",
-      "tolerance": "0.01",
-      "status": "PASS",
-      "note": ""
     }
   ],
   "unexplained_jumps": [
@@ -1898,7 +1808,7 @@
     "https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
   ],
   "summary": {
-    "PASS": 123,
+    "PASS": 113,
     "FAIL": 0,
     "WARN": 2,
     "NOT RUN": 1
