@@ -50,15 +50,15 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 
 **Freddie Mac** ($ millions a year; each year from the first 10-K that prints it):
 
-| Year | Scope | Credit-enhancement expense | Interest on CRT debt | Total | Total less Freddie's reinvestment estimate | Total per dollar of CRT maximum coverage | Credit-enhancement expense per dollar of cover |
-|---|---|---|---|---|---|---|---|
-| 2017 | single-family | 263 | 808 | 1,071 | 891 | 4.8% | 1.2% |
-| 2018 | single-family | 402 | 1,047 | 1,449 | 1,077 | 5.2% | 1.4% |
-| 2019 | single-family | 693 | 1,060 | 1,753 | 1,393 | 5.2% | 2.1% |
-| 2020 | single-family | 1,036 | 736 | 1,772 | 1,696 | 4.6% | 2.7% |
-| 2021 | single-family | 1,470 | not printed | n/a | n/a | n/a | 3.3% |
-| 2022 | consolidated | 2,118 | not printed | n/a | n/a | n/a | 4.1% |
-| 2023 | consolidated | 2,339 | not printed | n/a | n/a | n/a | 4.5% |
+| Year | Scope | Credit-enhancement expense | Interest on CRT debt | Total | Total less Freddie's reinvestment estimate | Total per dollar of CRT maximum coverage | Total less reinvestment, per dollar of cover | Credit-enhancement expense per dollar of cover |
+|---|---|---|---|---|---|---|---|---|
+| 2017 | single-family | 263 | 808 | 1,071 | 891 | 4.8% | 4.0% | 1.2% |
+| 2018 | single-family | 402 | 1,047 | 1,449 | 1,077 | 5.2% | 3.8% | 1.4% |
+| 2019 | single-family | 693 | 1,060 | 1,753 | 1,393 | 5.2% | 4.2% | 2.1% |
+| 2020 | single-family | 1,036 | 736 | 1,772 | 1,696 | 4.6% | 4.4% | 2.7% |
+| 2021 | single-family | 1,470 | not printed | n/a | n/a | n/a | n/a | 3.3% |
+| 2022 | consolidated | 2,118 | not printed | n/a | n/a | n/a | n/a | 4.1% |
+| 2023 | consolidated | 2,339 | not printed | n/a | n/a | n/a | n/a | 4.5% |
 
 **Fannie Mae** (cash paid or transferred to investors, $ millions a year):
 
@@ -72,12 +72,15 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 | 2022 | 882 | 325 | 1,207 | 3.3% |
 | 2023 | 906 | 409 | 1,315 | 3.3% |
 
-- **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was $736 million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure, which includes a small multifamily part. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The last column is the one measure that runs through all seven years, and it rises partly because Freddie moved from debt notes to trust and insurance structures whose cost is booked as credit-enhancement expense (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy").
+- **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was $736 million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The table's 2021 figure is single-family; the consolidated 2021 figure, printed in the FY2022 10-K, is $1,518 million (3.4% of cover), so the multifamily part was $48 million that year. The split is not printed for 2022–2023 in the statements read.
+- **What the last column does and does not show.** Credit-enhancement expense is printed every year, but before 2021 the denominator also counts debt-note cover whose cost sits in the interest column, not here. The expense covers all freestanding credit enhancements (CRT trust notes and insurance, and also lender risk sharing), not CRT alone. Freddie's own reasons for the rise: more cumulative CRT outstanding in every year, and the move away from debt notes (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy"); for 2022, "higher spreads on transactions executed during 2022"; for 2023, "higher losses on STACR Trust note repurchases", a one-off cost rather than premium (FY2022 and FY2023 10-Ks).
+- **Denominator relabelled in FY2022.** Freddie's FY2022 10-K moved part of the 2021 cover from the CRT rows to "Other" ($531 million of maximum coverage, A2 `restated_crt_maxcov_musd`). The table uses each year's own filing.
 - **Gross against net.** Freddie's interest on CRT debt is gross interest; Fannie's CAS figure is interest net of LIBOR or SOFR, plus CAS REMIC and CLN payments. Freddie prints its own estimate of reinvestment income on the debt proceeds, shown in the "less" column. The two GSEs are not compared directly.
 - **Different denominators.** Freddie: maximum coverage of its CRT, from the 10-K coverage tables (A2, `research/a2_net_exposure/freddie_ce_outstanding.csv`), averaged over the two year ends. Fannie: CRT risk in force, printed rounded to whole billions and found at both year ends only for 2021–2023 (A2, `fannie_ce_outstanding.csv`); other years are n/a.
 - **Excluded.** Fannie's lender risk-sharing payments (in `fannie_crt_cost.csv`) and mortgage insurance.
-- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both.
-- **Against 2013–2016.** Freddie's 2017–2020 total per dollar of cover, 4.6%–5.2% a year, falls inside the 3.3–6.9% range of FHFA's 2013–2016 cost per dollar of tranche. The bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is a consistency check, not a test of the earlier result.
+- **Fannie's CIRT cash includes one-off cancellation fees** in 2021–2023 (10-K footnote: it "includes cancellation fees paid on certain CIRT transactions where we determined that the cost of these deals exceeded the expected remaining benefit"). Fannie's risk in force is printed rounded to whole billions, which moves each rate by less than 0.05 percentage points.
+- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both. On the restated 2019 expense ($734 million) the 2019 rates would be 5.4% (total) and 2.2% (expense only).
+- **Against 2013–2016.** FHFA's 2013–2016 cost is derived from issuance pricing, a spread over the reference rate, so the closer comparison is Freddie's total less its reinvestment estimate: 3.8%–4.4% a year per dollar of cover in 2017–2020 (4.6%–5.2% gross). Both fall inside the 3.3–6.9% range of FHFA's cost per dollar of tranche. The top of that band is about twice its bottom, and the bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is weak support for consistency, not a test of the earlier result.
 
 ## Reproduce
 

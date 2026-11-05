@@ -13,9 +13,14 @@ FN = pd.read_csv('research/b2_crt_pricing/fannie_crt_cost.csv').set_index('year'
 m0 = lambda x: f"{x:,.0f}"; p1 = lambda x: f"{100*x:.1f}%"
 fr_rows = "\n".join(f"| {y} | {r.scope} | {m0(r.ce_expense)} | {m0(r.crt_debt_interest) if pd.notna(r.crt_debt_interest) else 'not printed'} | "
                     f"{m0(r.gross_cost_musd) if pd.notna(r.gross_cost_musd) else 'n/a'} | {m0(r.net_cost_musd) if pd.notna(r.net_cost_musd) else 'n/a'} | "
-                    f"{p1(r.gross_cost_per_maxcov) if pd.notna(r.gross_cost_per_maxcov) else 'n/a'} | {p1(r.ce_expense_per_maxcov)} |" for y, r in FR.iterrows())
+                    f"{p1(r.gross_cost_per_maxcov) if pd.notna(r.gross_cost_per_maxcov) else 'n/a'} | {p1(r.net_cost_per_maxcov) if pd.notna(r.net_cost_per_maxcov) else 'n/a'} | {p1(r.ce_expense_per_maxcov)} |" for y, r in FR.iterrows())
 fn_rows = "\n".join(f"| {y} | {m0(r.cas)} | {m0(r.cirt)} | {m0(r.cas_cirt_musd)} | {p1(r.cas_cirt_per_rif) if pd.notna(r.cas_cirt_per_rif) else 'n/a'} |" for y, r in FN.iterrows())
 g4 = FR.loc[2017:2020, 'gross_cost_per_maxcov']
+n4 = FR.loc[2017:2020, 'net_cost_per_maxcov']
+c21, s21 = FR.loc[2021, 'consolidated_ce_expense'], FR.loc[2021, 'ce_expense']
+A2C = pd.read_csv('research/a2_net_exposure/freddie_ce_outstanding.csv').set_index('year_end')
+relab = A2C.loc[2021, 'crt_maxcov_musd'] - A2C.loc[2021, 'restated_crt_maxcov_musd']
+rnd = FN['cas_cirt_per_rif_rounding_pp'].max()
 EL = R['zero_attach_el_bp']; CR = R['credit_cost_bp_range_zero_attach']
 txt = f"""# B2: What the market charges for the credit risk the GSEs pass back
 
@@ -66,8 +71,8 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 
 **Freddie Mac** ($ millions a year; each year from the first 10-K that prints it):
 
-| Year | Scope | Credit-enhancement expense | Interest on CRT debt | Total | Total less Freddie's reinvestment estimate | Total per dollar of CRT maximum coverage | Credit-enhancement expense per dollar of cover |
-|---|---|---|---|---|---|---|---|
+| Year | Scope | Credit-enhancement expense | Interest on CRT debt | Total | Total less Freddie's reinvestment estimate | Total per dollar of CRT maximum coverage | Total less reinvestment, per dollar of cover | Credit-enhancement expense per dollar of cover |
+|---|---|---|---|---|---|---|---|---|
 {fr_rows}
 
 **Fannie Mae** (cash paid or transferred to investors, $ millions a year):
@@ -76,12 +81,15 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 |---|---|---|---|---|
 {fn_rows}
 
-- **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was ${m0(FR.loc[2020, 'crt_debt_interest'])} million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure, which includes a small multifamily part. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The last column is the one measure that runs through all seven years, and it rises partly because Freddie moved from debt notes to trust and insurance structures whose cost is booked as credit-enhancement expense (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy").
+- **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was ${m0(FR.loc[2020, 'crt_debt_interest'])} million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The table's 2021 figure is single-family; the consolidated 2021 figure, printed in the FY2022 10-K, is ${m0(c21)} million ({p1(c21 / FR.loc[2021, 'avg_crt_maxcov_musd'])} of cover), so the multifamily part was ${m0(c21 - s21)} million that year. The split is not printed for 2022–2023 in the statements read.
+- **What the last column does and does not show.** Credit-enhancement expense is printed every year, but before 2021 the denominator also counts debt-note cover whose cost sits in the interest column, not here. The expense covers all freestanding credit enhancements (CRT trust notes and insurance, and also lender risk sharing), not CRT alone. Freddie's own reasons for the rise: more cumulative CRT outstanding in every year, and the move away from debt notes (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy"); for 2022, "higher spreads on transactions executed during 2022"; for 2023, "higher losses on STACR Trust note repurchases", a one-off cost rather than premium (FY2022 and FY2023 10-Ks).
+- **Denominator relabelled in FY2022.** Freddie's FY2022 10-K moved part of the 2021 cover from the CRT rows to "Other" (${m0(relab)} million of maximum coverage, A2 `restated_crt_maxcov_musd`). The table uses each year's own filing.
 - **Gross against net.** Freddie's interest on CRT debt is gross interest; Fannie's CAS figure is interest net of LIBOR or SOFR, plus CAS REMIC and CLN payments. Freddie prints its own estimate of reinvestment income on the debt proceeds, shown in the "less" column. The two GSEs are not compared directly.
 - **Different denominators.** Freddie: maximum coverage of its CRT, from the 10-K coverage tables (A2, `research/a2_net_exposure/freddie_ce_outstanding.csv`), averaged over the two year ends. Fannie: CRT risk in force, printed rounded to whole billions and found at both year ends only for 2021–2023 (A2, `fannie_ce_outstanding.csv`); other years are n/a.
 - **Excluded.** Fannie's lender risk-sharing payments (in `fannie_crt_cost.csv`) and mortgage insurance.
-- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both.
-- **Against 2013–2016.** Freddie's 2017–2020 total per dollar of cover, {p1(g4.min())}–{p1(g4.max())} a year, falls inside the {f1(lo)}–{f1(hi)}% range of FHFA's 2013–2016 cost per dollar of tranche. The bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is a consistency check, not a test of the earlier result.
+- **Fannie's CIRT cash includes one-off cancellation fees** in 2021–2023 (10-K footnote: it "includes cancellation fees paid on certain CIRT transactions where we determined that the cost of these deals exceeded the expected remaining benefit"). Fannie's risk in force is printed rounded to whole billions, which moves each rate by less than {rnd:.2f} percentage points.
+- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both. On the restated 2019 expense (${m0(FR.loc[2019, 'latest_ce_expense'])} million) the 2019 rates would be {p1(FR.loc[2019, 'latest_gross_cost_per_maxcov'])} (total) and {p1(FR.loc[2019, 'latest_ce_expense_per_maxcov'])} (expense only).
+- **Against 2013–2016.** FHFA's 2013–2016 cost is derived from issuance pricing, a spread over the reference rate, so the closer comparison is Freddie's total less its reinvestment estimate: {p1(n4.min())}–{p1(n4.max())} a year per dollar of cover in 2017–2020 ({p1(g4.min())}–{p1(g4.max())} gross). Both fall inside the {f1(lo)}–{f1(hi)}% range of FHFA's cost per dollar of tranche. The top of that band is about twice its bottom, and the bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is weak support for consistency, not a test of the earlier result.
 
 ## Reproduce
 
@@ -164,9 +172,27 @@ for y, r in FN.iterrows():
         add2(f"b2_fnm_{y}_{col}", f"Fannie {y}: {nm} ${m0(r[col])}M.", m0(r[col]), r[col], C+col, "usd_m", str(y), ln, NS)
     if pd.notna(r.cas_cirt_per_rif):
         add2(f"b2_fnm_{y}_rate", f"Fannie {y}: CAS + CIRT cash per dollar of CRT risk in force {p1(r.cas_cirt_per_rif)}.", p1(r.cas_cirt_per_rif), r.cas_cirt_per_rif, C+"cas_cirt_per_rif", "share", str(y), ln, NS+"; A2 fannie_ce_outstanding.csv", "ESTIMATE")
+for y, r in FR.iterrows():
+    if pd.notna(r.net_cost_per_maxcov):
+        add2(f"b2_fre_{y}_net_rate", f"Freddie {y}: total CRT cost less reinvestment estimate per dollar of cover {p1(r.net_cost_per_maxcov)}.", p1(r.net_cost_per_maxcov), r.net_cost_per_maxcov, "research/b2_crt_pricing/gse_10k.py -> freddie_crt_cost.csv net_cost_per_maxcov", "share", str(y), loc_after(FH, f"| {y} |"), FS+"; A2 freddie_ce_outstanding.csv", "ESTIMATE")
 brk = next(i for i, l in ok if l.startswith("- **Freddie's series breaks in 2021.**"))
+BL = f"research/b2_crt_pricing/README.md:{brk}"
+add2("b2_fre_2021_consolidated_ce", f"Freddie 2021 consolidated credit-enhancement expense ${m0(c21)} million (FY2022 10-K).", f"${m0(c21)} million", c21, "gse_10k.py -> freddie_crt_cost.csv consolidated_ce_expense[2021]", "usd_m", "2021", BL, FS)
+add2("b2_fre_2021_consolidated_rate", f"Freddie 2021 consolidated credit-enhancement expense per dollar of cover {p1(c21 / FR.loc[2021, 'avg_crt_maxcov_musd'])}.", p1(c21 / FR.loc[2021, 'avg_crt_maxcov_musd']), c21 / FR.loc[2021, 'avg_crt_maxcov_musd'], "gse_10k.py -> freddie_crt_cost.csv consolidated_ce_per_maxcov[2021]", "share", "2021", BL, FS+"; A2 freddie_ce_outstanding.csv", "ESTIMATE")
+add2("b2_fre_2021_multifamily_ce", f"Freddie 2021 multifamily credit-enhancement expense ${m0(c21 - s21)} million (consolidated less single-family).", f"${m0(c21 - s21)} million", c21 - s21, "gse_10k.py -> freddie_crt_cost.csv consolidated_ce_expense[2021] - ce_expense[2021]", "usd_m", "2021", BL, FS)
+rl = next(i for i, l in ok if l.startswith("- **Denominator relabelled in FY2022.**"))
+add2("b2_fre_2021_relabel", f"Freddie FY2022 10-K moved ${m0(relab)} million of 2021 maximum coverage from CRT to Other.", f"${m0(relab)} million", relab, "research/a2_net_exposure/freddie_ce_outstanding.csv crt_maxcov_musd - restated_crt_maxcov_musd (2021)", "usd_m", "2021", f"research/b2_crt_pricing/README.md:{rl}", "Freddie Mac 10-K FY2021, FY2022 coverage tables (A2)")
+fl = next(i for i, l in ok if l.startswith("- **Fannie's CIRT cash includes"))
+add2("b2_fnm_rif_rounding", f"Rounding of Fannie's risk in force moves each rate by less than {rnd:.2f} percentage points.", f"{rnd:.2f}", rnd, "gse_10k.py -> fannie_crt_cost.csv max(cas_cirt_per_rif_rounding_pp)", "pp", "2021-2023", f"research/b2_crt_pricing/README.md:{fl}", NS, "ESTIMATE", "Upper bound: rate x 0.5B / average RIF.")
+rs = next(i for i, l in ok if l.startswith("- **Restatements kept, not smoothed.**"))
+RL = f"research/b2_crt_pricing/README.md:{rs}"
+add2("b2_fre_2019_ce_restated", f"Freddie 2019 credit-enhancement expense as restated in the FY2020 10-K: ${m0(FR.loc[2019, 'latest_ce_expense'])} million.", f"${m0(FR.loc[2019, 'latest_ce_expense'])} million", FR.loc[2019, 'latest_ce_expense'], "gse_10k.py -> freddie_crt_cost.csv latest_ce_expense[2019]", "usd_m", "2019", RL, FS)
+add2("b2_fre_2019_gross_rate_restated", f"Freddie 2019 total CRT cost per dollar of cover on the restated expense: {p1(FR.loc[2019, 'latest_gross_cost_per_maxcov'])}.", p1(FR.loc[2019, 'latest_gross_cost_per_maxcov']), FR.loc[2019, 'latest_gross_cost_per_maxcov'], "gse_10k.py -> freddie_crt_cost.csv latest_gross_cost_per_maxcov[2019]", "share", "2019", RL, FS+"; A2", "ESTIMATE")
+add2("b2_fre_2019_ce_rate_restated", f"Freddie 2019 expense per dollar of cover on the restated expense: {p1(FR.loc[2019, 'latest_ce_expense_per_maxcov'])}.", p1(FR.loc[2019, 'latest_ce_expense_per_maxcov']), FR.loc[2019, 'latest_ce_expense_per_maxcov'], "gse_10k.py -> freddie_crt_cost.csv latest_ce_expense_per_maxcov[2019]", "share", "2019", RL, FS+"; A2", "ESTIMATE")
 add2("b2_fre_2020_crt_debt_interest_note", f"Freddie 2020 interest on CRT debt ${m0(FR.loc[2020, 'crt_debt_interest'])}M (series-break note).", f"${m0(FR.loc[2020, 'crt_debt_interest'])} million", FR.loc[2020, 'crt_debt_interest'], "research/b2_crt_pricing/gse_10k.py -> freddie_crt_cost.csv crt_debt_interest", "usd_m", "2020", f"research/b2_crt_pricing/README.md:{brk}", FS)
 ag = next(i for i, l in ok if l.startswith("- **Against 2013–2016.**"))
+add2("b2_fre_1720_net_lo", f"Freddie 2017-2020 total less reinvestment per dollar of cover, lowest year {p1(n4.min())}.", p1(n4.min()), n4.min(), "gse_10k.py -> freddie_crt_cost.csv min(net_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
+add2("b2_fre_1720_net_hi", f"Freddie 2017-2020 total less reinvestment per dollar of cover, highest year {p1(n4.max())}.", p1(n4.max()), n4.max(), "gse_10k.py -> freddie_crt_cost.csv max(net_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 add2("b2_fre_1720_rate_lo", f"Freddie 2017-2020 total CRT cost per dollar of cover, lowest year {p1(g4.min())}.", p1(g4.min()), g4.min(), "gse_10k.py -> freddie_crt_cost.csv min(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 add2("b2_fre_1720_rate_hi", f"Freddie 2017-2020 total CRT cost per dollar of cover, highest year {p1(g4.max())}.", p1(g4.max()), g4.max(), "gse_10k.py -> freddie_crt_cost.csv max(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 assert all(float(r['value']) >= 0 for r in out)
