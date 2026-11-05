@@ -10,7 +10,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-05 05:37:22 |
+| Run timestamp (UTC) | 2026-11-05 14:28:52 |
 | Result | 123 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
@@ -62,7 +62,6 @@ recomputes everything from components. No number is changed by this suite; it on
 | F4 | **PASS** | All-time-high quarter, previous vs current (through common quarters) | same quarter | prev 2021Q1 58.60%; now 2021Q1 58.60% | exact quarter |  |
 | F5 | **PASS** | New quarter(s) in current vintage | report | 2026Q2 | - | URLs tried: https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html \| https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed |
 | E1-q101 | **PASS** | E1 gold q101 (PS/L): raw vs snapshot | 0.405376779 | 0.405376779 | 5e-05 |  |
-| E1-q102 | **PASS** | E1 gold q102 (PS/L): raw vs snapshot | 0.4638354504 | 0.4638354504 | 5e-05 |  |
 | E1-q103 | **PASS** | E1 gold q103 (PS/L): raw vs snapshot | 0.1795060273 | 0.1795060273 | 5e-05 |  |
 | E1-q104 | **PASS** | E1 gold q104 (PS/L): raw vs snapshot | 13.186611 | 13.186611 | 0.001 |  |
 | E1-q105 | **PASS** | E1 gold q105 (PS/L): raw vs snapshot | 6.158130435 | 6.158130435 | 0.001 |  |
@@ -70,7 +69,6 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q107 | **PASS** | E1 gold q107 (PS/C): raw vs snapshot | 0.0250942854 | 0.02509428535 | 5e-05 | quarter 1965Q3 |
 | E1-q108 | **PASS** | E1 gold q108 (PS/C): raw vs snapshot | 0.3412252661 | 0.3412252661 | 5e-05 | quarter 2021Q1 |
 | E1-q109 | **PASS** | E1 gold q109 (PS/C): raw vs snapshot | 52.64124105 | 52.64124105 | 0.01 |  |
-| E1-q110 | **PASS** | E1 gold q110 (PS/C): raw vs snapshot | 0.5679942338 | 0.5679942338 | 5e-05 |  |
 | E1-q111 | **PASS** | E1 gold q111 (PS/M): raw vs snapshot | 9.37448617 | 9.374486171 | 0.005 |  |
 | E1-q112 | **PASS** | E1 gold q112 (PS/M): raw vs snapshot | 0.5736445015 | 0.5736445015 | 0.001 |  |
 | E1-q113 | **PASS** | E1 gold q113 (PS/M): raw vs snapshot | 4.646752727 | 4.646752727 | 0.001 |  |
@@ -78,14 +76,12 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q115 | **PASS** | E1 gold q115 (PS/M): raw vs snapshot | 0.1551965084 | 0.1551965084 | 5e-05 |  |
 | E1-q116 | **PASS** | E1 gold q116 (HB/L): raw vs snapshot | 0.3363442481 | 0.3363442481 | 5e-05 |  |
 | E1-q117 | **PASS** | E1 gold q117 (HB/L): raw vs snapshot | 0.2151886202 | 0.2151886202 | 5e-05 |  |
-| E1-q118 | **PASS** | E1 gold q118 (HB/L): raw vs snapshot | 0.0062402349 | 0.006240234858 | 5e-05 |  |
 | E1-q119 | **PASS** | E1 gold q119 (HB/L): raw vs snapshot | 8.977330117 | 8.977330117 | 0.001 |  |
 | E1-q120 | **PASS** | E1 gold q120 (HB/L): raw vs snapshot | 517.837323 | 517.8373227 | 0.1 |  |
 | E1-q121 | **PASS** | E1 gold q121 (HB/C): raw vs snapshot | 0.45253237 | 0.4525323659 | 0.005 |  |
 | E1-q122 | **PASS** | E1 gold q122 (HB/C): raw vs snapshot | 0.2301042843 | 0.2301042843 | 5e-05 | quarter 2007Q2 |
 | E1-q123 | **PASS** | E1 gold q123 (HB/C): raw vs snapshot | 6.84665657 | 6.846656567 | 0.005 |  |
 | E1-q124 | **PASS** | E1 gold q124 (HB/C): raw vs snapshot | 257.1826487 | 257.1826487 | 0.01 |  |
-| E1-q125 | **PASS** | E1 gold q125 (HB/C): raw vs snapshot | 9.468381592 | 9.468381595 | 0.001 |  |
 | E1-q126 | **PASS** | E1 gold q126 (HB/M): raw vs snapshot | 0.544803797 | 0.544803797 | 5e-05 |  |
 | E1-q127 | **PASS** | E1 gold q127 (HB/M): raw vs snapshot | 1.79306208 | 1.793062077 | 0.005 |  |
 | E1-q128 | **PASS** | E1 gold q128 (HB/M): raw vs snapshot | 0.2770218823 | 0.2770218823 | 0.001 |  |
@@ -95,9 +91,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q132 | **PASS** | E1 gold q132 (CW/L): raw vs snapshot | 2.200086904 | 2.200086904 | 0.001 |  |
 | E1-q133 | **PASS** | E1 gold q133 (CW/L): raw vs snapshot | 7.02612427 | 7.026124267 | 0.005 |  |
 | E1-q134 | **PASS** | E1 gold q134 (CW/L): raw vs snapshot | -1.57120638 | -1.571206382 | 0.005 |  |
-| E1-q135 | **PASS** | E1 gold q135 (CW/L): raw vs snapshot | 4.936832406 | 4.936832406 | 0.001 |  |
 | E1-q136 | **PASS** | E1 gold q136 (CW/C): raw vs snapshot | 8.44403618 | 8.444036176 | 0.005 |  |
-| E1-q137 | **PASS** | E1 gold q137 (CW/C): raw vs snapshot | 4.928565689 | 4.928565689 | 0.001 |  |
 | E1-q138 | **PASS** | E1 gold q138 (CW/C): raw vs snapshot | 1.859132282 | 1.859132282 | 0.001 |  |
 | E1-q139 | **PASS** | E1 gold q139 (CW/C): raw vs snapshot | -12.4796636 | -12.4796636 | 0.005 |  |
 | E1-q140 | **PASS** | E1 gold q140 (CW/C): raw vs snapshot | 0.69387077 | 0.6938707653 | 0.005 |  |
@@ -107,13 +101,11 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q144 | **PASS** | E1 gold q144 (CW/M): raw vs snapshot | 5.32 | 5.32 | 0.001 |  |
 | E1-q145 | **PASS** | E1 gold q145 (CW/M): raw vs snapshot | 9101 | 9101 | 0.1 |  |
 | E1-q146 | **PASS** | E1 gold q146 (CC/L): raw vs snapshot | 3.562416747 | 3.562416747 | 0.001 |  |
-| E1-q147 | **PASS** | E1 gold q147 (CC/L): raw vs snapshot | 5.788106684 | 5.788106684 | 0.001 |  |
 | E1-q148 | **PASS** | E1 gold q148 (CC/L): raw vs snapshot | 0.1658440852 | 0.1658440852 | 5e-05 |  |
 | E1-q149 | **PASS** | E1 gold q149 (CC/L): raw vs snapshot | 13.976938 | 13.976938 | 0.001 |  |
 | E1-q150 | **PASS** | E1 gold q150 (CC/L): raw vs snapshot | 49.791678 | 49.791678 | 0.001 |  |
 | E1-q151 | **PASS** | E1 gold q151 (CC/C): raw vs snapshot | 1.851955948 | 1.851955948 | 0.001 | quarter 2012Q1 |
 | E1-q152 | **PASS** | E1 gold q152 (CC/C): raw vs snapshot | 3.14033774 | 3.140337734 | 0.005 |  |
-| E1-q153 | **PASS** | E1 gold q153 (CC/C): raw vs snapshot | 0.9986954474 | 0.9986954474 | 0.001 |  |
 | E1-q154 | **PASS** | E1 gold q154 (CC/C): raw vs snapshot | 174.5502936 | 174.5502936 | 0.01 |  |
 | E1-q155 | **PASS** | E1 gold q155 (CC/C): raw vs snapshot | 5.230035527 | 5.230035527 | 0.001 | quarter 1951Q4 |
 | E1-q156 | **PASS** | E1 gold q156 (CC/M): raw vs snapshot | 36.216178 | 36.216178 | 0.001 |  |
@@ -125,10 +117,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q162 | **PASS** | E1 gold q162 (NY/L): raw vs snapshot | 7.83 | 7.83 | 0.001 |  |
 | E1-q163 | **PASS** | E1 gold q163 (NY/L): raw vs snapshot | 4942 | 4942 | 0.1 |  |
 | E1-q164 | **PASS** | E1 gold q164 (NY/L): raw vs snapshot | 458.5 | 458.5 | 0.1 |  |
-| E1-q165 | **PASS** | E1 gold q165 (NY/L): raw vs snapshot | 2.36 | 2.36 | 0.001 |  |
 | E1-q166 | **PASS** | E1 gold q166 (NY/C): raw vs snapshot | 16.19001079 | 16.19001079 | 0.001 | quarter 2025Q4 |
 | E1-q167 | **PASS** | E1 gold q167 (NY/C): raw vs snapshot | 18770.5 | 18770.5 | 0.1 |  |
-| E1-q168 | **PASS** | E1 gold q168 (NY/C): raw vs snapshot | 36.24595469 | 36.24595469 | 0.01 |  |
 | E1-q169 | **PASS** | E1 gold q169 (NY/C): raw vs snapshot | 0.64 | 0.64 | 0.001 |  |
 | E1-q170 | **PASS** | E1 gold q170 (NY/C): raw vs snapshot | 3.04 | 3.04 | 0.001 | quarter 2022Q1 |
 | E1-q171 | **PASS** | E1 gold q171 (NY/M): raw vs snapshot | -859.938 | -859.938 | 0.1 |  |
@@ -143,6 +133,16 @@ recomputes everything from components. No number is changed by this suite; it on
 | E1-q183 | **PASS** | E1 gold q183 (RG/M): raw vs snapshot | 5.02386783 | 5.023867828 | 0.005 |  |
 | E1-q184 | **PASS** | E1 gold q184 (RG/M): raw vs snapshot | 3.109550176 | 3.109550177 | 0.001 |  |
 | E1-q185 | **PASS** | E1 gold q185 (RG/M): raw vs snapshot | 8.65592129 | 8.655921295 | 0.005 |  |
+| E1-q102 | **PASS** | E1 gold q102 (PS/L): raw vs snapshot | 0.4638354504 | 0.4638354504 | 5e-05 |  |
+| E1-q110 | **PASS** | E1 gold q110 (PS/C): raw vs snapshot | 0.5679942338 | 0.5679942338 | 5e-05 |  |
+| E1-q118 | **PASS** | E1 gold q118 (HB/L): raw vs snapshot | 0.0062402349 | 0.006240234858 | 5e-05 |  |
+| E1-q125 | **PASS** | E1 gold q125 (HB/C): raw vs snapshot | 9.468381592 | 9.468381595 | 0.001 |  |
+| E1-q135 | **PASS** | E1 gold q135 (CW/L): raw vs snapshot | 4.936832406 | 4.936832406 | 0.001 |  |
+| E1-q137 | **PASS** | E1 gold q137 (CW/C): raw vs snapshot | 4.928565689 | 4.928565689 | 0.001 |  |
+| E1-q147 | **PASS** | E1 gold q147 (CC/L): raw vs snapshot | 5.788106684 | 5.788106684 | 0.001 |  |
+| E1-q153 | **PASS** | E1 gold q153 (CC/C): raw vs snapshot | 0.9986954474 | 0.9986954474 | 0.001 |  |
+| E1-q165 | **PASS** | E1 gold q165 (NY/L): raw vs snapshot | 2.36 | 2.36 | 0.001 |  |
+| E1-q168 | **PASS** | E1 gold q168 (NY/C): raw vs snapshot | 36.24595469 | 36.24595469 | 0.01 |  |
 
 ## Method
 

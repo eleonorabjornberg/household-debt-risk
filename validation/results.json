@@ -5,7 +5,7 @@
     "zip_name": "FRB_Z1_csv.zip",
     "zip_bytes": 64219006,
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
-    "run_at": "2026-11-05 05:37:22"
+    "run_at": "2026-11-05 14:28:52"
   },
   "checks": [
     {
@@ -414,15 +414,6 @@
       "note": ""
     },
     {
-      "id": "E1-q102",
-      "description": "E1 gold q102 (PS/L): raw vs snapshot",
-      "expected": "0.4638354504",
-      "observed": "0.4638354504",
-      "tolerance": "5e-05",
-      "status": "PASS",
-      "note": ""
-    },
-    {
       "id": "E1-q103",
       "description": "E1 gold q103 (PS/L): raw vs snapshot",
       "expected": "0.1795060273",
@@ -482,15 +473,6 @@
       "expected": "52.64124105",
       "observed": "52.64124105",
       "tolerance": "0.01",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q110",
-      "description": "E1 gold q110 (PS/C): raw vs snapshot",
-      "expected": "0.5679942338",
-      "observed": "0.5679942338",
-      "tolerance": "5e-05",
       "status": "PASS",
       "note": ""
     },
@@ -558,15 +540,6 @@
       "note": ""
     },
     {
-      "id": "E1-q118",
-      "description": "E1 gold q118 (HB/L): raw vs snapshot",
-      "expected": "0.0062402349",
-      "observed": "0.006240234858",
-      "tolerance": "5e-05",
-      "status": "PASS",
-      "note": ""
-    },
-    {
       "id": "E1-q119",
       "description": "E1 gold q119 (HB/L): raw vs snapshot",
       "expected": "8.977330117",
@@ -617,15 +590,6 @@
       "expected": "257.1826487",
       "observed": "257.1826487",
       "tolerance": "0.01",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q125",
-      "description": "E1 gold q125 (HB/C): raw vs snapshot",
-      "expected": "9.468381592",
-      "observed": "9.468381595",
-      "tolerance": "0.001",
       "status": "PASS",
       "note": ""
     },
@@ -711,29 +675,11 @@
       "note": ""
     },
     {
-      "id": "E1-q135",
-      "description": "E1 gold q135 (CW/L): raw vs snapshot",
-      "expected": "4.936832406",
-      "observed": "4.936832406",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
       "id": "E1-q136",
       "description": "E1 gold q136 (CW/C): raw vs snapshot",
       "expected": "8.44403618",
       "observed": "8.444036176",
       "tolerance": "0.005",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q137",
-      "description": "E1 gold q137 (CW/C): raw vs snapshot",
-      "expected": "4.928565689",
-      "observed": "4.928565689",
-      "tolerance": "0.001",
       "status": "PASS",
       "note": ""
     },
@@ -819,15 +765,6 @@
       "note": ""
     },
     {
-      "id": "E1-q147",
-      "description": "E1 gold q147 (CC/L): raw vs snapshot",
-      "expected": "5.788106684",
-      "observed": "5.788106684",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
       "id": "E1-q148",
       "description": "E1 gold q148 (CC/L): raw vs snapshot",
       "expected": "0.1658440852",
@@ -869,15 +806,6 @@
       "expected": "3.14033774",
       "observed": "3.140337734",
       "tolerance": "0.005",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q153",
-      "description": "E1 gold q153 (CC/C): raw vs snapshot",
-      "expected": "0.9986954474",
-      "observed": "0.9986954474",
-      "tolerance": "0.001",
       "status": "PASS",
       "note": ""
     },
@@ -981,15 +909,6 @@
       "note": ""
     },
     {
-      "id": "E1-q165",
-      "description": "E1 gold q165 (NY/L): raw vs snapshot",
-      "expected": "2.36",
-      "observed": "2.36",
-      "tolerance": "0.001",
-      "status": "PASS",
-      "note": ""
-    },
-    {
       "id": "E1-q166",
       "description": "E1 gold q166 (NY/C): raw vs snapshot",
       "expected": "16.19001079",
@@ -1004,15 +923,6 @@
       "expected": "18770.5",
       "observed": "18770.5",
       "tolerance": "0.1",
-      "status": "PASS",
-      "note": ""
-    },
-    {
-      "id": "E1-q168",
-      "description": "E1 gold q168 (NY/C): raw vs snapshot",
-      "expected": "36.24595469",
-      "observed": "36.24595469",
-      "tolerance": "0.01",
       "status": "PASS",
       "note": ""
     },
@@ -1139,6 +1049,96 @@
       "expected": "8.65592129",
       "observed": "8.655921295",
       "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q102",
+      "description": "E1 gold q102 (PS/L): raw vs snapshot",
+      "expected": "0.4638354504",
+      "observed": "0.4638354504",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q110",
+      "description": "E1 gold q110 (PS/C): raw vs snapshot",
+      "expected": "0.5679942338",
+      "observed": "0.5679942338",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q118",
+      "description": "E1 gold q118 (HB/L): raw vs snapshot",
+      "expected": "0.0062402349",
+      "observed": "0.006240234858",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q125",
+      "description": "E1 gold q125 (HB/C): raw vs snapshot",
+      "expected": "9.468381592",
+      "observed": "9.468381595",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q135",
+      "description": "E1 gold q135 (CW/L): raw vs snapshot",
+      "expected": "4.936832406",
+      "observed": "4.936832406",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q137",
+      "description": "E1 gold q137 (CW/C): raw vs snapshot",
+      "expected": "4.928565689",
+      "observed": "4.928565689",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q147",
+      "description": "E1 gold q147 (CC/L): raw vs snapshot",
+      "expected": "5.788106684",
+      "observed": "5.788106684",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q153",
+      "description": "E1 gold q153 (CC/C): raw vs snapshot",
+      "expected": "0.9986954474",
+      "observed": "0.9986954474",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q165",
+      "description": "E1 gold q165 (NY/L): raw vs snapshot",
+      "expected": "2.36",
+      "observed": "2.36",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q168",
+      "description": "E1 gold q168 (NY/C): raw vs snapshot",
+      "expected": "36.24595469",
+      "observed": "36.24595469",
+      "tolerance": "0.01",
       "status": "PASS",
       "note": ""
     }

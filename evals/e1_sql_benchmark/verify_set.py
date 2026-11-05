@@ -9,9 +9,11 @@ recomputes the value from the raw sources; validation/e1_gold.py, or A1/A2/C4 fo
 The two must agree to the register value's written precision, and the quarter must match where asked.
 Unanswerable questions have gold "refuse".
 
-Holdout (CHOICE-E1-13 (b)): 20 of the 100 questions, drawn with random.Random(20261104) (CHOICE-E1-10 (a)),
-stratified by family in proportion (PS/HB/CW/CC/NY/UN 3 each, RG 2), uniformly within a family. Held-out
-questions are not run in E1; they are first run at the first E3 rerun.
+Holdout (CHOICE-E1-13 (b), e1-holdback "about 5 unanswerable, in proportion"): 20 of the 100 questions, drawn
+with random.Random(20261104) (CHOICE-E1-10 (a)). Per family: 20% of its size, rounded by largest remainder; ties in
+the remainder broken by the same seeded generator. With 13/13/13/13/13/10/25 that is 2 or 3 per tool family, 2 for
+register/coverage and 5 unanswerable. Uniform within a family. Held-out questions are not run in E1; they are first
+run at the first E3 rerun. Retired questions (the `retired:` list) are not part of the set.
 
 Writes gold.json. Exits 1 on any disagreement.
 """
@@ -32,7 +34,8 @@ sys.path.insert(0, str(HERE))
 import spec  # noqa: E402
 
 SEED = 20261104
-HOLDOUT_PER_FAMILY = {"PS": 3, "HB": 3, "CW": 3, "CC": 3, "NY": 3, "RG": 2, "UN": 3}
+HOLDOUT_TOTAL = 20
+FAMILIES = ["PS", "HB", "CW", "CC", "NY", "RG", "UN"]
 REGISTERS = [ROOT / "claims" / "register.csv", ROOT / "claims" / "tracks" / "infra.csv"]
 
 
@@ -41,10 +44,21 @@ def precision(value: str) -> float:
     return 0.5 * 10 ** exp if exp < 0 else 0.5
 
 
+def allocation(questions: list[dict], rng: random.Random, total: int = HOLDOUT_TOTAL) -> dict[str, int]:
+    """Largest-remainder share of `total` per family, in proportion to family size; seeded tie-break."""
+    size = {f: sum(q["family"] == f for q in questions) for f in FAMILIES}
+    exact = {f: total * size[f] / len(questions) for f in FAMILIES}
+    alloc = {f: int(exact[f]) for f in FAMILIES}
+    rem = sorted(FAMILIES, key=lambda f: (-(round(exact[f] - alloc[f], 9)), rng.random()))
+    for f in rem[: total - sum(alloc.values())]:
+        alloc[f] += 1
+    return alloc
+
+
 def holdout(questions: list[dict], seed: int = SEED) -> set[str]:
     rng = random.Random(seed)
     out = set()
-    for fam, k in HOLDOUT_PER_FAMILY.items():
+    for fam, k in allocation(questions, rng).items():
         ids = sorted(q["id"] for q in questions if q["family"] == fam)
         out |= set(rng.sample(ids, k))
     return out
@@ -88,7 +102,9 @@ def verify(qfile: Path = HERE / "questions.yaml", registers=REGISTERS, snap=None
 
 def main() -> int:
     res = verify()
-    (HERE / "gold.json").write_text(json.dumps({"seed": SEED, "holdout_per_family": HOLDOUT_PER_FAMILY,
+    qs = yaml.safe_load((HERE / "questions.yaml").read_text())["questions"]
+    alloc = allocation(qs, random.Random(SEED))
+    (HERE / "gold.json").write_text(json.dumps({"seed": SEED, "holdout_per_family": alloc,
                                                 "questions": res}, indent=1) + "\n")
     bad = [r for r in res if not r["ok"]]
     for r in bad:

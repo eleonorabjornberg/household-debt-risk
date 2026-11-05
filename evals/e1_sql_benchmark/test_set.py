@@ -45,9 +45,13 @@ def test_evaluator_ops():
 def test_set_shape_matches_her_choices():
     fams = {f: [q for q in QS if q["family"] == f] for f in ("PS", "HB", "CW", "CC", "NY", "RG", "UN")}
     assert len(QS) == 100 and len({q["id"] for q in QS}) == 100
-    assert len(fams["UN"]) == 15 and all(q.get("refuse") and q.get("reason") for q in fams["UN"])
+    assert len(fams["UN"]) == 25 and all(q.get("refuse") and q.get("reason") for q in fams["UN"])  # e1-set-h3 replace
     for f in ("PS", "HB", "CW", "CC", "NY"):
-        assert sorted(q["difficulty"] for q in fams[f]) == ["C"] * 5 + ["L"] * 5 + ["M"] * 5
+        assert sorted(q["difficulty"] for q in fams[f]) == ["C"] * 4 + ["L"] * 4 + ["M"] * 5
+    doc = yaml.safe_load((HERE / "questions.yaml").read_text())
+    retired = {q["id"]: q["replaced_by"] for q in doc["retired"]}
+    assert len(retired) == 10 and sorted(retired.values()) == [f"q{i}" for i in range(201, 211)]
+    assert not set(retired) & {q["id"] for q in QS}
     pilot = {q["question"] for q in yaml.safe_load((HERE / "pilot_questions.yaml").read_text())["questions"]}
     assert not pilot & {q["question"] for q in QS}  # pilot questions are not reused
 
@@ -65,7 +69,10 @@ def test_holdout_is_seeded_and_stratified():
     h1, h2 = verify_set.holdout(QS), verify_set.holdout(QS)
     assert h1 == h2 and len(h1) == 20
     by = {q["id"]: q["family"] for q in QS}
-    assert {f: sum(by[i] == f for i in h1) for f in verify_set.HOLDOUT_PER_FAMILY} == verify_set.HOLDOUT_PER_FAMILY
+    import random
+    alloc = verify_set.allocation(QS, random.Random(verify_set.SEED))
+    assert {f: sum(by[i] == f for i in h1) for f in alloc} == alloc
+    assert alloc["UN"] == 5 and sum(alloc.values()) == 20  # e1-holdback: about 5, in proportion
     assert verify_set.holdout(QS, seed=1) != h1
 
 
