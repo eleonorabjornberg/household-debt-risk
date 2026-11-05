@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 15. All items reviewed (18:55 UTC). Nothing open.</p>
+      <p class="sub">Round 16. New: the A8 holder-share relabel (Claude draft).</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "rv-a8-holder", "group": "A8 international", "tag": "A8", "title": "A8: 29.1% shown as publicly owned, 1.1% beside it unclassified (Claude draft)", "ctx": "Your a8-holder (b) applied (analysis 2673157, review round 7ae5ec1). README line 15 (Germany holder cell) now shows 29.1% as publicly owned (savings banks + Landesbanken), with the 1.1% special-tasks category (promotional banks, DZ Bank and others) beside it as unclassified; the 30.3% sum is kept with the caveat that it includes DZ Bank and others whose public ownership is not sourced. README line 18 and CROSSWALK line 11 say the same; the stale 'promotional banks not sourced' note is replaced. No number changed; register text updated. Editor points not acted on, for you to judge: CROSSWALK line 12, accepted earlier, says Germany's large public-law lenders are 'owned by the public sector' without a source (ana-e17); README line 18 and CROSSWALK line 11 are long and repeat caveats (ana-e19, ana-e20). Say in the note if you want either fixed.", "opts": [["ok", "Approve the copy as is"], ["changes", "Needs changes (say which in the note, including ana-e17 / e19 / e20 if wanted)"], ["later", "Later"]], "where": "research/a8_international/README.md lines 15 and 18; Q7_EVIDENCE.md decision line", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/research/a8_international/README.md"}];
 
-const GROUPS = ["E1 benchmark", "C1/C2 holdout", "A8 international"];
+const GROUPS = ["A8 international"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
