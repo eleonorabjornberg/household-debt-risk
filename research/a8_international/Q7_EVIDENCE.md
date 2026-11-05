@@ -87,6 +87,8 @@ Options for Eleonora (no recommendation; the split is unknown):
 - (b) As (a), plus a context note: the four promotional banks checked carry a state guarantee of their own liabilities; DZ Bank does not appear to.
 - (c) Ask the Bundesbank for the split (outside contact; hers to make) before any classification.
 
+**Decision (Eleonora, 2026-11-05 14:44 UTC, card a8-promo): option (b)**, as worded on the card: relabel as in (a), plus a context note on the four liability guarantees. Applied in `compare.py` (column renamed `special_tasks_banks_unclassified`; the input id `promotional_banks_lending_individuals` and register id `a8_de_promotional_banks_unclassified` are kept), `results.json` and README line 18. No number changed.
+
 ## What would make the choice firmer
 
 - The Commission's 2001 understanding and 2004 decision texts (EUR-Lex), and the state-aid decisions for the three banks (Commission case pages), once those hosts answer.
