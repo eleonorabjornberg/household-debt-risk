@@ -1,4 +1,4 @@
-> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers. Her 13 decisions of 2026-11-05 are recorded below. **Two values are still open: the thresholds T and R** (CHOICE-E1-8 (b) chose a confirmatory framing but set no values). The question set also still needs her approval (CHOICE-E1-3 (a)). The file is frozen only after both. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
+> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers. Her decisions of 2026-11-05 are recorded below. **Still open: R (card e1-R2), how the h3 (b) change is made to the approved set (card e1-set-h3), and how the clustering enters the tests (CHOICE-E1-17, to be carded).** The file is frozen only after these. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
 
 # Pre-registration: E1, question-to-SQL benchmark (Haiku vs Sonnet vs Opus)
 Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No full-E1 result exists.
@@ -13,21 +13,39 @@ Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No fu
 | CHOICE-E1-5 top-level cache | (b) drop it; keep only the system/tools breakpoint |
 | CHOICE-E1-6 effort | (a) `medium` for all three models |
 | CHOICE-E1-7 repetitions | (b) 3 |
-| CHOICE-E1-8 framing | (b) confirmatory. **T and R not yet given (open, see below)** |
+| CHOICE-E1-8 framing | (b) confirmatory |
 | CHOICE-E1-9 `lookup_claim` | (a) keep all 10 tools |
 | CHOICE-E1-10 seed | (a) `20261104` |
 | CHOICE-E1-11 scoring | (a) the pilot rule |
 | CHOICE-E1-12 baseline | (b) a no-tools run on one model, up to $4 |
+| CHOICE-E1-16 baseline model (e1-base) | **Opus** (a model choice, not a spend OK) |
 | CHOICE-E1-13 holdout | (b) hold back 20 questions, unseen until the first E3 rerun |
 | CHOICE-E1-14 cost cap | (a) $31. A ceiling only: the full run needs her separate spend OK |
+| CHOICE-E1-15 unit (e1-unit) | **(ii)** every repetition counted, clustered by question |
+| CHOICE-E1-15 T (e1-T) | **70%** |
+| CHOICE-E1-15 H3 (e1-h3) | **(b)** raise the unanswerable questions to about 25 of 100; R not given |
+| Question set (rv-e1-set) | approved as is (`questions.yaml` at `3faa99b`), after choosing h3 (b); how the two fit is card e1-set-h3 |
+
+Recorded in PLAN.md "Decisions taken" (coordinator commit `11f0562`), relayed 2026-11-05.
 
 ## Still open (Eleonora's)
-- **CHOICE-E1-15, T** (accuracy threshold per model, H1) and **R** (correct-refusal threshold, H3), with the **unit of analysis**: (i) one score per question (the majority of its 3 repetitions), or (ii) every repetition counted, clustered by question. Scored set: about 68 answerable and 12 unanswerable questions (below). The Wilson 95% lower bound must reach the threshold:
-  - H1 per question (n = 68): T = 70% needs 56/68 (82%); 80% needs 61/68 (90%); 90% needs 67/68 (99%).
-  - H1 per repetition (n = 204): T = 70% needs 76%; 80% needs 86%; 90% needs 94%. Repetitions of one question are not independent, so this overstates the evidence.
-  - H3 per question (n = 12): R = 70% needs 12/12, and R ≥ 80% cannot be supported by any result. Per repetition (n = 36): 70% needs 31/36, 80% needs 34/36, 90% needs 36/36.
-  - Because H3 is nearly untestable at 12 refusal questions, the options are: (a) set R anyway and expect a null; (b) raise the unanswerable share (e.g. 25 of 100, about 20 scored), which means redrafting part of the set; (c) report H3 descriptively and keep H1 and H2 confirmatory. No recommendation from Claude.
-- **CHOICE-E1-16, baseline model** (see Benchmarks).
+- **e1-set-h3** (docket round 18): how h3 (b) changes the approved set. (replace) swap about 10 answerable questions for unanswerable ones, keeping 100; (add) add about 10 unanswerable questions, making about 110; (keep) keep the set as approved, with 15. Under replace or add she reviews only the changed questions. The holdout is then redrawn with the same seed and the same per-family rule (3 unanswerable held back as now, or 5 if she prefers; not yet asked).
+- **e1-R2** (docket round 18): R = 70%, 80% or 90%.
+- **CHOICE-E1-17, how the clustering enters the tests** (unit (ii) is chosen; the method is not). Both are implemented in `analyze_e1.py`, written before any result:
+  - (a) **design effect**: Wilson interval with n replaced by n / DEFF, where DEFF = 1 + (m − 1) × ICC (one-way ANOVA ICC, floored at 0; m = 3 repetitions). H2 uses the clustered McNemar test of Durkalski et al. (2003). Closed form, but it relies on the ICC estimate.
+  - (b) **question bootstrap**: resample questions with replacement (10,000 draws, seed 20261104). Percentile 95% intervals for the rates; H2 from the bootstrap distribution of the paired difference. Fewer assumptions, but less exact with few clusters (12–20 refusal questions).
+  - No recommendation from Claude.
+- **What the threshold demands under unit (ii)** depends on the ICC, which is unknown until the run. The two bounds are no clustering (ICC 0, every answer independent) and full clustering (ICC 1, a question's 3 answers always agree). The Wilson lower bound must reach the threshold:
+  - **H1** (68 answerable questions, 204 answers), T = 70%: ICC 0 needs 76.3%; ICC 1 needs 80.9%.
+  - **H3** at about **20 scored unanswerable questions** (60 answers, after h3 (b)):
+    - R = 70%: ICC 0 needs 81.6%; ICC 1 needs 90.1%.
+    - R = 80%: ICC 0 needs 90.2%; ICC 1 needs 97.6%.
+    - R = 90%: ICC 0 needs 97.6%; ICC 1 cannot be supported.
+  - **H3** at 12 (if she keeps the set):
+    - R = 70%: ICC 0 needs 85.0%; ICC 1 needs 96.0%.
+    - R = 80%: ICC 0 needs 93.1%; ICC 1 cannot be supported.
+    - R = 90%: ICC 0 needs 99.9%; ICC 1 cannot be supported.
+- **Holm and the intervals** (a detail in `analyze_e1.py`, for her to confirm with CHOICE-E1-17): the H1/H3 verdict comes from the 95% interval, and a "supported" also needs a Holm-adjusted one-sided p < 0.05 within its family. The alternative is Holm-adjusted (wider) intervals.
 
 ## What has already been seen (disclosed before any choice was made)
 A **cost pilot** ran on 2026-11-04 (approved by Eleonora, cap $2.98; `evals/e1_sql_benchmark/pilot-2026-11-04/`, commit `a4998b7`). It used 10 easy questions (9 single-tool `public_share` lookups), 1 loop per model, effort `medium`, at most 4 turns. What was seen:
@@ -41,9 +59,9 @@ On factual questions about who holds US household credit risk, answered only thr
 
 ## Hypotheses (confirmatory, CHOICE-E1-8 (b)) and what counts as support
 - **H1** (per model, 3 tests): accuracy on scored answerable questions ≥ **T** (open).
-- **H2** (2 paired tests): Opus and Sonnet differ in accuracy; Sonnet and Haiku differ in accuracy. Exact McNemar on per-question correctness (the unit set in CHOICE-E1-15).
+- **H2** (2 paired tests): Opus and Sonnet differ in accuracy; Sonnet and Haiku differ in accuracy. Paired by question and repetition, clustered by question (unit (ii)); the test is set by CHOICE-E1-17.
 - **H3** (per model, 3 tests): correct-refusal rate on scored unanswerable questions ≥ **R** (open).
-- Support: Wilson 95% lower bound ≥ threshold (H1, H3), or Holm-adjusted McNemar p < 0.05 (H2). Null: the interval contains the threshold, or the adjusted p ≥ 0.05. Against: the Wilson upper bound is below the threshold. Cost per correct answer and latency are descriptive.
+- Support: the 95% lower bound (clustered per CHOICE-E1-17) ≥ threshold, with Holm-adjusted one-sided p < 0.05 (H1, H3); or Holm-adjusted clustered p < 0.05 (H2). Null: otherwise. Against (H1, H3): the upper bound is below the threshold. Script: `evals/e1_sql_benchmark/analyze_e1.py`, written and tested on synthetic data before any E1 result. Cost per correct answer and latency are descriptive.
 
 ## Data
 - **Backend:** the MCP server's snapshot backend (`DATABASE_URL_READONLY` and `DATABASE_URL` unset); production is never queried.
@@ -97,7 +115,7 @@ On factual questions about who holds US household credit risk, answered only thr
 - The scorer is `score()` in `pilot.py`, now extended to $bn, %, ratio and count and tested. "Says the data cannot answer" is detected by a fixed phrase list (`REFUSAL_RE`: cannot, unable, not available, not covered, outside, no data, and similar). The human 20% re-score checks it. A human re-scores a seeded random 20% of answers (`random.Random(20261104)`).
 
 ## Benchmarks and holdout
-- **Baseline (CHOICE-E1-12 (b)):** a no-tools run on one model (answers from memory), 80 questions × 3 repetitions, at most $4, inside the $31 cap. **Which model is open (CHOICE-E1-16):** (a) Haiku, at about $0.05 at the pilot profile; (b) Sonnet, at about $1; (c) Opus, at about $2–4, the most likely to know published figures from memory. No recommendation from Claude.
+- **Baseline (CHOICE-E1-12 (b), CHOICE-E1-16 Opus):** a no-tools run on Opus 5.5 (answers from memory) over the 80 scored questions × 3 repetitions, about $2–4, inside the $31 cap (`run_e1.py --baseline claude-opus-5-5`, its cap set to $31 minus the main run's spend). Reported descriptively next to Opus with tools; no hypothesis test.
 - **Holdout (CHOICE-E1-13 (b)):** the 20 questions listed above. They are not run in E1; they are run first at the first E3 rerun.
 
 ## Multiple testing
