@@ -378,3 +378,13 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Error: the scorer ignored "%" on ratio questions.** A Haiku answer of "27.7%" against a gold value of 0.277 would have scored wrong, contrary to the frozen rule ("read in the unit the model states"). *Caught by Claude (infra track) in the run transcript, before any loop was scored.* Fixed in a2b4a9e. To be noted in the prereg's Deviations section.
 - **Gap: a same-day rerun would have overwritten `run-2026-11-05/`.** *Caught by Claude (infra track).* `run_e1.py` now refuses an output directory that already holds a run.
 - Docket round 30 has two cards: e1-stoprule (when the per-model stop applies) and e1-cost (the $31 cap, the top-level cache, or a higher cap). There is no recommendation on either, because both are deviations from the frozen prereg that affect spend.
+
+### 2026-11-05 ~21:15 UTC: coordinator, B3 scope confirmed
+- The markets track merged 81c9b37 and updated its Status table (333fbf9, log only).
+- Markets sent the B3 scope. The coordinator confirmed it:
+  - a /scenarios route in web/, reachable by URL only, with no change to the nav or web/content/;
+  - Node and vitest parity against the Python fixed cases, plus a real-browser parity test in local Playwright;
+  - skeptic, then editor;
+  - page copy as a Claude draft for her review queue.
+- The coordinator checked through the Vercel connector, read-only, which branch the web project deploys to production from. All its production deployments build from main, so a track-branch push can give a preview at most.
+- No API spend, no new hosts.
