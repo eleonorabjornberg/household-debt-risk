@@ -300,3 +300,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Merged infra `9de2d27`: e1-cluster (b) and e1-support (i) are in the E1 pre-registration, which stays a draft until rv-e1-redraft. The first push got a GitHub 500 error; the retry went through.
 - Merged analysis `551fcdf` (new session session_01GDxCQ6BWQG3vypp2p8TqdV): a8-promo (b) applied, relabel plus the guarantees note, no number changed; skeptic ana-48 to 52, editor ana-e1 to e11. The results.json key was renamed; a `git grep` found no other consumer of the old key.
 - Review queue round 14: rv-a8-promo added (rv-e1-redraft and rv-holdout still open). Docket round 24: a8-holder (from skeptic ana-48/49, *caught by the skeptic agent*): the 30.3% holder share counts the whole special-tasks category, DZ Bank included. No recommendation.
+
+### 2026-11-05 ~17:20 UTC: coordinator, the second holdout opening merged
+- Merged markets `c783a5a` and `8d60d86`.
+  - c783a5a: the erratum, deviations D1 and D2, and the gated script, all committed before the run.
+  - 8d60d86: the second opening, run once under her c3-errors (b), approval ccc1fc6. It wrote only the 72-row per-forecast table. The frozen step reproduced the committed C2 holdout block exactly. One earlier call was refused by the clean-tree gate before any data was read; the track logged it.
+- Docket round 25 adds two cards, c3-b-level and c3-b-nointv. The protocol's rule (b) gives no test level for "coverage not rejected" and does not say how it applies to models without intervals. *Caught by the markets track.* Option (iv) of c3-b-level (Kupiec only) is the coordinator's addition. a8-holder stays open.
