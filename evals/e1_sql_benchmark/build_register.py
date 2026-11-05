@@ -66,6 +66,9 @@ def main() -> None:
     for q in allq:
         if q.get("refuse") or q.get("register"):
             continue
+        if q.get("retired_on") and "check" not in q:  # retired and its row removed: keep the line, so later rows keep theirs
+            values.append(f"{q['id']}\tretired {q['retired_on']} (replaced by {q['replaced_by']})")
+            continue
         c = checks[f"E1-{q['id']}"]
         tables = _tables(q["check"])
         dates = _dates(q["check"])
