@@ -8,7 +8,7 @@
 
 Only one free source gives numbers for the price of CRT: FHFA's *CRT Progress Report* of December 2016. For each CAS (Fannie Mae) and STACR (Freddie Mac) deal from 2013 to 2016, it gives an "estimated credit cost", an estimated guarantee fee, and the deal's structure. FHFA estimated each cost from issuance pricing under one baseline loss scenario: 10% prepayment, 0.2% annual defaults, 25% loss given default, and redemption at 10 years. 47 deals have a published cost.
 
-Later FHFA reports show issuance spreads only as charts. Deal-level data from the GSEs and SEC filings are blocked from this environment, and secondary-market spreads are paywalled (`sources.md`). So B2 covers 2013–2016 deals only.
+Later FHFA reports show issuance spreads only as charts. Deal-level data from the GSEs and SEC filings are blocked from this environment, and secondary-market spreads are paywalled (`sources.md`). So B2's deal-level pricing covers 2013–2016 deals only. For 2017–2023 the GSEs' 10-Ks give a coarser, aggregate annual cost (section below).
 
 ## Result
 
@@ -42,11 +42,49 @@ The weighted cost rose from 2014 to 2016. Over that period the GSEs moved to sel
 - **This is FHFA's estimate, not a market spread series.** The cost is derived from issuance pricing under one scenario, and it assumes the whole slice is sold.
 - **A multiple above 1 is the premium over FHFA's baseline, not over expected losses in general.** It mixes investors' risk aversion with any belief that losses will exceed the baseline, and the two cannot be separated here. It also depends on the loss basis (about 6.4 or 10.4).
 - **Tie to A2.** The priced deals cover most of each year's CRT reference UPB (last column). The rest is insurance (CIRT, ACIS) and unpriced deals. The two sources are not reconciled deal by deal. A2's net-exposure bounds (`research/a2_net_exposure/`) are the quantity this price applies to. B2 does not recompute them.
-- **2017 onward is a gap.** Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error. It is listed as a choice for Eleonora, not done.
+- **2017 onward has no deal-level prices.** Only the aggregate 10-K measure above. Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error; it was not done.
+
+## 2017–2023: aggregate annual cost from the GSEs' 10-Ks
+
+Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no longer prints deal-level credit costs, and the GSEs' deal data are not reachable from here (crt.freddiemac.com, capitalmarkets.freddiemac.com; `sources.md`). What the 10-Ks give instead is the yearly cost of each GSE's whole CRT programme. It is a coarser measure than the deal table above: a cost per dollar of protection outstanding, pooled over every vintage still in force, not a price set at issuance. It is not set against FHFA's expected loss. Code: `gse_10k.py`; data: `freddie_crt_cost.csv`, `fannie_crt_cost.csv`.
+
+**Freddie Mac** ($ millions a year; each year from the first 10-K that prints it):
+
+| Year | Scope | Credit-enhancement expense | Interest on CRT debt | Total | Total less Freddie's reinvestment estimate | Total per dollar of CRT maximum coverage | Credit-enhancement expense per dollar of cover |
+|---|---|---|---|---|---|---|---|
+| 2017 | single-family | 263 | 808 | 1,071 | 891 | 4.8% | 1.2% |
+| 2018 | single-family | 402 | 1,047 | 1,449 | 1,077 | 5.2% | 1.4% |
+| 2019 | single-family | 693 | 1,060 | 1,753 | 1,393 | 5.2% | 2.1% |
+| 2020 | single-family | 1,036 | 736 | 1,772 | 1,696 | 4.6% | 2.7% |
+| 2021 | single-family | 1,470 | not printed | n/a | n/a | n/a | 3.3% |
+| 2022 | consolidated | 2,118 | not printed | n/a | n/a | n/a | 4.1% |
+| 2023 | consolidated | 2,339 | not printed | n/a | n/a | n/a | 4.5% |
+
+**Fannie Mae** (cash paid or transferred to investors, $ millions a year):
+
+| Year | CAS | CIRT | CAS + CIRT | Per dollar of CRT risk in force |
+|---|---|---|---|---|
+| 2017 | 770 | 190 | 960 | n/a |
+| 2018 | 888 | 286 | 1,174 | n/a |
+| 2019 | 981 | 360 | 1,341 | n/a |
+| 2020 | 1,003 | 382 | 1,385 | n/a |
+| 2021 | 812 | 264 | 1,076 | 2.9% |
+| 2022 | 882 | 325 | 1,207 | 3.3% |
+| 2023 | 906 | 409 | 1,315 | 3.3% |
+
+- **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was $736 million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure, which includes a small multifamily part. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The last column is the one measure that runs through all seven years, and it rises partly because Freddie moved from debt notes to trust and insurance structures whose cost is booked as credit-enhancement expense (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy").
+- **Gross against net.** Freddie's interest on CRT debt is gross interest; Fannie's CAS figure is interest net of LIBOR or SOFR, plus CAS REMIC and CLN payments. Freddie prints its own estimate of reinvestment income on the debt proceeds, shown in the "less" column. The two GSEs are not compared directly.
+- **Different denominators.** Freddie: maximum coverage of its CRT, from the 10-K coverage tables (A2, `research/a2_net_exposure/freddie_ce_outstanding.csv`), averaged over the two year ends. Fannie: CRT risk in force, printed rounded to whole billions and found at both year ends only for 2021–2023 (A2, `fannie_ce_outstanding.csv`); other years are n/a.
+- **Excluded.** Fannie's lender risk-sharing payments (in `fannie_crt_cost.csv`) and mortgage insurance.
+- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both.
+- **Against 2013–2016.** Freddie's 2017–2020 total per dollar of cover, 4.6%–5.2% a year, falls inside the 3.3–6.9% range of FHFA's 2013–2016 cost per dollar of tranche. The bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is a consistency check, not a test of the earlier result.
 
 ## Reproduce
 
 ```bash
 uv run --project pipeline python research/b2_crt_pricing/b2.py
+uv run --project pipeline python research/a2_net_exposure/freddie_10k.py      # Freddie 10-K PDFs (freddiemac.com)
+SEC_USER_AGENT='<declared>' uv run --project pipeline python research/a2_net_exposure/fannie_10k.py   # Fannie 10-Ks (EDGAR)
+uv run --project pipeline python research/b2_crt_pricing/gse_10k.py
 uv run --project pipeline pytest -q research/b2_crt_pricing
 ```
