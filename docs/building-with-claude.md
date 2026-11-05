@@ -394,3 +394,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Eleonora** (21:15 UTC) chose e1-cost (b): restore the top-level prompt cache, reversing CHOICE-E1-5 (b), with the cap at $31.
 - No recommendation was given on either card. Both are dated deviations from the frozen prereg. Infra records them, with the scorer "%" fix, in the prereg's Deviations section before any live call. The rerun goes to `run-2026-11-05b`, and her e1-spend (a) row still authorizes it.
 - Docket round 31 republished with nothing open.
+
+### 2026-11-05 ~21:30 UTC: coordinator, B3 browser page merged and queued for review
+- Merged markets c14ffaa (bb3a731): the B3 engine in web/ at /scenarios, reachable by URL only. web/app/layout.tsx and web/content are unchanged. Checks on the merged tree: web vitest 31/31, `npm run build` OK, research/b3_scenarios pytest 17/17, register check OK.
+- Markets found and documented a bundler detail: imported JSON is re-serialised, so one replay timing weight reaches the page one unit in the last place off the file. Results still match engine.py to 1e-9, and the input check allows 1e-12. Skeptic mkt-s55 to s59 and editor mkt-e26 to e32 were addressed by markets.
+- No preview URL is given: the Vercel connector returned 403 for the team scope, and team access was not requested.
+- Review queue round 19 has two cards: rv-b3-page (the page and its Claude-draft copy) and rv-b3-nav (the proposed nav link diff, not applied). Neither card carries a recommendation.
