@@ -357,3 +357,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Merged infra 26aeb12. Steps: retired checks dropped and validation 113 PASS / 0 FAIL (242eead); freeze-gate test switched to temp files (134ee11); **prereg frozen at e0ae2d6**, file SHA-256 6249f5eb…451c0 (checked by the coordinator with `git show e0ae2d6`), recorded in 26aeb12. No spend.
 - Applied infra's proposed note on the 72 e1_q register rows: "Question set approved by Eleonora 2026-11-05 (PLAN 1116080); prereg frozen e0ae2d6". Values unchanged.
 - Infra pointed out that run_e1.py's gate now passes and does not check for her spend OK. Asked infra to add a gate that reads a dated spend-OK line in PLAN before `--live`, as in the C1b script. Docket round 28: e1-spend card for the full run plus the Opus baseline, within her $31 cap.
+
+### 2026-11-05 ~19:20 UTC: coordinator, C3 and B2 merged; E1 spend gate merged
+- Merged markets 7b64703 (392a1bf, cbdc08b, 5c8bb4f): C3 final verdicts under her c3-b-level (iv) and c3-b-nointv (c), and the B2 STACR 2017+ section (Claude draft). Folded its 147 register rows (7 c3_, 140 b2_), no duplicate ids; register 1,854 rows, check passes. Track log times match the commits.
+- Merged infra 7f48353: `run_e1.py --live` (main run and baseline) refuses without `--approval`, a commit after the freeze whose PLAN has her dated e1-spend row; `--cap` at most $31. 23 tests pass. No API calls.
+- **Error: wrong word in a relay.** The coordinator's ~18:58 relay to markets grouped C3's ZC1-DIR vs seasonal naive with the "undetermined" case. It is "comparable" (Holm p 1.000); the only "undetermined" comparison is C1 bridge_reg vs no_change at k = 2. *Error by Claude (coordinator); caught by Claude (markets track), confirmed by quant-reviewer.* The wording was in the chat relay only; PLAN, this log and the cards did not carry it. The write-up is correct.
+- **Gap in the spend gate:** card option (b) approves the main run only, but the gate's pattern accepts any "OK" row for both runs. *Caught by Claude (coordinator).* Sent to infra.
+- Review queue round 17: rv-c3-final and rv-b2-stacr17 added beside rv-a8-holder.
