@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** The engine and its tests are built and checked. Its scenario presets follow Eleonora's Q-B3 decision (2026-11-04). The DFAST preset and the 2008–12 replay are built, both labelled proxies. The design is Claude's proposal ([`METHOD.md`](METHOD.md)).
 
-**PLAN task B3. Status: engine, tests and both preset families done (proxies); the in-app version is the coordinator's site work.**
+**PLAN task B3. Status: engine, tests and both preset families done (proxies); browser page built at `web/` /scenarios (URL only, preview), awaiting Eleonora's review.**
 
 ## What it does
 - **Inputs.** Loss parameters for each loan class (mortgages, federal student loans, other consumer credit): a cumulative default rate, a loss given default, and a quarterly timing vector.
@@ -53,12 +53,25 @@ These are ESTIMATES under a proxy, and three biases are known:
 - **Whose crisis.** This replays the banks' crisis, not the GSEs'. Bank mortgage books in 2008–12 included subprime and option-ARM loans that the GSEs did not guarantee, so applying bank charge-offs to the GSE book likely overstates public losses. The GSEs' own realised losses (from their 10-Ks) would be the better source for that book, and are a possible refinement. The figures apply one historical path to today's balances, so they are ESTIMATES.
 
 ## Not done here
-- **2008–12 replay preset** (Q-B3 (c), second family): not yet built.
-- **In-app version.** `atlas/` is site code; the coordinator owns it. A proposal is in `tracks/markets.md`, and only preview deployments would be made.
+- **GSE-specific replay and transfer caps from A2**: not built; the page's transfer inputs start at zero.
+- **Navigation link.** The page is reachable by URL only; the nav link waits on her review (proposed to the coordinator).
 
 ## Use
 ```bash
 uv run --project pipeline python research/b3_scenarios/engine.py                       # exposures + fixed cases
 uv run --project pipeline python research/b3_scenarios/engine.py --params my.json      # your own parameters
 uv run --project pipeline pytest -q research/b3_scenarios
+```
+
+## In the browser (`web/` route `/scenarios`, Claude draft)
+
+> **Claude draft, not the author's text.** The page's copy is Claude's, for Eleonora to rewrite; the page shows the same banner.
+
+- **Same engine.** `web/scripts/sync-b3.mjs` copies `engine.mjs`, the fixed cases, `exposures.json`, both presets and their results into `web/lib/b3/` before every build, with SHA-256s in `manifest.json`. `web/lib/b3/sync.test.ts` fails if a copy differs from its source.
+- **Checks.** `web/lib/b3/engine.test.ts` (vitest) runs every fixed case and every preset against the Python core's outputs. `test_browser.mjs` builds nothing and deploys nothing: it serves the built site on localhost and drives the page in Chromium. It checks every fixed case through the `?case=` hook, every preset button, the form path (inputs typed into the controls, compared with `engine.py` run on the same inputs, and the displayed rounding), the in-page identities, the refusal of invalid input, the draft banner, and no horizontal scroll at phone width.
+- **Bundled JSON.** The bundler re-serialises imported JSON, and one replay timing weight reaches the page one unit in the last place away from the file. Results still match to 1e-9; the input check allows 1e-12.
+- **No figures in the copy.** Every number on the page is computed from the synced inputs. The page states its proxies and the holder-versus-risk caveat.
+
+```bash
+cd web && npm run build && npm run test:b3-browser     # also run by pytest when web/ is built
 ```
