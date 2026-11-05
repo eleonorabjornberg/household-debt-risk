@@ -10,8 +10,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-04 04:38:13 |
-| Result | 41 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
+| Run timestamp (UTC) | 2026-11-05 05:37:22 |
+| Result | 123 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
 
@@ -47,7 +47,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | C8 | **PASS** | 2026Q2 public share of consumer credit | 31.3% | 31.35% | rounded as published |  |
 | C9 | **PASS** | 'The 2007-11 jump never reversed': min share 2012Q1..latest | >= 2011Q4 level (i); also report vs 2007Q4 (ii) | min 49.92% in 2012Q1; vs 2011Q4 49.22% (+0.70 pp); vs 2007Q4 36.12% (+13.80 pp) | none (strict) | (i) holds: share never fell below its 2011Q4 level after 2011Q4 |
 | D1 | **PASS** | web/public/data/public_share.json vs recomputation, every quarter (299 rows) | max abs diff within tol; same quarter set | scope_total_musd $0.000M; public_musd $0.000M; public_share 4.98e-11; public_share_mortgage 4.99e-11; public_share_cc 4.99e-11 | 1e-6 shares, $1M levels |  |
-| D2 | **NOT RUN** | mart.public_share (database) vs recomputation | match | OperationalError | 1e-6 shares, $1M levels | could not query database: failed to resolve host 'aws-0-us-east-1.pooler.supabase.com': [Errno -2] Name or service not known |
+| D2 | **NOT RUN** | mart.public_share (database) vs recomputation | match | ConnectionTimeout | 1e-6 shares, $1M levels | could not query database: connection timeout expired Multiple connection attempts failed. All failures were: - host: 'aws-0-us-east-1.pooler.supab |
 | E1 | **PASS** | 1968Q1: revolving credit (FL153166100) starts | zero before, > 0 from 1968Q1 | first positive 1968Q1 ($1,439M) | exact |  |
 | E2 | **PASS** | 1977Q1: revolving reclassification visible in cc-type shares | \|robust z\| > 6 in a cc type | FL153166205 -7.06 pp of cc, z=-16.4 | z>6 & >=1.0pp |  |
 | E3 | **PASS** | 2006Q1: student loans (FL153166220) split out of other non-revolving | first positive 2006Q1 | first positive 2006Q1 ($480,967M); other non-revolving -407,678M q/q | exact | student loans are zero before; inside other non-revolving |
@@ -60,7 +60,89 @@ recomputes everything from components. No number is changed by this suite; it on
 | F2 | **PASS** | Public share revisions across common quarters | report | max \|rev\| 0.021 pp in 2025Q3; mean -0.0002 pp; public $ max \|rev\| $1,623M | headline 0.1 pp |  |
 | F3 | **PASS** | Headline shares, previous -> current vintage | equal at published 0.1 pp precision | 2026Q1 (latest common): 56.60% -> 56.59%; 2011Q4: 49.22% -> 49.22%; 2007Q4: 36.12% -> 36.12%; 1952Q1: 3.22% -> 3.22% | 0.1 pp |  |
 | F4 | **PASS** | All-time-high quarter, previous vs current (through common quarters) | same quarter | prev 2021Q1 58.60%; now 2021Q1 58.60% | exact quarter |  |
-| F5 | **PASS** | New quarter(s) in current vintage | report | 2026Q2 | - |  |
+| F5 | **PASS** | New quarter(s) in current vintage | report | 2026Q2 | - | URLs tried: https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html \| https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed |
+| E1-q101 | **PASS** | E1 gold q101 (PS/L): raw vs snapshot | 0.405376779 | 0.405376779 | 5e-05 |  |
+| E1-q102 | **PASS** | E1 gold q102 (PS/L): raw vs snapshot | 0.4638354504 | 0.4638354504 | 5e-05 |  |
+| E1-q103 | **PASS** | E1 gold q103 (PS/L): raw vs snapshot | 0.1795060273 | 0.1795060273 | 5e-05 |  |
+| E1-q104 | **PASS** | E1 gold q104 (PS/L): raw vs snapshot | 13.186611 | 13.186611 | 0.001 |  |
+| E1-q105 | **PASS** | E1 gold q105 (PS/L): raw vs snapshot | 6.158130435 | 6.158130435 | 0.001 |  |
+| E1-q106 | **PASS** | E1 gold q106 (PS/C): raw vs snapshot | 1.15936438 | 1.159364386 | 0.005 |  |
+| E1-q107 | **PASS** | E1 gold q107 (PS/C): raw vs snapshot | 0.0250942854 | 0.02509428535 | 5e-05 | quarter 1965Q3 |
+| E1-q108 | **PASS** | E1 gold q108 (PS/C): raw vs snapshot | 0.3412252661 | 0.3412252661 | 5e-05 | quarter 2021Q1 |
+| E1-q109 | **PASS** | E1 gold q109 (PS/C): raw vs snapshot | 52.64124105 | 52.64124105 | 0.01 |  |
+| E1-q110 | **PASS** | E1 gold q110 (PS/C): raw vs snapshot | 0.5679942338 | 0.5679942338 | 5e-05 |  |
+| E1-q111 | **PASS** | E1 gold q111 (PS/M): raw vs snapshot | 9.37448617 | 9.374486171 | 0.005 |  |
+| E1-q112 | **PASS** | E1 gold q112 (PS/M): raw vs snapshot | 0.5736445015 | 0.5736445015 | 0.001 |  |
+| E1-q113 | **PASS** | E1 gold q113 (PS/M): raw vs snapshot | 4.646752727 | 4.646752727 | 0.001 |  |
+| E1-q114 | **PASS** | E1 gold q114 (PS/M): raw vs snapshot | 1.605134 | 1.605134 | 0.001 |  |
+| E1-q115 | **PASS** | E1 gold q115 (PS/M): raw vs snapshot | 0.1551965084 | 0.1551965084 | 5e-05 |  |
+| E1-q116 | **PASS** | E1 gold q116 (HB/L): raw vs snapshot | 0.3363442481 | 0.3363442481 | 5e-05 |  |
+| E1-q117 | **PASS** | E1 gold q117 (HB/L): raw vs snapshot | 0.2151886202 | 0.2151886202 | 5e-05 |  |
+| E1-q118 | **PASS** | E1 gold q118 (HB/L): raw vs snapshot | 0.0062402349 | 0.006240234858 | 5e-05 |  |
+| E1-q119 | **PASS** | E1 gold q119 (HB/L): raw vs snapshot | 8.977330117 | 8.977330117 | 0.001 |  |
+| E1-q120 | **PASS** | E1 gold q120 (HB/L): raw vs snapshot | 517.837323 | 517.8373227 | 0.1 |  |
+| E1-q121 | **PASS** | E1 gold q121 (HB/C): raw vs snapshot | 0.45253237 | 0.4525323659 | 0.005 |  |
+| E1-q122 | **PASS** | E1 gold q122 (HB/C): raw vs snapshot | 0.2301042843 | 0.2301042843 | 5e-05 | quarter 2007Q2 |
+| E1-q123 | **PASS** | E1 gold q123 (HB/C): raw vs snapshot | 6.84665657 | 6.846656567 | 0.005 |  |
+| E1-q124 | **PASS** | E1 gold q124 (HB/C): raw vs snapshot | 257.1826487 | 257.1826487 | 0.01 |  |
+| E1-q125 | **PASS** | E1 gold q125 (HB/C): raw vs snapshot | 9.468381592 | 9.468381595 | 0.001 |  |
+| E1-q126 | **PASS** | E1 gold q126 (HB/M): raw vs snapshot | 0.544803797 | 0.544803797 | 5e-05 |  |
+| E1-q127 | **PASS** | E1 gold q127 (HB/M): raw vs snapshot | 1.79306208 | 1.793062077 | 0.005 |  |
+| E1-q128 | **PASS** | E1 gold q128 (HB/M): raw vs snapshot | 0.2770218823 | 0.2770218823 | 0.001 |  |
+| E1-q129 | **PASS** | E1 gold q129 (HB/M): raw vs snapshot | 0.01106755954 | 0.01106755947 | 5e-05 |  |
+| E1-q130 | **PASS** | E1 gold q130 (HB/M): raw vs snapshot | 0.9722192611 | 0.9722192611 | 0.001 |  |
+| E1-q131 | **PASS** | E1 gold q131 (CW/L): raw vs snapshot | 0.4056516186 | 0.4056516186 | 5e-05 |  |
+| E1-q132 | **PASS** | E1 gold q132 (CW/L): raw vs snapshot | 2.200086904 | 2.200086904 | 0.001 |  |
+| E1-q133 | **PASS** | E1 gold q133 (CW/L): raw vs snapshot | 7.02612427 | 7.026124267 | 0.005 |  |
+| E1-q134 | **PASS** | E1 gold q134 (CW/L): raw vs snapshot | -1.57120638 | -1.571206382 | 0.005 |  |
+| E1-q135 | **PASS** | E1 gold q135 (CW/L): raw vs snapshot | 4.936832406 | 4.936832406 | 0.001 |  |
+| E1-q136 | **PASS** | E1 gold q136 (CW/C): raw vs snapshot | 8.44403618 | 8.444036176 | 0.005 |  |
+| E1-q137 | **PASS** | E1 gold q137 (CW/C): raw vs snapshot | 4.928565689 | 4.928565689 | 0.001 |  |
+| E1-q138 | **PASS** | E1 gold q138 (CW/C): raw vs snapshot | 1.859132282 | 1.859132282 | 0.001 |  |
+| E1-q139 | **PASS** | E1 gold q139 (CW/C): raw vs snapshot | -12.4796636 | -12.4796636 | 0.005 |  |
+| E1-q140 | **PASS** | E1 gold q140 (CW/C): raw vs snapshot | 0.69387077 | 0.6938707653 | 0.005 |  |
+| E1-q141 | **PASS** | E1 gold q141 (CW/M): raw vs snapshot | 7.16203254 | 7.162032544 | 0.005 |  |
+| E1-q142 | **PASS** | E1 gold q142 (CW/M): raw vs snapshot | 1.362329842 | 1.362329842 | 0.001 |  |
+| E1-q143 | **PASS** | E1 gold q143 (CW/M): raw vs snapshot | 12.88 | 12.88 | 0.001 |  |
+| E1-q144 | **PASS** | E1 gold q144 (CW/M): raw vs snapshot | 5.32 | 5.32 | 0.001 |  |
+| E1-q145 | **PASS** | E1 gold q145 (CW/M): raw vs snapshot | 9101 | 9101 | 0.1 |  |
+| E1-q146 | **PASS** | E1 gold q146 (CC/L): raw vs snapshot | 3.562416747 | 3.562416747 | 0.001 |  |
+| E1-q147 | **PASS** | E1 gold q147 (CC/L): raw vs snapshot | 5.788106684 | 5.788106684 | 0.001 |  |
+| E1-q148 | **PASS** | E1 gold q148 (CC/L): raw vs snapshot | 0.1658440852 | 0.1658440852 | 5e-05 |  |
+| E1-q149 | **PASS** | E1 gold q149 (CC/L): raw vs snapshot | 13.976938 | 13.976938 | 0.001 |  |
+| E1-q150 | **PASS** | E1 gold q150 (CC/L): raw vs snapshot | 49.791678 | 49.791678 | 0.001 |  |
+| E1-q151 | **PASS** | E1 gold q151 (CC/C): raw vs snapshot | 1.851955948 | 1.851955948 | 0.001 | quarter 2012Q1 |
+| E1-q152 | **PASS** | E1 gold q152 (CC/C): raw vs snapshot | 3.14033774 | 3.140337734 | 0.005 |  |
+| E1-q153 | **PASS** | E1 gold q153 (CC/C): raw vs snapshot | 0.9986954474 | 0.9986954474 | 0.001 |  |
+| E1-q154 | **PASS** | E1 gold q154 (CC/C): raw vs snapshot | 174.5502936 | 174.5502936 | 0.01 |  |
+| E1-q155 | **PASS** | E1 gold q155 (CC/C): raw vs snapshot | 5.230035527 | 5.230035527 | 0.001 | quarter 1951Q4 |
+| E1-q156 | **PASS** | E1 gold q156 (CC/M): raw vs snapshot | 36.216178 | 36.216178 | 0.001 |  |
+| E1-q157 | **PASS** | E1 gold q157 (CC/M): raw vs snapshot | -138.25 | -138.25 | 0.1 |  |
+| E1-q158 | **PASS** | E1 gold q158 (CC/M): raw vs snapshot | 253.157 | 253.157 | 0.1 |  |
+| E1-q159 | **PASS** | E1 gold q159 (CC/M): raw vs snapshot | 3.307500207 | 3.307500202 | 0.005 |  |
+| E1-q160 | **PASS** | E1 gold q160 (CC/M): raw vs snapshot | 0.982892986 | 0.982892986 | 0.001 |  |
+| E1-q161 | **PASS** | E1 gold q161 (NY/L): raw vs snapshot | 1263 | 1263 | 0.1 |  |
+| E1-q162 | **PASS** | E1 gold q162 (NY/L): raw vs snapshot | 7.83 | 7.83 | 0.001 |  |
+| E1-q163 | **PASS** | E1 gold q163 (NY/L): raw vs snapshot | 4942 | 4942 | 0.1 |  |
+| E1-q164 | **PASS** | E1 gold q164 (NY/L): raw vs snapshot | 458.5 | 458.5 | 0.1 |  |
+| E1-q165 | **PASS** | E1 gold q165 (NY/L): raw vs snapshot | 2.36 | 2.36 | 0.001 |  |
+| E1-q166 | **PASS** | E1 gold q166 (NY/C): raw vs snapshot | 16.19001079 | 16.19001079 | 0.001 | quarter 2025Q4 |
+| E1-q167 | **PASS** | E1 gold q167 (NY/C): raw vs snapshot | 18770.5 | 18770.5 | 0.1 |  |
+| E1-q168 | **PASS** | E1 gold q168 (NY/C): raw vs snapshot | 36.24595469 | 36.24595469 | 0.01 |  |
+| E1-q169 | **PASS** | E1 gold q169 (NY/C): raw vs snapshot | 0.64 | 0.64 | 0.001 |  |
+| E1-q170 | **PASS** | E1 gold q170 (NY/C): raw vs snapshot | 3.04 | 3.04 | 0.001 | quarter 2022Q1 |
+| E1-q171 | **PASS** | E1 gold q171 (NY/M): raw vs snapshot | -859.938 | -859.938 | 0.1 |  |
+| E1-q172 | **PASS** | E1 gold q172 (NY/M): raw vs snapshot | 10.95699391 | 10.95699391 | 0.001 |  |
+| E1-q173 | **PASS** | E1 gold q173 (NY/M): raw vs snapshot | 0.08645248234 | 0.08645248234 | 5e-05 |  |
+| E1-q174 | **PASS** | E1 gold q174 (NY/M): raw vs snapshot | 0.42 | 0.42 | 0.001 |  |
+| E1-q175 | **PASS** | E1 gold q175 (NY/M): raw vs snapshot | 0.06116968926 | 0.06116968926 | 5e-05 |  |
+| E1-q179 | **PASS** | E1 gold q179 (RG/L): raw vs snapshot | 299 | 299 | 0 |  |
+| E1-q180 | **PASS** | E1 gold q180 (RG/C): raw vs snapshot | 20.95662067 | 20.95662067 | 0.005 |  |
+| E1-q181 | **PASS** | E1 gold q181 (RG/C): raw vs snapshot | 3 | 3 | 0 |  |
+| E1-q182 | **PASS** | E1 gold q182 (RG/C): raw vs snapshot | 94 | 94 | 0 |  |
+| E1-q183 | **PASS** | E1 gold q183 (RG/M): raw vs snapshot | 5.02386783 | 5.023867828 | 0.005 |  |
+| E1-q184 | **PASS** | E1 gold q184 (RG/M): raw vs snapshot | 3.109550176 | 3.109550177 | 0.001 |  |
+| E1-q185 | **PASS** | E1 gold q185 (RG/M): raw vs snapshot | 8.65592129 | 8.655921295 | 0.005 |  |
 
 ## Method
 
@@ -202,9 +284,17 @@ Count by series: FL673066000 x20, FL153166220 x18, FL313066220 x15, FL413065105 
 
 ## Previous-vintage lookup (f)
 
-* prev_path: data/validation/prev_z1_csv_files.zip
+* prev_path: /home/user/household-debt-risk/data/validation/prev_z1_csv_files.zip
 * prev_member_timestamp: 2026-06-10T16:02:22
 * format: per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000
 * common_quarters: 297
 * last_common: 2026Q1
 * conflicts: []
+
+URLs tried:
+
+* `https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html`
+* `https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html`
+* `https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html`
+* `https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html`
+* `https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed`

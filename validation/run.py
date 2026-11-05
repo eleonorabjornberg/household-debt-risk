@@ -26,6 +26,7 @@ import yaml
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import zparse  # noqa: E402
+import e1_gold  # noqa: E402
 
 ROOT = HERE.parent
 CATALOG = ROOT / "pipeline" / "series_catalog.yaml"
@@ -642,6 +643,8 @@ def main(argv=None) -> int:
     ap.add_argument("--z1-zip", help="path to FRB_Z1_csv.zip (default: data/validation/, downloaded if absent)")
     ap.add_argument("--prev-z1-zip", help="previous-vintage Z.1 zip (Z1.csv long format, or per-table z1_csv_files.zip)")
     ap.add_argument("--no-network-prev", action="store_true", help="skip probing the Fed archive for the previous vintage")
+    ap.add_argument("--nyfed-xlsx", help="NY Fed HHD_C_Report workbook for the E1 gold checks (default: data/validation/nyfed/, "
+                    "downloaded if absent)")
     args = ap.parse_args(argv)
 
     zip_path = ensure_zip(args.z1_zip)
@@ -668,6 +671,7 @@ def main(argv=None) -> int:
     else:
         f_checks, prev_info = check_revisions(df, res, groups, public, args.prev_z1_zip, urls_log)
     checks += f_checks
+    checks += e1_gold.run_checks(df, cat, groups, res, Check, Path(args.nyfed_xlsx) if args.nyfed_xlsx else None)
 
     meta = {"vintage": ts.strftime("%Y-%m-%d %H:%M"), "latest": q(df.index[-1]), "zip_name": zip_path.name,
             "zip_bytes": zip_path.stat().st_size, "sha256": sha,
