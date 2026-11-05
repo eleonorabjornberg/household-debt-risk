@@ -8,9 +8,9 @@
  "protocol": "docs/decisions/scoring-protocol.md @ 192d60c",
  "files": {
   "research/c2_forecast/forecast.py": "545ba9e436e67066741ae8fb3ee490059316fc5df44c3c505cca64500a3a5f1e",
-  "research/c2_forecast/holdout_run.py": "26a270343c186dfc6b39c9977cc66a1ac0650c764e180ce94a55d81415d62e73",
+  "research/c2_forecast/holdout_run.py": "238ce9f7e3c3501ccc3c257029c782b038106355fd77361835e6e6b6b9be9973",
   "research/c2_forecast/tests_dev.csv": "5377f8fb742c01a75bbe570149dcd8959b072e9c3e3964ed1f779766952c55d5",
-  "research/c1_nowcast/nowcast.py": "491d1ef3831450b943bc13ed8941f922b33c13c3f2ec721f6352f5c2ae57f394",
+  "research/c1_nowcast/nowcast.py": "934c25ac39b6af52ca3bd28f1e1ea15b8612e9300e29027f468bdf9cd6636199",
   "research/c1_nowcast/pit.py": "0eb0fac312c0a3c5fcc15d50fa7b3960722aff86dd92dda363dda09c5882bd2f",
   "research/c1_nowcast/z1_vintages.py": "ae5a1894b5e40b2f9639699fa7b3330d0f358385b06d0d74b9814a4bb435a687",
   "research/c1_nowcast/inputs.yaml": "2387a7eb92875640e69f2b6228bcd5d4bd5e12bdcac368c9a6dd6bea0b30292a",
@@ -19,5 +19,8 @@
   "research/c1_nowcast/z1_calendar.csv": "7956d33c0a11158c7a6a740c166b434be66809e3550aa657676c29731dda1173",
   "research/common/fred.py": "3607785a0453bf3058267881e5c2ce58300f73d92761b3a01bed553271924d9b",
   "data/c1/z1_cells.csv": "958a3480f037bebbf8ad80e4ea8885351b30d2a7de061761d68faa466f0cceb1"
- }
+ },
+ "deviations": [
+  "2026-11-05 c1b-dev-1 (a), Eleonora: rows whose target quarter no Z.1 has published are 'no target'; re-hashed: research/c1_nowcast/nowcast.py, research/c2_forecast/holdout_run.py. holdout_run.py also gains the approval-order check (mkt-q29). A new approval commit after this one is required before the one holdout run."
+ ]
 }

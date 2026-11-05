@@ -35,11 +35,22 @@ What differs by year, kept as printed: 2017–2020 single-family, with interest 
 
 Not like for like across the GSEs: Fannie's CAS cash is interest **net of LIBOR/SOFR** plus CAS REMIC and CLN payments; Freddie's 2017–2020 "interest expense related to CRT debt" is gross interest, with Freddie's own estimate of reinvestment income on the proceeds printed beside it.
 
+## STACR deal-level pricing (`stacr_pricing.py`, `stacr_tranches.csv`), host added by Eleonora 2026-11-05 (card crt-host)
+Plain `curl` request (no extra headers). The workbook is not committed (data/b2/stacr/); the parsed tranche table is.
+
+| Supports | Source | URL | Retrieved (UTC) | Bytes | SHA-256 | Quote |
+|---|---|---|---|---|---|---|
+| Per-deal, per-tranche issued amount, benchmark, spread and initial credit enhancement, STACR 2013-DN1 to 2026-DNA4 (103 deals) | Freddie Mac, STACR pricing workbook, sheet "STACR", linked from the CRT Securities pricing page https://capitalmarkets.freddiemac.com/crt/securities/pricing | https://capitalmarkets.freddiemac.com/crt/xlsxs/stacr-pricing.xlsx | 2026-11-05 14:19 | 51595 | `e10971eb90457fa7c3188efa5bc30fd443a7e6cd2e8b8c6c633494e3b5175fd7` | Row labels: "Closing Date", "Total Bond Issuance", "Bond Issuance", "Benchmark", "Spread", "Minimum Credit Enhancement", "Initial Credit Enhancement", "Rating" |
+| Not used yet: rating history | Freddie Mac, STACR rating history workbook (same page) | https://capitalmarkets.freddiemac.com/crt/docs/xlsxs/stacr-rating-history.xlsx | 2026-11-05 14:19 | 184987 | `6f0ee815ca11cea8e3ed6bffb8907036c27e9e49c1bc58cf2af5eeca28a732a0` | — |
+
+Source quirks, kept as printed: 2018-HQA2 prints "M-1 3.00%" without a colon; 2018-DNA2 names tranches "M1" in the issuance row and "M-1" elsewhere (matched without hyphens); 2017-HRP1 prints par/discount/IO values as "a/b/c" (kept raw, not parsed); "(Indicative)" spreads are flagged; 2014-HQ3 and 2014-DN4 tranche B print dashes.
+Still not reachable (2026-11-05 14:15 UTC): crt.freddiemac.com (proxy CONNECT 502). Not worked around. The workbook also links claritydownload.fmapps.freddiemac.com, a host not on the list: not requested.
+
 ## Checked and not used
 
 | Wanted | Host | Status 2026-11-04 |
 |---|---|---|
-| Freddie Mac CRT deal data and issuance margins | crt.freddiemac.com, capitalmarkets.freddiemac.com | crt.freddiemac.com added to Allowed domains on 2026-11-04 (evening) but the proxy gateway answers 502 to CONNECT (20:39 and 21:17 UTC); capitalmarkets.freddiemac.com (where Freddie's investor page links CRT) gets no response (000). Whether deal data are free is unverified |
+| Freddie Mac CRT deal data and issuance margins | crt.freddiemac.com, capitalmarkets.freddiemac.com | crt.freddiemac.com added to Allowed domains on 2026-11-04 (evening) but the proxy gateway answers 502 to CONNECT (20:39 and 21:17 UTC); capitalmarkets.freddiemac.com (where Freddie's investor page links CRT) gets no response (000). Whether deal data are free is unverified. **Update 2026-11-05:** capitalmarkets.freddiemac.com now answers 200 and the STACR pricing workbook is free (section above); crt.freddiemac.com still 502. |
 | Fannie Mae CAS deal data | capitalmarkets.fanniemae.com, www.fanniemae.com | 000 / 403 |
 | STACR and CAS offering documents on EDGAR | www.sec.gov, efts.sec.gov | 403 without a declared User-Agent. Eleonora's decision (PLAN.md) is to declare one through `SEC_USER_AGENT`, which is unset in this session |
 | Secondary-market CRT spreads | Bloomberg, Intex, dealer runs | paywalled |
