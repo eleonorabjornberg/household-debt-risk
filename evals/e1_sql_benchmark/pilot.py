@@ -89,6 +89,8 @@ class Budget:
     cap: float = CAP_USD
     total: float = 0.0
     by_model: dict = field(default_factory=dict)  # model -> [cost, loops started]
+    assumed: dict = field(default_factory=lambda: dict(ASSUMED_PER_LOOP))  # per-loop figure the overrun stop uses
+    overrun: float = OVERRUN
 
     def start_loop(self, model: str) -> None:
         self.by_model.setdefault(model, [0.0, 0])[1] += 1
@@ -107,9 +109,9 @@ class Budget:
             raise Stop(f"cap: running total ${self.total:.4f} >= ${self.cap:.2f}")
         spent, loops = self.by_model[model]
         mean = spent / loops
-        if mean > OVERRUN * ASSUMED_PER_LOOP[model]:
+        if mean > self.overrun * self.assumed[model]:
             raise Stop(f"overrun: {model} mean ${mean:.4f}/loop over {loops} loop(s) > "
-                       f"{OVERRUN}x assumption ${ASSUMED_PER_LOOP[model]}")
+                       f"{self.overrun}x assumption ${self.assumed[model]}")
 
 
 # ---------------------------------------------------------------- scoring (rule fixed in pilot_questions.yaml)
@@ -143,11 +145,26 @@ def to_unit(value: float, unit_text: str, unit: str) -> float:
         if u.startswith(("million", "mn", "m ")) or u == "m":
             return value / 1e6
         return value
-    return value  # pp
+    if unit == "usd_bn":
+        if u.startswith(("trillion", "tn", "t ")) or u == "t":
+            return value * 1e3
+        if u.startswith(("million", "mn", "m ")) or u == "m":
+            return value / 1e3
+        return value
+    return value  # pp, pct, ratio, count: the number as written (a trailing % or x is ignored)
+
+
+REFUSAL_RE = re.compile(r"cannot|can't|can ?not|unable|not able|does(?: not|n't) (?:cover|contain|include|have)|"
+                        r"no data|not available|not covered|outside|not in the data|isn't in", re.I)
 
 
 def score(answer_text: str, gold: dict) -> dict:
     value, unit_text, quarter = parse_answer(answer_text)
+    if gold["gold"] == "refuse":  # correct only with no number and a statement that the data cannot answer
+        said = bool(REFUSAL_RE.search(answer_text or ""))
+        ok = value is None and said
+        why = None if ok else ("gave a number" if value is not None else "no statement that the data cannot answer")
+        return {"correct": ok, "parsed": value, "unit_text": unit_text, "quarter": quarter, "why": why}
     if value is None:
         return {"correct": False, "parsed": None, "unit_text": unit_text, "quarter": quarter, "why": "no number"}
     v = to_unit(value, unit_text, gold["unit"])
@@ -164,7 +181,10 @@ def block_dicts(content) -> list[dict]:
     return [b if isinstance(b, dict) else b.model_dump(exclude_none=True) for b in content]
 
 
-def run_loop(client, model: str, q: dict, tools: list[dict], call_tool, budget: Budget, log) -> dict:
+def run_loop(client, model: str, q: dict, tools: list[dict], call_tool, budget: Budget, log,
+             top_cache: bool = True, rep: int | None = None) -> dict:
+    """One tool-use loop. top_cache=False drops the top-level automatic cache (E1 CHOICE-E1-5 (b)); tools=[] runs
+    with no tools (the E1 baseline)."""
     budget.start_loop(model)
     messages = [{"role": "user", "content": q["question"]}]
     system = [{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}]
@@ -174,15 +194,17 @@ def run_loop(client, model: str, q: dict, tools: list[dict], call_tool, budget: 
         t0 = time.monotonic()
         err = None
         try:
-            resp = client.messages.create(
-                model=model, max_tokens=MAX_TOKENS, system=system, tools=tools, messages=messages,
-                output_config={"effort": EFFORT}, cache_control={"type": "ephemeral"})
+            kw = {"tools": tools} if tools else {}
+            if top_cache:
+                kw["cache_control"] = {"type": "ephemeral"}
+            resp = client.messages.create(model=model, max_tokens=MAX_TOKENS, system=system, messages=messages,
+                                          output_config={"effort": EFFORT}, **kw)
         except Exception as e:  # logged and counted as an unanswered loop; no spend recorded for a failed call
             err = f"{type(e).__name__}: {str(e)[:300]}"
             resp = None
         latency = round(time.monotonic() - t0, 3)
         if resp is None:
-            log({"qid": q["id"], "model": model, "turn": turn, "error": err, "latency_s": latency})
+            log({"qid": q["id"], "model": model, "rep": rep, "turn": turn, "error": err, "latency_s": latency})
             break
         u = usage_dict(resp.usage)
         cost = call_cost(model, u)
@@ -191,7 +213,8 @@ def run_loop(client, model: str, q: dict, tools: list[dict], call_tool, budget: 
         content = block_dicts(resp.content)
         text = "\n".join(b.get("text", "") for b in content if b.get("type") == "text")
         tool_uses = [b for b in content if b.get("type") == "tool_use"]
-        log({"qid": q["id"], "model": model, "turn": turn, "usage": u, "cost_usd": round(cost, 6),
+        log({"qid": q["id"], "model": model, "served_model": getattr(resp, "model", None), "rep": rep,
+             "turn": turn, "usage": u, "cost_usd": round(cost, 6),
              "latency_s": latency, "stop_reason": stop_reason, "text": text,
              "tool_calls": [{"name": b["name"], "input": b["input"]} for b in tool_uses]})
         budget.add(model, cost)  # may raise Stop; the call is already logged
