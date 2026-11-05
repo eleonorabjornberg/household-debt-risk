@@ -22,9 +22,11 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 **For the coordinator (cards or questions for her)**
 1. Proposed card b2-sofr-src: use 11.448 bps from Regulation ZZ.
 2. Reference-pool UPB is not needed for the per-tranche multiple (thickness comes from the CEs, the workbook lists A-H). No UPB source used. A UPB source would only matter for a deal-level cost in bps of UPB or dollars.
-3. The measure is mostly empty: only 50 of 274 tranches (all B-2, 2017–2022) attach below the baseline's 30.8 bps cumulative loss. M-1, M-2 and B-1 never get a multiple, and nothing from 2023 on. The multiple also swings with B-2's attach point (0 → 10 → 25 bps).
+3. The measure is mostly empty: only 50 tranches (all B-2, 2017–2022; 50 of the 274 in her three classes, or 50 of 270 eligible there once 3 with no detach and 1 with no spread are removed; the coordinator's 50 of 285 counts all classes incl. 13 A-1 and 2 M-3) attach below the baseline's 30.8 bps cumulative loss. M-1, M-2 and B-1 never get a multiple, and nothing from 2023 on. The multiple also swings with B-2's attach point (0 → 10 → 25 bps).
 
 **Errors this session**
+- The "50 of 274" count in the first coordinator message did not say its denominator: 274 = tranches in her three classes, while the CSV-wide count is 50 of 285 eligible. Caught by the coordinator; METHOD.md now gives every count.
+- UPB: METHOD.md and the first message called reference-pool UPB "not needed". Her measure (ii) text names a UPB source, so dropping it would depart from her choice. Caught by the coordinator; it now waits on her card b2-upb.
 - `detach_points` first raised on 2014-DN2, which prints A-H at 3.00% below M-1 at 3.50%. Caught by the function's own order check (Claude). Fix: no detach for that class, reason kept in `detach_from`; it is pre-2017, out of scope.
 - `stacr_2017.py` first run: division on object-dtype columns (ZeroDivisionError). Caught on the first run (Claude); columns cast to float.
 
