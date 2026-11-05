@@ -253,3 +253,214 @@
 - **Evidence:** git show 0bc647b:research/c2_forecast/tests_dev.csv (14/14/14); forecast.py:454-455; EVALUATION.md:85-88.
 - **Proposed resolution:** Correct the count (28 + 14 = 42) here and route the SPECS.md correction to the track. State that ZC1-DIR h = 8 is untested (n = 4 < 8) and has no verdict. Add C1's q15 differences to section 7.
 - **Status:** addressed: section 7 gives the 28 + 14 = 42 count and says SPECS.md's "36 to 42" is a miscount (SPECS.md not edited: accepted text); the ZC1-DIR h = 8 n < 8 skip is documented; C1's declared differences from C2 are added.
+
+### R-20261105-mkt-s44 · skeptic · research/c3_accuracy/README.md:395-422 (section 5, "first release" in C2 vs C1)
+- **Objection:** "First release" is defined differently in the two tables of the revision section, and the text does not say so. C1 uses the same-vintage change: share(q) minus share(T), both taken from q's first release (EVALUATION.md:10, item 9a). C2's real-time check uses share(q) from q's first release minus share(T) from the *origin* release (forecast.py:358). So C2's "first-release target" also contains the revision to T between the two releases, which no forecast can see. On the same 28 target quarters, the two targets differ by an RMS of 0.24 pp (maximum 1.09 pp), and no-change RMSE is 0.44 pp (C2) against 0.38 pp (C1). The "latest" targets are identical in both tables. Displayed numbers move under C1's definition: no-change RMSE 0.44/1.17/2.01 becomes 0.38/1.14/1.97; drift goes from 0.99 to 0.93 at h = 1 and from 0.63 to 0.60 at h = 8; Z-DIR goes from 0.86 to 0.85 and from 0.99 to 0.96. The direction of the first-versus-latest gap is unchanged.
+- **Severity:** major
+- **Evidence:** forecast.py:358 `"actual_first": first_level - s[T]` (s = origin vintage) vs nowcast.py:209 `share_first - z.shares(frel)[T]`. Read-only recomputation from forecasts_realtime_dev.csv, first_release.csv and z1_share_vintages.csv: same q set (28 = 28), `actual_latest` equal, actual_first(C2) − actual_first(C1) RMS 0.236 pp.
+- **Proposed resolution:** In make_report.py, label C2's row "first release of the target, origin level as published at the origin" and C1's row "first release, same-vintage change". Add one sentence saying the C2 gap mixes revisions to T+h with revisions to T. Optionally add a development-only C2 row on C1's definition, computed from the committed files. Nothing is rerun.
+- **Status:** addressed (make_report.py): section 5 explains the two definitions and gives the RMS gap on the same targets (computed, registered).
+
+### R-20261105-mkt-s45 · skeptic · research/c3_accuracy/README.md:11, 47, 53-58 (C2 holdout targets are barely revised; development targets are mature)
+- **Objection:** "Latest vintage" is the 2026-09-11 Z.1 for both samples, but the report never gives the date or says what it implies. Development targets (≤ 2023Q2) have had at least 13 later releases. Holdout targets have had 0 to 11 (2026Q2 is its first release). For one-quarter changes, the latest-minus-first revision has an RMS of 0.25 pp over the 2016Q3–2023Q2 targets and 0.07 pp over 2023Q3–2026Q2. So the development-to-holdout comparison behind rule (a), and the headline reading that development favoured the candidates but the holdout reversed it, sets mature targets against near-first-release ones. Section 5 shows that target vintage alone moves Z-DIR/no-change from 0.86 to 1.08 at h = 1. This is a confound the report should name, not evidence about which way it acts. It interacts with c3-rule, because whichever rule is chosen uses this dev-versus-holdout loss comparison.
+- **Severity:** major
+- **Evidence:** forecast.py:35 `LATEST = "2026-09-11"`; first_release.csv (2026Q2 first released 2026-09-11). Read-only computation from z1_share_vintages.csv, revisions only, no forecasts scored: later releases per holdout quarter run from 11 (2023Q3) down to 0 (2026Q2); RMS revision is 0.253 pp in development (n = 28) and 0.072 pp in the holdout (n = 12, mostly 2025Q1 at −0.24 pp).
+- **Proposed resolution:** In section 2, state the vintage date and add a sentence that holdout targets are 0–11 releases old, against at least 13 for development. Print the two revision RMS values. Note in section 5 that the C2 holdout sits closer to the first-release regime than development does. Do not rescore anything.
+- **Status:** addressed: a headline bullet gives the later-release counts (computed from first_release.csv and z1_calendar.csv) and says development-versus-holdout comparisons mix mature and barely revised targets.
+
+### R-20261105-mkt-s46 · skeptic · research/c3_accuracy/README.md:225-236 (C1b bias table, pooled rows)
+- **Objection:** The pooled rows count each target quarter up to three times (k = 1, 2, 3 share the outcome; no-change's error is identical across k), and `mean_hac1` on the k-concatenated rows treats the copies as nearly independent. The pre-registration asks for bias "per k" (c1b-prereg.md:52), so the pooled rows are an addition, and their standard errors are too small. With per-quarter means (n = 28 / 12), the SEs are: development C1 −0.23 (0.04), not (0.03); no-change −0.15 (0.08), not (0.05); holdout C1 −0.07 (0.04), not (0.03), which is about 1.7 SE rather than 2.5. The same triple-counting applies to the pooled n = 35 / 78 rows in sections 2 and 5, which are RMSEs, so only their n is overstated.
+- **Severity:** minor
+- **Evidence:** make_report.py:577 (pools by concatenating k groups); read-only recomputation from c1b nowcasts_dev.csv and nowcasts_holdout.csv. Concatenated: holdout C1 −0.076 (0.027), no-change −0.001 (0.034). By quarter: −0.073 (0.044), −0.006 (0.054).
+- **Proposed resolution:** Label the pooled rows "not pre-registered; instants of one quarter share the outcome, so the s.e. is understated", or show the per-quarter-mean s.e. Say beside the pooled n that it counts instants, not targets (12 and 28 quarters).
+- **Status:** addressed: the bias table says the pooled rows are not pre-registered and double-count targets, so their s.e. is understated; the C1 holdout table notes the same for its pooled row.
+
+### R-20261105-mkt-s47 · skeptic · research/c3_accuracy/README.md:19, 35-36, 384-393 (P2a/P2b targets are latest vintage)
+- **Objection:** The registry heading says the C1 development scores are "real-time sample RT, first-release targets", but the P2a and P2b rows are scored against latest-vintage targets, on different target spans (P2a 2010Q2–2023Q2, P2b 2015Q1–2023Q2). Their rows say "not real time" but not that the target changes. Likewise, the nowcast regime table puts RT rows (first release) and P2a rows (latest vintage) under one header, with no note that the target definition differs.
+- **Severity:** minor
+- **Evidence:** c1_nowcast/nowcasts_dev.csv: for P2a and P2b, `actual == actual_latest` in 100% of rows and `actual == actual_first` in 0%; for RT, the reverse. nowcast.py:214.
+- **Proposed resolution:** In make_report.py, add "latest-vintage targets, 2010Q2– / 2015Q1–2023Q2" to the P2a and P2b registry rows and to the P2a regime rows.
+- **Status:** addressed: the registry text says the P2a and P2b rows use latest-vintage targets.
+
+### R-20261105-mkt-s48 · skeptic · research/c3_accuracy/README.md:13 (C1b headline "with no test")
+- **Objection:** The headline calls C1b's verdict "a comparison of RMSEs on 12 target quarters, with no test". Under the pre-registered rule (c1b-prereg.md:55-60), "improves on C1" also needs lower development RMSE at every k and an H1 test significant after Holm. The report's own table shows those (Holm p 0.006–0.007). Only the holdout leg has no test. The holdout leg is also 35 instants over 12 quarters (k = 3 has 11), not 12 forecasts.
+- **Severity:** minor
+- **Evidence:** c1b-prereg.md:55-60; README.md:197-201; c1b holdout_results.json n_scored {1: 12, 2: 12, 3: 11}.
+- **Proposed resolution:** Reword to: "development: lower RMSE at every k, H1 significant after Holm; holdout: pooled RMSE lower (35 instants over 12 quarters, descriptive, no test)."
+- **Status:** addressed: the C1b bullet says the verdict rests on development Holm tests plus the holdout RMSE comparison over 35 instants in 12 quarters.
+
+
+### R-20261105-mkt-e1 · editor · research/c3_accuracy/README.md (lines 11, 88, 206)
+- **Objection:** Rule (a) presented as settled while c3-rule is open.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): RULE_NOTE added to the banner, the C2 verdict section and the C1 verdict section; the verdicts are labelled provisional and left as computed.
+
+### R-20261105-mkt-e2 · editor · research/c3_accuracy/README.md (lines 11)
+- **Objection:** The headline is one-sided: density scores (CRPS) favour the candidates in the holdout.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The headline says the verdicts are on RMSE and adds a computed CRPS statement (asserted).
+
+### R-20261105-mkt-e3 · editor · research/c3_accuracy/README.md (lines 11, 92-133)
+- **Objection:** The development/holdout sign flip is never stated.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): A neutral sentence in the headline (asserted from the scores), with its limits and no cause.
+
+### R-20261105-mkt-e4 · editor · research/c3_accuracy/README.md (lines 88-133)
+- **Objection:** The verdict labels cannot be reproduced from the columns.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Labels defined, a 'dev lower' column added, one- and two-sided tests stated.
+
+### R-20261105-mkt-e5 · editor · research/c3_accuracy/README.md (lines 5, 19, 47, 88)
+- **Objection:** Jargon is undefined.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): A Terms list in the banner (CW, DM-HLN, Holm, HAC, interval score, CRPS, Kupiec, Christoffersen, Clopper-Pearson, burn-in, frozen, RT, P2a/P2b); GFC defined in section 4.
+
+### R-20261105-mkt-e6 · editor · research/c3_accuracy/README.md (lines 5-12, 51)
+- **Objection:** The models are undefined.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): A Tasks and models list with pointers to SPECS.md and EVALUATION.md.
+
+### R-20261105-mkt-e7 · editor · research/c3_accuracy/README.md (lines 5)
+- **Objection:** The target, source and vintage are unnamed.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The banner names the Z.1 source, the denominator series, pp units and the 2026-09-11 vintage. Seasonal adjustment is not stated, because it is not verified.
+
+### R-20261105-mkt-e8 · editor · research/c3_accuracy/README.md (lines 14)
+- **Objection:** 'Where the models fail' is loaded and 'chance' is undefined.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Retitled 'Largest errors and crisis windows'; chance defined; out-of-window errors and the better relative performance inside the windows stated.
+
+### R-20261105-mkt-e9 · editor · research/c3_accuracy/README.md (lines 12-13)
+- **Objection:** The C1 'beats' cell lacks context, and the C1b verdict is unlinked.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The headline is singular and gives the other-instant ratios (asserted above one) and target overlap; the C1b bullet links c1b-prereg.md and gives units.
+
+### R-20261105-mkt-e10 · editor · research/c3_accuracy/README.md (lines 168-177, 223-236)
+- **Objection:** The holdout C1/C1b numbers are not marked descriptive.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Marked descriptive, with no test; the bias heading reworded.
+
+### R-20261105-mkt-e11 · editor · research/c3_accuracy/README.md (lines 3)
+- **Objection:** 'Nothing was rerun' and 'no number typed by hand' overstate.
+- **Severity:** major
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The banner lists what the script computes and that the register rows are UNVERIFIED.
+
+### R-20261105-mkt-e12 · editor · research/c3_accuracy/README.md (lines 7)
+- **Objection:** 'Opened once' leaves out the crashed run.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The banner mentions 77460b4 and says the protocol allows one opening.
+
+### R-20261105-mkt-e13 · editor · research/c3_accuracy/README.md (lines 49)
+- **Objection:** The card is unnamed and the overlap wording is unclear.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Card c3-hcount named; plain wording; says the h = 4/8 numbers use the by-target count.
+
+### R-20261105-mkt-e14 · editor · research/c3_accuracy/README.md (lines 19-38)
+- **Objection:** Score columns are ambiguous and the placebo has no n.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Column meanings stated; placebo n/a.
+
+### R-20261105-mkt-e15 · editor · research/c3_accuracy/README.md (lines 38)
+- **Objection:** 'Carried flat' is not labelled as an assumption.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Labelled as an assumption in the registry and banner.
+
+### R-20261105-mkt-e16 · editor · research/c3_accuracy/README.md (lines 12)
+- **Objection:** The bridge regression's smaller n is not mentioned.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The headline gives the n for both models (from scores_dev.csv).
+
+### R-20261105-mkt-e17 · editor · research/c3_accuracy/README.md (lines 15, 361)
+- **Objection:** The ‡ threshold and 'anecdotes' are loose.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Headline notes that the n = 11-12 holdout cells are small too; 'anecdotes' replaced.
+
+### R-20261105-mkt-e18 · editor · research/c3_accuracy/README.md (lines 137-164)
+- **Objection:** The holdout coverage caveats are missing.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Text says the holdout brackets assume independence at h > 1 and that 1.00 on 12 is uninformative about too-wide intervals.
+
+### R-20261105-mkt-e19 · editor · research/c3_accuracy/README.md (lines 166)
+- **Objection:** H3 hangs on the 0.05 reading; a near-cut p.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): H3 linked to the protocol; computed note when a p falls in [0.05, 0.10); 'below nominal' marked descriptive.
+
+### R-20261105-mkt-e20 · editor · research/c3_accuracy/README.md (lines 88)
+- **Objection:** 'Far larger' is vague.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): The lag-8 p range is given (computed, registered) and called not robust.
+
+### R-20261105-mkt-e21 · editor · research/c3_accuracy/README.md (lines 181)
+- **Objection:** The NW file and the log paths are unnamed.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Column and files named; review-log paths given in section 7.
+
+### R-20261105-mkt-e22 · editor · research/c3_accuracy/README.md (lines 225, 236)
+- **Objection:** Brackets vs parentheses; −0.00.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Fixed (f2 prints 0.00).
+
+### R-20261105-mkt-e23 · editor · research/c3_accuracy/README.md (lines 324-357)
+- **Objection:** The C1/C1b holdout 'ten largest' are nearly the whole sample.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Stated; bridge/bridge_c1 equivalence stated.
+
+### R-20261105-mkt-e24 · editor · research/c3_accuracy/README.md (lines 395-422)
+- **Objection:** Section 5 heading is causal; source unnamed.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Retitled 'First release against latest vintage'; source files named; neutral sentence.
+
+### R-20261105-mkt-e25 · editor · research/c3_accuracy/README.md (lines 441-456)
+- **Objection:** Section 7 claim and Sources are incomplete.
+- **Severity:** minor
+- **Evidence:** editor pass on the C3 draft at 8e7d86c (suggestions only, logged by the markets track).
+- **Proposed resolution:** wording change through make_report.py.
+- **Status:** addressed (2026-11-05, markets track, make_report.py): Sentence qualified; specs, real-time files and logs added to Sources; test changes dated before the holdout.
