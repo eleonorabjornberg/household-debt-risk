@@ -111,3 +111,18 @@ Changed text: `research/a8_international/README.md:15,18`, `compare.py` docstrin
 - ana-e9 (register id): kept on purpose; register notes now say so.
 - ana-e10 (DZ Bank wording in notes): accepted, "The Bundesbank lists DZ Bank in this category … its ownership and guarantee status are not sourced". The 17,817 / 1,551,414 values come from the rerun of compare.py and the test asserts them.
 - ana-e11 (voice): no change needed.
+
+## 2026-11-05 (evening): a8-holder (b) applied (commit 2673157), skeptic and editor round
+
+Changed text: `README.md:15,18`, `CROSSWALK.md:11`, `compare.py` note and docstring, new track row `a8_de_holder_public_owned_public_law_banks`. The skeptic found that `results.json` is unchanged and recomputed (438,448 + 13,519) / 1,551,414 = 0.2913.
+
+- **R-20261105-ana-53** (skeptic, major; also editor ana-e14). Register row `a8_de_public_owned_share` still says "Savings banks, Landesbanken and promotional banks hold 30.3%". Open: this is an existing row, so the edit went to the coordinator as a proposal.
+- **R-20261105-ana-54** (skeptic, major; also editor ana-e13). The table cell called the 29.1% "publicly owned" with no caveat, although the README says savings banks' and Landesbanken's ownership is not sourced. Accepted: the cell now says "their ownership is not sourced here, see below". The label "publicly owned figure" stays because it is her chosen wording.
+- **R-20261105-ana-55** (skeptic, minor; also ana-e16). 29.1% + 1.1% displays as 30.2%. Accepted: "(sum of unrounded shares)" added in both places.
+- **R-20261105-ana-56** (skeptic, minor). Row `a8_de_promotional_banks_unclassified` says "unclassified on the risk-bearer measure", but the category is now unclassified on both measures; `holder_a` is the 30.3% sum. Row edit proposed to the coordinator. The `compare.py` note already says `holder_a` is the sum.
+- **R-20261105-ana-57** (skeptic, minor). The Q7_EVIDENCE.md:7 context line describes the holder measure as including promotional banks. Accepted: a dated a8-holder decision note was added below the a8-promo note; line 7 is left as the evidence record.
+- **ana-e12** (editor, blocker). claim-check reads the 1.1% as a MISMATCH against register value 0.0115 (true ratio 0.011484). This predates the change. Proposed to the coordinator: store the unrounded value in the register row. No number changed here.
+- **ana-e15.** The middle cell's "remaining 1.1% … neither part of this column" no longer fit. Accepted and reworded.
+- **ana-e17.** CROSSWALK.md:12 "Germany's large public-law lenders are owned by the public sector" is unsourced. This is earlier, accepted text, so it was not edited; flagged to the coordinator.
+- **ana-e18.** The holder cell gave no denominator. Accepted: "of bank lending to individuals" added.
+- **ana-e19, ana-e20.** README:18 and CROSSWALK:11 are long and repeat caveats. Noted, not restructured: that would be a larger copy change for her review. CROSSWALK carries the file-level "Claude draft" banner.

@@ -18,7 +18,9 @@ card q7-promo-2, option c). The rest of the holder share stays unclassified (de_
 the Bundesbank category "banks with special, development and other central support tasks", which holds promotional
 banks, DZ Bank and others (Eleonora, card a8-promo, option b, 2026-11-05; Q7_EVIDENCE.md follow-up 3). Context only:
 KfW, Rentenbank, NRW.BANK and L-Bank each carry a state guarantee of their own liabilities, which backs their creditors,
-not their borrowers.
+not their borrowers. On the holder measure (Eleonora, card a8-holder, option b, 2026-11-05) the publicly owned figure
+is savings banks + Landesbanken (public_owned_not_guaranteed), with the special-tasks category beside it as
+unclassified; holder_a, their sum, is kept and includes DZ Bank and others whose public ownership is not sourced.
 
 Output: comparison.csv, results.json.
 """
@@ -89,7 +91,7 @@ def compare(f: pd.DataFrame, a2: dict) -> pd.DataFrame:
                      public_owned_not_guaranteed=(de_pub - de_special) / de_tot,
                      special_tasks_banks_unclassified=de_special / de_tot,
                      household_credit_lcu_m=de_tot,
-                     note="(a) savings banks + Landesbanken + banks with special, development and other central support tasks (public building-savings banks not separable), bank lending to employees and other individuals; "
+                     note="(a) publicly owned = savings banks + Landesbanken (public_owned_not_guaranteed), with the special-tasks category (promotional banks, DZ Bank and others) beside it unclassified (a8-holder b); holder_a is their sum, which includes DZ Bank and others whose public ownership is not sourced (public building-savings banks not separable), bank lending to employees and other individuals; "
                           "(b) savings banks + Landesbanken are a third category, publicly owned, not guaranteed (Q7 c); banks with special, development and other central support tasks (promotional banks, DZ Bank and others) unclassified (a8-promo b); public (b) share not computed: "
                           "BAföG not sourced; KfW loans carry the on-lending bank's liability"))
     t = pd.DataFrame(rows).set_index("country")
