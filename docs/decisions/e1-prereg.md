@@ -1,7 +1,7 @@
-> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers; all of them are now recorded below (2026-11-05). **Still open: her review of the 10 changed questions (rv-e1-redraft).** The file is frozen only after that. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
+> **Claude draft, frozen.** Text drafted by Claude (`preregister` skill). Every design choice is Eleonora's, as recorded in the Decisions table with dates. Frozen 2026-11-05. Changes after the freeze go only in "Deviations", dated. Running it against the API still needs her separate spend OK.
 
 # Pre-registration: E1, question-to-SQL benchmark (Haiku vs Sonnet vs Opus)
-Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No full-E1 result exists.
+Status: **frozen** on 2026-11-05, choices by Eleonora (PLAN.md "Decisions taken", coordinator commits `77460b4`, `11f0562`, `c55701b`, `ccc1fc6`, `1116080`). No full-E1 result exists at the freeze.
 
 ## Decisions (Eleonora, 2026-11-05 05:19–05:22 UTC, docket round 9; PLAN.md "Decisions taken", coordinator commit `77460b4`)
 | Choice | Decided |
@@ -29,12 +29,14 @@ Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No fu
 | e1-holdback | hold back **about 5** unanswerable questions, in proportion |
 | CHOICE-E1-17 clustering (e1-cluster) | **(b)** question bootstrap: 10,000 draws, seed 20261104, percentile 95% intervals; H2 from the paired-difference bootstrap |
 | Support rule (e1-support) | **(i)** the 95% interval at or above the threshold AND a Holm-adjusted one-sided p < 0.05 |
-| Question set (rv-e1-set) | approved as is (`questions.yaml` at `3faa99b`), after choosing h3 (b); then 10 questions replaced (e1-set-h3), which she reviews |
+| Redraft (rv-e1-redraft) | **approved** as is, 18:55 UTC (PLAN `1116080`) |
+| Question set (rv-e1-set) | approved as is (`questions.yaml` at `3faa99b`), after choosing h3 (b); then 10 questions replaced (e1-set-h3), which she approved 18:55 UTC (rv-e1-redraft) |
 
-Recorded in PLAN.md "Decisions taken" (coordinator commits `11f0562`, `c55701b` and `ccc1fc6`; e1-cluster and e1-support chosen 14:25 UTC), relayed 2026-11-05.
+Recorded in PLAN.md "Decisions taken" (coordinator commits `11f0562`, `c55701b`, `ccc1fc6` and `1116080`; e1-cluster and e1-support chosen 14:25 UTC; redraft approved 18:55 UTC), relayed 2026-11-05.
 
-## Still open (Eleonora's)
-- **Review of the 10 changed questions** (rv-e1-redraft). The list is under Data. Until she approves, the 10 retired questions and their register rows stay.
+## Still open
+
+- None. Her last open item, the review of the 10 changed questions (rv-e1-redraft), was approved 2026-11-05 18:55 UTC (PLAN `1116080`).
 - **What the thresholds demand** (context, not a choice) under unit (ii), for the scored set of 60 answerable and 20 unanswerable questions (3 answers each). This depends on the ICC, which is unknown until the run. The two bounds are no clustering (ICC 0, every answer independent) and full clustering (ICC 1, a question's 3 answers always agree). The Wilson lower bound must reach the threshold:
   - **H1**, T = 70%: needs 76.7% (ICC 0) to 81.6% (ICC 1).
   - **H3**, R = 70%: needs 81.6% (ICC 0) to 90.1% (ICC 1).
@@ -74,8 +76,8 @@ On factual questions about who holds US household credit risk, answered only thr
   - `public_share.json` `c3dce2a4…5e67`
   - raw sources used for path 2: `FRB_Z1_csv.zip` `83b8eded…8c06`; `HHD_C_Report_2026Q2.xlsx` `ddfba16b…9237`
 
-  Full hashes are in `validation/results.json` and at the freeze. If a Z.1 release lands before the run, the run still uses these files.
-- **Question set:** `evals/e1_sql_benchmark/questions.yaml`, 100 new questions, drafted by Claude for Eleonora's approval.
+  The full snapshot hashes are in `evals/e1_sql_benchmark/snapshot_hashes.json` (and the Z.1 zip's in `validation/results.json`). If a Z.1 release lands before the run, the run still uses these files.
+- **Question set:** `evals/e1_sql_benchmark/questions.yaml`, 100 new questions, drafted by Claude and approved by Eleonora (2026-11-05: the set, then the 10-question redraft).
   - Families (tool used), with L/C/M counts (one lookup / a computation / needs two tools):
     - public share: 13 (4/4/5)
     - holdings by bucket: 13 (4/4/5)
@@ -86,7 +88,7 @@ On factual questions about who holds US household credit risk, answered only thr
   - **Unanswerable: 25.**
     - q186–q200, the 15 in the set she approved: three holder × loan-type crosses, two forecasts, two borrower-level, two geographic, one sub-quarterly, three out of range, one not in the data, and one in the NY Fed workbook but in no tool.
     - **q201–q210, added 2026-11-05 under e1-set-h3 "replace"**: two holder × loan-type crosses, one forecast, two borrower-level (one by age), one geographic, one sub-quarterly, two out of range (one just before the series starts), and one in the workbook but in no tool.
-  - **Changed questions (for her review).** Ten answerable questions were retired, one lookup and one computation from each tool family, so every family keeps its 5 two-tool questions. They stay in `questions.yaml` under `retired:` with their checks, so their verified register rows stay valid until the coordinator removes them.
+  - **Changed questions (approved by her 2026-11-05).** Ten answerable questions were retired, one lookup and one computation from each tool family, so every family keeps its 5 two-tool questions. They are listed in `questions.yaml` under `retired:` without checks. Their register rows were removed on approval (`c7dc50a`), and `gold_values.tsv` keeps a placeholder line for each.
     - q102 (PS lookup, mortgage public share 1990Q4) → q201
     - q110 (PS computation, mean public share 2020) → q202
     - q118 (HB lookup, state and local share 2026Q2) → q203
@@ -99,12 +101,12 @@ On factual questions about who holds US household credit risk, answered only thr
     - q168 (NY computation, credit card balance growth 2019Q4–2026Q2) → q210
 
     The other 90 questions are unchanged from the set she approved.
-  - The set's SHA-256 at this draft: `c3d585bd…edc7` (was `bd70a40d…4aa6` when she approved it, before the replace).
+  - Frozen set: `questions.yaml` SHA-256 `2842307aec0ed61d636e094a5aeea3d16835b78e3d71cfed00060ce7fa9a8761`; `gold.json` SHA-256 `685ba34fd0d51ce6d370de1ab75c92fbe7f869cf732832d8b5e6ae46d92c3feb`. The set she approved before the replace had `bd70a40d…4aa6`; after the replace, the questions are unchanged and only the retired list's checks were dropped. `run_e1.py --live` checks these and the snapshot files against `snapshot_hashes.json`.
 - **Holdout:** 20 questions, drawn by `verify_set.py` with `random.Random(20261104)`. Each family gets 20% of its size, rounded by largest remainder, with ties broken by the seeded generator (e1-holdback: about 5 unanswerable, in proportion). That gives PS 2, HB 3, CW 3, CC 2, NY 3, RG 2, unanswerable 5. The held-out questions are q112, q115, q117, q124, q129, q131, q139, q140, q149, q158, q164, q170, q171, q177, q180, q189, q192, q195, q208, q210. E1 scores the other **80: 60 answerable and 20 unanswerable.**
 - **Gold answers, verified with no model (CHOICE-E1-2 (b)).**
   - **Path 1** evaluates each question's check on the snapshot the MCP server serves (`spec.py`).
-  - **Path 2** is a validation-PASS register row. For 72 questions in the set (plus the 10 retired ones), `validation/e1_gold.py` (checks `E1-<id>`) rebuilds the tables from the raw Fed Z.1 zip and the raw NY Fed workbook. It does not import the pipeline and parses the workbook by sheet title. The rebuilt value must agree with the snapshot to a tenth of the scoring tolerance. The 3 remaining questions reuse existing PASS rows (A1, A2, C4).
-  - `build_register.py` writes the 82 rows to `claims/tracks/infra.csv`. `verify_set.py` then checks snapshot against register to the register's precision: **100/100**, with all 82 E1 checks PASS (including the retired ones) and the rest of the validation suite unchanged (123 PASS, 0 FAIL).
+  - **Path 2** is a validation-PASS register row. For 72 questions, `validation/e1_gold.py` (checks `E1-<id>`) rebuilds the tables from the raw Fed Z.1 zip and the raw NY Fed workbook. It does not import the pipeline and parses the workbook by sheet title. The rebuilt value must agree with the snapshot to a tenth of the scoring tolerance. The 3 remaining questions reuse existing PASS rows (A1, A2, C4).
+  - `build_register.py` wrote these 72 rows; they are in `claims/register.csv`. `verify_set.py` then checks snapshot against register to the register's precision: **100/100**, with all 72 E1 checks PASS. The validation suite stands at 113 PASS / 0 FAIL / 2 WARN / 1 NOT RUN (the 41 original checks unchanged).
   - What the two paths share: the question's check spec and its evaluator (sums, differences, argmax), and the crisis start dates (a project definition). Imputed pre-2006 student-loan rows are not rebuilt, so no question uses them.
   - Unanswerable questions have gold "refuse".
 
@@ -153,4 +155,4 @@ On factual questions about who holds US household credit risk, answered only thr
 - Question-writer effect: Claude wrote the questions (CHOICE-E1-3 (a)), so their style may favour Claude models.
 
 ## Deviations (dated, after freezing)
-None (not frozen).
+None.
