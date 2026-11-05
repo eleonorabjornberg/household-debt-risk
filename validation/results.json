@@ -5,7 +5,7 @@
     "zip_name": "FRB_Z1_csv.zip",
     "zip_bytes": 64219006,
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
-    "run_at": "2026-11-04 04:38:13"
+    "run_at": "2026-11-05 05:37:22"
   },
   "checks": [
     {
@@ -282,10 +282,10 @@
       "id": "D2",
       "description": "mart.public_share (database) vs recomputation",
       "expected": "match",
-      "observed": "OperationalError",
+      "observed": "ConnectionTimeout",
       "tolerance": "1e-6 shares, $1M levels",
       "status": "NOT RUN",
-      "note": "could not query database: failed to resolve host 'aws-0-us-east-1.pooler.supabase.com': [Errno -2] Name or service not known"
+      "note": "could not query database: connection timeout expired\nMultiple connection attempts failed. All failures were:\n- host: 'aws-0-us-east-1.pooler.supab"
     },
     {
       "id": "E1",
@@ -401,6 +401,744 @@
       "expected": "report",
       "observed": "2026Q2",
       "tolerance": "-",
+      "status": "PASS",
+      "note": "URLs tried: https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html | https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html | https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html | https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html | https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
+    },
+    {
+      "id": "E1-q101",
+      "description": "E1 gold q101 (PS/L): raw vs snapshot",
+      "expected": "0.405376779",
+      "observed": "0.405376779",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q102",
+      "description": "E1 gold q102 (PS/L): raw vs snapshot",
+      "expected": "0.4638354504",
+      "observed": "0.4638354504",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q103",
+      "description": "E1 gold q103 (PS/L): raw vs snapshot",
+      "expected": "0.1795060273",
+      "observed": "0.1795060273",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q104",
+      "description": "E1 gold q104 (PS/L): raw vs snapshot",
+      "expected": "13.186611",
+      "observed": "13.186611",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q105",
+      "description": "E1 gold q105 (PS/L): raw vs snapshot",
+      "expected": "6.158130435",
+      "observed": "6.158130435",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q106",
+      "description": "E1 gold q106 (PS/C): raw vs snapshot",
+      "expected": "1.15936438",
+      "observed": "1.159364386",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q107",
+      "description": "E1 gold q107 (PS/C): raw vs snapshot",
+      "expected": "0.0250942854",
+      "observed": "0.02509428535",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": "quarter 1965Q3"
+    },
+    {
+      "id": "E1-q108",
+      "description": "E1 gold q108 (PS/C): raw vs snapshot",
+      "expected": "0.3412252661",
+      "observed": "0.3412252661",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": "quarter 2021Q1"
+    },
+    {
+      "id": "E1-q109",
+      "description": "E1 gold q109 (PS/C): raw vs snapshot",
+      "expected": "52.64124105",
+      "observed": "52.64124105",
+      "tolerance": "0.01",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q110",
+      "description": "E1 gold q110 (PS/C): raw vs snapshot",
+      "expected": "0.5679942338",
+      "observed": "0.5679942338",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q111",
+      "description": "E1 gold q111 (PS/M): raw vs snapshot",
+      "expected": "9.37448617",
+      "observed": "9.374486171",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q112",
+      "description": "E1 gold q112 (PS/M): raw vs snapshot",
+      "expected": "0.5736445015",
+      "observed": "0.5736445015",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q113",
+      "description": "E1 gold q113 (PS/M): raw vs snapshot",
+      "expected": "4.646752727",
+      "observed": "4.646752727",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q114",
+      "description": "E1 gold q114 (PS/M): raw vs snapshot",
+      "expected": "1.605134",
+      "observed": "1.605134",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q115",
+      "description": "E1 gold q115 (PS/M): raw vs snapshot",
+      "expected": "0.1551965084",
+      "observed": "0.1551965084",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q116",
+      "description": "E1 gold q116 (HB/L): raw vs snapshot",
+      "expected": "0.3363442481",
+      "observed": "0.3363442481",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q117",
+      "description": "E1 gold q117 (HB/L): raw vs snapshot",
+      "expected": "0.2151886202",
+      "observed": "0.2151886202",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q118",
+      "description": "E1 gold q118 (HB/L): raw vs snapshot",
+      "expected": "0.0062402349",
+      "observed": "0.006240234858",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q119",
+      "description": "E1 gold q119 (HB/L): raw vs snapshot",
+      "expected": "8.977330117",
+      "observed": "8.977330117",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q120",
+      "description": "E1 gold q120 (HB/L): raw vs snapshot",
+      "expected": "517.837323",
+      "observed": "517.8373227",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q121",
+      "description": "E1 gold q121 (HB/C): raw vs snapshot",
+      "expected": "0.45253237",
+      "observed": "0.4525323659",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q122",
+      "description": "E1 gold q122 (HB/C): raw vs snapshot",
+      "expected": "0.2301042843",
+      "observed": "0.2301042843",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": "quarter 2007Q2"
+    },
+    {
+      "id": "E1-q123",
+      "description": "E1 gold q123 (HB/C): raw vs snapshot",
+      "expected": "6.84665657",
+      "observed": "6.846656567",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q124",
+      "description": "E1 gold q124 (HB/C): raw vs snapshot",
+      "expected": "257.1826487",
+      "observed": "257.1826487",
+      "tolerance": "0.01",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q125",
+      "description": "E1 gold q125 (HB/C): raw vs snapshot",
+      "expected": "9.468381592",
+      "observed": "9.468381595",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q126",
+      "description": "E1 gold q126 (HB/M): raw vs snapshot",
+      "expected": "0.544803797",
+      "observed": "0.544803797",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q127",
+      "description": "E1 gold q127 (HB/M): raw vs snapshot",
+      "expected": "1.79306208",
+      "observed": "1.793062077",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q128",
+      "description": "E1 gold q128 (HB/M): raw vs snapshot",
+      "expected": "0.2770218823",
+      "observed": "0.2770218823",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q129",
+      "description": "E1 gold q129 (HB/M): raw vs snapshot",
+      "expected": "0.01106755954",
+      "observed": "0.01106755947",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q130",
+      "description": "E1 gold q130 (HB/M): raw vs snapshot",
+      "expected": "0.9722192611",
+      "observed": "0.9722192611",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q131",
+      "description": "E1 gold q131 (CW/L): raw vs snapshot",
+      "expected": "0.4056516186",
+      "observed": "0.4056516186",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q132",
+      "description": "E1 gold q132 (CW/L): raw vs snapshot",
+      "expected": "2.200086904",
+      "observed": "2.200086904",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q133",
+      "description": "E1 gold q133 (CW/L): raw vs snapshot",
+      "expected": "7.02612427",
+      "observed": "7.026124267",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q134",
+      "description": "E1 gold q134 (CW/L): raw vs snapshot",
+      "expected": "-1.57120638",
+      "observed": "-1.571206382",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q135",
+      "description": "E1 gold q135 (CW/L): raw vs snapshot",
+      "expected": "4.936832406",
+      "observed": "4.936832406",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q136",
+      "description": "E1 gold q136 (CW/C): raw vs snapshot",
+      "expected": "8.44403618",
+      "observed": "8.444036176",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q137",
+      "description": "E1 gold q137 (CW/C): raw vs snapshot",
+      "expected": "4.928565689",
+      "observed": "4.928565689",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q138",
+      "description": "E1 gold q138 (CW/C): raw vs snapshot",
+      "expected": "1.859132282",
+      "observed": "1.859132282",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q139",
+      "description": "E1 gold q139 (CW/C): raw vs snapshot",
+      "expected": "-12.4796636",
+      "observed": "-12.4796636",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q140",
+      "description": "E1 gold q140 (CW/C): raw vs snapshot",
+      "expected": "0.69387077",
+      "observed": "0.6938707653",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q141",
+      "description": "E1 gold q141 (CW/M): raw vs snapshot",
+      "expected": "7.16203254",
+      "observed": "7.162032544",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q142",
+      "description": "E1 gold q142 (CW/M): raw vs snapshot",
+      "expected": "1.362329842",
+      "observed": "1.362329842",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q143",
+      "description": "E1 gold q143 (CW/M): raw vs snapshot",
+      "expected": "12.88",
+      "observed": "12.88",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q144",
+      "description": "E1 gold q144 (CW/M): raw vs snapshot",
+      "expected": "5.32",
+      "observed": "5.32",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q145",
+      "description": "E1 gold q145 (CW/M): raw vs snapshot",
+      "expected": "9101",
+      "observed": "9101",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q146",
+      "description": "E1 gold q146 (CC/L): raw vs snapshot",
+      "expected": "3.562416747",
+      "observed": "3.562416747",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q147",
+      "description": "E1 gold q147 (CC/L): raw vs snapshot",
+      "expected": "5.788106684",
+      "observed": "5.788106684",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q148",
+      "description": "E1 gold q148 (CC/L): raw vs snapshot",
+      "expected": "0.1658440852",
+      "observed": "0.1658440852",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q149",
+      "description": "E1 gold q149 (CC/L): raw vs snapshot",
+      "expected": "13.976938",
+      "observed": "13.976938",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q150",
+      "description": "E1 gold q150 (CC/L): raw vs snapshot",
+      "expected": "49.791678",
+      "observed": "49.791678",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q151",
+      "description": "E1 gold q151 (CC/C): raw vs snapshot",
+      "expected": "1.851955948",
+      "observed": "1.851955948",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": "quarter 2012Q1"
+    },
+    {
+      "id": "E1-q152",
+      "description": "E1 gold q152 (CC/C): raw vs snapshot",
+      "expected": "3.14033774",
+      "observed": "3.140337734",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q153",
+      "description": "E1 gold q153 (CC/C): raw vs snapshot",
+      "expected": "0.9986954474",
+      "observed": "0.9986954474",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q154",
+      "description": "E1 gold q154 (CC/C): raw vs snapshot",
+      "expected": "174.5502936",
+      "observed": "174.5502936",
+      "tolerance": "0.01",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q155",
+      "description": "E1 gold q155 (CC/C): raw vs snapshot",
+      "expected": "5.230035527",
+      "observed": "5.230035527",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": "quarter 1951Q4"
+    },
+    {
+      "id": "E1-q156",
+      "description": "E1 gold q156 (CC/M): raw vs snapshot",
+      "expected": "36.216178",
+      "observed": "36.216178",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q157",
+      "description": "E1 gold q157 (CC/M): raw vs snapshot",
+      "expected": "-138.25",
+      "observed": "-138.25",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q158",
+      "description": "E1 gold q158 (CC/M): raw vs snapshot",
+      "expected": "253.157",
+      "observed": "253.157",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q159",
+      "description": "E1 gold q159 (CC/M): raw vs snapshot",
+      "expected": "3.307500207",
+      "observed": "3.307500202",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q160",
+      "description": "E1 gold q160 (CC/M): raw vs snapshot",
+      "expected": "0.982892986",
+      "observed": "0.982892986",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q161",
+      "description": "E1 gold q161 (NY/L): raw vs snapshot",
+      "expected": "1263",
+      "observed": "1263",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q162",
+      "description": "E1 gold q162 (NY/L): raw vs snapshot",
+      "expected": "7.83",
+      "observed": "7.83",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q163",
+      "description": "E1 gold q163 (NY/L): raw vs snapshot",
+      "expected": "4942",
+      "observed": "4942",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q164",
+      "description": "E1 gold q164 (NY/L): raw vs snapshot",
+      "expected": "458.5",
+      "observed": "458.5",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q165",
+      "description": "E1 gold q165 (NY/L): raw vs snapshot",
+      "expected": "2.36",
+      "observed": "2.36",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q166",
+      "description": "E1 gold q166 (NY/C): raw vs snapshot",
+      "expected": "16.19001079",
+      "observed": "16.19001079",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": "quarter 2025Q4"
+    },
+    {
+      "id": "E1-q167",
+      "description": "E1 gold q167 (NY/C): raw vs snapshot",
+      "expected": "18770.5",
+      "observed": "18770.5",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q168",
+      "description": "E1 gold q168 (NY/C): raw vs snapshot",
+      "expected": "36.24595469",
+      "observed": "36.24595469",
+      "tolerance": "0.01",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q169",
+      "description": "E1 gold q169 (NY/C): raw vs snapshot",
+      "expected": "0.64",
+      "observed": "0.64",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q170",
+      "description": "E1 gold q170 (NY/C): raw vs snapshot",
+      "expected": "3.04",
+      "observed": "3.04",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": "quarter 2022Q1"
+    },
+    {
+      "id": "E1-q171",
+      "description": "E1 gold q171 (NY/M): raw vs snapshot",
+      "expected": "-859.938",
+      "observed": "-859.938",
+      "tolerance": "0.1",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q172",
+      "description": "E1 gold q172 (NY/M): raw vs snapshot",
+      "expected": "10.95699391",
+      "observed": "10.95699391",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q173",
+      "description": "E1 gold q173 (NY/M): raw vs snapshot",
+      "expected": "0.08645248234",
+      "observed": "0.08645248234",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q174",
+      "description": "E1 gold q174 (NY/M): raw vs snapshot",
+      "expected": "0.42",
+      "observed": "0.42",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q175",
+      "description": "E1 gold q175 (NY/M): raw vs snapshot",
+      "expected": "0.06116968926",
+      "observed": "0.06116968926",
+      "tolerance": "5e-05",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q179",
+      "description": "E1 gold q179 (RG/L): raw vs snapshot",
+      "expected": "299",
+      "observed": "299",
+      "tolerance": "0",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q180",
+      "description": "E1 gold q180 (RG/C): raw vs snapshot",
+      "expected": "20.95662067",
+      "observed": "20.95662067",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q181",
+      "description": "E1 gold q181 (RG/C): raw vs snapshot",
+      "expected": "3",
+      "observed": "3",
+      "tolerance": "0",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q182",
+      "description": "E1 gold q182 (RG/C): raw vs snapshot",
+      "expected": "94",
+      "observed": "94",
+      "tolerance": "0",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q183",
+      "description": "E1 gold q183 (RG/M): raw vs snapshot",
+      "expected": "5.02386783",
+      "observed": "5.023867828",
+      "tolerance": "0.005",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q184",
+      "description": "E1 gold q184 (RG/M): raw vs snapshot",
+      "expected": "3.109550176",
+      "observed": "3.109550177",
+      "tolerance": "0.001",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1-q185",
+      "description": "E1 gold q185 (RG/M): raw vs snapshot",
+      "expected": "8.65592129",
+      "observed": "8.655921295",
+      "tolerance": "0.005",
       "status": "PASS",
       "note": ""
     }
@@ -1145,16 +1883,22 @@
     }
   ],
   "previous_vintage": {
-    "prev_path": "data/validation/prev_z1_csv_files.zip",
+    "prev_path": "/home/user/household-debt-risk/data/validation/prev_z1_csv_files.zip",
     "prev_member_timestamp": "2026-06-10T16:02:22",
     "format": "per-table wide CSVs (z1_csv_files.zip); scope total derived as FL153165105+FL153166000",
     "common_quarters": 297,
     "last_common": "2026Q1",
     "conflicts": []
   },
-  "previous_vintage_urls_tried": [],
+  "previous_vintage_urls_tried": [
+    "https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html",
+    "https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html",
+    "https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html",
+    "https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html",
+    "https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
+  ],
   "summary": {
-    "PASS": 41,
+    "PASS": 123,
     "FAIL": 0,
     "WARN": 2,
     "NOT RUN": 1

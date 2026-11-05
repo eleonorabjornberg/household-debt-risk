@@ -1,102 +1,125 @@
-> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers. Every `CHOICE-E1-n` below is **open** until she decides it, and her decisions go in the Decisions table with dates. Nothing in this file may be run against the API until she has frozen it and separately approved the full-run spend.
+> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers. Her 13 decisions of 2026-11-05 are recorded below. **Two values are still open: the thresholds T and R** (CHOICE-E1-8 (b) chose a confirmatory framing but set no values). The question set also still needs her approval (CHOICE-E1-3 (a)). The file is frozen only after both. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
 
 # Pre-registration: E1, question-to-SQL benchmark (Haiku vs Sonnet vs Opus)
-Status: **draft**, 2026-11-04. Not frozen. No full-E1 result exists.
+Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No full-E1 result exists.
 
-## What has already been seen (disclosed before any choice is made)
-A **cost pilot** ran on 2026-11-04 (approved by Eleonora, cap $2.98; `evals/e1_sql_benchmark/pilot-2026-11-04/`, commit `a4998b7`). It used 10 easy questions (9 of them single-tool `public_share` lookups), 1 loop per model, effort `medium`, at most 4 turns. What was seen:
+## Decisions (Eleonora, 2026-11-05 05:19–05:22 UTC, docket round 9; PLAN.md "Decisions taken", coordinator commit `77460b4`)
+| Choice | Decided |
+|---|---|
+| CHOICE-E1-1 question mix | (a) stratified by tool family × difficulty, about 15 unanswerable |
+| CHOICE-E1-2 second verification path | (b) PASS register rows first, through `validation/`, then checked as in the pilot |
+| CHOICE-E1-3 question writer | (a) Claude drafts all; Eleonora approves the set |
+| CHOICE-E1-4 turn limit | (a) 4 |
+| CHOICE-E1-5 top-level cache | (b) drop it; keep only the system/tools breakpoint |
+| CHOICE-E1-6 effort | (a) `medium` for all three models |
+| CHOICE-E1-7 repetitions | (b) 3 |
+| CHOICE-E1-8 framing | (b) confirmatory. **T and R not yet given (open, see below)** |
+| CHOICE-E1-9 `lookup_claim` | (a) keep all 10 tools |
+| CHOICE-E1-10 seed | (a) `20261104` |
+| CHOICE-E1-11 scoring | (a) the pilot rule |
+| CHOICE-E1-12 baseline | (b) a no-tools run on one model, up to $4 |
+| CHOICE-E1-13 holdout | (b) hold back 20 questions, unseen until the first E3 rerun |
+| CHOICE-E1-14 cost cap | (a) $31. A ceiling only: the full run needs her separate spend OK |
+
+## Still open (Eleonora's)
+- **CHOICE-E1-15, T** (accuracy threshold per model, H1) and **R** (correct-refusal threshold, H3), with the **unit of analysis**: (i) one score per question (the majority of its 3 repetitions), or (ii) every repetition counted, clustered by question. Scored set: about 68 answerable and 12 unanswerable questions (below). The Wilson 95% lower bound must reach the threshold:
+  - H1 per question (n = 68): T = 70% needs 56/68 (82%); 80% needs 61/68 (90%); 90% needs 67/68 (99%).
+  - H1 per repetition (n = 204): T = 70% needs 76%; 80% needs 86%; 90% needs 94%. Repetitions of one question are not independent, so this overstates the evidence.
+  - H3 per question (n = 12): R = 70% needs 12/12, and R ≥ 80% cannot be supported by any result. Per repetition (n = 36): 70% needs 31/36, 80% needs 34/36, 90% needs 36/36.
+  - Because H3 is nearly untestable at 12 refusal questions, the options are: (a) set R anyway and expect a null; (b) raise the unanswerable share (e.g. 25 of 100, about 20 scored), which means redrafting part of the set; (c) report H3 descriptively and keep H1 and H2 confirmatory. No recommendation from Claude.
+- **CHOICE-E1-16, baseline model** (see Benchmarks).
+
+## What has already been seen (disclosed before any choice was made)
+A **cost pilot** ran on 2026-11-04 (approved by Eleonora, cap $2.98; `evals/e1_sql_benchmark/pilot-2026-11-04/`, commit `a4998b7`). It used 10 easy questions (9 single-tool `public_share` lookups), 1 loop per model, effort `medium`, at most 4 turns. What was seen:
 - cost per loop: Opus 5.5 $0.0403, Sonnet 5.5 $0.0102, Haiku 5.5 $0.0008;
-- pilot accuracy: Opus 10/10, Sonnet 9/10 (the miss ran out of the 4-turn limit), Haiku 10/10;
-- the tools the models chose, and the answer format working as parsed.
+- pilot accuracy: Opus 10/10, Sonnet 9/10 (the miss ran out of the 4-turn limit), Haiku 10/10.
 
-So this design is **not blind** to the pilot. That bears on CHOICE-E1-4 (turn limit), CHOICE-E1-1 (difficulty mix) and the cost cap. The 10 pilot questions are excluded from the scored set (see Data), and the write-up must say the pilot was seen.
+The design is therefore not blind to the pilot (turn limit, difficulty mix, cap). The 10 pilot questions are not in the set (a test checks this). The write-up must say the pilot was seen.
 
 ## Question
-On factual questions about who holds US household credit risk, answered only through the project's read-only household-credit MCP tools, how do Claude Haiku 5.5, Sonnet 5.5 and Opus 5.5 compare on accuracy, cost per question, cost per correct answer, and latency? Do they refuse questions the data cannot answer?
+On factual questions about who holds US household credit risk, answered only through the project's read-only household-credit MCP tools, how do Claude Haiku 5.5, Sonnet 5.5 and Opus 5.5 compare on accuracy, cost per question, cost per correct answer and latency? Do they refuse questions the data cannot answer?
 
-## Hypotheses and what counts as support
-The framing is open (**CHOICE-E1-8**). Under a confirmatory framing the candidates are:
-- **H1** (per model): accuracy on answerable questions is at least a threshold *T* (Wilson 95% lower bound ≥ *T*).
-- **H2** (between models): Opus and Sonnet differ in accuracy, and Sonnet and Haiku differ in accuracy (paired, exact McNemar).
-- **H3** (refusals): on unanswerable questions, each model's correct-refusal rate is at least *R*.
-- Cost per correct answer and latency are always descriptive.
-
-Support: lower bound ≥ threshold, or McNemar p below the corrected α. Null: the interval contains the threshold, or no significant paired difference. Against: the upper bound is below the threshold.
+## Hypotheses (confirmatory, CHOICE-E1-8 (b)) and what counts as support
+- **H1** (per model, 3 tests): accuracy on scored answerable questions ≥ **T** (open).
+- **H2** (2 paired tests): Opus and Sonnet differ in accuracy; Sonnet and Haiku differ in accuracy. Exact McNemar on per-question correctness (the unit set in CHOICE-E1-15).
+- **H3** (per model, 3 tests): correct-refusal rate on scored unanswerable questions ≥ **R** (open).
+- Support: Wilson 95% lower bound ≥ threshold (H1, H3), or Holm-adjusted McNemar p < 0.05 (H2). Null: the interval contains the threshold, or the adjusted p ≥ 0.05. Against: the Wilson upper bound is below the threshold. Cost per correct answer and latency are descriptive.
 
 ## Data
-- **Backend:** the MCP server's snapshot backend (`DATABASE_URL_READONLY` and `DATABASE_URL` unset), so production is never queried.
-- **Data files:** `web/public/data/*.json`, Z.1 vintage **2026-09-11**, NY Fed and FRED vintages 2026-10-27 (`meta.json`). The SHA-256 of every snapshot file is recorded at the freeze. If a Z.1 release lands between freeze and run, the run still uses the frozen files, checked by hash.
-- **Coverage** (from the `data_coverage` tool): public/private share and six risk buckets, 1951Q4–2026Q2; collateral coverage by class; 14 crisis windows (-8..+16 quarters); NY Fed CCP by loan type, 2003Q1–2026Q2; the claims register. It cannot answer: holder × loan-type crosses, out-of-range or future quarters, loan- or borrower-level questions, geography, sub-quarterly frequency.
-- **Question set:** about 100 new questions, not the 10 pilot questions. The composition is **CHOICE-E1-1**, who writes them is **CHOICE-E1-3**, and how answers are verified is **CHOICE-E1-2**. The set is committed, with gold answers, before the freeze. No model sees it before the run.
-- **Gold answers, verified with no model.** Every answer is computed two independent ways and both must agree to the stated tolerance. Path 1 recomputes from the snapshot the MCP server serves (as `verify.py` does now). Path 2 is either a validation-PASS row in `claims/register.csv` or a second computation from the raw source files. Known gap: the NY Fed and collateral tools have **no PASS register rows**, so their questions need path 2 from raw files (CHOICE-E1-2). Unanswerable questions have no number. Their gold is "refuses", and each is checked against the `cannot_answer` list and `check_answerable`.
+- **Backend:** the MCP server's snapshot backend (`DATABASE_URL_READONLY` and `DATABASE_URL` unset); production is never queried.
+- **Data files and hashes (recorded 2026-11-05; the run checks them).** Z.1 vintage 2026-09-11; NY Fed and FRED vintages 2026-10-27 (`meta.json`). SHA-256:
+  - `collateral_coverage.json` `82afd5ab…d8ebb1`
+  - `crisis_event_window.json` `05f58dfc…3dde`
+  - `debt_by_risk_holder.json` `263ab492…ab15`
+  - `dim_crisis.json` `6b169f26…fedd0`
+  - `dim_risk_bucket.json` `1b3abc3c…510e`
+  - `meta.json` `44d2d0f9…3b23`
+  - `nyfed_by_type.json` `4cae3789…79a9`
+  - `public_share.json` `c3dce2a4…5e67`
+  - raw sources used for path 2: `FRB_Z1_csv.zip` `83b8eded…8c06`; `HHD_C_Report_2026Q2.xlsx` `ddfba16b…9237`
+
+  Full hashes are in `validation/results.json` and at the freeze. If a Z.1 release lands before the run, the run still uses these files.
+- **Question set:** `evals/e1_sql_benchmark/questions.yaml`, 100 new questions, drafted by Claude for Eleonora's approval.
+  - Families (tool used), with L/C/M counts (one lookup / a computation / needs two tools):
+    - public share: 15 (5/5/5)
+    - holdings by bucket: 15 (5/5/5)
+    - crisis windows: 15 (5/5/5)
+    - collateral coverage: 15 (5/5/5)
+    - NY Fed by type: 15 (5/5/5)
+    - register and coverage tools: 10 (4/3/3)
+  - **Unanswerable: 15.** Three holder × loan-type crosses, two forecasts, two borrower-level, two geographic, one sub-quarterly, three out of range, one not in the data, and one that is in the NY Fed workbook but not in any tool.
+  - The set's SHA-256 at this draft: `bd70a40d…4aa6`.
+- **Holdout:** 20 questions drawn by `verify_set.py` with `random.Random(20261104)`, stratified by family (3 per family, 2 for register/coverage, 3 unanswerable). They are q104, q111, q112, q121, q123, q130, q131, q134, q140, q146, q152, q156, q169, q170, q174, q177, q185, q186, q192, q193. E1 scores the other **80: 68 answerable and 12 unanswerable.**
+- **Gold answers, verified with no model (CHOICE-E1-2 (b)).**
+  - **Path 1** evaluates each question's check on the snapshot the MCP server serves (`spec.py`).
+  - **Path 2** is a validation-PASS register row. For 82 questions, `validation/e1_gold.py` (checks `E1-<id>`) rebuilds the tables from the raw Fed Z.1 zip and the raw NY Fed workbook. It does not import the pipeline and parses the workbook by sheet title. The rebuilt value must agree with the snapshot to a tenth of the scoring tolerance. The 3 remaining questions reuse existing PASS rows (A1, A2, C4).
+  - `build_register.py` writes the 82 rows to `claims/tracks/infra.csv`. `verify_set.py` then checks snapshot against register to the register's precision: **100/100**, with all 82 E1 checks PASS and the rest of the validation suite unchanged (123 PASS, 0 FAIL).
+  - What the two paths share: the question's check spec and its evaluator (sums, differences, argmax), and the crisis start dates (a project definition). Imputed pre-2006 student-loan rows are not rebuilt, so no question uses them.
+  - Unanswerable questions have gold "refuse".
 
 ## Method (fixed settings)
 - **Models:** `claude-haiku-5-5`, `claude-sonnet-5-5`, `claude-opus-5-5`. The served `response.model` is logged on every call.
-- **Harness:** `evals/e1_sql_benchmark/pilot.py`, generalised. It has a manual tool-use loop, `tool_choice` auto and adaptive thinking (always on for these models). Server-side refusal fallbacks are off, so a refusal is never answered by another model. A `stop_reason` of `refusal` counts as a refusal.
-- **System prompt and answer format:** as in the pilot, ending in `ANSWER:` and `QUARTER:` lines. The text is frozen with this file and fingerprinted by `evals/regression.py`.
-- **Tools:** the 10 household-credit MCP tools with their docstrings as of the freeze (**CHOICE-E1-9** on `lookup_claim`).
-- **Effort:** **CHOICE-E1-6**.
-- **Turn limit:** **CHOICE-E1-4**. A loop that ends at the limit without an `ANSWER:` line is scored wrong, and is also counted separately as "truncated".
-- **Repetitions:** **CHOICE-E1-7**.
-- **Order:** questions shuffled with a fixed seed (**CHOICE-E1-10**); within each question the three models run back to back, cheapest first, so a cost stop leaves comparable data for all three.
-- **Caching:** a `cache_control` breakpoint on the system prompt (prefix of tools plus system). Whether to keep the pilot's top-level automatic cache is **CHOICE-E1-5**. Caching does not change model outputs, only cost.
+- **Harness:** `evals/e1_sql_benchmark/pilot.py`, generalised to the full set. It has a manual tool-use loop, `tool_choice` auto and adaptive thinking (always on for these models). Server-side refusal fallbacks are off. A `stop_reason` of `refusal` counts as a refusal.
+- **System prompt and answer format:** as in the pilot (`ANSWER:` and `QUARTER:` lines), frozen with this file and fingerprinted by `evals/regression.py`.
+- **Tools:** all 10 household-credit MCP tools, as of the freeze (CHOICE-E1-9 (a)).
+- **Effort:** `medium` for all three (CHOICE-E1-6 (a)).
+- **Turn limit:** 4 (CHOICE-E1-4 (a)). A loop that ends at the limit without an `ANSWER:` line is scored wrong and also counted as "truncated".
+- **Repetitions:** 3 per question per model (CHOICE-E1-7 (b)).
+- **Order:** the 80 questions are shuffled with `random.Random(20261104)`. Within a question the three models run back to back, cheapest first, so a stop leaves comparable data.
+- **Caching:** one `cache_control` breakpoint on the system prompt (prefix: tools plus system), with no top-level automatic cache (CHOICE-E1-5 (b)).
 - **Logged per call:** the four `usage` token kinds, cost at the live prices on the run date, latency, `stop_reason`, text and tool calls. Never the key or any request header.
 
-## Scoring (fixed before the run)
-**CHOICE-E1-11** sets the rule. Options:
-- (a) The pilot rule unchanged: correct if the `ANSWER:` number, read in the unit the model states and converted to the question's unit, is within tolerance of gold, and the quarter matches where one is asked. A refusal or no number is wrong.
-- (b) As (a), and the answer must also name the source (Z.1 or NY Fed). This catches a right number from the wrong source, at the cost of a second, partly textual check.
-- (c) As (a), with partial credit for the right number in the wrong quarter, or the reverse. Finer-grained, but harder to compare with the pilot.
-
-For every rule, on unanswerable questions a response is correct only if it gives no number and says the data cannot answer. Tolerance is half a unit in the last place of the register value, or the per-unit tolerance stated in the question file. The scorer is `score()` in `pilot.py`. A human re-scores a seeded random 20% of answers (seed per CHOICE-E1-10), as in E2.
+## Scoring (CHOICE-E1-11 (a), the pilot rule)
+- An answer is correct if the number on the `ANSWER:` line, read in the unit the model states and converted to the question's unit, is within the question's tolerance of gold, and the `QUARTER:` matches where one is asked.
+- Tolerances are in the question file: share 0.0005 · pp 0.05 (0.01 for NY Fed rate changes) · $tn 0.01 · $bn 1 · NY Fed rates 0.01 · growth % 0.1 · ratios 0.01 · counts exact.
+- A refusal, or no number, is wrong on an answerable question.
+- On an unanswerable question an answer is correct only if it gives no number and says the data cannot answer.
+- The scorer is `score()` in `pilot.py`, extended to the new units ($bn, %, ratio, count) before the freeze and tested. A human re-scores a seeded random 20% of answers (`random.Random(20261104)`).
 
 ## Benchmarks and holdout
-- **Baseline, CHOICE-E1-12:** (a) none; (b) a no-tools run on one model (answers from memory), which shows what the tools add, for about 1/3 of one model's cost; (c) a "check_answerable only" baseline for the refusal questions.
-- **Holdout for E3:** **CHOICE-E1-13**: (a) none, since E3 reruns the full set; (b) hold back 20 questions, unseen until the first E3 rerun, to check that later prompt changes do not overfit the 80.
+- **Baseline (CHOICE-E1-12 (b)):** a no-tools run on one model (answers from memory), 80 questions × 3 repetitions, at most $4, inside the $31 cap. **Which model is open (CHOICE-E1-16):** (a) Haiku, at about $0.05 at the pilot profile; (b) Sonnet, at about $1; (c) Opus, at about $2–4, the most likely to know published figures from memory. No recommendation from Claude.
+- **Holdout (CHOICE-E1-13 (b)):** the 20 questions listed above. They are not run in E1; they are run first at the first E3 rerun.
 
 ## Multiple testing
-Under a confirmatory framing there are 3 per-model H1 tests, 2 H2 comparisons and 3 H3 tests, so 8 tests: Holm correction at α = 0.05 within each family. Under a descriptive framing: intervals only, no verdicts (as E2 CHOICE-12 (i)).
+8 tests (3 H1, 2 H2, 3 H3), Holm correction at α = 0.05 within each family (H1, H2, H3).
 
-## Cost cap and stops (figures are estimates; the cap is Eleonora's, CHOICE-E1-14)
-- **Re-estimate from the pilot.** At the pilot's token profile, 300 loops per model (100 questions × 3 repetitions) cost Opus $12.08 + Sonnet $3.05 + Haiku $0.25 = **$15.37**. The full set is harder (multi-tool, more turns), so a planning figure of **2× is about $31**. A baseline (CHOICE-E1-12 (b)) adds up to $4 on Opus. Dropping the top-level cache (CHOICE-E1-5 (b)) probably lowers all of these; that is not measured.
-- **Cap options:** (a) **$31**, the 2× planning figure with no margin; (b) **$46**, 3× pilot profile, i.e. 1.5× the planning figure; (c) **$62**, 4× pilot profile. Under (a), an ordinary difficulty overrun stops the run part-way. Under (c), the spend is about the original pre-pilot estimate ($59.74).
-- **Stops, checked after every call, as in the pilot:**
-  1. The running total reaches the cap. A pre-call guard stops before any call could cross it.
-  2. Any model's mean cost per loop exceeds 1.5× its planning figure, that is 3× its pilot mean: Opus $0.121, Sonnet $0.030, Haiku $0.0025.
-  3. **Checkpoint** after the first 10% of loops: project the total; if the projection exceeds the cap, stop and report before going on.
+## Cost cap and stops (CHOICE-E1-14 (a): $31 ceiling; figures are estimates)
+- **Estimate:** 80 questions × 3 repetitions = 240 loops per model, 720 in all. At the pilot's token profile: Opus $9.66 + Sonnet $2.44 + Haiku $0.20 = **$12.30**. The full set is harder (multi-tool), so the planning figure is 2×, about **$25**, plus the baseline (at most $4). Dropping the top-level cache probably lowers this; that is not measured.
+- **Stops, checked after every call:**
+  1. The running total reaches **$31**. A pre-call guard stops before any call could cross it.
+  2. A model's mean cost per loop exceeds 3× its pilot mean: Opus $0.121, Sonnet $0.030, Haiku $0.0025.
+  3. A checkpoint after the first 10% of loops: if the projected total exceeds $31, stop and report.
 
-  On any stop, the triggering call is recorded, the run ends, and partial results are reported as partial.
+  On any stop, the triggering call is recorded and the partial results are reported as partial.
 
 ## Decision rules
-- Confirmatory framing: each H is reported as supported, null or against, by the rules above. A model "is more accurate" only if its paired McNemar test survives Holm.
-- Descriptive framing: accuracy with Wilson 95% intervals, the paired disagreement table, cost per correct answer, and latency median and p90, with no ranking language beyond what the intervals show.
-- Every published E1 number gets a `claims/register.csv` row pointing at the results file.
+- Each H is reported as supported, null or against, by the rules above. A model "is more accurate" only if its paired McNemar test survives Holm.
+- Every published E1 number gets a register row pointing at the results file.
 
 ## What is and is not identified
-- Identified: accuracy and cost **of this harness** (these tools, this prompt, this turn limit and effort) on **this question set** and data vintage.
-- Not identified: general text-to-SQL ability (no SQL is written; the tools wrap fixed queries); performance on the live database backend; performance at other effort levels or prompts; D6 reader-question costs (prose answers, different length).
-- Question-writer effect: if Claude writes the questions (CHOICE-E1-3 (a)), the question style may favour Claude models in ways a human-written set would not.
-
-## Open choices (all Eleonora's; no recommendation unless stated with a reason)
-| ID | Choice | Options and trade-offs |
-|---|---|---|
-| CHOICE-E1-1 | Question mix (about 100) | (a) stratified by tool family (public share, buckets, crisis windows, collateral, NY Fed, register/coverage) × difficulty (single lookup / computation such as diff or argmax / multi-tool), with about 15 unanswerable; (b) the same, weighted to the tools D6 readers will use most; (c) unstratified, written freely. Strata make per-cell results readable but cells are small (about 5 questions each) |
-| CHOICE-E1-2 | Second verification path where no PASS register row exists (NY Fed, collateral) | (a) recompute from raw source files with a separate script (no shared code with the export); (b) first add PASS register rows through `validation/`, then verify as the pilot did; (c) drop questions without a PASS row (leaves NY Fed and collateral out of E1) |
-| CHOICE-E1-3 | Who writes the questions | (a) Claude drafts all, Eleonora approves the set; (b) Eleonora writes about 30, Claude the rest, reported separately; (c) Eleonora writes all. (a) is cheapest but carries the question-writer effect above |
-| CHOICE-E1-4 | Turn limit | (a) 4, as in the pilot; (b) 6; (c) 8. Pilot evidence: 1 of 30 loops (Sonnet, q03) was cut off at 4 while retrying out-of-range quarters, and the full set is harder. A higher limit measures the model more than the harness, but raises the worst-case cost per loop |
-| CHOICE-E1-5 | Top-level automatic cache | (a) keep, as in the pilot (cost comparable with the pilot); (b) drop it and keep only the system/tools breakpoint (probably cheaper for 2-turn loops, not measured). Either way accuracy is unaffected |
-| CHOICE-E1-6 | Effort | (a) `medium` for all three, as in the pilot; (b) each model's default (Opus and Haiku `medium`, Sonnet `high`); (c) two levels per model, which doubles the cost |
-| CHOICE-E1-7 | Repetitions | (a) 1; (b) 3 (the basis of the estimate); (c) 5. Repetitions measure run-to-run variation; with 1, the intervals rest on question sampling alone |
-| CHOICE-E1-8 | Framing | (a) descriptive (intervals, no verdicts); (b) confirmatory, with thresholds *T* and *R* set here; (c) descriptive for H1/H3, confirmatory for H2 only |
-| CHOICE-E1-9 | `lookup_claim` tool | (a) keep all 10 tools (as D6 will have them); (b) remove it for E1, since it can return a registered value directly, which makes register-backed questions retrieval rather than computation; (c) keep it and report register-backed and other questions separately |
-| CHOICE-E1-10 | Seed | (a) a fixed integer written here before the freeze (E2 used `20261104`); (b) another fixed integer |
-| CHOICE-E1-11 | Scoring rule | (a), (b) or (c) under Scoring |
-| CHOICE-E1-12 | Baseline | (a), (b) or (c) under Benchmarks |
-| CHOICE-E1-13 | Holdout | (a) or (b) under Benchmarks |
-| CHOICE-E1-14 | Cost cap | (a) $31, (b) $46 or (c) $62, under Cost cap. The full run also needs her separate spend approval |
-
-## Decisions
-None yet.
+- Identified: accuracy and cost **of this harness** (these tools, this prompt, 4 turns, effort `medium`) on **this question set** and data vintage.
+- Not identified: general text-to-SQL ability (no SQL is written; the tools wrap fixed queries); performance on the live database backend, at other efforts or prompts, or on D6 reader questions.
+- Question-writer effect: Claude wrote the questions (CHOICE-E1-3 (a)), so their style may favour Claude models.
 
 ## Deviations (dated, after freezing)
 None (not frozen).
