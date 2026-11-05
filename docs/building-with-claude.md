@@ -236,3 +236,4 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - The coordinator rechecked the new Wilson bounds: 76.7–81.6% for H1, 81.6–90.1% for H3. They match infra's.
   - The 10 retired questions keep their register rows until she reviews the replacements, so a rejection can restore them.
   - Review queue round 12 has one card, rv-e1-redraft, listing the 10 changed questions.
+- **2026-11-05 14:50 UTC, coordinator.** Merged the analysis handoff note (762150d). The analysis track is at a stopping point: A8 waits on a8-promo. The session stays idle, and the next analysis session will apply her a8-promo choice.
