@@ -283,7 +283,7 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - The track caught its own errors before committing: its first register rewrite changed quoting and line endings across the whole file and was redone line by line; a "did better in the crisis windows" sentence held for the 2008–09 window only and was corrected.
 - s45 (holdout targets have had fewer later Z.1 releases than the development targets) is relevant to c3-rule.
 
-### 2026-11-05 ~16:40 UTC: coordinator, her docket answers recorded
+### 2026-11-05 ~15:57 UTC: coordinator, her docket answers recorded
 - She said "Done". I read both card stores in full and recorded ten answers in PLAN "Decisions taken", credited to her: e1-cluster (b) and e1-support (i) at 14:25 UTC; a8-promo (b) at 14:44; b2-1723-measure (ii), -tranches (b), -indic (b) and -sofr (b), c3-errors (b), c3-rule (b) and c3-hcount (b) at 15:55. The review queue has no new answers: rv-e1-redraft and rv-holdout are still open.
 - **Error: answers missed.** e1-cluster, e1-support (14:25) and a8-promo (14:44) were already in the store when the 14:50 entry and later status messages still called them open. Earlier reads were filtered by time or done before she answered, and no full re-read was made after. *Error by Claude (coordinator); caught by Claude (coordinator)* on today's full re-read. No work went ahead on a wrong assumption: those tracks were holding. Fix: each read now covers the whole day, not only the window since the last read.
 - Relayed: markets (B2 2017+ and the three C3 choices), infra (e1-cluster, e1-support; it still waits on rv-e1-redraft), and a fresh analysis session for a8-promo.
@@ -296,17 +296,17 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Open, for her:** the 30.3% holder share counts the whole category, DZ Bank included, as publicly owned, and its labels still say "promotional banks" (*caught by skeptic*, ana-48/49). Not edited; proposed card sent to the coordinator.
 - First push returned a GitHub 500; retried with backoff and succeeded.
 
-### 2026-11-05 ~17:10 UTC: coordinator, merges and card rounds
+### 2026-11-05 ~16:08 UTC: coordinator, merges and card rounds
 - Merged infra `9de2d27`: e1-cluster (b) and e1-support (i) are in the E1 pre-registration, which stays a draft until rv-e1-redraft. The first push got a GitHub 500 error; the retry went through.
 - Merged analysis `551fcdf` (new session session_01GDxCQ6BWQG3vypp2p8TqdV): a8-promo (b) applied, relabel plus the guarantees note, no number changed; skeptic ana-48 to 52, editor ana-e1 to e11. The results.json key was renamed; a `git grep` found no other consumer of the old key.
 - Review queue round 14: rv-a8-promo added (rv-e1-redraft and rv-holdout still open). Docket round 24: a8-holder (from skeptic ana-48/49, *caught by the skeptic agent*): the 30.3% holder share counts the whole special-tasks category, DZ Bank included. No recommendation.
 
-### 2026-11-05 ~17:20 UTC: coordinator, the second holdout opening merged
+### 2026-11-05 ~16:10 UTC: coordinator, the second holdout opening merged
 - Merged markets `c783a5a` and `8d60d86`.
   - c783a5a: the erratum, deviations D1 and D2, and the gated script, all committed before the run.
   - 8d60d86: the second opening, run once under her c3-errors (b), approval ccc1fc6. It wrote only the 72-row per-forecast table. The frozen step reproduced the committed C2 holdout block exactly. One earlier call was refused by the clean-tree gate before any data was read; the track logged it.
 - Docket round 25 adds two cards, c3-b-level and c3-b-nointv. The protocol's rule (b) gives no test level for "coverage not rejected" and does not say how it applies to models without intervals. *Caught by the markets track.* Option (iv) of c3-b-level (Kupiec only) is the coordinator's addition. a8-holder stays open.
-- 2026-11-05 ~16:40 UTC (markets track, Opus tier; cost not measured): C3 after her c3-rule, c3-errors and c3-hcount decisions.
+- 2026-11-05 ~16:17 UTC (markets track, Opus tier; cost not measured): C3 after her c3-rule, c3-errors and c3-hcount decisions.
   - Erratum and deviations D1/D2 (c783a5a). The second gated holdout opening (8d60d86) reproduced the committed scores exactly and wrote only the per-forecast table.
   - C3 recomputed under rule (b) from committed files. The C2 "beats" count is 1 to 3 depending on the open coverage reading (cards c3-b-level, c3-b-nointv); it is 2 under interim reading (i). The C1 k = 2 case is undetermined.
   - quant-reviewer (about 100k tokens, 36 tool calls): mkt-q40 to q44 (2 major, 3 minor), all addressed.
@@ -314,3 +314,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
     1. A "coverage rejected" label was driven by the independence test, not coverage. *Caught by quant-reviewer* (q40).
     2. The first gated invocation was refused (validation/run.py had rewritten validation/results.json during the cache rebuild). *Caught by the script's own clean-tree gate* before any data was read.
     3. A paragraph insert broke the generator's row attachment. *Caught by the generator's own assert* before any output was written.
+
+### 2026-11-05 ~16:25 UTC: coordinator, C3 under rule (b) merged; markets rotation
+- Fast-forwarded markets `6e86429` and `d6c65cb`. I authorized the c3_ register replacement again, for this round only. I checked it myself: 1,560 claim_ids before and after, 0 value changes, 0 non-c3 rows changed. The 12 rows with changed wording only drop the rule-(a) verdict text. Folded 156 track rows (register 1,716). check_register OK.
+- Docket round 25 republished. The c3-b-level card now carries the quant-reviewer's point (mkt-q40, *caught by quant-reviewer*): failing when either test has p < 0.05 is not itself a 5% test. A joint conditional-coverage test, approximated from the committed p-values, would reject none of the three (about 0.67, 0.16 and 0.09). These numbers are labelled unverified and not published.
+- **Error: wrong times in log headings.** Four timestamps in today's entries were 25 to 70 minutes off the commit times (the 15:57, 16:08 and 16:10 coordinator entries and the markets 16:17 note). *Error by Claude (coordinator and markets track); caught by Claude (coordinator)* against `git log`. Corrected to the commit times.
+- **Error: the markets handoff note had the literal email local part** inside its grep instruction (no address). That made the `git grep` check return 0. *Caught by Claude (coordinator)* in the pre-commit grep. Reworded so the pattern is not in any file.
+- Markets rotates to a fresh session at its handoff note (d6c65cb).

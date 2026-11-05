@@ -39,7 +39,7 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - `git config core.hooksPath .githooks`, then merge `origin/claude/sweet-gates-avwrcs`.
 - Caches in `data/`: run `validation/run.py`, `research/c1_nowcast/z1_vintages.py`, `research/c1_nowcast/pit.py`. After `validation/run.py`, restore `validation/REPORT.md` and `validation/results.json` with `git checkout`; it rewrites their timestamps.
 - The next review-log ids are mkt-s49, mkt-q45 and mkt-e26.
-- SEC: pass the User-Agent as a per-command prefix only. `git grep bjoernberg` must return rc=1.
+- SEC: pass the User-Agent as a per-command prefix only. A `git grep` for her email's local part must return rc=1 (do not write the pattern into any file).
 
 ## Handoff note (2026-11-05 ~15:00 UTC, for the next markets session)
 
