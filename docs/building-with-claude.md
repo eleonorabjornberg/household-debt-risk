@@ -412,3 +412,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Relayed to infra: add prereg Deviations for the recalibrated stops and the resume, build and test the resume feature offline, resume run-2026-11-05b from loop 80 under the $31 cap, then the Opus baseline and `analyze_e1.py`; stop and report on any stop. The write-up must say the first 79 loops ran under the earlier stop values.
 - Docket round 33 and review queue round 20 republished with nothing open.
 - No errors this step.
+
+### 2026-11-05 ~22:55 UTC: coordinator, E1 main run complete; baseline false stop; docket round 34
+- Merged infra 5814ec3 (fast-forward; includes 4247938 D4/D5 deviations and the resume feature, 36d2c67 main run, 43ab03e analysis, 5814ec3 baseline stop and fix). E1 tests 73/73 pass; register check passes (1,854 rows, no new rows).
+- Main run run-2026-11-05b resumed from loop 80 under approval 74cdbb5 and finished 720/720 with no stop. Coordinator recomputed spend from the three call logs independently: $0.003634 + $17.900578 + $0.227444 = $18.131656, matching infra.
+- Infra ran the pre-registered analysis. These are unregistered results, not yet published: H1 supported for all three models, H3 supported for Opus only, H2 null after Holm. Infra hand-checked the 35 answerable misses and found no scorer artifacts. Results stay off any site until the Claude-draft results note and its register rows exist.
+- Error, caught by the stop rule, owned by infra: the baseline's 10% checkpoint projected $181.32, because the E1 total including $17.90 carried from other runs was divided by the baseline's 24 loops and scaled by 10. The correct projection is about $2.27. Infra fixed the bug and added a test reproducing it. The baseline was not resumed.
+- Docket round 34 has one card, e1-baseline: (a) resume the baseline from loop 25 with the fixed checkpoint (about $2.04 more; recorded as deviation D6) or (b) stop E1 and report the baseline as partial. The card carries no recommendation.
