@@ -133,12 +133,8 @@ add("b4_gse_total_replay", f"B4 GSE release: total losses under the replay proxy
 
 # Signs (the register checker ignores minus signs): every value here is non-negative
 assert all(float(r["value"]) >= 0 for r in rows)
-path = "claims/tracks/markets.csv"
-old = list(csv.DictReader(open(path)))
-fields = list(old[0].keys())
-keep = [r for r in old if not r["claim_id"].startswith("b4_")]
-with open(path, "w", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=fields)
-    w.writeheader()
-    w.writerows(keep + rows)
-print(f"README written; {len(rows)} b4 rows")
+import sys
+sys.path.insert(0, "research/common")
+from track_rows import write_track_rows  # noqa: E402
+new = write_track_rows(rows, "b4_")
+print(f"README written; {len(rows)} b4 rows, {len(new)} not yet in claims/register.csv")
