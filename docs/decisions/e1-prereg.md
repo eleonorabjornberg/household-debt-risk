@@ -1,7 +1,10 @@
 > **Claude draft, frozen.** Text drafted by Claude (`preregister` skill). Every design choice is Eleonora's, as recorded in the Decisions table with dates. Frozen 2026-11-05. Changes after the freeze go only in "Deviations", dated. Running it against the API still needs her separate spend OK.
 
 # Pre-registration: E1, question-to-SQL benchmark (Haiku vs Sonnet vs Opus)
-Status: **frozen** on 2026-11-05, choices by Eleonora (PLAN.md "Decisions taken", coordinator commits `77460b4`, `11f0562`, `c55701b`, `ccc1fc6`, `1116080`). No full-E1 result exists at the freeze.
+Status: **frozen** on 2026-11-05, choices by Eleonora (PLAN.md "Decisions taken", coordinator commits `77460b4`, `11f0562`, `c55701b`, `ccc1fc6`, `1116080`). Freeze commit: `e0ae2d6`. No full-E1 result exists at the freeze.
+
+## Frozen at
+Commit `e0ae2d6` (`e0ae2d611f4b6efe2920e62eadcfa978ae7d50f3`, "prereg: E1 (frozen)", 2026-11-05). SHA-256 of this file as frozen there: `6249f5ebf30650c5e2ff6cba6c5050f5d81cfd2ce70cd43bf2401555db8451c0`. This section and the Status line's commit were added in the follow-up commit, because a commit cannot contain its own hash; nothing else changed.
 
 ## Decisions (Eleonora, 2026-11-05 05:19–05:22 UTC, docket round 9; PLAN.md "Decisions taken", coordinator commit `77460b4`)
 | Choice | Decided |
