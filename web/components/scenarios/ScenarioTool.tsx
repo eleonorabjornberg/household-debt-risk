@@ -97,8 +97,11 @@ function Tool({ testCase }: { testCase: Case | null }) {
   const x = Array.from({ length: n }, (_, i) => i + 1);
   const xLabels = x.map((q) => `Quarter ${q}`);
   const shareOfLosses = r && r.sum.total > 0 ? r.sum.public / r.sum.total : null;
-  const publicBalance = exposures.filter((e) => e.side === "public").reduce((a, e) => a + e.balance, 0);
-  const allBalance = exposures.reduce((a, e) => a + e.balance, 0);
+  // like for like (skeptic mkt-s55): balances of the loan classes this scenario covers only
+  const inScope = exposures.filter((e) => e.class in classes);
+  const publicBalance = inScope.filter((e) => e.side === "public").reduce((a, e) => a + e.balance, 0);
+  const allBalance = inScope.reduce((a, e) => a + e.balance, 0);
+  const leftOut = CLASS_ORDER.filter((c) => !(c in classes)).map((c) => CLASS_LABEL[c].toLowerCase());
 
   return (
     <div className={styles.tool}>
@@ -109,7 +112,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
         options={[...PRESETS.map((p) => ({ value: p.key, label: p.label })), { value: "custom", label: "Your own" }]}
         onChange={(v) => { if (v === "custom") setCustom(shown); setCaseUntouched(false); setMode(v); }}
       />
-      {testCase && <p className={styles.note} data-testid="b3-case">Test case “{testCase.name}”: synthetic balances from the engine’s fixed cases, not Z.1 data.</p>}
+      {testCase && <p className={styles.note} data-testid="b3-case">Test case “{testCase.name}”: synthetic balances from the engine’s fixed cases replace the Z.1 balances described above. Nothing shown here is Z.1 data.</p>}
       {preset && (
         <p className={styles.note} data-testid="b3-preset-note">
           <strong>{preset.proxy}.</strong> {preset.def.note ? `${preset.def.note[0].toUpperCase()}${preset.def.note.slice(1)}. ` : ""}Source: {preset.source}.
@@ -121,7 +124,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
         <div className={styles.grid} role="table">
           <div role="row" className={styles.head}>
             <span role="columnheader">Loan class</span>
-            <span role="columnheader">Default rate, %</span>
+            <span role="columnheader">{preset ? "Loss rate, % (as default rate)" : "Default rate, %"}</span>
             <span role="columnheader">Loss given default, %</span>
             <span role="columnheader">Spread over quarters</span>
           </div>
@@ -147,7 +150,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
           })}
         </div>
         <p className={styles.hint}>
-          {preset ? "Presets keep their own quarter-by-quarter timing. " : "Your own scenario spreads each class’s losses evenly over its quarters. "}
+          {preset ? "Presets give a loss rate directly, entered here as a default rate with 100% loss given default, and keep their own quarter-by-quarter timing. " : "Your own scenario spreads each class’s losses evenly over its quarters. "}
           The default rate is cumulative over the whole horizon.
         </p>
       </fieldset>
@@ -155,11 +158,13 @@ function Tool({ testCase }: { testCase: Case | null }) {
       <fieldset className={styles.fields}>
         <legend>
           <label><input type="checkbox" checked={transferOn} data-testid="b3-transfer-on"
-                        onChange={(e) => setTransferOn(e.target.checked)} /> Pass part of GSE mortgage losses to private investors</label>
+                        onChange={(e) => setTransferOn(e.target.checked)} /> Pass part of the losses on GSE and agency-pool mortgages to private investors</label>
         </legend>
         <p className={styles.hint}>
-          Stands for credit-risk transfer and mortgage insurance on mortgages in GSE and agency pools: a share of those losses
-          moves from the public to the private side, up to a cap. Off by default; the presets apply no transfer.
+          Stands for credit-risk transfer and mortgage insurance: a share of the losses on mortgages held by the GSEs and in
+          agency pools moves from the public to the private side, up to a cap. That group also includes Ginnie Mae (FHA and
+          VA) pools, whose cover works differently, so a large share with no cap overstates what transfer can move. Off by
+          default; the presets apply no transfer.
         </p>
         <div className={styles.pair}>
           <label>Share moved, % <input type="number" min={0} max={100} step="any" value={sharePct} disabled={!transferOn}
@@ -177,7 +182,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
             <div><dt>Held on public books</dt><dd data-testid="b3-public">{usdFromMillions(r.sum.public)}</dd></div>
             <div><dt>Held on private books</dt><dd data-testid="b3-private">{usdFromMillions(r.sum.private)}</dd></div>
             <div><dt>Public share of losses</dt><dd data-testid="b3-share-losses">{pct(shareOfLosses, 0)}</dd></div>
-            <div><dt>Public share of balances</dt><dd data-testid="b3-share-balances">{pct(allBalance > 0 ? publicBalance / allBalance : null, 0)}</dd></div>
+            <div><dt>Public share of balances{leftOut.length ? `, without ${leftOut.join(" and ")}` : ""}</dt><dd data-testid="b3-share-balances">{pct(allBalance > 0 ? publicBalance / allBalance : null, 0)}</dd></div>
             {transferOn && <div><dt>Moved by transfer</dt><dd data-testid="b3-transferred">{usdFromMillions(r.sum.transferred)}</dd></div>}
           </dl>
           {n > 0 && r.sum.total > 0 && (
