@@ -1,0 +1,43 @@
+{
+ "mode": "main",
+ "approval": {
+  "commit": "4b0fd66aa4ccce399542ee57c5fd744bf4ac372b",
+  "row": "| 2026-11-05 | E1 spend (e1-spend, chosen 20:59 UTC): **OK** (a): run the main run and the Opus baseline, $31 total cap. No recommendation was given on this card. | Eleonora |"
+ },
+ "cap_usd": 31.0,
+ "total_usd": 0.003634,
+ "loops_planned": 720,
+ "loops_done": 0,
+ "stop": {
+  "reason": "overrun: claude-haiku-5-5 mean $0.0036/loop over 1 loop(s) > 1.5x assumption $0.001642",
+  "at": {
+   "qid": "q128",
+   "model": "claude-haiku-5-5",
+   "served_model": "claude-haiku-5-5",
+   "rep": 1,
+   "turn": 4,
+   "usage": {
+    "input_tokens": 10578,
+    "output_tokens": 732,
+    "cache_read_input_tokens": 2163,
+    "cache_creation_input_tokens": 0
+   },
+   "cost_usd": 0.001445,
+   "latency_s": 3.313,
+   "stop_reason": "end_turn",
+   "text": "In 2026Q2 the ratio was about **27.7%**: banks and credit unions held $3,633.7 billion of mortgages in Z.1, against a NY Fed mortgage balance of $13,117 billion.\n\n- **Z.1 banks & credit unions mortgages:** $3,633,696 million, the mortgage portion of the \"Banks & credit unions\" bucket. That bucket sums four mortgage series: U.S.-chartered depository institutions, foreign banking offices in the U.S., banks in U.S.-affiliated areas, and credit unions.\n- **NY Fed mortgage balance:** $13,117 billion (NY Fed Consumer Credit Panel, 2026Q2).\n- **Ratio:** 3,633.7 / 13,117 \u2248 0.277.\n\nThe two sources are not like-for-like. The NY Fed states its balances use a different definition from Z.1 and do not reconcile to Z.1 totals. The Z.1 holder figures also cover all 1-4 family mortgages, including business borrowers, so treat 27.7% as a rough cross-source comparison rather than a precise share.\n\nANSWER: 27.7%\nQUARTER: none",
+   "tool_calls": [],
+   "ts": "2026-11-05T21:04:43+00:00"
+  }
+ },
+ "per_model": {
+  "claude-haiku-5-5": {
+   "loops": 1,
+   "spent_usd": 0.003634,
+   "mean_per_loop_usd": 0.003634,
+   "correct": 0,
+   "scored": 0,
+   "truncated": 0
+  }
+ }
+}

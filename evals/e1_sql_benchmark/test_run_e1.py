@@ -42,6 +42,9 @@ def test_refusal_scoring(text, ok):
     ("ANSWER: 1.263 trillion", "usd_bn", 1263.0, 1, True),
     ("ANSWER: 7.83%", "pct", 7.83, 0.01, True),
     ("ANSWER: 3.56x", "ratio", 3.5624, 0.01, True),
+    ("ANSWER: 27.7%", "ratio", 0.277022, 0.01, True),  # the 2026-11-05 run's first answer (q128): stated in percent
+    ("ANSWER: 27.7", "ratio", 0.277022, 0.01, False),  # no unit stated: read as written
+    ("ANSWER: 7.83%", "pct", 7.83, 0.01, True),
     ("ANSWER: 299 quarters", "count", 299, 0, True),
     ("ANSWER: 298", "count", 299, 0, False),
 ])
@@ -118,7 +121,9 @@ def test_spend_row(row, ok):
 
 def test_existing_rows_are_not_a_spend_ok():
     assert run_e1.spend_row(PLAN_ROWS) is None
-    assert run_e1.spend_row((run_e1.ROOT / "PLAN.md").read_text()) is None  # no spend OK recorded yet
+    # her real approval (e1-spend (a), 2026-11-05 20:59 UTC) is the only matching row
+    row = run_e1.spend_row((run_e1.ROOT / "PLAN.md").read_text())
+    assert row and "chosen 20:59 UTC" in row and "(a)" in row
 
 
 def test_approval_must_postdate_the_freeze():
@@ -128,9 +133,11 @@ def test_approval_must_postdate_the_freeze():
         run_e1.check_spend_approval("134ee11")  # before the freeze
 
 
-def test_head_has_no_approval_yet():
+def test_approval_commit_and_an_earlier_commit():
+    assert "chosen 20:59 UTC" in run_e1.check_spend_approval("4b0fd66")            # her e1-spend (a)
+    assert "chosen 20:59 UTC" in run_e1.check_spend_approval("4b0fd66", baseline=True)
     with pytest.raises(SystemExit, match="no Eleonora row"):
-        run_e1.check_spend_approval("HEAD")
+        run_e1.check_spend_approval("a43e37e")  # after the freeze, before her answer
 
 
 OPT_A = "| 2026-11-05 | E1 spend (e1-spend, chosen 19:40 UTC): **OK** (a): the main run and the Opus baseline, within $31. | Eleonora |"
@@ -157,3 +164,9 @@ def test_baseline_row_alone_does_not_approve_the_main_run():
 def test_ok_without_mentioning_the_baseline_does_not_cover_it():
     row = "| 2026-11-05 | E1 spend (e1-spend): **go**, cap $31. | Eleonora |"
     assert run_e1.spend_row(PLAN_ROWS + row + "\n") and run_e1.spend_row(PLAN_ROWS + row + "\n", baseline=True) is None
+
+
+def test_never_overwrites_a_run(tmp_path):
+    (tmp_path / "calls.jsonl").write_text("{}\n")
+    with pytest.raises(SystemExit, match="already holds a run"):
+        run_e1.run(pilot.FakeClient(), TOOLS, call_tool, tmp_path, reps=1)
