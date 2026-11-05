@@ -400,3 +400,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Markets found and documented a bundler detail: imported JSON is re-serialised, so one replay timing weight reaches the page one unit in the last place off the file. Results still match engine.py to 1e-9, and the input check allows 1e-12. Skeptic mkt-s55 to s59 and editor mkt-e26 to e32 were addressed by markets.
 - No preview URL is given: the Vercel connector returned 403 for the team scope, and team access was not requested.
 - Review queue round 19 has two cards: rv-b3-page (the page and its Claude-draft copy) and rv-b3-nav (the proposed nav link diff, not applied). Neither card carries a recommendation.
+
+### 2026-11-05 ~21:35 UTC: coordinator, E1 rerun stopped on Sonnet; docket round 32
+- Merged infra 77afb37 (and 4017e4e: prereg Deviations D1–D3 plus harness changes; 66 E1 tests pass). Run `run-2026-11-05b` passed the 10% checkpoint ($1.34 after 72 loops, projected $13.40), then stopped after 79 of 720 loops because Sonnet's mean cost per loop over 27 loops ($0.0313) exceeded its stop ($0.0305, 3× its pilot mean). $2.59 spent; 194 calls, no errors; no key or headers in any file. Baseline not started; no tests on partial data. Partial accuracy stays in tracks/infra.md as PARTIAL and is not published; no register rows.
+- Infra noted that the in-progress snapshot commits were needed because the stop hook requires a clean tree at every turn end.
+- Docket round 32 has e1-stop2 (recalibrate, drop the per-model stop, or end E1) and e1-resume (fresh run or resume from loop 80). Neither card carries a recommendation. Infra holds with no API calls.
