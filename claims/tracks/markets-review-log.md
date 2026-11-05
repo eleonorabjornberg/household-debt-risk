@@ -175,4 +175,4 @@
 - **Severity:** note
 - **Evidence:** `grep -n "b2_per_tranche_" claims/register.csv`: locations = research/b2_crt_pricing/README.md:34 only.
 - **Proposed resolution:** Add README.md:80 to both rows' locations (through make_readme_and_rows.py or the main register's generator).
-- **Status:** open (routed to the coordinator 2026-11-05): Not editable by the track (claims/register.csv is the coordinator's); sent to the coordinator to add README.md:80 to b2_per_tranche_lo/hi.
+- **Status:** resolved (2026-11-05, by the coordinator, on the markets track's routing): README.md:83 (the line moved from :80 after the s38–s42 edits) added to b2_per_tranche_lo/hi in claims/register.csv (merge 17dfd01).
