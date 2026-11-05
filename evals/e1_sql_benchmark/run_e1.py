@@ -123,6 +123,8 @@ def run(client, tools, call_tool, outdir: Path, models=pilot.MODELS, reps: int =
         models, tools = [baseline], []
     total_loops = len(qs) * len(models) * reps
     budget = budget or pilot.Budget(cap=CAP_USD, assumed=dict(PLANNING))
+    if (outdir / "calls.jsonl").exists():  # results are append-only: never overwrite a run
+        raise SystemExit(f"refusing: {outdir} already holds a run; pass a new --out")
     outdir.mkdir(parents=True, exist_ok=True)
     calls = (outdir / "calls.jsonl").open("w")
     results, stop, done = [], None, 0
