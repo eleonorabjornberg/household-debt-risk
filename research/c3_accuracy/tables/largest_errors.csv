@@ -1,0 +1,151 @@
+task,sample,horizon,model,rank,origin,target,error_pp
+C2,development latest-expanding,1,Z-DIR,1,2021Q1,2021Q2,1.8316496100000004
+C2,development latest-expanding,1,Z-DIR,2,1993Q1,1993Q2,1.11463744
+C2,development latest-expanding,1,Z-DIR,3,2004Q1,2004Q2,0.9957306399999999
+C2,development latest-expanding,1,Z-DIR,4,1998Q4,1999Q1,-0.984395026
+C2,development latest-expanding,1,Z-DIR,5,2003Q4,2004Q1,0.95647814
+C2,development latest-expanding,1,Z-DIR,6,1993Q4,1994Q1,-0.9179490199999999
+C2,development latest-expanding,1,Z-DIR,7,2001Q4,2002Q1,-0.80388418
+C2,development latest-expanding,1,Z-DIR,8,2010Q4,2011Q1,-0.7683964999999999
+C2,development latest-expanding,1,Z-DIR,9,2002Q2,2002Q3,0.7604928799999999
+C2,development latest-expanding,1,Z-DIR,10,1994Q1,1994Q2,0.67823468
+C2,development latest-expanding,1,Z-DAMP,1,2021Q1,2021Q2,1.73971665
+C2,development latest-expanding,1,Z-DAMP,2,2004Q1,2004Q2,1.1361023099999998
+C2,development latest-expanding,1,Z-DAMP,3,1998Q4,1999Q1,-0.9119458
+C2,development latest-expanding,1,Z-DAMP,4,2002Q2,2002Q3,0.89389095
+C2,development latest-expanding,1,Z-DAMP,5,1993Q1,1993Q2,0.8819128500000001
+C2,development latest-expanding,1,Z-DAMP,6,2003Q4,2004Q1,0.871704813
+C2,development latest-expanding,1,Z-DAMP,7,2007Q3,2007Q4,-0.78756875
+C2,development latest-expanding,1,Z-DAMP,8,2004Q2,2004Q3,0.74452512
+C2,development latest-expanding,1,Z-DAMP,9,2001Q4,2002Q1,-0.71192045
+C2,development latest-expanding,1,Z-DAMP,10,1993Q4,1994Q1,-0.69503803
+C2,development latest-expanding,4,Z-DIR,1,2003Q4,2004Q4,5.02182209
+C2,development latest-expanding,4,Z-DIR,2,1994Q1,1995Q1,3.5978883
+C2,development latest-expanding,4,Z-DIR,3,2004Q1,2005Q1,3.57387019
+C2,development latest-expanding,4,Z-DIR,4,2003Q3,2004Q3,3.33079364
+C2,development latest-expanding,4,Z-DIR,5,2021Q1,2022Q1,3.2230619000000003
+C2,development latest-expanding,4,Z-DIR,6,2007Q2,2008Q2,-2.7482760700000006
+C2,development latest-expanding,4,Z-DIR,7,2002Q1,2003Q1,2.4753721
+C2,development latest-expanding,4,Z-DIR,8,2007Q3,2008Q3,-2.3691552
+C2,development latest-expanding,4,Z-DIR,9,2006Q4,2007Q4,-2.280460269
+C2,development latest-expanding,4,Z-DIR,10,2022Q1,2023Q1,2.2745143000000003
+C2,development latest-expanding,4,Z-DAMP,1,2003Q4,2004Q4,4.6292247500000006
+C2,development latest-expanding,4,Z-DAMP,2,2004Q1,2005Q1,3.56520637
+C2,development latest-expanding,4,Z-DAMP,3,2007Q2,2008Q2,-3.36157471
+C2,development latest-expanding,4,Z-DAMP,4,2007Q3,2008Q3,-2.9952748000000002
+C2,development latest-expanding,4,Z-DAMP,5,2007Q1,2008Q1,-2.9770773399999997
+C2,development latest-expanding,4,Z-DAMP,6,2006Q4,2007Q4,-2.88180678
+C2,development latest-expanding,4,Z-DAMP,7,2021Q1,2022Q1,2.8077289999999997
+C2,development latest-expanding,4,Z-DAMP,8,2003Q3,2004Q3,2.7448931500000002
+C2,development latest-expanding,4,Z-DAMP,9,2004Q2,2005Q2,2.373908
+C2,development latest-expanding,4,Z-DAMP,10,2006Q3,2007Q3,-2.35596917
+C2,development latest-expanding,8,Z-DIR,1,2003Q4,2005Q4,8.827960599999999
+C2,development latest-expanding,8,Z-DIR,2,2003Q3,2005Q3,7.36424376
+C2,development latest-expanding,8,Z-DIR,3,2003Q1,2005Q1,6.3557538
+C2,development latest-expanding,8,Z-DIR,4,2003Q2,2005Q2,6.23678128
+C2,development latest-expanding,8,Z-DIR,5,2007Q2,2009Q2,-6.128512300000001
+C2,development latest-expanding,8,Z-DIR,6,2004Q1,2006Q1,6.08432142
+C2,development latest-expanding,8,Z-DIR,7,2006Q4,2008Q4,-5.967604069999999
+C2,development latest-expanding,8,Z-DIR,8,2021Q1,2023Q1,5.8894942
+C2,development latest-expanding,8,Z-DIR,9,2007Q3,2009Q3,-5.7366474
+C2,development latest-expanding,8,Z-DIR,10,2006Q3,2008Q3,-5.59463366
+C2,development latest-expanding,8,Z-DAMP,1,2003Q4,2005Q4,7.73470193
+C2,development latest-expanding,8,Z-DAMP,2,2006Q4,2008Q4,-7.172962429999999
+C2,development latest-expanding,8,Z-DAMP,3,2007Q1,2009Q1,-7.114032720000001
+C2,development latest-expanding,8,Z-DAMP,4,2007Q2,2009Q2,-7.10918497
+C2,development latest-expanding,8,Z-DAMP,5,2006Q3,2008Q3,-7.0565641
+C2,development latest-expanding,8,Z-DAMP,6,2006Q2,2008Q2,-6.6966623
+C2,development latest-expanding,8,Z-DAMP,7,2007Q3,2009Q3,-6.648779099999999
+C2,development latest-expanding,8,Z-DAMP,8,2003Q3,2005Q3,6.1790746
+C2,development latest-expanding,8,Z-DAMP,9,2006Q1,2008Q1,-5.8343951999999994
+C2,development latest-expanding,8,Z-DAMP,10,2004Q1,2006Q1,5.584308600000001
+C1,dev,k=1,bridge,1,,2021Q1,-0.7375780299999999
+C1,dev,k=1,bridge,2,,2020Q3,-0.515449693
+C1,dev,k=1,bridge,3,,2020Q4,-0.45791083000000005
+C1,dev,k=1,bridge,4,,2020Q1,-0.41720430999999997
+C1,dev,k=1,bridge,5,,2017Q1,-0.38735916
+C1,dev,k=1,bridge,6,,2020Q2,-0.31619596000000005
+C1,dev,k=1,bridge,7,,2017Q3,-0.29772819
+C1,dev,k=1,bridge,8,,2021Q3,-0.29512299
+C1,dev,k=1,bridge,9,,2018Q1,-0.28254727999999996
+C1,dev,k=1,bridge,10,,2022Q1,-0.26681926
+C1,dev,k=2,bridge,1,,2021Q1,-0.64440674
+C1,dev,k=2,bridge,2,,2020Q4,-0.5440641900000001
+C1,dev,k=2,bridge,3,,2020Q3,-0.5195163758000001
+C1,dev,k=2,bridge,4,,2021Q2,-0.39697765999999995
+C1,dev,k=2,bridge,5,,2022Q1,-0.360777902
+C1,dev,k=2,bridge,6,,2021Q3,-0.34982569999999996
+C1,dev,k=2,bridge,7,,2020Q1,-0.31621628
+C1,dev,k=2,bridge,8,,2017Q3,-0.29706957
+C1,dev,k=2,bridge,9,,2016Q4,-0.29353762
+C1,dev,k=2,bridge,10,,2017Q1,-0.26915601
+C1,dev,k=3,bridge,1,,2021Q1,-0.6635112299999999
+C1,dev,k=3,bridge,2,,2020Q4,-0.6204768350000001
+C1,dev,k=3,bridge,3,,2021Q2,-0.51840995
+C1,dev,k=3,bridge,4,,2022Q1,-0.47851101999999995
+C1,dev,k=3,bridge,5,,2016Q4,-0.38100332000000003
+C1,dev,k=3,bridge,6,,2021Q4,-0.37550726
+C1,dev,k=3,bridge,7,,2020Q2,-0.30024585000000004
+C1,dev,k=3,bridge,8,,2017Q4,-0.28973217
+C1,dev,k=3,bridge,9,,2019Q4,-0.24618626
+C1,dev,k=3,bridge,10,,2017Q1,-0.23772841999999994
+C1,hold,k=1,bridge_c1,1,,2024Q4,-0.38924343
+C1,hold,k=1,bridge_c1,2,,2024Q3,-0.177257557
+C1,hold,k=1,bridge_c1,3,,2025Q1,-0.14701362
+C1,hold,k=1,bridge_c1,4,,2024Q1,-0.12051543
+C1,hold,k=1,bridge_c1,5,,2026Q2,0.119470507
+C1,hold,k=1,bridge_c1,6,,2023Q4,0.09995270499999999
+C1,hold,k=1,bridge_c1,7,,2025Q4,0.09337833
+C1,hold,k=1,bridge_c1,8,,2023Q3,0.06574851999999998
+C1,hold,k=1,bridge_c1,9,,2025Q3,-0.05539361900000001
+C1,hold,k=1,bridge_c1,10,,2026Q1,0.044204489999999985
+C1b,hold,k=1,bridge_c1b,1,,2024Q4,-0.35347107
+C1b,hold,k=1,bridge_c1b,2,,2024Q3,-0.163593384
+C1b,hold,k=1,bridge_c1b,3,,2025Q1,-0.13391648
+C1b,hold,k=1,bridge_c1b,4,,2026Q2,0.129452346
+C1b,hold,k=1,bridge_c1b,5,,2025Q4,0.128961457
+C1b,hold,k=1,bridge_c1b,6,,2024Q1,-0.12521255
+C1b,hold,k=1,bridge_c1b,7,,2023Q4,0.114746461
+C1b,hold,k=1,bridge_c1b,8,,2023Q3,0.07391413
+C1b,hold,k=1,bridge_c1b,9,,2026Q1,0.05077749999999998
+C1b,hold,k=1,bridge_c1b,10,,2024Q2,0.044954036999999995
+C1,hold,k=2,bridge_c1,1,,2024Q4,-0.43651272
+C1,hold,k=2,bridge_c1,2,,2024Q3,-0.19821162
+C1,hold,k=2,bridge_c1,3,,2023Q3,-0.09709804
+C1,hold,k=2,bridge_c1,4,,2024Q1,-0.08864277000000002
+C1,hold,k=2,bridge_c1,5,,2024Q2,-0.07682716
+C1,hold,k=2,bridge_c1,6,,2025Q1,-0.07344778000000002
+C1,hold,k=2,bridge_c1,7,,2025Q3,-0.069310378
+C1,hold,k=2,bridge_c1,8,,2026Q2,0.058693750000000024
+C1,hold,k=2,bridge_c1,9,,2023Q4,-0.05676425000000001
+C1,hold,k=2,bridge_c1,10,,2025Q2,-0.03338506999999999
+C1b,hold,k=2,bridge_c1b,1,,2024Q4,-0.38415869
+C1b,hold,k=2,bridge_c1b,2,,2024Q3,-0.155127981
+C1b,hold,k=2,bridge_c1b,3,,2024Q1,-0.08951528
+C1b,hold,k=2,bridge_c1b,4,,2026Q2,0.07488213
+C1b,hold,k=2,bridge_c1b,5,,2023Q3,-0.06314696000000002
+C1b,hold,k=2,bridge_c1b,6,,2025Q4,0.06266326
+C1b,hold,k=2,bridge_c1b,7,,2025Q1,-0.05991844999999997
+C1b,hold,k=2,bridge_c1b,8,,2026Q1,0.042173339999999976
+C1b,hold,k=2,bridge_c1b,9,,2024Q2,-0.03710131999999999
+C1b,hold,k=2,bridge_c1b,10,,2025Q3,-0.026788835
+C1,hold,k=3,bridge_c1,1,,2024Q4,-0.55456811
+C1,hold,k=3,bridge_c1,2,,2024Q3,-0.15682542
+C1,hold,k=3,bridge_c1,3,,2024Q2,-0.10935409000000001
+C1,hold,k=3,bridge_c1,4,,2023Q3,-0.08621182
+C1,hold,k=3,bridge_c1,5,,2023Q4,-0.06383430000000002
+C1,hold,k=3,bridge_c1,6,,2025Q3,-0.058746603
+C1,hold,k=3,bridge_c1,7,,2024Q1,-0.05423431000000003
+C1,hold,k=3,bridge_c1,8,,2025Q2,-0.04820334999999999
+C1,hold,k=3,bridge_c1,9,,2025Q1,-0.04136486999999998
+C1,hold,k=3,bridge_c1,10,,2025Q4,0.024927180000000018
+C1b,hold,k=3,bridge_c1b,1,,2024Q4,-0.46855927
+C1b,hold,k=3,bridge_c1b,2,,2025Q4,0.10653928000000001
+C1b,hold,k=3,bridge_c1b,3,,2024Q3,-0.08485816560000001
+C1b,hold,k=3,bridge_c1b,4,,2024Q2,-0.05901999000000001
+C1b,hold,k=3,bridge_c1b,5,,2026Q2,0.03976346000000002
+C1b,hold,k=3,bridge_c1b,6,,2023Q3,-0.03430624
+C1b,hold,k=3,bridge_c1b,7,,2024Q1,-0.03281724
+C1b,hold,k=3,bridge_c1b,8,,2025Q2,-0.017558890000000004
+C1b,hold,k=3,bridge_c1b,9,,2025Q1,-0.013589699999999984
+C1b,hold,k=3,bridge_c1b,10,,2025Q3,0.012614070600000001
