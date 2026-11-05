@@ -1,0 +1,45 @@
+{
+ "mode": "main",
+ "approval": {
+  "commit": "74cdbb55de15069aa684401602e251121bc3f795",
+  "row": "| 2026-11-05 | E1 spend (e1-spend, chosen 20:59 UTC): **OK** (a): run the main run and the Opus baseline, $31 total cap. No recommendation was given on this card. | Eleonora |"
+ },
+ "cap_usd": 31.0,
+ "resumed_from_loop": 80,
+ "carried_usd": 0.003634,
+ "stops_usd": {
+  "claude-haiku-5-5": 0.002,
+  "claude-sonnet-5-5": 0.047,
+  "claude-opus-5-5": 0.098
+ },
+ "total_usd": 17.90413,
+ "loops_planned": 720,
+ "loops_done": 720,
+ "stop": null,
+ "per_model": {
+  "claude-haiku-5-5": {
+   "loops": 240,
+   "spent_usd": 0.320516,
+   "mean_per_loop_usd": 0.001335,
+   "correct": 191,
+   "scored": 240,
+   "truncated": 3
+  },
+  "claude-sonnet-5-5": {
+   "loops": 240,
+   "spent_usd": 5.467522,
+   "mean_per_loop_usd": 0.022781,
+   "correct": 214,
+   "scored": 240,
+   "truncated": 6
+  },
+  "claude-opus-5-5": {
+   "loops": 240,
+   "spent_usd": 12.112458,
+   "mean_per_loop_usd": 0.050469,
+   "correct": 220,
+   "scored": 240,
+   "truncated": 6
+  }
+ }
+}
