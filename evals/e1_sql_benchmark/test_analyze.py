@@ -71,3 +71,8 @@ def test_h3_runs_at_her_r():
                               n_q=60, n_un=20), "deff")
     assert res["H3"]["claude-opus-5-5"]["verdict"] == "supported"
     assert res["H3"]["claude-opus-5-5"]["n_questions"] == 20
+
+
+def test_bootstrap_is_the_preregistered_default():
+    import inspect
+    assert inspect.signature(an.analyze).parameters["method"].default == "bootstrap"  # e1-cluster (b)

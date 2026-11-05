@@ -1,4 +1,4 @@
-> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers; her decisions of 2026-11-05 are recorded below. **Still open: e1-cluster (CHOICE-E1-17) and e1-support (docket round 20), and her review of the 10 changed questions.** The file is frozen only after these. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
+> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers; all of them are now recorded below (2026-11-05). **Still open: her review of the 10 changed questions (rv-e1-redraft).** The file is frozen only after that. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
 
 # Pre-registration: E1, question-to-SQL benchmark (Haiku vs Sonnet vs Opus)
 Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No full-E1 result exists.
@@ -27,18 +27,15 @@ Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No fu
 | e1-set-h3 | **replace** about 10 answerable questions with unanswerable ones, keeping 100; she reviews only the changed questions |
 | CHOICE-E1-15 R (e1-R2) | **70%** |
 | e1-holdback | hold back **about 5** unanswerable questions, in proportion |
+| CHOICE-E1-17 clustering (e1-cluster) | **(b)** question bootstrap: 10,000 draws, seed 20261104, percentile 95% intervals; H2 from the paired-difference bootstrap |
+| Support rule (e1-support) | **(i)** the 95% interval at or above the threshold AND a Holm-adjusted one-sided p < 0.05 |
 | Question set (rv-e1-set) | approved as is (`questions.yaml` at `3faa99b`), after choosing h3 (b); then 10 questions replaced (e1-set-h3), which she reviews |
 
-Recorded in PLAN.md "Decisions taken" (coordinator commits `11f0562` and `c55701b`), relayed 2026-11-05.
+Recorded in PLAN.md "Decisions taken" (coordinator commits `11f0562`, `c55701b` and `ccc1fc6`; e1-cluster and e1-support chosen 14:25 UTC), relayed 2026-11-05.
 
 ## Still open (Eleonora's)
-- **Review of the 10 changed questions** (e1-set-h3 replace). The list is under Data.
-- **e1-cluster, CHOICE-E1-17, how the clustering enters the tests** (unit (ii) is chosen; the method is not). Both are implemented in `analyze_e1.py`, written before any result:
-  - (a) **design effect**: Wilson interval with n replaced by n / DEFF, where DEFF = 1 + (m − 1) × ICC (one-way ANOVA ICC, floored at 0; m = 3 repetitions). H2 uses the clustered McNemar test of Durkalski et al. (2003). Closed form, but it relies on the ICC estimate.
-  - (b) **question bootstrap**: resample questions with replacement (10,000 draws, seed 20261104). Percentile 95% intervals for the rates; H2 from the bootstrap distribution of the paired difference. Fewer assumptions, but less exact with few clusters (12–20 refusal questions).
-  - No recommendation from Claude.
-- **e1-support** (docket round 20): (i) a "supported" needs the 95% interval at or above the threshold and a Holm-adjusted one-sided p < 0.05 within its family; (ii) Holm-adjusted (wider) intervals instead. Both are implemented in `analyze_e1.py`. No recommendation from Claude.
-- **What the thresholds demand** under unit (ii), for the scored set of 60 answerable and 20 unanswerable questions (3 answers each). This depends on the ICC, which is unknown until the run. The two bounds are no clustering (ICC 0, every answer independent) and full clustering (ICC 1, a question's 3 answers always agree). The Wilson lower bound must reach the threshold:
+- **Review of the 10 changed questions** (rv-e1-redraft). The list is under Data. Until she approves, the 10 retired questions and their register rows stay.
+- **What the thresholds demand** (context, not a choice) under unit (ii), for the scored set of 60 answerable and 20 unanswerable questions (3 answers each). This depends on the ICC, which is unknown until the run. The two bounds are no clustering (ICC 0, every answer independent) and full clustering (ICC 1, a question's 3 answers always agree). The Wilson lower bound must reach the threshold:
   - **H1**, T = 70%: needs 76.7% (ICC 0) to 81.6% (ICC 1).
   - **H3**, R = 70%: needs 81.6% (ICC 0) to 90.1% (ICC 1).
 
@@ -54,9 +51,15 @@ On factual questions about who holds US household credit risk, answered only thr
 
 ## Hypotheses (confirmatory, CHOICE-E1-8 (b)) and what counts as support
 - **H1** (per model, 3 tests): accuracy on scored answerable questions ≥ **T = 70%**.
-- **H2** (2 paired tests): Opus and Sonnet differ in accuracy; Sonnet and Haiku differ in accuracy. Paired by question and repetition, clustered by question (unit (ii)); the test is set by CHOICE-E1-17.
+- **H2** (2 paired tests): Opus and Sonnet differ in accuracy; Sonnet and Haiku differ in accuracy. Paired by question and repetition, clustered by question (unit (ii)); tested by the paired-difference question bootstrap (e1-cluster (b)).
 - **H3** (per model, 3 tests): correct-refusal rate on scored unanswerable questions ≥ **R = 70%**.
-- Support: the 95% lower bound (clustered per CHOICE-E1-17) ≥ threshold, with Holm-adjusted one-sided p < 0.05 (H1, H3); or Holm-adjusted clustered p < 0.05 (H2). Null: otherwise. Against (H1, H3): the upper bound is below the threshold. Script: `evals/e1_sql_benchmark/analyze_e1.py`, written and tested on synthetic data before any E1 result. Cost per correct answer and latency are descriptive.
+- **Method (e1-cluster (b), e1-support (i)).** All intervals and p-values come from a **question bootstrap**: resample the scored questions with replacement, carrying each question's 3 answers along (10,000 draws, `random.Random(20261104)`).
+  - **H1 and H3:** percentile 95% interval for each model's rate. One-sided p = the share of draws at or below the threshold.
+  - **H2:** the paired difference in accuracy (A − B, over the same questions and repetitions). Two-sided p = 2 × the smaller tail share at zero, capped at 1.
+  - **Supported** (H1, H3): the lower bound ≥ threshold AND the Holm-adjusted one-sided p < 0.05 within its family. **Against:** the upper bound < threshold. **Null:** otherwise.
+  - **H2 supported** (the models differ): Holm-adjusted p < 0.05.
+  - Script: `evals/e1_sql_benchmark/analyze_e1.py`, written and tested on synthetic data before any E1 result, run with `--method bootstrap`. Its design-effect method is not pre-registered and is not reported.
+  - Cost per correct answer and latency are descriptive.
 
 ## Data
 - **Backend:** the MCP server's snapshot backend (`DATABASE_URL_READONLY` and `DATABASE_URL` unset); production is never queried.

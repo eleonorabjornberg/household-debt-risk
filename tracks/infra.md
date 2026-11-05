@@ -11,7 +11,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 
 **E1: where it stands.**
 - The prereg `docs/decisions/e1-prereg.md` is a **draft, not frozen**. It records her 13 choices of 2026-11-05 (PLAN `77460b4`).
-- Decided 2026-11-05 (PLAN `11f0562`, `c55701b`, in the prereg): unit (ii), T 70%, h3 (b), baseline Opus, set ok, then e1-set-h3 **replace** (done: q201–q210 replace 10), R 70%, holdback about 5 (done: largest remainder, 5 unanswerable). **Open, docket round 20: e1-cluster (CHOICE-E1-17) and e1-support, plus her review of the 10 changed questions.** Do not pick any of these, and do not freeze or spend until they are relayed. The coordinator should delete the 10 retired rows (e1_q102, q110, q118, q125, q135, q137, q147, q153, q165, q168) from `register.csv` and then the `retired:` list can go; until then `e1_gold.py` keeps checking them.
+- Decided 2026-11-05 (PLAN `11f0562`, `c55701b`, `ccc1fc6`; all in the prereg): unit (ii), T 70%, h3 (b), baseline Opus, set ok, then e1-set-h3 **replace** (done: q201–q210 replace 10), R 70%, holdback about 5 (done), **e1-cluster (b) bootstrap**, **e1-support (i)**. **Only open: rv-e1-redraft** (her review of the 10 changed questions). If she rejects a replacement, restore that question from `retired:` and remove its q2xx. Once she approves, the coordinator deletes the 10 retired rows (e1_q102, q110, q118, q125, q135, q137, q147, q153, q165, q168) from `register.csv`, and then `retired:` can go. Until then `e1_gold.py` keeps checking them. Do not freeze or spend before rv-e1-redraft is answered.
 - Built (no spend):
   - `questions.yaml`: 100 questions, 15 unanswerable.
   - `spec.py`: the shared evaluator.
@@ -24,7 +24,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 - The raw NY Fed workbook lives at `data/validation/nyfed/HHD_C_Report_2026Q2.xlsx` (gitignored; `e1_gold.py` downloads it if absent). The SHA-256 `ddfba16b…9237` is in the prereg.
 
 **Freeze steps once her answers arrive:**
-1. Write R, e1-cluster, e1-support and e1-holdback into the prereg, with the date and "Eleonora". In `analyze_e1.py`, set `R` and fix `--method` to her e1-cluster choice; if she picks e1-support (ii), change the verdict rule to Holm-widened intervals.
+1. Note her rv-e1-redraft approval in the prereg (date, "Eleonora"); drop the retired list only after the coordinator has removed the rows; refresh `snapshot_hashes.json` if `questions.yaml` changes.
 2. Note her set approval.
 3. If the prereg's Wilson arithmetic changes with the unit, recompute it.
 4. Change `Status:` to `**frozen**`. `run_e1.is_frozen()` reads the line `Status: **frozen**`.
@@ -35,7 +35,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 - `run_e1.py --live` writes to `run-<date>/`.
 - `run_e1.py --live --baseline <her model>` runs the baseline.
 - The cap of $31 covers both runs, but each run's `Budget` starts at zero, so set the baseline's cap to $31 minus the main run's spend.
-- The hypothesis tests are in `analyze_e1.py` (written 2026-11-05 before any result; 8 tests). After the run: `analyze_e1.py run-<date> --method <her e1-cluster>`.
+- The hypothesis tests are in `analyze_e1.py` (written 2026-11-05 before any result). After the run: `analyze_e1.py run-<date>`, which uses the bootstrap by default (the pre-registered method).
 
 **Other open items (unchanged):** the E1/D6/E4 build-out needs her spend approvals. `score.py` (E2) does not draw the 20% re-score sample.
 
@@ -70,6 +70,7 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-05 ~16:05 UTC, same session, no spend. Her e1-cluster (b) bootstrap and e1-support (i) choices (14:25 UTC, PLAN `ccc1fc6`, checked) are folded into the prereg. The Method section now names the question bootstrap with the paired-difference test for H2. `analyze_e1.py` defaults to the bootstrap and marks `deff` as not pre-registered. Merged `ccc1fc6`. Only rv-e1-redraft is open before the freeze. Main model, no subagents.
 - 2026-11-05 ~15:10 UTC, same session, no spend. Her relayed choices (checked against PLAN.md at `c55701b`): e1-set-h3 replace, R 70%, holdback about 5. Merged `c55701b` (fast-forward).
   - Redraft: q102, q110, q118, q125, q135, q137, q147, q153, q165 and q168 (one lookup and one computation per tool family) are replaced by the unanswerable q201–q210. The set is still 100: 75 answerable and 25 unanswerable.
   - The retired questions stay under `retired:` with their checks, so their register rows stay valid. I don't edit `register.csv`; the coordinator removes them. `gold_values.tsv` is byte-identical, so no location moved.
