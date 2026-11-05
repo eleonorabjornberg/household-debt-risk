@@ -388,3 +388,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - page copy as a Claude draft for her review queue.
 - The coordinator checked through the Vercel connector, read-only, which branch the web project deploys to production from. All its production deployments build from main, so a track-branch push can give a preview at most.
 - No API spend, no new hosts.
+
+### 2026-11-05 ~21:20 UTC: coordinator, her e1-stoprule and e1-cost answers
+- **Eleonora** (21:15 UTC) chose e1-stoprule (a): the per-model overrun stop applies only after 24 loops per model; the $31 cap, the pre-call guard and the 10% checkpoint stay.
+- **Eleonora** (21:15 UTC) chose e1-cost (b): restore the top-level prompt cache, reversing CHOICE-E1-5 (b), with the cap at $31.
+- No recommendation was given on either card. Both are dated deviations from the frozen prereg. Infra records them, with the scorer "%" fix, in the prereg's Deviations section before any live call. The rerun goes to `run-2026-11-05b`, and her e1-spend (a) row still authorizes it.
+- Docket round 31 republished with nothing open.
