@@ -248,3 +248,14 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - Markets ran the joint C2 + C1 + C1b holdout once with `--approval 432fed0`. Both gates passed; nothing was refused or rerun. Results a0d9151 (generated files, not hand-edited); 59 hold_* register rows (bd6ea4e) folded into the register (649 rows, check OK). The write-up `research/joint_holdout/README.md` is a Claude draft.
   - Review queue round 13 adds rv-holdout. Docket round 21 adds four B2 cards (b2-1723-measure, -tranches, -indic, -sofr), options drafted by markets, no recommendation.
   - PLAN status: C1 and C2 holdout done, C3 next for markets.
+- 2026-11-05 ~16:00 UTC (markets track, Opus tier; cost not measured): C3 accuracy report, Claude draft.
+  - `research/c3_accuracy/make_report.py` builds `README.md`, `tables/*.csv` and 907 `c3_` register rows (`claims/tracks/markets.csv`) from committed results only. Nothing was rerun, and no holdout was reopened. Superseded versions are read with `git show` (C1 scores at 58a93d8, C2 placebo at 0bc647b).
+  - Gap: C2's holdout file has scores only, with no per-forecast errors. Proposed card c3-errors went to the coordinator, who put it on the docket.
+  - quant-reviewer (about 120k tokens, 27 tool calls): mkt-q31 to q39, 6 major and 3 minor. All are addressed in the report. q32 (the holdout was counted by target quarter, 12/12/12, against the protocol text's 12/9/5 by origin; this was not declared before the run) goes to the coordinator as a proposed card.
+  - Applying rule (a) to C1's committed results gives one "beats" (bridge regression vs no-change at k = 2, small n). It is labelled as computed by C3; no frozen code issued it.
+  - **Errors and who caught them:**
+    1. A headline bullet drafted before seeing the tables ("largest errors cluster in 2008–09 and the pandemic") did not hold at h = 1. *Caught by Claude (main session)* on reading the table, before commit; replaced by computed counts.
+    2. "Seasonal naive, the weakest benchmark" was false. *Caught by quant-reviewer* (q31).
+    3. The holdout counting differed from the protocol's option text. *Caught by quant-reviewer* (q32).
+    4. SPECS.md's accepted text says the Holm family grew "36 to 42"; the real count is 28 + 14. *Caught by quant-reviewer* (q39). SPECS.md was not edited.
+    5. A sentence on h > 1 coverage was added without a check. *Caught by Claude (main session)* before commit; now computed with an assert.
