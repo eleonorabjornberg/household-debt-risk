@@ -1,0 +1,12 @@
+{
+ "web/public/data/collateral_coverage.json": "82afd5abdddb79f1e1965f96b31bff0633503c032aec3339f66c7551b6d8ebb1",
+ "web/public/data/crisis_event_window.json": "05f58dfc0082adf03c7a193ddf75b8a82681719994544e9bc5eb367b314e3dde",
+ "web/public/data/debt_by_risk_holder.json": "263ab4920b0e11add65230821ac09b049d337b76a6518aeb2972c56bb31bab15",
+ "web/public/data/dim_crisis.json": "6b169f26e96da185807c547cb2f5c6565d1680a8a41eb454500378f820fcedd0",
+ "web/public/data/dim_risk_bucket.json": "1b3abc3cad2760ca545d72385758c0034108a35d33d335febdb5a50045d5510e",
+ "web/public/data/meta.json": "44d2d0f937a49447f49f26e4f6b2400d9b5d2d201a9c59dc8025d0509c573b23",
+ "web/public/data/nyfed_by_type.json": "4cae378983fdbc8c16020c89ff3ae6d8e87ff58318cebb14acc73f143dcd79a9",
+ "web/public/data/public_share.json": "c3dce2a416ba2ef93481cd45375b633f53077a59406cea64ab6605918fb55e67",
+ "evals/e1_sql_benchmark/questions.yaml": "bd70a40d32eef5c935a27c2063a06460bcf3d1f089f2f63d3d3a003d20a44aa6",
+ "evals/e1_sql_benchmark/gold.json": "c2e6e045217ba410b0f90207fb39edfe6fc954874c327fa288015cb839dcffd2"
+}

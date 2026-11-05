@@ -79,7 +79,7 @@ On factual questions about who holds US household credit risk, answered only thr
 
 ## Method (fixed settings)
 - **Models:** `claude-haiku-5-5`, `claude-sonnet-5-5`, `claude-opus-5-5`. The served `response.model` is logged on every call.
-- **Harness:** `evals/e1_sql_benchmark/pilot.py`, generalised to the full set. It has a manual tool-use loop, `tool_choice` auto and adaptive thinking (always on for these models). Server-side refusal fallbacks are off. A `stop_reason` of `refusal` counts as a refusal.
+- **Harness:** `evals/e1_sql_benchmark/run_e1.py` (built 2026-11-05, tested offline only), on `pilot.py`'s loop. With `--live` it refuses unless this file is frozen and the snapshot, `questions.yaml` and `gold.json` match `snapshot_hashes.json`. It has a manual tool-use loop, `tool_choice` auto and adaptive thinking (always on for these models). Server-side refusal fallbacks are off. A `stop_reason` of `refusal` counts as a refusal.
 - **System prompt and answer format:** as in the pilot (`ANSWER:` and `QUARTER:` lines), frozen with this file and fingerprinted by `evals/regression.py`.
 - **Tools:** all 10 household-credit MCP tools, as of the freeze (CHOICE-E1-9 (a)).
 - **Effort:** `medium` for all three (CHOICE-E1-6 (a)).
@@ -94,7 +94,7 @@ On factual questions about who holds US household credit risk, answered only thr
 - Tolerances are in the question file: share 0.0005 · pp 0.05 (0.01 for NY Fed rate changes) · $tn 0.01 · $bn 1 · NY Fed rates 0.01 · growth % 0.1 · ratios 0.01 · counts exact.
 - A refusal, or no number, is wrong on an answerable question.
 - On an unanswerable question an answer is correct only if it gives no number and says the data cannot answer.
-- The scorer is `score()` in `pilot.py`, extended to the new units ($bn, %, ratio, count) before the freeze and tested. A human re-scores a seeded random 20% of answers (`random.Random(20261104)`).
+- The scorer is `score()` in `pilot.py`, now extended to $bn, %, ratio and count and tested. "Says the data cannot answer" is detected by a fixed phrase list (`REFUSAL_RE`: cannot, unable, not available, not covered, outside, no data, and similar). The human 20% re-score checks it. A human re-scores a seeded random 20% of answers (`random.Random(20261104)`).
 
 ## Benchmarks and holdout
 - **Baseline (CHOICE-E1-12 (b)):** a no-tools run on one model (answers from memory), 80 questions × 3 repetitions, at most $4, inside the $31 cap. **Which model is open (CHOICE-E1-16):** (a) Haiku, at about $0.05 at the pilot profile; (b) Sonnet, at about $1; (c) Opus, at about $2–4, the most likely to know published figures from memory. No recommendation from Claude.
