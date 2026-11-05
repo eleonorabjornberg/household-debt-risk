@@ -8,6 +8,26 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## B2 STACR 2017+ session (2026-11-05, from ~16:15 UTC)
+
+**Setup.** Fast-forwarded to 686b4be and pushed; hooks on. Next review ids unchanged: mkt-s49, mkt-q45, mkt-e26.
+
+**Done (engine, no write-up yet)**
+- `stacr_pricing.py` now also writes each tranche's detach point: the initial CE of the next senior listed class, A-H included (existing columns unchanged, checked against the committed CSV).
+- `stacr_2017.py` + `test_stacr_2017.py`: per-tranche spread, baseline EL (b2.py engine, FHFA 2016 baseline, a labelled assumption) and multiple, by year and class M-1 / M-2 / B, with "(Indicative)" retained tranches kept and flagged. Method: `METHOD.md` "STACR 2017+".
+- Outputs (intermediate, not yet in any write-up, so no claims rows yet): `stacr_2017_tranches.csv`, `stacr_2017_by_year_class.csv`, `stacr_2017_results.json`.
+
+**Stopped at the stop rule.** LIBOR–SOFR adjustment: source found and checked (Fed Regulation ZZ final rule, §253.4(c)(2), 11.448 bps for 1M LIBOR, www.federalreserve.gov, free, `sources.md`), NOT used. It goes to the coordinator as a proposed card. `LIBOR_1M_ADJ_BP` stays unset, so the SOFR-basis columns for 2017–2020 LIBOR deals are empty.
+
+**For the coordinator (cards or questions for her)**
+1. Proposed card b2-sofr-src: use 11.448 bps from Regulation ZZ.
+2. Reference-pool UPB is not needed for the per-tranche multiple (thickness comes from the CEs, the workbook lists A-H). No UPB source used. A UPB source would only matter for a deal-level cost in bps of UPB or dollars.
+3. The measure is mostly empty: only 50 of 274 tranches (all B-2, 2017–2022) attach below the baseline's 30.8 bps cumulative loss. M-1, M-2 and B-1 never get a multiple, and nothing from 2023 on. The multiple also swings with B-2's attach point (0 → 10 → 25 bps).
+
+**Errors this session**
+- `detach_points` first raised on 2014-DN2, which prints A-H at 3.00% below M-1 at 3.50%. Caught by the function's own order check (Claude). Fix: no detach for that class, reason kept in `detach_from`; it is pre-2017, out of scope.
+- `stacr_2017.py` first run: division on object-dtype columns (ZeroDivisionError). Caught on the first run (Claude); columns cast to float.
+
 ## Handoff note (2026-11-05 ~16:45 UTC, for the next markets session)
 
 **State at hand-off.** The branch is pushed at 6e86429 and the tree is clean. C3 is waiting on Eleonora.
