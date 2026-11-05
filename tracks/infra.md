@@ -2,23 +2,43 @@
 
 Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "Parallel tracks".
 
-## Handoff (2026-11-04 ~17:55 UTC; the next session runs the E1 pilot)
-**State.** Branch `claude/track-infra`, everything pushed. `make test` passes (168 passed, 3 skipped; MCP 37 passed, 1 skipped), and the pre-commit hook passed on every commit. No API call has been made from this track.
-- **E2 is frozen at `5986353`** (`docs/decisions/e2-prereg.md`, SHA-256 of the frozen file `1f474cfd…9646`; hash recorded in `c0a085d`). The design is Eleonora's round-5 answer: CHOICE-11 (a), 8 skeptic + 6 quant-reviewer errors, 2 controls; CHOICE-12 (i), a descriptive pilot; Wilson intervals primary. `plant.py` takes per-agent counts (`5279d32`), and the frozen command is in the prereg. E2 has not been run. Running it uses subagent calls (no API key), and nobody has asked for it yet. When it runs, there is **one reviewer run per document, in a worktree holding only that variant plus the data**: the controls are copies of planted sources, so two variants in one folder could be diffed.
-- **E1 pilot questions are built and verified** (`evals/e1_sql_benchmark/`): `pilot_questions.yaml` (10 questions, a pilot scoring rule fixed before any run), `verify.py` (each gold answer recomputed from the snapshot the MCP server serves and checked against a PASS register row: 10/10), `test_verify.py`. Limitation: 9 of 10 use the `public_share` tool, because the NY Fed and collateral tools have no PASS register rows. The full E1 (about 100 questions) still needs its own pre-registration of scoring rules; pilot accuracy is not an E1 result.
+## Handoff (2026-11-05 ~06:50 UTC; the next session freezes E1 once Eleonora has answered)
+**State.**
+- Branch `claude/track-infra`, merged with the coordinator's `b687f14` and pushed. The tests in `evals/e1_sql_benchmark` pass (38), the validation suite gives 123 PASS / 0 FAIL / 2 WARN / 1 NOT RUN, and the pre-commit hook passed on every commit.
+- The **only** API spend so far is the E1 cost pilot (2026-11-04, `a4998b7`): $0.5124 of its $2.98 cap.
+- **The key** is in `HHDEBT_ANTHROPIC_API_KEY` (the platform withholds `ANTHROPIC_API_KEY` and sets `ANTHROPIC_BASE_URL`). `pilot.live_client()` reads that variable and passes `base_url="https://api.anthropic.com"` explicitly. Never print, log or commit the key or any header.
+- **E2** is frozen at `5986353` and has not been run (unchanged).
 
-**Open items:**
-- E1 pilot: approved by Eleonora 2026-11-04 (PLAN.md `b7f1158`): go, E1 only, hard cap $2.98. **Run 2026-11-04: $0.51 spent, no stop; results under "E1 pilot results".**
-- E1 full benchmark: needs a prereg and a separate spend approval (the pilot does not approve the build-out).
-- `score.py` does not draw the 20% re-score sample; the E2 prereg says to draw it by hand with `random.Random(20261104)` and record the draw.
+**E1: where it stands.**
+- The prereg `docs/decisions/e1-prereg.md` is a **draft, not frozen**. It records her 13 choices of 2026-11-05 (PLAN `77460b4`).
+- Open, on her cards (relayed by the coordinator): **e1-unit, e1-T, e1-h3, e1-R** (docket round 15), **e1-base** (baseline model, round 17) and **rv-e1-set** (approve the question set, review round 10). Do not pick any of these values, and do not freeze or spend until they are relayed.
+- If she picks **h3 (b)** (more unanswerable questions), redraft part of the set before she approves it. Then re-run validation, `build_register.py` and `verify_set.py`, and update `snapshot_hashes.json`. The holdout changes with the set.
+- Built (no spend):
+  - `questions.yaml`: 100 questions, 15 unanswerable.
+  - `spec.py`: the shared evaluator.
+  - `validation/e1_gold.py`: the raw rebuild, 82 E1 checks, all PASS.
+  - `build_register.py`: its rows are now in `claims/register.csv`. It refuses to overwrite them, and fails if the rebuild differs.
+  - `gold_values.tsv`: the register locations.
+  - `verify_set.py`: 100/100, plus the seeded holdout of 20 → `gold.json`.
+  - `run_e1.py`: the full-run harness. `--live` refuses unless the prereg is frozen and `snapshot_hashes.json` matches.
+  - `pilot.py`: the shared loop and scorer.
+- The raw NY Fed workbook lives at `data/validation/nyfed/HHD_C_Report_2026Q2.xlsx` (gitignored; `e1_gold.py` downloads it if absent). The SHA-256 `ddfba16b…9237` is in the prereg.
 
-**E1 pilot procedure (fresh session):**
-1. **Key check, free:** `curl -sS -o /dev/null -w "%{http_code}\n" https://api.anthropic.com/v1/models -H "anthropic-version: 2023-06-01"`. 200: go on. 401: stop and tell the coordinator (the old session got 401). Never print or write the key.
-2. **Live pricing:** load the `claude-api` skill, then check the live Anthropic pricing page for Opus 5.5, Sonnet 5.5 and Haiku 5.5 (input, output, cache read). Compare with the table under "Cost estimates" below (cached 2026-10-06). If any price differs, recompute the per-loop assumptions (Opus $0.129, Sonnet $0.067, Haiku $0.0033; estimate $1.99) and the cap. Send both to the coordinator before spending. The cap may not rise above $2.98 without Eleonora.
-3. **Runner, built and tested offline first:** `evals/e1_sql_benchmark/pilot.py`. For each of the 10 questions in `pilot_questions.yaml` and each model, run 1 tool-use loop against the household-credit MCP tools (snapshot backend: leave `DATABASE_URL_READONLY` unset, so production is not touched). Use a stable cached system prompt plus tool definitions, as the estimate assumed, and at most 4 turns. Log `usage` (input, output, cache read and cache write tokens), latency and the final answer for every call to `evals/e1_sql_benchmark/pilot-<date>/calls.jsonl`. Test the cap logic with a fake client before any real call.
-4. **Hard stops, checked after every call:** the running dollar total (from logged `usage` × live prices) reaches $2.98, or any model's mean cost per loop so far exceeds 1.5× its assumption. On a stop, write down which call triggered it and report.
-5. **Score with the rule fixed in `pilot_questions.yaml`** against `pilot_gold.json` (regenerate it with `verify.py` first; it must say 10/10).
-6. **Report to the coordinator:** measured cost per loop per model next to the assumption, total spend, the re-estimated E1 / D6 / E4 build-out, and pilot accuracy labelled as a pilot. Commit the logs (no key, no headers). Add a session-log entry here.
+**Freeze steps once her answers arrive:**
+1. Write T, R, the unit of analysis and the baseline model into the prereg, with the date and "Eleonora".
+2. Note her set approval.
+3. If the prereg's Wilson arithmetic changes with the unit, recompute it.
+4. Change `Status:` to `**frozen**`. `run_e1.is_frozen()` reads the line `Status: **frozen**`.
+5. Commit the prereg alone as `prereg: E1 (frozen)`. Record that commit hash and the file's SHA-256 at the top in a follow-up commit, as E2 did.
+6. Report the hash to the coordinator.
+
+**Running, only after her separate spend OK** (the coordinator records it):
+- `run_e1.py --live` writes to `run-<date>/`.
+- `run_e1.py --live --baseline <her model>` runs the baseline.
+- The cap of $31 covers both runs, but each run's `Budget` starts at zero, so set the baseline's cap to $31 minus the main run's spend.
+- The hypothesis tests (Wilson against T and R, exact McNemar with Holm) are not written yet. Write them as a separate analysis script under the frozen prereg, before looking at the results.
+
+**Other open items (unchanged):** the E1/D6/E4 build-out needs her spend approvals. `score.py` (E2) does not draw the 20% re-score sample.
 
 ## Status
 | Task | Status | Notes |
