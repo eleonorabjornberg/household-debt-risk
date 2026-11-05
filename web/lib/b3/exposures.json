@@ -1,0 +1,95 @@
+{
+ "as_of": "2026-06-30",
+ "z1_release": "2026-09-11",
+ "units": "USD millions",
+ "exposures": [
+  {
+   "class": "consumer_other",
+   "holder": "banks_credit_unions",
+   "label": "Banks & credit unions",
+   "side": "private",
+   "balance": 2789536.0,
+   "transfer_eligible": false
+  },
+  {
+   "class": "consumer_other",
+   "holder": "gse_agency",
+   "label": "GSEs & agency pools",
+   "side": "public",
+   "balance": 0.0,
+   "transfer_eligible": false
+  },
+  {
+   "class": "consumer_other",
+   "holder": "nonbank_other",
+   "label": "Finance companies & other private",
+   "side": "private",
+   "balance": 710145.0,
+   "transfer_eligible": false
+  },
+  {
+   "class": "consumer_other",
+   "holder": "private_securitization",
+   "label": "Private securitization & mortgage REITs",
+   "side": "private",
+   "balance": 15443.0,
+   "transfer_eligible": false
+  },
+  {
+   "class": "mortgage",
+   "holder": "banks_credit_unions",
+   "label": "Banks & credit unions",
+   "side": "private",
+   "balance": 3633696.0296206283,
+   "transfer_eligible": false
+  },
+  {
+   "class": "mortgage",
+   "holder": "federal_direct",
+   "label": "Federal government (direct)",
+   "side": "public",
+   "balance": 65959.00998426466,
+   "transfer_eligible": false
+  },
+  {
+   "class": "mortgage",
+   "holder": "gse_agency",
+   "label": "GSEs & agency pools",
+   "side": "public",
+   "balance": 8977330.116687067,
+   "transfer_eligible": true
+  },
+  {
+   "class": "mortgage",
+   "holder": "nonbank_other",
+   "label": "Finance companies & other private",
+   "side": "private",
+   "balance": 517837.3227390412,
+   "transfer_eligible": false
+  },
+  {
+   "class": "mortgage",
+   "holder": "private_securitization",
+   "label": "Private securitization & mortgage REITs",
+   "side": "private",
+   "balance": 662944.5327988957,
+   "transfer_eligible": false
+  },
+  {
+   "class": "mortgage",
+   "holder": "state_local",
+   "label": "State & local governments",
+   "side": "public",
+   "balance": 119170.98817010231,
+   "transfer_eligible": false
+  },
+  {
+   "class": "student_federal",
+   "holder": "federal_direct",
+   "label": "Federal government (direct)",
+   "side": "public",
+   "balance": 1605134.0,
+   "transfer_eligible": false
+  }
+ ]
+}
