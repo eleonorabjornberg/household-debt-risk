@@ -1,8 +1,9 @@
 # E1 question set: DRAFT by Claude, for Eleonora's approval (CHOICE-E1-3 (a)). Not frozen; not seen by any model.
-# Design (her choices, 2026-11-05, PLAN.md "Decisions taken" at 77460b4): stratified by tool family x difficulty,
-# about 15 unanswerable (CHOICE-E1-1 (a)); gold checked two ways with no model: path 1 the snapshot the MCP
+# Design (her choices, 2026-11-05, PLAN.md "Decisions taken" at 77460b4, c55701b): stratified by tool family x difficulty,
+# 25 unanswerable after e1-set-h3 "replace" (CHOICE-E1-1 (a), h3 (b)); gold checked two ways with no model: path 1 the snapshot the MCP
 # server serves, path 2 a validation-PASS register row whose check recomputes the value from the raw Z.1 zip /
-# NY Fed workbook (CHOICE-E1-2 (b)); 20 questions held back for E3 (CHOICE-E1-13 (b), split.py, seed 20261104).
+# NY Fed workbook (CHOICE-E1-2 (b)); 20 questions held back for E3 (CHOICE-E1-13 (b), verify_set.py, seed 20261104),
+# about 5 of them unanswerable (e1-holdback), by largest-remainder allocation.
 # The 10 pilot questions (pilot_questions.yaml) are not reused.
 #
 # Families: PS public_share · HB holdings_by_bucket · CW crisis_windows · CC collateral_coverage · NY nyfed_by_type
@@ -14,11 +15,9 @@
 # `register`: an existing PASS row (pilot-style check), or e1_<id> rows built by build_register.py from the E1-<id>
 # checks in validation/results.json.
 questions:
-# ---------------------------------------------------------------- PS public_share (15)
+# ---------------------------------------------------------------- PS public_share (13)
 - {id: q101, family: PS, difficulty: L, unit: share, tolerance: 0.0005, question: "What was the public share of household mortgages and consumer credit in 2000Q4?",
    check: {table: public_share, field: public_share, op: at, date: "2000-12-31"}}
-- {id: q102, family: PS, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household 1-4 family mortgages was held by public holders in 1990Q4?",
-   check: {table: public_share, field: public_share_mortgage, op: at, date: "1990-12-31"}}
 - {id: q103, family: PS, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household consumer credit was held by public holders in 2011Q4?",
    check: {table: public_share, field: public_share_cc, op: at, date: "2011-12-31"}}
 - {id: q104, family: PS, difficulty: L, unit: usd_tn, tolerance: 0.01, question: "What was the total of household 1-4 family mortgages plus consumer credit in 2007Q4, in trillions of dollars?",
@@ -33,8 +32,6 @@ questions:
    check: {table: public_share, field: public_share_cc, op: argmax}}
 - {id: q109, family: PS, difficulty: C, unit: pct, tolerance: 0.1, question: "By what percentage did the total of household mortgages plus consumer credit grow from 2011Q4 to 2026Q2?",
    check: {table: public_share, field: scope_total_musd, op: pct_change, from: "2011-12-31", to: "2026-06-30"}}
-- {id: q110, family: PS, difficulty: C, unit: share, tolerance: 0.0005, question: "What was the average public share of household mortgages and consumer credit over the four quarters of 2020?",
-   check: {table: public_share, field: public_share, op: mean, start: "2020-03-31", end: "2020-12-31"}}
 - {id: q111, family: PS, difficulty: M, unit: pp, tolerance: 0.05, question: "In 2026Q2, how many percentage points of the public share of household mortgages and consumer credit were not held by the GSE/agency bucket?",
    check: {combine: {op: sub, scale: 100, args: [
      {table: public_share, field: public_share, op: at, date: "2026-06-30"},
@@ -57,13 +54,11 @@ questions:
    check: {combine: {op: div, args: [
      {table: debt_by_risk_holder, where: {risk_bucket: federal_direct}, field: share_of_total, op: at, date: "2026-06-30"},
      {table: public_share, field: public_share, op: at, date: "2026-06-30"}]}}}
-# ---------------------------------------------------------------- HB holdings_by_bucket (15)
+# ---------------------------------------------------------------- HB holdings_by_bucket (13)
 - {id: q116, family: HB, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household mortgages and consumer credit did banks and credit unions hold in 2026Q2?",
    check: {table: debt_by_risk_holder, where: {risk_bucket: banks_credit_unions}, field: share_of_total, op: at, date: "2026-06-30"}}
 - {id: q117, family: HB, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household mortgages and consumer credit was held in private-label securitizations in 2007Q4?",
    check: {table: debt_by_risk_holder, where: {risk_bucket: private_securitization}, field: share_of_total, op: at, date: "2007-12-31"}}
-- {id: q118, family: HB, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household mortgages and consumer credit did state and local governments hold in 2026Q2?",
-   check: {table: debt_by_risk_holder, where: {risk_bucket: state_local}, field: share_of_total, op: at, date: "2026-06-30"}}
 - {id: q119, family: HB, difficulty: L, unit: usd_tn, tolerance: 0.01, question: "How many trillion dollars of household mortgages and consumer credit did the GSE/agency bucket hold in 2026Q2?",
    check: {table: debt_by_risk_holder, where: {risk_bucket: gse_agency}, field: nominal_musd, op: at, date: "2026-06-30", scale: 1.0e-6}}
 - {id: q120, family: HB, difficulty: L, unit: usd_bn, tolerance: 1, question: "How many billion dollars of household mortgages did the nonbank and other holders bucket hold in 2026Q2?",
@@ -76,10 +71,6 @@ questions:
    check: {table: debt_by_risk_holder, where: {risk_bucket: federal_direct}, field: share_of_total, op: diff, from: "2009-12-31", to: "2026-06-30", scale: 100}}
 - {id: q124, family: HB, difficulty: C, unit: pct, tolerance: 0.1, question: "By what percentage did the GSE/agency bucket's holdings of household mortgages and consumer credit grow, in nominal dollars, from 2000Q4 to 2026Q2?",
    check: {table: debt_by_risk_holder, where: {risk_bucket: gse_agency}, field: nominal_musd, op: pct_change, from: "2000-12-31", to: "2026-06-30"}}
-- {id: q125, family: HB, difficulty: C, unit: ratio, tolerance: 0.01, question: "In 2026Q2, what was the ratio of banks and credit unions' holdings to private-label securitization holdings of household mortgages and consumer credit?",
-   check: {combine: {op: div, args: [
-     {table: debt_by_risk_holder, where: {risk_bucket: banks_credit_unions}, field: nominal_musd, op: at, date: "2026-06-30"},
-     {table: debt_by_risk_holder, where: {risk_bucket: private_securitization}, field: nominal_musd, op: at, date: "2026-06-30"}]}}}
 - {id: q126, family: HB, difficulty: M, unit: share, tolerance: 0.0005, question: "What fraction of household consumer credit did banks and credit unions hold in 2026Q2?",
    check: {combine: {op: div, args: [
      {table: debt_by_risk_holder, where: {risk_bucket: banks_credit_unions, debt_type: consumer_credit}, field: nominal_musd, op: at, date: "2026-06-30"},
@@ -102,7 +93,7 @@ questions:
    check: {combine: {op: div, args: [
      {table: debt_by_risk_holder, where: {risk_bucket: federal_direct, debt_type: consumer_credit}, field: nominal_musd, op: at, date: "2026-06-30", scale: 0.001},
      {table: nyfed_by_type, where: {loan_type: student}, field: balance_busd, op: at, date: "2026-06-30"}]}}}
-# ---------------------------------------------------------------- CW crisis_windows (15)
+# ---------------------------------------------------------------- CW crisis_windows (13)
 - {id: q131, family: CW, difficulty: L, unit: share, tolerance: 0.0005, question: "In the dot-com 2001 crisis window, what was the public share of household mortgages and consumer credit at the window's start (t0)?",
    check: {table: crisis_event_window, where: {crisis_id: dotcom_2001, metric: public_share, q_offset: 0}, field: value, op: max}}
 - {id: q132, family: CW, difficulty: L, unit: ratio, tolerance: 0.01, question: "In the GFC 2007 crisis window, what was the home-backed collateral coverage ratio at the window's start (t0)?",
@@ -111,12 +102,8 @@ questions:
    check: {table: crisis_event_window, where: {crisis_id: sl_1990, metric: public_share, q_offset: 16}, field: delta_from_t0, op: max, scale: 100}}
 - {id: q134, family: CW, difficulty: L, unit: pp, tolerance: 0.05, question: "In the GFC 2007 crisis window, by how many percentage points had the banks and credit unions' share changed 8 quarters after the window's start?",
    check: {table: crisis_event_window, where: {crisis_id: gfc_2007, metric: "share:banks_credit_unions", q_offset: 8}, field: delta_from_t0, op: max, scale: 100}}
-- {id: q135, family: CW, difficulty: L, unit: ratio, tolerance: 0.01, question: "In the COVID-2020 crisis window, what was the vehicle-backed collateral coverage ratio 4 quarters after the window's start?",
-   check: {table: crisis_event_window, where: {crisis_id: covid_2020, metric: "coverage:vehicle_backed", q_offset: 4}, field: value, op: max}}
 - {id: q136, family: CW, difficulty: C, unit: pp, tolerance: 0.05, question: "Across all crisis windows in the data, what was the largest change in the public share 8 quarters after a window's start, in percentage points?",
    check: {table: crisis_event_window, where: {metric: public_share, q_offset: 8}, field: delta_from_t0, op: max, scale: 100}}
-- {id: q137, family: CW, difficulty: C, unit: ratio, tolerance: 0.01, question: "Across all crisis windows in the data, what was the highest home-backed collateral coverage ratio at a window's start (t0)?",
-   check: {table: crisis_event_window, where: {metric: "coverage:home_backed", q_offset: 0}, field: value, op: max}}
 - {id: q138, family: CW, difficulty: C, unit: ratio, tolerance: 0.01, question: "In the GFC 2007 crisis window, what was the lowest home-backed collateral coverage ratio from the window's start through 16 quarters after it?",
    check: {table: crisis_event_window, where: {crisis_id: gfc_2007, metric: "coverage:home_backed"}, where_range: {q_offset: [0, 16]}, field: value, op: min}}
 - {id: q139, family: CW, difficulty: C, unit: pp, tolerance: 0.05, question: "In the GFC 2007 crisis window, by how many percentage points did the private-label securitization share change from the window's start to 16 quarters after?",
@@ -137,11 +124,9 @@ questions:
    check: {table: nyfed_by_type, where: {loan_type: credit_card}, field: transition_serious_pct, op: at, date: "2019-12-31"}}
 - {id: q145, family: CW, difficulty: M, unit: usd_bn, tolerance: 1, question: "What was the NY Fed's household mortgage balance, in billions of dollars, in the quarter the GFC 2007 crisis window starts?",
    check: {table: nyfed_by_type, where: {loan_type: mortgage}, field: balance_busd, op: at, date: "2007-12-31"}}
-# ---------------------------------------------------------------- CC collateral_coverage (15)
+# ---------------------------------------------------------------- CC collateral_coverage (13)
 - {id: q146, family: CC, difficulty: L, unit: ratio, tolerance: 0.01, question: "What was the home-backed collateral coverage ratio (collateral value / debt) in 2026Q2?",
    check: {table: collateral_coverage, where: {collateral_class: home_backed}, field: coverage_ratio, op: at, date: "2026-06-30"}}
-- {id: q147, family: CC, difficulty: L, unit: ratio, tolerance: 0.01, question: "What was the vehicle-backed collateral coverage ratio in 2026Q2?",
-   check: {table: collateral_coverage, where: {collateral_class: vehicle_backed}, field: coverage_ratio, op: at, date: "2026-06-30"}}
 - {id: q148, family: CC, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household mortgages and consumer credit had no collateral (cards and student loans) in 2026Q2?",
    check: {table: collateral_coverage, where: {collateral_class: uncollateralized}, field: share_of_debt, op: at, date: "2026-06-30"}}
 - {id: q149, family: CC, difficulty: L, unit: usd_tn, tolerance: 0.01, question: "How many trillion dollars of home-backed household debt were there in 2026Q2?",
@@ -152,8 +137,6 @@ questions:
    check: {table: collateral_coverage, where: {collateral_class: home_backed}, field: coverage_ratio, op: argmin, start: "2006-03-31"}}
 - {id: q152, family: CC, difficulty: C, unit: pp, tolerance: 0.05, question: "By how many percentage points did the uncollateralized share of household mortgages and consumer credit change from 2010Q4 to 2026Q2?",
    check: {table: collateral_coverage, where: {collateral_class: uncollateralized}, field: share_of_debt, op: diff, from: "2010-12-31", to: "2026-06-30", scale: 100}}
-- {id: q153, family: CC, difficulty: C, unit: ratio, tolerance: 0.01, question: "By how much did the vehicle-backed collateral coverage ratio change from 2019Q4 to 2026Q2?",
-   check: {table: collateral_coverage, where: {collateral_class: vehicle_backed}, field: coverage_ratio, op: diff, from: "2019-12-31", to: "2026-06-30"}}
 - {id: q154, family: CC, difficulty: C, unit: pct, tolerance: 0.1, question: "By what percentage did the market value of owner-occupied real estate grow from 2011Q4 to 2026Q2?",
    check: {table: collateral_coverage, where: {collateral_class: home_backed}, field: collateral_value_musd, op: pct_change, from: "2011-12-31", to: "2026-06-30"}}
 - {id: q155, family: CC, difficulty: C, unit: ratio, tolerance: 0.01, quarter: true, question: "In which quarter was the home-backed collateral coverage ratio highest, and what was it?",
@@ -184,7 +167,7 @@ questions:
    check: {combine: {op: div, args: [
      {table: nyfed_by_type, field: balance_busd, op: at, date: "2026-06-30"},
      {table: collateral_coverage, field: debt_musd, op: at, date: "2026-06-30", scale: 0.001}]}}}
-# ---------------------------------------------------------------- NY nyfed_by_type (15)
+# ---------------------------------------------------------------- NY nyfed_by_type (13)
 - {id: q161, family: NY, difficulty: L, unit: usd_bn, tolerance: 1, question: "What was the NY Fed's credit card balance in 2026Q2, in billions of dollars?",
    check: {table: nyfed_by_type, where: {loan_type: credit_card}, field: balance_busd, op: at, date: "2026-06-30"}}
 - {id: q162, family: NY, difficulty: L, unit: pct, tolerance: 0.01, question: "What percentage of student loan balances transitioned into serious delinquency (90+) in 2026Q2, per the NY Fed?",
@@ -193,14 +176,10 @@ questions:
    check: {table: nyfed_by_type, where: {loan_type: mortgage}, field: balance_busd, op: at, date: "2003-03-31"}}
 - {id: q164, family: NY, difficulty: L, unit: usd_bn, tolerance: 1, question: "What was the NY Fed's home equity revolving (HELOC) balance in 2026Q2, in billions of dollars?",
    check: {table: nyfed_by_type, where: {loan_type: heloc}, field: balance_busd, op: at, date: "2026-06-30"}}
-- {id: q165, family: NY, difficulty: L, unit: pct, tolerance: 0.01, question: "What percentage of auto loan balances transitioned into serious delinquency (90+) in 2019Q4, per the NY Fed?",
-   check: {table: nyfed_by_type, where: {loan_type: auto}, field: transition_serious_pct, op: at, date: "2019-12-31"}}
 - {id: q166, family: NY, difficulty: C, unit: pct, tolerance: 0.01, quarter: true, question: "In which quarter was the NY Fed's student loan serious-delinquency transition rate highest, and what was it?",
    check: {table: nyfed_by_type, where: {loan_type: student}, field: transition_serious_pct, op: argmax}}
 - {id: q167, family: NY, difficulty: C, unit: usd_bn, tolerance: 1, question: "What was the NY Fed's total household debt balance across all six loan types in 2026Q2, in billions of dollars?",
    check: {table: nyfed_by_type, field: balance_busd, op: at, date: "2026-06-30"}}
-- {id: q168, family: NY, difficulty: C, unit: pct, tolerance: 0.1, question: "By what percentage did the NY Fed's credit card balance grow from 2019Q4 to 2026Q2?",
-   check: {table: nyfed_by_type, where: {loan_type: credit_card}, field: balance_busd, op: pct_change, from: "2019-12-31", to: "2026-06-30"}}
 - {id: q169, family: NY, difficulty: C, unit: pp, tolerance: 0.01, question: "By how many percentage points did the NY Fed's auto loan serious-delinquency transition rate change from 2019Q4 to 2026Q2?",
    check: {table: nyfed_by_type, where: {loan_type: auto}, field: transition_serious_pct, op: diff, from: "2019-12-31", to: "2026-06-30"}}
 - {id: q170, family: NY, difficulty: C, unit: pct, tolerance: 0.01, quarter: true, question: "In which quarter was the NY Fed's credit card serious-delinquency transition rate lowest, and what was it?",
@@ -246,7 +225,7 @@ questions:
    check: {combine: {op: sub, scale: 100, args: [
      {table: public_share, field: public_share, op: at, date: "2011-12-31"},
      {table: crisis_event_window, where: {crisis_id: dotcom_2001, metric: public_share, q_offset: 0}, field: value, op: max}]}}}
-# ---------------------------------------------------------------- unanswerable (15): gold is a refusal
+# ---------------------------------------------------------------- unanswerable (25): gold is a refusal (q201-q210 added 2026-11-05, e1-set-h3 replace)
 - {id: q186, family: UN, difficulty: L, refuse: true, reason: holder_x_type, question: "How many billion dollars of auto loans did banks hold in 2026Q2?"}
 - {id: q187, family: UN, difficulty: L, refuse: true, reason: holder_x_type, question: "What share of student loans was held by finance companies in 2026Q2?"}
 - {id: q188, family: UN, difficulty: L, refuse: true, reason: holder_x_type, question: "How much credit card debt did credit unions hold in 2026Q2?"}
@@ -262,3 +241,40 @@ questions:
 - {id: q198, family: UN, difficulty: L, refuse: true, reason: out_of_range, question: "What was the public share of household mortgages and consumer credit in 2026Q3?"}
 - {id: q199, family: UN, difficulty: L, refuse: true, reason: not_in_data, question: "What was the average 30-year mortgage interest rate in 2026Q2?"}
 - {id: q200, family: UN, difficulty: L, refuse: true, reason: not_in_tools, question: "How many consumers had a new foreclosure in 2026Q2?"}
+- {id: q201, family: UN, difficulty: L, refuse: true, reason: holder_x_type, question: "What share of auto loans was held by finance companies in 2026Q2?"}
+- {id: q202, family: UN, difficulty: L, refuse: true, reason: borrower_level, question: "What was the credit card serious-delinquency transition rate for borrowers aged 18 to 29 in 2026Q2?"}
+- {id: q203, family: UN, difficulty: L, refuse: true, reason: holder_x_type, question: "How many billion dollars of credit card debt did banks hold in 2007Q4?"}
+- {id: q204, family: UN, difficulty: L, refuse: true, reason: forecast, question: "By how much will the NY Fed's total household debt balance grow during 2027?"}
+- {id: q205, family: UN, difficulty: L, refuse: true, reason: borrower_level, question: "What share of student loan borrowers were 90 or more days delinquent in 2026Q2?"}
+- {id: q206, family: UN, difficulty: L, refuse: true, reason: geography, question: "Which state had the highest household debt per capita in 2026Q2, and how much was it?"}
+- {id: q207, family: UN, difficulty: L, refuse: true, reason: frequency, question: "What was the NY Fed's credit card balance in July 2026?"}
+- {id: q208, family: UN, difficulty: L, refuse: true, reason: out_of_range, question: "What was the home-backed collateral coverage ratio in 1950Q4?"}
+- {id: q209, family: UN, difficulty: L, refuse: true, reason: out_of_range, question: "What was the NY Fed's student loan serious-delinquency transition rate in 2026Q3?"}
+- {id: q210, family: UN, difficulty: L, refuse: true, reason: not_in_tools, question: "What was the NY Fed's mortgage origination volume in 2026Q2, in billions of dollars?"}
+
+# Retired 2026-11-05 (Eleonora, e1-set-h3 "replace"): one lookup and one computation per tool family, swapped for the
+# unanswerable q201-q210. Not part of the set; kept with their checks so their verified register rows stay valid until
+# the coordinator removes them from claims/register.csv.
+retired:
+- {id: q102, replaced_by: q201, retired_on: '2026-11-05', family: PS, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household 1-4 family mortgages was held by public holders in 1990Q4?",
+   check: {table: public_share, field: public_share_mortgage, op: at, date: "1990-12-31"}}
+- {id: q110, replaced_by: q202, retired_on: '2026-11-05', family: PS, difficulty: C, unit: share, tolerance: 0.0005, question: "What was the average public share of household mortgages and consumer credit over the four quarters of 2020?",
+   check: {table: public_share, field: public_share, op: mean, start: "2020-03-31", end: "2020-12-31"}}
+- {id: q118, replaced_by: q203, retired_on: '2026-11-05', family: HB, difficulty: L, unit: share, tolerance: 0.0005, question: "What share of household mortgages and consumer credit did state and local governments hold in 2026Q2?",
+   check: {table: debt_by_risk_holder, where: {risk_bucket: state_local}, field: share_of_total, op: at, date: "2026-06-30"}}
+- {id: q125, replaced_by: q204, retired_on: '2026-11-05', family: HB, difficulty: C, unit: ratio, tolerance: 0.01, question: "In 2026Q2, what was the ratio of banks and credit unions' holdings to private-label securitization holdings of household mortgages and consumer credit?",
+   check: {combine: {op: div, args: [
+     {table: debt_by_risk_holder, where: {risk_bucket: banks_credit_unions}, field: nominal_musd, op: at, date: "2026-06-30"},
+     {table: debt_by_risk_holder, where: {risk_bucket: private_securitization}, field: nominal_musd, op: at, date: "2026-06-30"}]}}}
+- {id: q135, replaced_by: q205, retired_on: '2026-11-05', family: CW, difficulty: L, unit: ratio, tolerance: 0.01, question: "In the COVID-2020 crisis window, what was the vehicle-backed collateral coverage ratio 4 quarters after the window's start?",
+   check: {table: crisis_event_window, where: {crisis_id: covid_2020, metric: "coverage:vehicle_backed", q_offset: 4}, field: value, op: max}}
+- {id: q137, replaced_by: q206, retired_on: '2026-11-05', family: CW, difficulty: C, unit: ratio, tolerance: 0.01, question: "Across all crisis windows in the data, what was the highest home-backed collateral coverage ratio at a window's start (t0)?",
+   check: {table: crisis_event_window, where: {metric: "coverage:home_backed", q_offset: 0}, field: value, op: max}}
+- {id: q147, replaced_by: q207, retired_on: '2026-11-05', family: CC, difficulty: L, unit: ratio, tolerance: 0.01, question: "What was the vehicle-backed collateral coverage ratio in 2026Q2?",
+   check: {table: collateral_coverage, where: {collateral_class: vehicle_backed}, field: coverage_ratio, op: at, date: "2026-06-30"}}
+- {id: q153, replaced_by: q208, retired_on: '2026-11-05', family: CC, difficulty: C, unit: ratio, tolerance: 0.01, question: "By how much did the vehicle-backed collateral coverage ratio change from 2019Q4 to 2026Q2?",
+   check: {table: collateral_coverage, where: {collateral_class: vehicle_backed}, field: coverage_ratio, op: diff, from: "2019-12-31", to: "2026-06-30"}}
+- {id: q165, replaced_by: q209, retired_on: '2026-11-05', family: NY, difficulty: L, unit: pct, tolerance: 0.01, question: "What percentage of auto loan balances transitioned into serious delinquency (90+) in 2019Q4, per the NY Fed?",
+   check: {table: nyfed_by_type, where: {loan_type: auto}, field: transition_serious_pct, op: at, date: "2019-12-31"}}
+- {id: q168, replaced_by: q210, retired_on: '2026-11-05', family: NY, difficulty: C, unit: pct, tolerance: 0.1, question: "By what percentage did the NY Fed's credit card balance grow from 2019Q4 to 2026Q2?",
+   check: {table: nyfed_by_type, where: {loan_type: credit_card}, field: balance_busd, op: pct_change, from: "2019-12-31", to: "2026-06-30"}}

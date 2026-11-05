@@ -61,7 +61,9 @@ def main() -> None:
     checks = {c["id"]: c for c in json.loads(RESULTS.read_text())["checks"]}
     vint = json.loads((ROOT / "web/public/data/meta.json").read_text())["vintages"]
     rows, values = [], ["# E1 gold values (raw rebuild, validation/e1_gold.py), written by build_register.py; do not edit"]
-    for q in yaml.safe_load(QFILE.read_text())["questions"]:
+    doc = yaml.safe_load(QFILE.read_text())
+    allq = sorted(doc["questions"] + doc.get("retired", []), key=lambda q: int(q["id"][1:]))  # stable tsv lines
+    for q in allq:
         if q.get("refuse") or q.get("register"):
             continue
         c = checks[f"E1-{q['id']}"]
@@ -80,7 +82,9 @@ def main() -> None:
             "vintage": " ".join([f"z1:{vint['z1']}"] * any(t != "nyfed_by_type" for t in tables)
                                 + [f"nyfed:{vint['nyfed']}"] * ("nyfed_by_type" in tables)),
             "validation": c["status"], "check_id": c["id"] if c["status"] in ("PASS", "FAIL") else "",
-            "notes": "E1 benchmark gold, not published copy. Draft question set awaiting Eleonora's approval.",
+            "notes": (f"Retired from the E1 set {q['retired_on']} (e1-set-h3 replace, by {q['replaced_by']}); remove this row."
+                      if q.get("retired_on") else
+                      "E1 benchmark gold, not published copy. Draft question set awaiting Eleonora's approval."),
         })
     VALUES.write_text("\n".join(values) + "\n")
     main_reg = {r["claim_id"]: r for r in csv.DictReader((ROOT / "claims" / "register.csv").open())}
