@@ -8,6 +8,14 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## Review round (2026-11-05, after 392a1bf)
+
+- quant-reviewer mkt-q45–q48 (C3) and skeptic mkt-s49–s54 (B2): all addressed. C3 fixes are in 5c8bb4f; B2 fixes and the log statuses are in the next commit. Details are in claims/tracks/markets-review-log.md.
+- **Errors found by the reviewers:**
+  - C3: "would not count under the two-test readings" was false at p < 0.01, and "(iv) is the most lenient" is in fact a tie with p < 0.01 (quant-reviewer q45, q46). The independence result was overstated as a failure on one uncorrected test (q47).
+  - B2: the no-spread count was 1 instead of 3, because 2017-HRP1's M-2 and B-1 were labelled "absent" first (skeptic s49). Indicative tranches were not flagged inside the multiples (s50). "Much of the rise ... not price" was overclaimed: on a fixed 25–75 slice, 2021→2022 is spread (s51). The attach table ignored thickness (s52). There was no caveat on class make-up (s53). Wording (s54).
+- C3 note for the coordinator still stands: ZC1-DIR vs seasonal naive is "comparable" (Holm p 1.000), not "undetermined". The quant-reviewer confirmed this (item 4).
+
 ## Her answers applied (2026-11-05, relayed by the coordinator ~18:58 UTC; her decisions 18:54 UTC)
 
 - **C3** c3-b-level (iv) and c3-b-nointv (c): `make_report.py` uses ALPHA = "kupiec 0.05", giving 3 C2 "beats". The report says (iv) is the most lenient reading (asserted in code) and puts rolling Z-DAMP's Christoffersen p = 0.027 (Kupiec p = 0.958) next to its "beats". The "interim"/"open card" wording is gone. 5 new rows and no folded-row changes: the new text was folded into the existing bullet so README line numbers stay put.

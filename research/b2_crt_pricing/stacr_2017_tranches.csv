@@ -261,8 +261,8 @@ deal,closing_date,year,program,benchmark,tranche,cls,sub_tranche,in_her_classes,
 2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,B-1,B,B-1,True,1.3e+08,,False,315,11.448,326.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
 2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,B-2,B,B-2,True,,Retained,True,950,11.448,961.448,0,50,B1,True,5.00459,3.08203,1000.92,616.406,0.949129,1.54119,0.960566,1.55977,
 2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-1,M-1,,True,,Retained,True,80,11.448,91.448,375,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-2,M-2,,True,,,False,,11.448,,150,375,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-1,B,B-1,True,,,False,,11.448,,75,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-2,M-2,,True,,,False,,11.448,,150,375,M1,True,0,0,0,0,,,,,no spread printed
+2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-1,B,B-1,True,,,False,,11.448,,75,150,M2,True,0,0,0,0,,,,,no spread printed
 2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-2,B,B-2,True,,,False,,11.448,,0,75,B1,True,5.00459,3.08203,667.279,410.937,,,,,no spread printed
 2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,M-1,M-1,,True,1.2e+08,,False,55,11.448,66.448,370,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
 2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,M-2,M-2,,True,4.05e+08,,False,235,11.448,246.448,100,370,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
