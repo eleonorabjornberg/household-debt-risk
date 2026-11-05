@@ -1,4 +1,4 @@
-> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers. Her decisions of 2026-11-05 are recorded below. **Still open: R (card e1-R2), how the h3 (b) change is made to the approved set (card e1-set-h3), and how the clustering enters the tests (CHOICE-E1-17, to be carded).** The file is frozen only after these. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
+> **Claude draft, not frozen.** Drafted by Claude (`preregister` skill) for Eleonora. The design choices are hers; her decisions of 2026-11-05 are recorded below. **Still open: e1-cluster (CHOICE-E1-17) and e1-support (docket round 20), and her review of the 10 changed questions.** The file is frozen only after these. Nothing here may be run against the API until it is frozen and she has separately approved the spend.
 
 # Pre-registration: E1, question-to-SQL benchmark (Haiku vs Sonnet vs Opus)
 Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No full-E1 result exists.
@@ -23,29 +23,24 @@ Status: **draft**, updated 2026-11-05 with Eleonora's choices. Not frozen. No fu
 | CHOICE-E1-14 cost cap | (a) $31. A ceiling only: the full run needs her separate spend OK |
 | CHOICE-E1-15 unit (e1-unit) | **(ii)** every repetition counted, clustered by question |
 | CHOICE-E1-15 T (e1-T) | **70%** |
-| CHOICE-E1-15 H3 (e1-h3) | **(b)** raise the unanswerable questions to about 25 of 100; R not given |
-| Question set (rv-e1-set) | approved as is (`questions.yaml` at `3faa99b`), after choosing h3 (b); how the two fit is card e1-set-h3 |
+| CHOICE-E1-15 H3 (e1-h3) | **(b)** raise the unanswerable questions to about 25 of 100 |
+| e1-set-h3 | **replace** about 10 answerable questions with unanswerable ones, keeping 100; she reviews only the changed questions |
+| CHOICE-E1-15 R (e1-R2) | **70%** |
+| e1-holdback | hold back **about 5** unanswerable questions, in proportion |
+| Question set (rv-e1-set) | approved as is (`questions.yaml` at `3faa99b`), after choosing h3 (b); then 10 questions replaced (e1-set-h3), which she reviews |
 
-Recorded in PLAN.md "Decisions taken" (coordinator commit `11f0562`), relayed 2026-11-05.
+Recorded in PLAN.md "Decisions taken" (coordinator commits `11f0562` and `c55701b`), relayed 2026-11-05.
 
 ## Still open (Eleonora's)
-- **e1-set-h3** (docket round 18): how h3 (b) changes the approved set. (replace) swap about 10 answerable questions for unanswerable ones, keeping 100; (add) add about 10 unanswerable questions, making about 110; (keep) keep the set as approved, with 15. Under replace or add she reviews only the changed questions. The holdout is then redrawn with the same seed and the same per-family rule (3 unanswerable held back as now, or 5 if she prefers; not yet asked).
-- **e1-R2** (docket round 18): R = 70%, 80% or 90%.
-- **CHOICE-E1-17, how the clustering enters the tests** (unit (ii) is chosen; the method is not). Both are implemented in `analyze_e1.py`, written before any result:
+- **Review of the 10 changed questions** (e1-set-h3 replace). The list is under Data.
+- **e1-cluster, CHOICE-E1-17, how the clustering enters the tests** (unit (ii) is chosen; the method is not). Both are implemented in `analyze_e1.py`, written before any result:
   - (a) **design effect**: Wilson interval with n replaced by n / DEFF, where DEFF = 1 + (m − 1) × ICC (one-way ANOVA ICC, floored at 0; m = 3 repetitions). H2 uses the clustered McNemar test of Durkalski et al. (2003). Closed form, but it relies on the ICC estimate.
   - (b) **question bootstrap**: resample questions with replacement (10,000 draws, seed 20261104). Percentile 95% intervals for the rates; H2 from the bootstrap distribution of the paired difference. Fewer assumptions, but less exact with few clusters (12–20 refusal questions).
   - No recommendation from Claude.
-- **What the threshold demands under unit (ii)** depends on the ICC, which is unknown until the run. The two bounds are no clustering (ICC 0, every answer independent) and full clustering (ICC 1, a question's 3 answers always agree). The Wilson lower bound must reach the threshold:
-  - **H1** (68 answerable questions, 204 answers), T = 70%: ICC 0 needs 76.3%; ICC 1 needs 80.9%.
-  - **H3** at about **20 scored unanswerable questions** (60 answers, after h3 (b)):
-    - R = 70%: ICC 0 needs 81.6%; ICC 1 needs 90.1%.
-    - R = 80%: ICC 0 needs 90.2%; ICC 1 needs 97.6%.
-    - R = 90%: ICC 0 needs 97.6%; ICC 1 cannot be supported.
-  - **H3** at 12 (if she keeps the set):
-    - R = 70%: ICC 0 needs 85.0%; ICC 1 needs 96.0%.
-    - R = 80%: ICC 0 needs 93.1%; ICC 1 cannot be supported.
-    - R = 90%: ICC 0 needs 99.9%; ICC 1 cannot be supported.
-- **Holm and the intervals** (a detail in `analyze_e1.py`, for her to confirm with CHOICE-E1-17): the H1/H3 verdict comes from the 95% interval, and a "supported" also needs a Holm-adjusted one-sided p < 0.05 within its family. The alternative is Holm-adjusted (wider) intervals.
+- **e1-support** (docket round 20): (i) a "supported" needs the 95% interval at or above the threshold and a Holm-adjusted one-sided p < 0.05 within its family; (ii) Holm-adjusted (wider) intervals instead. Both are implemented in `analyze_e1.py`. No recommendation from Claude.
+- **What the thresholds demand** under unit (ii), for the scored set of 60 answerable and 20 unanswerable questions (3 answers each). This depends on the ICC, which is unknown until the run. The two bounds are no clustering (ICC 0, every answer independent) and full clustering (ICC 1, a question's 3 answers always agree). The Wilson lower bound must reach the threshold:
+  - **H1**, T = 70%: needs 76.7% (ICC 0) to 81.6% (ICC 1).
+  - **H3**, R = 70%: needs 81.6% (ICC 0) to 90.1% (ICC 1).
 
 ## What has already been seen (disclosed before any choice was made)
 A **cost pilot** ran on 2026-11-04 (approved by Eleonora, cap $2.98; `evals/e1_sql_benchmark/pilot-2026-11-04/`, commit `a4998b7`). It used 10 easy questions (9 single-tool `public_share` lookups), 1 loop per model, effort `medium`, at most 4 turns. What was seen:
@@ -58,9 +53,9 @@ The design is therefore not blind to the pilot (turn limit, difficulty mix, cap)
 On factual questions about who holds US household credit risk, answered only through the project's read-only household-credit MCP tools, how do Claude Haiku 5.5, Sonnet 5.5 and Opus 5.5 compare on accuracy, cost per question, cost per correct answer and latency? Do they refuse questions the data cannot answer?
 
 ## Hypotheses (confirmatory, CHOICE-E1-8 (b)) and what counts as support
-- **H1** (per model, 3 tests): accuracy on scored answerable questions ≥ **T** (open).
+- **H1** (per model, 3 tests): accuracy on scored answerable questions ≥ **T = 70%**.
 - **H2** (2 paired tests): Opus and Sonnet differ in accuracy; Sonnet and Haiku differ in accuracy. Paired by question and repetition, clustered by question (unit (ii)); the test is set by CHOICE-E1-17.
-- **H3** (per model, 3 tests): correct-refusal rate on scored unanswerable questions ≥ **R** (open).
+- **H3** (per model, 3 tests): correct-refusal rate on scored unanswerable questions ≥ **R = 70%**.
 - Support: the 95% lower bound (clustered per CHOICE-E1-17) ≥ threshold, with Holm-adjusted one-sided p < 0.05 (H1, H3); or Holm-adjusted clustered p < 0.05 (H2). Null: otherwise. Against (H1, H3): the upper bound is below the threshold. Script: `evals/e1_sql_benchmark/analyze_e1.py`, written and tested on synthetic data before any E1 result. Cost per correct answer and latency are descriptive.
 
 ## Data
@@ -79,19 +74,34 @@ On factual questions about who holds US household credit risk, answered only thr
   Full hashes are in `validation/results.json` and at the freeze. If a Z.1 release lands before the run, the run still uses these files.
 - **Question set:** `evals/e1_sql_benchmark/questions.yaml`, 100 new questions, drafted by Claude for Eleonora's approval.
   - Families (tool used), with L/C/M counts (one lookup / a computation / needs two tools):
-    - public share: 15 (5/5/5)
-    - holdings by bucket: 15 (5/5/5)
-    - crisis windows: 15 (5/5/5)
-    - collateral coverage: 15 (5/5/5)
-    - NY Fed by type: 15 (5/5/5)
+    - public share: 13 (4/4/5)
+    - holdings by bucket: 13 (4/4/5)
+    - crisis windows: 13 (4/4/5)
+    - collateral coverage: 13 (4/4/5)
+    - NY Fed by type: 13 (4/4/5)
     - register and coverage tools: 10 (4/3/3)
-  - **Unanswerable: 15.** Three holder × loan-type crosses, two forecasts, two borrower-level, two geographic, one sub-quarterly, three out of range, one not in the data, and one that is in the NY Fed workbook but not in any tool.
-  - The set's SHA-256 at this draft: `bd70a40d…4aa6`.
-- **Holdout:** 20 questions drawn by `verify_set.py` with `random.Random(20261104)`, stratified by family (3 per family, 2 for register/coverage, 3 unanswerable). They are q104, q111, q112, q121, q123, q130, q131, q134, q140, q146, q152, q156, q169, q170, q174, q177, q185, q186, q192, q193. E1 scores the other **80: 68 answerable and 12 unanswerable.**
+  - **Unanswerable: 25.**
+    - q186–q200, the 15 in the set she approved: three holder × loan-type crosses, two forecasts, two borrower-level, two geographic, one sub-quarterly, three out of range, one not in the data, and one in the NY Fed workbook but in no tool.
+    - **q201–q210, added 2026-11-05 under e1-set-h3 "replace"**: two holder × loan-type crosses, one forecast, two borrower-level (one by age), one geographic, one sub-quarterly, two out of range (one just before the series starts), and one in the workbook but in no tool.
+  - **Changed questions (for her review).** Ten answerable questions were retired, one lookup and one computation from each tool family, so every family keeps its 5 two-tool questions. They stay in `questions.yaml` under `retired:` with their checks, so their verified register rows stay valid until the coordinator removes them.
+    - q102 (PS lookup, mortgage public share 1990Q4) → q201
+    - q110 (PS computation, mean public share 2020) → q202
+    - q118 (HB lookup, state and local share 2026Q2) → q203
+    - q125 (HB computation, banks / private-label ratio 2026Q2) → q204
+    - q135 (CW lookup, vehicle coverage at COVID +4) → q205
+    - q137 (CW computation, highest home coverage at a crisis t0) → q206
+    - q147 (CC lookup, vehicle coverage 2026Q2) → q207
+    - q153 (CC computation, change in vehicle coverage 2019Q4–2026Q2) → q208
+    - q165 (NY lookup, auto transition rate 2019Q4) → q209
+    - q168 (NY computation, credit card balance growth 2019Q4–2026Q2) → q210
+
+    The other 90 questions are unchanged from the set she approved.
+  - The set's SHA-256 at this draft: `c3d585bd…edc7` (was `bd70a40d…4aa6` when she approved it, before the replace).
+- **Holdout:** 20 questions, drawn by `verify_set.py` with `random.Random(20261104)`. Each family gets 20% of its size, rounded by largest remainder, with ties broken by the seeded generator (e1-holdback: about 5 unanswerable, in proportion). That gives PS 2, HB 3, CW 3, CC 2, NY 3, RG 2, unanswerable 5. The held-out questions are q112, q115, q117, q124, q129, q131, q139, q140, q149, q158, q164, q170, q171, q177, q180, q189, q192, q195, q208, q210. E1 scores the other **80: 60 answerable and 20 unanswerable.**
 - **Gold answers, verified with no model (CHOICE-E1-2 (b)).**
   - **Path 1** evaluates each question's check on the snapshot the MCP server serves (`spec.py`).
-  - **Path 2** is a validation-PASS register row. For 82 questions, `validation/e1_gold.py` (checks `E1-<id>`) rebuilds the tables from the raw Fed Z.1 zip and the raw NY Fed workbook. It does not import the pipeline and parses the workbook by sheet title. The rebuilt value must agree with the snapshot to a tenth of the scoring tolerance. The 3 remaining questions reuse existing PASS rows (A1, A2, C4).
-  - `build_register.py` writes the 82 rows to `claims/tracks/infra.csv`. `verify_set.py` then checks snapshot against register to the register's precision: **100/100**, with all 82 E1 checks PASS and the rest of the validation suite unchanged (123 PASS, 0 FAIL).
+  - **Path 2** is a validation-PASS register row. For 72 questions in the set (plus the 10 retired ones), `validation/e1_gold.py` (checks `E1-<id>`) rebuilds the tables from the raw Fed Z.1 zip and the raw NY Fed workbook. It does not import the pipeline and parses the workbook by sheet title. The rebuilt value must agree with the snapshot to a tenth of the scoring tolerance. The 3 remaining questions reuse existing PASS rows (A1, A2, C4).
+  - `build_register.py` writes the 82 rows to `claims/tracks/infra.csv`. `verify_set.py` then checks snapshot against register to the register's precision: **100/100**, with all 82 E1 checks PASS (including the retired ones) and the rest of the validation suite unchanged (123 PASS, 0 FAIL).
   - What the two paths share: the question's check spec and its evaluator (sums, differences, argmax), and the crisis start dates (a project definition). Imputed pre-2006 student-loan rows are not rebuilt, so no question uses them.
   - Unanswerable questions have gold "refuse".
 

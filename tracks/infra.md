@@ -11,8 +11,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 
 **E1: where it stands.**
 - The prereg `docs/decisions/e1-prereg.md` is a **draft, not frozen**. It records her 13 choices of 2026-11-05 (PLAN `77460b4`).
-- Open, on her cards (relayed by the coordinator): **e1-unit, e1-T, e1-h3, e1-R** (docket round 15), **e1-base** (baseline model, round 17) and **rv-e1-set** (approve the question set, review round 10). Do not pick any of these values, and do not freeze or spend until they are relayed.
-- If she picks **h3 (b)** (more unanswerable questions), redraft part of the set before she approves it. Then re-run validation, `build_register.py` and `verify_set.py`, and update `snapshot_hashes.json`. The holdout changes with the set.
+- Decided 2026-11-05 (PLAN `11f0562`, `c55701b`, in the prereg): unit (ii), T 70%, h3 (b), baseline Opus, set ok, then e1-set-h3 **replace** (done: q201–q210 replace 10), R 70%, holdback about 5 (done: largest remainder, 5 unanswerable). **Open, docket round 20: e1-cluster (CHOICE-E1-17) and e1-support, plus her review of the 10 changed questions.** Do not pick any of these, and do not freeze or spend until they are relayed. The coordinator should delete the 10 retired rows (e1_q102, q110, q118, q125, q135, q137, q147, q153, q165, q168) from `register.csv` and then the `retired:` list can go; until then `e1_gold.py` keeps checking them.
 - Built (no spend):
   - `questions.yaml`: 100 questions, 15 unanswerable.
   - `spec.py`: the shared evaluator.
@@ -25,7 +24,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 - The raw NY Fed workbook lives at `data/validation/nyfed/HHD_C_Report_2026Q2.xlsx` (gitignored; `e1_gold.py` downloads it if absent). The SHA-256 `ddfba16b…9237` is in the prereg.
 
 **Freeze steps once her answers arrive:**
-1. Write T, R, the unit of analysis and the baseline model into the prereg, with the date and "Eleonora".
+1. Write R, e1-cluster, e1-support and e1-holdback into the prereg, with the date and "Eleonora". In `analyze_e1.py`, set `R` and fix `--method` to her e1-cluster choice; if she picks e1-support (ii), change the verdict rule to Holm-widened intervals.
 2. Note her set approval.
 3. If the prereg's Wilson arithmetic changes with the unit, recompute it.
 4. Change `Status:` to `**frozen**`. `run_e1.is_frozen()` reads the line `Status: **frozen**`.
@@ -36,7 +35,7 @@ Branch: `claude/track-infra` · Tasks, in order: F1, F2, F4 · Rules: PLAN.md "P
 - `run_e1.py --live` writes to `run-<date>/`.
 - `run_e1.py --live --baseline <her model>` runs the baseline.
 - The cap of $31 covers both runs, but each run's `Budget` starts at zero, so set the baseline's cap to $31 minus the main run's spend.
-- The hypothesis tests (Wilson against T and R, exact McNemar with Holm) are not written yet. Write them as a separate analysis script under the frozen prereg, before looking at the results.
+- The hypothesis tests are in `analyze_e1.py` (written 2026-11-05 before any result; 8 tests). After the run: `analyze_e1.py run-<date> --method <her e1-cluster>`.
 
 **Other open items (unchanged):** the E1/D6/E4 build-out needs her spend approvals. `score.py` (E2) does not draw the 20% re-score sample.
 
@@ -71,6 +70,14 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-05 ~15:10 UTC, same session, no spend. Her relayed choices (checked against PLAN.md at `c55701b`): e1-set-h3 replace, R 70%, holdback about 5. Merged `c55701b` (fast-forward).
+  - Redraft: q102, q110, q118, q125, q135, q137, q147, q153, q165 and q168 (one lookup and one computation per tool family) are replaced by the unanswerable q201–q210. The set is still 100: 75 answerable and 25 unanswerable.
+  - The retired questions stay under `retired:` with their checks, so their register rows stay valid. I don't edit `register.csv`; the coordinator removes them. `gold_values.tsv` is byte-identical, so no location moved.
+  - Holdout: largest remainder at 20% per family with a seeded tie-break gives 5 unanswerable. E1 scores 60 answerable and 20 unanswerable.
+  - Validation: 123 PASS (unchanged). `verify_set`: 100/100. `check_register` OK.
+  - The prereg records R, the replace and the holdback, and gives new Wilson ICC bounds (H1: 76.7–81.6%; H3: 81.6–90.1%). `analyze_e1.R = 0.70`. 47 tests pass. `snapshot_hashes.json` refreshed.
+  - Error caught by Claude: a %-format in the prereg-edit script choked on "20%". It failed before writing, and I checked the file was untouched before re-running.
+  - Main model, no subagents.
 - 2026-11-05 ~14:40 UTC, same session, no spend. Her relayed E1 decisions (unit (ii), T 70%, h3 (b) with R not given, baseline Opus, set ok), checked against PLAN.md at `11f0562` and recorded in the prereg. Still open: e1-set-h3, e1-R2, and a new **CHOICE-E1-17** (how the clustering under unit (ii) enters the tests: design-effect Wilson plus Durkalski clustered McNemar, or a question bootstrap) together with the Holm/interval detail. No recommendation. Merged `11f0562` (fast-forward). Wrote `analyze_e1.py`, offline, before any E1 result: both methods, Holm per family, H3 reported as "not tested" while R is unset. `test_analyze.py` adds 8 tests (46 in the folder). Recomputed the threshold arithmetic for unit (ii) as ICC bounds (H1 at T = 70% needs 76.3–80.9%; H3 at about 20 refusal questions with R = 70% needs 81.6–90.1%). Main model, no subagents.
 - 2026-11-05 ~06:40 UTC, same session, no spend. Built `run_e1.py`, the full-run harness on `pilot.py`'s loop. It runs 80 scored questions × 3 models × 3 repetitions in a seeded order, with no top-level cache, a $31 cap, an overrun stop at 3× the pilot mean, a 10% projection checkpoint, and a `--baseline MODEL` no-tools mode. `--live` refuses unless the prereg is frozen and `snapshot_hashes.json` matches. `pilot.py` changes are backwards compatible: `Budget` takes per-run assumptions, `run_loop` takes `top_cache` and `rep`, and the scorer handles $bn, %, ratio, count and refusals. 8 new tests (38 in the folder). A fake end-to-end run went through the real MCP tools (720 loops); `--live` refused as designed. Error caught by Claude: the checkpoint test first set a cap so low that the pre-call guard fired first; the test setup was fixed, not the code. Main model, no subagents.
 - 2026-11-05 ~06:10 UTC, same session, no spend. Eleonora's 14 E1 choices (relayed; checked against PLAN.md at `77460b4`). **Not frozen:** CHOICE-E1-8 (b) set no T or R (the card text "put T and R in the note" carried no values), and CHOICE-E1-3 (a) needs her approval of the set first. Both were reported to the coordinator. The prereg now records the 13 decisions and leaves T, R, the unit of analysis (CHOICE-E1-15) and the baseline model (CHOICE-E1-16) open, with the Wilson arithmetic. H3 has only about 12 scored refusal questions, so R ≥ 80% can never be supported per question. Built, with no API calls:
