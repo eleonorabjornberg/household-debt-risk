@@ -74,3 +74,40 @@
 - ana-45: accepted. Failed fits keep their statistics only under "diagnostics_not_an_effect_estimate"; README shows the fit numbers.
 - ana-46: noted; the exact five-week-variance t (−2.37) is reported next to −2.49. The "against" branch is unused here (the change is negative).
 - ana-47: accepted. README says 0.37 pp of the fall came in week 0, before Lehman; notes ECASLA in the H4 pre-period; records the addendum's 16:55 header against its 16:47 commit time.
+
+## 2026-11-05: a8-promo (b) applied (commit 2549090), skeptic and editor round
+
+Changed text: `research/a8_international/README.md:15,18`, `compare.py` docstring and DE note, register row `a8_de_promotional_banks_unclassified`. Reviewers read the diff and `sources.md`/`Q7_EVIDENCE.md`; both found no changed number (0.0115, 0.2913, 0.3028 unchanged; tests pass).
+
+### R-20261105-ana-48 · skeptic · major · README.md:15 (col. 3), :18; register `a8_de_public_owned_share`; CROSSWALK.md:11
+- **Objection:** the holder (a) share, 30.3%, includes the whole 17,817 category, which now is labelled as holding DZ Bank; the holder measure therefore counts DZ Bank as publicly owned, whose ownership is not sourced (Q7_EVIDENCE.md:82). These places still say "promotional banks".
+- **Status:** open, sent to the coordinator as a proposed card. Outside a8-promo (which relabels the 1.1% only); not edited.
+
+### R-20261105-ana-49 · skeptic · minor · CROSSWALK.md:11
+- **Objection:** still says Länder promotional banks are not sourced; follow-ups 2–3 source NRW.BANK, Rentenbank and L-Bank.
+- **Status:** open, in the same proposed card (copy outside her a8-promo choice).
+
+### R-20261105-ana-50 · skeptic · minor · README.md:18, register notes
+- **Objection:** "the category also holds DZ Bank" dropped the caveat that this comes from the P&L and bank-office statistics and that the I.7 footnotes were not re-read.
+- **Status:** accepted; caveat added to README:18.
+
+### R-20261105-ana-51 · skeptic · minor · README.md:18
+- **Objection:** "backs the banks' creditors, not their borrowers" simplifies the statutes, which also cover credits to third parties the bank expressly guarantees.
+- **Status:** accepted; now "cover the banks' own borrowing and any credits a bank expressly guarantees; none of the texts on file guarantees the households the banks lend to".
+
+### R-20261105-ana-52 · skeptic · note · option (b) as applied
+- **Objection:** Q7_EVIDENCE's own wording of (b) added "DZ Bank does not appear to"; the docket card and PLAN don't, and nothing on file shows DZ Bank's guarantee status. Q7_EVIDENCE:48 still names the old column.
+- **Status:** no DZ Bank guarantee sentence added (nothing on file supports it). Decision line added to Q7_EVIDENCE.md recording the column rename.
+
+### Editor (ana-e1 to ana-e11)
+- ana-e1 (README:18, "none of these texts" too strong given L-Bank statute not read): accepted, now "none of the texts on file", L-Bank cited to the annual report.
+- ana-e2 (§ 1a vs Art. 1a): the changed text uses § 1a throughout; older "Art. 1a" uses elsewhere left as they were.
+- ana-e3 (the four could be read as the members of the 1.1%): accepted; "whether each is in the 1.1% is not confirmed" added to README and register notes.
+- ana-e4 (English category name): the English name is the one transcribed for table I.7 in sources.md row 18; the label now says "The Bundesbank category" first. No other change.
+- ana-e5 (README:15 col. 3 still "promotional banks"): same as ana-48, open, in the proposed card.
+- ana-e6 (length): accepted in part; split into four sentences.
+- ana-e7 (card id for 2026-11-04 decision): accepted, "cards q7-promo-2, 2026-11-04, and a8-promo, 2026-11-05".
+- ana-e8 (input id `promotional_banks_lending_individuals`): kept on purpose (transcription id in national_figures.csv and sources.md); compare.py comment and the Q7_EVIDENCE decision line say so.
+- ana-e9 (register id): kept on purpose; register notes now say so.
+- ana-e10 (DZ Bank wording in notes): accepted, "The Bundesbank lists DZ Bank in this category … its ownership and guarantee status are not sourced". The 17,817 / 1,551,414 values come from the rerun of compare.py and the test asserts them.
+- ana-e11 (voice): no change needed.
