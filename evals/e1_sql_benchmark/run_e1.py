@@ -51,21 +51,39 @@ def is_frozen(path: Path = PREREG) -> bool:
 
 
 SPEND_ROW = re.compile(r"\(e1-spend\b[^)]*\)[^|]*?\*\*\s*(go|yes|ok|approved?)\b", re.I)
+# A separate, explicit OK for the baseline (if she approves the main run only first): card e1-baseline-spend.
+BASELINE_ROW = re.compile(r"\(e1-baseline-spend\b[^)]*\)[^|]*?\*\*\s*(go|yes|ok|approved?)\b", re.I)
+# An e1-spend OK that limits itself to the main run (card option (b)) does not cover the baseline.
+MAIN_ONLY = re.compile(r"main[- ]run only|only (?:for |the )*main[- ]run|baseline (?:later|not|excluded)|"
+                       r"not (?:for )?the baseline|without the baseline|no baseline", re.I)
 
 
 def git(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
 
 
-def spend_row(plan_text: str) -> str | None:
-    """Eleonora's dated "Decisions taken" row approving card e1-spend, or None. The row must name the card and give an
-    approving verdict in bold (go / yes / ok / approve(d)); her other E1 rows ("Not a spend OK") do not match."""
-    rows = [l for l in plan_text.splitlines()
-            if re.match(r"\| 20\d\d-\d\d-\d\d \|", l) and l.rstrip().endswith("| Eleonora |") and SPEND_ROW.search(l)]
-    return rows[-1] if rows else None
+def _her_rows(plan_text: str) -> list[str]:
+    return [l for l in plan_text.splitlines()
+            if re.match(r"\| 20\d\d-\d\d-\d\d \|", l) and l.rstrip().endswith("| Eleonora |")]
 
 
-def check_spend_approval(commit: str) -> str:
+def spend_row(plan_text: str, baseline: bool = False) -> str | None:
+    """Eleonora's dated "Decisions taken" row approving this spend, or None.
+    Main run: a row naming card e1-spend with an approving verdict in bold (go / yes / ok / approve(d)); her other E1
+    rows ("Not a spend OK") do not match.
+    Baseline: either an e1-spend OK row that names the baseline and does not limit itself to the main run (card
+    option (a)), or a separate OK row naming card e1-baseline-spend. Option (b), "OK for the main run only; baseline
+    later", approves the main run but not the baseline."""
+    rows = _her_rows(plan_text)
+    if not baseline:
+        ok = [l for l in rows if SPEND_ROW.search(l)]
+    else:
+        ok = [l for l in rows if BASELINE_ROW.search(l)
+              or (SPEND_ROW.search(l) and re.search(r"baseline", l, re.I) and not MAIN_ONLY.search(l))]
+    return ok[-1] if ok else None
+
+
+def check_spend_approval(commit: str, baseline: bool = False) -> str:
     """The approval commit comes after the freeze, is an ancestor of HEAD, and its PLAN.md has her e1-spend row."""
     if git("merge-base", "--is-ancestor", FREEZE_COMMIT, commit).returncode != 0 or \
             git("rev-parse", FREEZE_COMMIT).stdout.strip() == git("rev-parse", commit).stdout.strip():
@@ -75,9 +93,11 @@ def check_spend_approval(commit: str) -> str:
     plan = git("show", f"{commit}:PLAN.md")
     if plan.returncode != 0:
         raise SystemExit(f"refusing: cannot read PLAN.md at {commit}")
-    row = spend_row(plan.stdout)
+    row = spend_row(plan.stdout, baseline=baseline)
     if not row:
-        raise SystemExit(f"refusing: no Eleonora row in PLAN.md at {commit} approving the E1 spend (card e1-spend)")
+        what = ("the E1 baseline spend (an e1-spend OK covering the baseline, or card e1-baseline-spend)" if baseline
+                else "the E1 spend (card e1-spend)")
+        raise SystemExit(f"refusing: no Eleonora row in PLAN.md at {commit} approving {what}")
     return row
 
 
@@ -169,7 +189,7 @@ def main() -> None:
             raise SystemExit(f"refusing: files differ from the recorded hashes: {bad}")
         if not a.approval:
             raise SystemExit("refusing: --live needs --approval COMMIT (her e1-spend row in PLAN.md)")
-        approval = {"commit": git("rev-parse", a.approval).stdout.strip(), "row": check_spend_approval(a.approval)}
+        approval = {"commit": git("rev-parse", a.approval).stdout.strip(), "row": check_spend_approval(a.approval, baseline=bool(a.baseline))}
     tools, call_tool = pilot.mcp_tools()
     date = datetime.now(timezone.utc).date().isoformat()
     tag = ("baseline-" if a.baseline else "") + ("" if a.live else "fake-")

@@ -131,3 +131,29 @@ def test_approval_must_postdate_the_freeze():
 def test_head_has_no_approval_yet():
     with pytest.raises(SystemExit, match="no Eleonora row"):
         run_e1.check_spend_approval("HEAD")
+
+
+OPT_A = "| 2026-11-05 | E1 spend (e1-spend, chosen 19:40 UTC): **OK** (a): the main run and the Opus baseline, within $31. | Eleonora |"
+OPT_B = "| 2026-11-05 | E1 spend (e1-spend, chosen 19:40 UTC): **OK** (b): OK for the main run only; baseline later. | Eleonora |"
+BASE_LATER = "| 2026-11-07 | E1 baseline spend (e1-baseline-spend, chosen 09:00 UTC): **OK**, Opus, remaining cap. | Eleonora |"
+
+
+def test_option_a_covers_main_and_baseline():
+    plan = PLAN_ROWS + OPT_A + "\n"
+    assert run_e1.spend_row(plan) and run_e1.spend_row(plan, baseline=True)
+
+
+def test_option_b_covers_main_run_only():
+    plan = PLAN_ROWS + OPT_B + "\n"
+    assert run_e1.spend_row(plan) == OPT_B
+    assert run_e1.spend_row(plan, baseline=True) is None
+    assert run_e1.spend_row(plan + BASE_LATER + "\n", baseline=True) == BASE_LATER  # a later explicit baseline OK
+
+
+def test_baseline_row_alone_does_not_approve_the_main_run():
+    assert run_e1.spend_row(PLAN_ROWS + BASE_LATER + "\n") is None
+
+
+def test_ok_without_mentioning_the_baseline_does_not_cover_it():
+    row = "| 2026-11-05 | E1 spend (e1-spend): **go**, cap $31. | Eleonora |"
+    assert run_e1.spend_row(PLAN_ROWS + row + "\n") and run_e1.spend_row(PLAN_ROWS + row + "\n", baseline=True) is None
