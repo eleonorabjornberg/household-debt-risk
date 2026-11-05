@@ -35,9 +35,9 @@ _spec.loader.exec_module(b2)
 START = "2017-01-01"
 
 # LIBOR -> SOFR tenor spread adjustment for one-month LIBOR, bps, added to the spread of 1M LIBOR deals so that
-# every spread is over SOFR. None = not yet approved: the coordinator holds the source as a proposed card (Federal
-# Reserve, Regulation ZZ final rule, 12 CFR 253.4(c)(2)), and no adjusted value is produced until it is set.
-LIBOR_1M_ADJ_BP: float | None = None
+# every spread is over SOFR. Federal Reserve, Regulation ZZ final rule, 12 CFR 253.4(c)(2): "0.11448 percent for
+# one-month LIBOR" (sources.md). Source approved by Eleonora, card b2-sofr-src (a), 2026-11-05 18:54 UTC.
+LIBOR_1M_ADJ_BP: float | None = 11.448
 
 # Her three seniority classes (b). Tranche names are matched without hyphens (the workbook prints both).
 CLASS = {"M1": "M-1", "M1A": "M-1", "M1B": "M-1", "M2": "M-2", "B": "B", "B1": "B", "B2": "B"}
@@ -97,7 +97,8 @@ def frame(df: pd.DataFrame, adj_bp: float | None = LIBOR_1M_ADJ_BP) -> pd.DataFr
     for basis in ("out", "orig"):
         t[f"multiple_{basis}"] = (t["spread_bp"] / t[f"el_tranche_{basis}_bp"]).where(pos)
         t[f"multiple_sofr_{basis}"] = (t["spread_sofr_bp"] / t[f"el_tranche_{basis}_bp"]).where(pos)
-    t.loc[t["spread_bp"].isna() & (t["multiple_note"] == ""), "multiple_note"] = "no spread printed"
+    # no spread takes precedence over "absent" (skeptic mkt-s49: 2017-HRP1 prints a par/discount/IO split)
+    t.loc[t["spread_bp"].isna() & ~t["multiple_note"].str.startswith("detachment"), "multiple_note"] = "no spread printed"
     return t
 
 
@@ -112,9 +113,11 @@ def by_year_class(t: pd.DataFrame) -> pd.DataFrame:
                     "spread_bp_median": g["spread_bp"].median(), "spread_bp_min": g["spread_bp"].min(),
                     "spread_bp_max": g["spread_bp"].max(),
                     "spread_sofr_bp_median": g["spread_sofr_bp"].median(),
-                    "with_multiple": len(m), "multiple_out_median": m.median() if len(m) else float("nan"),
+                    "with_multiple": len(m), "with_multiple_indicative": int(g.loc[g["multiple_out"].notna(), "retained_indicative"].sum()), "multiple_out_median": m.median() if len(m) else float("nan"),
                     "multiple_orig_median": g["multiple_orig"].dropna().median() if len(m) else float("nan"),
-                    "multiple_sofr_out_median": g["multiple_sofr_out"].dropna().median() if len(m) else float("nan")})
+                    "multiple_sofr_out_median": g["multiple_sofr_out"].dropna().median() if len(m) else float("nan"),
+                    "multiple_sofr_orig_median": g["multiple_sofr_orig"].dropna().median() if len(m) else float("nan"),
+                    "spread_sofr_bp_min": g["spread_sofr_bp"].min(), "spread_sofr_bp_max": g["spread_sofr_bp"].max()})
     return pd.DataFrame(out)
 
 
@@ -147,6 +150,26 @@ def main() -> int:
         "with_multiple_by_class": {c: int(h.loc[h["cls"] == c, "multiple_out"].notna().sum()) for c in ("M-1", "M-2", "B")},
         "detach_unknown": sorted(h.loc[~h["detach_known"], "deal"].unique().tolist()),
         "multiple_out_median": round(float(mult.median()), 3) if len(mult) else None,
+        "count_breakdown_her_classes": {
+            "with_multiple": int(h["multiple_out"].notna().sum()),
+            "attach_at_or_above_baseline_loss": int(h["multiple_note"].str.startswith("absent").sum()),
+            "detach_unknown": int(h["multiple_note"].str.startswith("detachment").sum()),
+            "no_spread": int((h["multiple_note"] == "no spread printed").sum())},
+        "outside_classes": {c: int((t["cls"] == c).sum()) for c in sorted(OUTSIDE.values())},
+        "first_year_no_multiple": int(min(y for y in h["year"].unique() if h.loc[h["year"] >= y, "multiple_out"].isna().all())),
+        "fixed_slice_25_75": {str(y): round(float(g["multiple_sofr_out"].median()), 3) for y, g in
+                              h[h["multiple_out"].notna() & (h["attach_bp"] == 25) & (h["detach_bp"] == 75)].groupby("year")},
+        "fixed_slice_25_75_n": {str(y): int(len(g)) for y, g in
+                                h[h["multiple_out"].notna() & (h["attach_bp"] == 25) & (h["detach_bp"] == 75)].groupby("year")},
+        "by_attach": [{"attach_bp": float(a), "detach_bp_slice": float(dd), "tranches": int(len(g)),
+                       "indicative": int(g["retained_indicative"].sum()), "years": f"{g['year'].min()}-{g['year'].max()}",
+                       # every detach here lies above the baseline loss, so the slice takes (cum - attach)
+                       "slice_loss_bp": round(1e4 * b2.pool_path()[1][-1] - a, 3) if g["detach_bp"].min() > 1e4 * b2.pool_path()[1][-1] else None,
+                       "detach_bp": sorted(g["detach_bp"].unique().tolist()),
+                       "multiple_sofr_out_median": round(float(g["multiple_sofr_out"].median()), 3),
+                       "multiple_sofr_out_min": round(float(g["multiple_sofr_out"].min()), 3),
+                       "multiple_sofr_out_max": round(float(g["multiple_sofr_out"].max()), 3)}
+                      for (a, dd), g in h[h["multiple_out"].notna()].groupby(["attach_bp", "detach_bp"])],
         "multiple_orig_median": round(float(h["multiple_orig"].dropna().median()), 3) if len(mult) else None,
     }
     OUT_JS.write_text(json.dumps(res, indent=2) + "\n")

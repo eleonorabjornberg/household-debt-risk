@@ -155,136 +155,136 @@ deal,closing_date,year,program,benchmark,tranche,cls,sub_tranche,in_her_classes,
 2020-DNA5,2020-10-20,2020,DNA,SOFR,M-2,M-2,,True,3.08e+08,,False,280,0,280,150,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
 2020-DNA5,2020-10-20,2020,DNA,SOFR,B-1,B,B-1,True,2.31e+08,,False,480,0,480,75,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
 2020-DNA5,2020-10-20,2020,DNA,SOFR,B-2,B,B-2,True,2.39e+08,,False,1150,0,1150,10,75,B1,True,3.38079,2.08203,520.122,320.312,2.21102,3.59025,2.21102,3.59025,
-2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,M-1,M-1,,True,1.77e+08,,False,130,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,M-2,M-2,,True,2.2e+08,,False,315,,,175,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,B-1,B,B-1,True,1.77e+08,,False,525,,,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,B-2,B,B-2,True,1.06e+08,,False,940,,,25,75,B1,True,0.945095,0.582028,189.019,116.406,4.97304,8.07522,,,
-2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,M-1,M-1,,True,2.95e+08,,False,150,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,M-2,M-2,,True,3.68e+08,,False,375,,,175,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,B-1,B,B-1,True,3e+08,,False,600,,,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,B-2,B,B-2,True,1.25e+08,,False,1000,,,25,75,B1,True,0.945095,0.582028,189.019,116.406,5.29047,8.59066,,,
-2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,M-1,M-1,,True,1.6e+08,,False,155,,,330,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,M-2,M-2,,True,3.5e+08,,False,360,,,175,330,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,B-1,B,B-1,True,2.25e+08,,False,575,,,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,B-2,B,B-2,True,1e+08,,False,1000,,,25,75,B1,True,0.945095,0.582028,189.019,116.406,5.29047,8.59066,,,
-2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,M-1,M-1,,True,3.36e+08,,False,150,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,M-2,M-2,,True,4.2e+08,,False,300,,,175,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,B-1,B,B-1,True,2.5e+08,,False,510,,,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,B-2,B,B-2,True,1e+08,,False,935,,,25,75,B1,True,0.945095,0.582028,189.019,116.406,4.94659,8.03226,,,
-2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,M-1,M-1,,True,2.52e+08,,False,110,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,M-2,M-2,,True,4.78e+08,,False,310,,,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,B-1,B,B-1,True,1.26e+08,,False,410,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,B-2,B,B-2,True,1.5e+08,,False,760,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.124,1.82514,,,
-2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,M-1,M-1,,True,3.9e+08,,False,75,,,250,375,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,M-2,M-2,,True,4.37e+08,,False,185,,,110,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,B-1,B,B-1,True,1.56e+08,,False,250,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,B-2,B,B-2,True,1.86e+08,,False,480,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.709893,1.15272,,,
-2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,M-1,M-1,,True,2.18e+08,,False,75,,,300,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,M-2,M-2,,True,3.3e+08,,False,190,,,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,B-1,B,B-1,True,8.7e+07,,False,235,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,B-2,B,B-2,True,1.03e+08,,False,510,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.754261,1.22477,,,
-2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,M-1,M-1,,True,2.12e+08,,False,70,,,275,375,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,M-2,M-2,,True,3.5e+08,,False,170,,,110,275,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,B-1,B,B-1,True,1.06e+08,,False,230,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,B-2,B,B-2,True,1.26e+08,,False,525,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.776445,1.26079,,,
-2019-FTR4,2019-12-17,2019,FTR,1M LIBOR,B-2,B,B-2,True,1.1122e+08,,False,500,,,10,478.5,AH,False,,,,,,,,,detachment point not known: unlisted retained classes above
-2019-FTR3,2019-12-17,2019,FTR,1M LIBOR,B-2,B,B-2,True,1.5159e+08,,False,480,,,10,451,AH,False,,,,,,,,,detachment point not known: unlisted retained classes above
-2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,M-1,M-1,,True,1.2e+08,,False,77,,,325,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,M-2,M-2,,True,2.02e+08,,False,205,,,115,325,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,B-1,B,B-1,True,5.3e+07,,False,295,,,60,115,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,B-2,B,B-2,True,5.7e+07,,False,660,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.976103,1.58499,,,
-2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,M-1,M-1,,True,1.48e+08,,False,70,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,M-2,M-2,,True,2.8e+08,,False,195,,,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,B-1,B,B-1,True,7.4e+07,,False,270,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,B-2,B,B-2,True,8.7e+07,,False,625,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.92434,1.50094,,,
-2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,M-1,M-1,,True,1.4e+08,,False,75,,,350,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,M-2,M-2,,True,2.8e+08,,False,185,,,150,350,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,B-1,B,B-1,True,1.26e+08,,False,300,,,60,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,B-2,B,B-2,True,8e+07,,False,750,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.10921,1.80113,,,
-2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,M-1,M-1,,True,8.2e+07,,False,95,,,250,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,M-2,M-2,,True,1.14e+08,,False,215,,,110,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,B-1,B,B-1,True,4.2e+07,,False,300,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,B-2,B,B-2,True,4.6e+07,,False,740,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.09442,1.77711,,,
-2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,M-1,M-1,,True,1.8e+08,,False,73,,,325,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,M-2,M-2,,True,3.9e+08,,False,205,,,110,325,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,B-1,B,B-1,True,9e+07,,False,325,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,B-2,B,B-2,True,9.6e+07,,False,815,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.20534,1.95723,,,
-2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,M-1,M-1,,True,3.3e+07,,False,75,,,620,700,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,M-2,M-2,,True,1.12e+08,,False,140,,,350,620,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,M-3,M-3,,False,5.2e+07,,False,225,,,225,350,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,B-1,B,B-1,True,4.2e+07,,False,405,,,125,225,M3,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,B-2,B,B-2,True,4.2e+07,,False,950,,,25,125,B1,True,0.945095,0.582028,94.5095,58.2028,10.0519,16.3222,,,
-2019-FTR1,2019-05-21,2019,FTR,1M LIBOR,B-2,B,B-2,True,1.4e+08,,False,835,,,10,375,AH,False,,,,,,,,,detachment point not known: unlisted retained classes above
-2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,M-1,M-1,,True,1.4e+08,,False,70,,,350,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,M-2,M-2,,True,2.8e+08,,False,205,,,150,350,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,B-1,B,B-1,True,1.25e+08,,False,410,,,60,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,B-2,B,B-2,True,7e+07,,False,1125,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.66381,2.70169,,,
-2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,M-1,M-1,,True,1.1e+08,,False,80,,,350,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,M-2,M-2,,True,3.52e+08,,False,245,,,110,350,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,B-1,B,B-1,True,7.3e+07,,False,435,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,B-2,B,B-2,True,7.3e+07,,False,1050,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.55289,2.52158,,,
-2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,M-1,M-1,,True,1.31e+08,,False,90,,,360,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,M-2,M-2,,True,3.05e+08,,False,235,,,150,360,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,B-1,B,B-1,True,1.31e+08,,False,440,,,60,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,B-2,B,B-2,True,7.3e+07,,False,1225,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.81171,2.94184,,,
-2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,M-1,M-1,,True,2.15e+08,,False,90,,,300,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,M-2,M-2,,True,3.27e+08,,False,265,,,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,B-1,B,B-1,True,8.6e+07,,False,465,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,B-2,B,B-2,True,8.6e+07,,False,1075,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.58986,2.58162,,,
-2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,M-1,M-1,,True,1.7e+08,,False,85,,,525,600,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,M-2,M-2,,True,2.26e+08,,False,125,,,425,525,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,M-3,M-3,,False,4.52e+08,,False,240,,,225,425,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,B-1,B,B-1,True,2.26e+08,,False,420,,,125,225,M3,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,B-2,B,B-2,True,2.26e+08,,False,1050,,,25,125,B1,True,0.945095,0.582028,94.5095,58.2028,11.11,18.0404,,,
-2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,M-1,M-1,,True,2.56e+08,,False,75,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,M-2,M-2,,True,4.76e+08,,False,230,,,115,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,B-1,B,B-1,True,1.28e+08,,False,425,,,65,115,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,B-2,B,B-2,True,1.4e+08,,False,1100,,,10,65,B1,True,3.38079,2.08203,614.689,378.55,1.78952,2.90582,,,
-2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,M-1,M-1,,True,2.1e+08,,False,75,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,M-2,M-2,,True,4e+08,,False,210,,,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,B-1,B,B-1,True,1.05e+08,,False,390,,,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,B-2,B,B-2,True,1.05e+08,,False,775,,,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.14618,1.86117,,,
-2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,M1,M-1,,True,3.5e+08,,False,80,,,250,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,M2,M-2,,True,5.25e+08,,False,215,,,100,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,B1,B,B-1,True,1.75e+08,,False,370,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,B2,B,B-2,True,,Retained,True,1050,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.04904,1.70342,,,
-2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,M-1,M-1,,True,,Retained,True,80,,,425,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,M-2,M-2,,True,3.62e+08,,False,165,,,250,425,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,B-1,B,B-1,True,2.59e+08,,False,375,,,125,250,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,B-2,B,B-2,True,2.59e+08,,False,1175,,,0,125,B1,True,5.00459,3.08203,400.367,246.562,2.93481,4.76553,,,
-2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,M-1,M-1,,True,2.25e+08,,False,70,,,320,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,M-2,M-2,,True,6.2e+08,,False,230,,,210,320,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,B-1,B,B-1,True,1.4e+08,,False,435,,,50,210,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1100,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.09899,1.78454,,,
-2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,M-1,M-1,,True,2.3e+08,,False,45,,,310,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,M-2,M-2,,True,5.4e+08,,False,180,,,100,310,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,B-1,B,B-1,True,1.3e+08,,False,315,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,B-2,B,B-2,True,,Retained,True,950,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,0.949129,1.54119,,,
-2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-1,M-1,,True,,Retained,True,80,,,375,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-2,M-2,,True,,,False,,,,150,375,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-1,B,B-1,True,,,False,,,,75,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-2,B,B-2,True,,,False,,,,0,75,B1,True,5.00459,3.08203,667.279,410.937,,,,,no spread printed
-2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,M-1,M-1,,True,1.2e+08,,False,55,,,370,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,M-2,M-2,,True,4.05e+08,,False,235,,,100,370,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,B-1,B,B-1,True,7.5e+07,,False,445,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1300,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.29881,2.109,,,
-2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,M-1,M-1,,True,4e+08,,False,75,,,250,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,M-2,M-2,,True,6e+08,,False,250,,,100,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,B-1,B,B-1,True,2e+08,,False,445,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1100,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.09899,1.78454,,,
-2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,M-1,M-1,,True,2.25e+08,,False,80,,,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,M-2,M-2,,True,4.5e+08,,False,265,,,100,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,B-1,B,B-1,True,1.125e+08,,False,475,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1200,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.1989,1.94677,,,
-2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,M-1,M-1,,True,5.16e+08,,False,120,,,230,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,M-2,M-2,,True,5.59e+08,,False,345,,,100,230,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,B-1,B,B-1,True,2.155e+08,,False,515,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,B-2,B,B-2,True,3e+07,,False,1125,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.12397,1.8251,,,
-2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,M-1,M-1,,True,2.1e+08,,False,120,,,325,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,M-2,M-2,,True,4.725e+08,,False,355,,,100,325,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,B-1,B,B-1,True,5.5e+07,,False,500,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,B-2,B,B-2,True,1.5e+07,,False,1275,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.27383,2.06844,,,
-2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,M-1,M-1,,True,2.9e+08,,False,120,,,255,375,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,M-2,M-2,,True,3.755e+08,,False,325,,,100,255,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,B-1,B,B-1,True,1.2e+08,,False,495,,,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
-2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,B-2,B,B-2,True,1.7e+07,,False,1000,,,0,50,B1,True,5.00459,3.08203,1000.92,616.406,0.999083,1.62231,,,
+2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,M-1,M-1,,True,1.77e+08,,False,130,11.448,141.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,M-2,M-2,,True,2.2e+08,,False,315,11.448,326.448,175,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,B-1,B,B-1,True,1.77e+08,,False,525,11.448,536.448,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA4,2020-09-29,2020,HQA,1M LIBOR,B-2,B,B-2,True,1.06e+08,,False,940,11.448,951.448,25,75,B1,True,0.945095,0.582028,189.019,116.406,4.97304,8.07522,5.03361,8.17356,
+2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,M-1,M-1,,True,2.95e+08,,False,150,11.448,161.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,M-2,M-2,,True,3.68e+08,,False,375,11.448,386.448,175,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,B-1,B,B-1,True,3e+08,,False,600,11.448,611.448,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA4,2020-08-25,2020,DNA,1M LIBOR,B-2,B,B-2,True,1.25e+08,,False,1000,11.448,1011.45,25,75,B1,True,0.945095,0.582028,189.019,116.406,5.29047,8.59066,5.35104,8.689,
+2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,M-1,M-1,,True,1.6e+08,,False,155,11.448,166.448,330,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,M-2,M-2,,True,3.5e+08,,False,360,11.448,371.448,175,330,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,B-1,B,B-1,True,2.25e+08,,False,575,11.448,586.448,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA3,2020-07-28,2020,HQA,1M LIBOR,B-2,B,B-2,True,1e+08,,False,1000,11.448,1011.45,25,75,B1,True,0.945095,0.582028,189.019,116.406,5.29047,8.59066,5.35104,8.689,
+2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,M-1,M-1,,True,3.36e+08,,False,150,11.448,161.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,M-2,M-2,,True,4.2e+08,,False,300,11.448,311.448,175,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,B-1,B,B-1,True,2.5e+08,,False,510,11.448,521.448,75,175,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA3,2020-07-08,2020,DNA,1M LIBOR,B-2,B,B-2,True,1e+08,,False,935,11.448,946.448,25,75,B1,True,0.945095,0.582028,189.019,116.406,4.94659,8.03226,5.00716,8.13061,
+2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,M-1,M-1,,True,2.52e+08,,False,110,11.448,121.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,M-2,M-2,,True,4.78e+08,,False,310,11.448,321.448,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,B-1,B,B-1,True,1.26e+08,,False,410,11.448,421.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA2,2020-03-18,2020,HQA,1M LIBOR,B-2,B,B-2,True,1.5e+08,,False,760,11.448,771.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.124,1.82514,1.14093,1.85264,
+2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,M-1,M-1,,True,3.9e+08,,False,75,11.448,86.448,250,375,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,M-2,M-2,,True,4.37e+08,,False,185,11.448,196.448,110,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,B-1,B,B-1,True,1.56e+08,,False,250,11.448,261.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA2,2020-02-19,2020,DNA,1M LIBOR,B-2,B,B-2,True,1.86e+08,,False,480,11.448,491.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.709893,1.15272,0.726824,1.18021,
+2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,M-1,M-1,,True,2.18e+08,,False,75,11.448,86.448,300,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,M-2,M-2,,True,3.3e+08,,False,190,11.448,201.448,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,B-1,B,B-1,True,8.7e+07,,False,235,11.448,246.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-HQA1,2020-02-04,2020,HQA,1M LIBOR,B-2,B,B-2,True,1.03e+08,,False,510,11.448,521.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.754261,1.22477,0.771192,1.25226,
+2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,M-1,M-1,,True,2.12e+08,,False,70,11.448,81.448,275,375,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,M-2,M-2,,True,3.5e+08,,False,170,11.448,181.448,110,275,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,B-1,B,B-1,True,1.06e+08,,False,230,11.448,241.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2020-DNA1,2020-01-28,2020,DNA,1M LIBOR,B-2,B,B-2,True,1.26e+08,,False,525,11.448,536.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.776445,1.26079,0.793376,1.28828,
+2019-FTR4,2019-12-17,2019,FTR,1M LIBOR,B-2,B,B-2,True,1.1122e+08,,False,500,11.448,511.448,10,478.5,AH,False,,,,,,,,,detachment point not known: unlisted retained classes above
+2019-FTR3,2019-12-17,2019,FTR,1M LIBOR,B-2,B,B-2,True,1.5159e+08,,False,480,11.448,491.448,10,451,AH,False,,,,,,,,,detachment point not known: unlisted retained classes above
+2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,M-1,M-1,,True,1.2e+08,,False,77,11.448,88.448,325,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,M-2,M-2,,True,2.02e+08,,False,205,11.448,216.448,115,325,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,B-1,B,B-1,True,5.3e+07,,False,295,11.448,306.448,60,115,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA4,2019-11-19,2019,HQA,1M LIBOR,B-2,B,B-2,True,5.7e+07,,False,660,11.448,671.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.976103,1.58499,0.993034,1.61249,
+2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,M-1,M-1,,True,1.48e+08,,False,70,11.448,81.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,M-2,M-2,,True,2.8e+08,,False,195,11.448,206.448,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,B-1,B,B-1,True,7.4e+07,,False,270,11.448,281.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA4,2019-10-22,2019,DNA,1M LIBOR,B-2,B,B-2,True,8.7e+07,,False,625,11.448,636.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,0.92434,1.50094,0.941271,1.52843,
+2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,M-1,M-1,,True,1.4e+08,,False,75,11.448,86.448,350,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,M-2,M-2,,True,2.8e+08,,False,185,11.448,196.448,150,350,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,B-1,B,B-1,True,1.26e+08,,False,300,11.448,311.448,60,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA3,2019-09-24,2019,HQA,1M LIBOR,B-2,B,B-2,True,8e+07,,False,750,11.448,761.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.10921,1.80113,1.12614,1.82862,
+2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,M-1,M-1,,True,8.2e+07,,False,95,11.448,106.448,250,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,M-2,M-2,,True,1.14e+08,,False,215,11.448,226.448,110,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,B-1,B,B-1,True,4.2e+07,,False,300,11.448,311.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-FTR2,2019-08-20,2019,FTR,1M LIBOR,B-2,B,B-2,True,4.6e+07,,False,740,11.448,751.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.09442,1.77711,1.11135,1.80461,
+2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,M-1,M-1,,True,1.8e+08,,False,73,11.448,84.448,325,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,M-2,M-2,,True,3.9e+08,,False,205,11.448,216.448,110,325,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,B-1,B,B-1,True,9e+07,,False,325,11.448,336.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA3,2019-07-23,2019,DNA,1M LIBOR,B-2,B,B-2,True,9.6e+07,,False,815,11.448,826.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.20534,1.95723,1.22227,1.98472,
+2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,M-1,M-1,,True,3.3e+07,,False,75,11.448,86.448,620,700,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,M-2,M-2,,True,1.12e+08,,False,140,11.448,151.448,350,620,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,M-3,M-3,,False,5.2e+07,,False,225,11.448,236.448,225,350,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,B-1,B,B-1,True,4.2e+07,,False,405,11.448,416.448,125,225,M3,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HRP1,2019-06-18,2019,HRP,1M LIBOR,B-2,B,B-2,True,4.2e+07,,False,950,11.448,961.448,25,125,B1,True,0.945095,0.582028,94.5095,58.2028,10.0519,16.3222,10.173,16.5189,
+2019-FTR1,2019-05-21,2019,FTR,1M LIBOR,B-2,B,B-2,True,1.4e+08,,False,835,11.448,846.448,10,375,AH,False,,,,,,,,,detachment point not known: unlisted retained classes above
+2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,M-1,M-1,,True,1.4e+08,,False,70,11.448,81.448,350,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,M-2,M-2,,True,2.8e+08,,False,205,11.448,216.448,150,350,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,B-1,B,B-1,True,1.25e+08,,False,410,11.448,421.448,60,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA2,2019-05-07,2019,HQA,1M LIBOR,B-2,B,B-2,True,7e+07,,False,1125,11.448,1136.45,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.66381,2.70169,1.68074,2.72919,
+2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,M-1,M-1,,True,1.1e+08,,False,80,11.448,91.448,350,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,M-2,M-2,,True,3.52e+08,,False,245,11.448,256.448,110,350,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,B-1,B,B-1,True,7.3e+07,,False,435,11.448,446.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA2,2019-03-26,2019,DNA,1M LIBOR,B-2,B,B-2,True,7.3e+07,,False,1050,11.448,1061.45,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.55289,2.52158,1.56982,2.54907,
+2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,M-1,M-1,,True,1.31e+08,,False,90,11.448,101.448,360,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,M-2,M-2,,True,3.05e+08,,False,235,11.448,246.448,150,360,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,B-1,B,B-1,True,1.31e+08,,False,440,11.448,451.448,60,150,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-HQA1,2019-02-26,2019,HQA,1M LIBOR,B-2,B,B-2,True,7.3e+07,,False,1225,11.448,1236.45,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.81171,2.94184,1.82864,2.96934,
+2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,M-1,M-1,,True,2.15e+08,,False,90,11.448,101.448,300,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,M-2,M-2,,True,3.27e+08,,False,265,11.448,276.448,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,B-1,B,B-1,True,8.6e+07,,False,465,11.448,476.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2019-DNA1,2019-01-30,2019,DNA,1M LIBOR,B-2,B,B-2,True,8.6e+07,,False,1075,11.448,1086.45,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.58986,2.58162,1.6068,2.60911,
+2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,M-1,M-1,,True,1.7e+08,,False,85,11.448,96.448,525,600,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,M-2,M-2,,True,2.26e+08,,False,125,11.448,136.448,425,525,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,M-3,M-3,,False,4.52e+08,,False,240,11.448,251.448,225,425,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,B-1,B,B-1,True,2.26e+08,,False,420,11.448,431.448,125,225,M3,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP2,2018-11-20,2018,HRP,1M LIBOR,B-2,B,B-2,True,2.26e+08,,False,1050,11.448,1061.45,25,125,B1,True,0.945095,0.582028,94.5095,58.2028,11.11,18.0404,11.2311,18.2371,
+2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,M-1,M-1,,True,2.56e+08,,False,75,11.448,86.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,M-2,M-2,,True,4.76e+08,,False,230,11.448,241.448,115,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,B-1,B,B-1,True,1.28e+08,,False,425,11.448,436.448,65,115,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HQA2,2018-10-24,2018,HQA,1M LIBOR,B-2,B,B-2,True,1.4e+08,,False,1100,11.448,1111.45,10,65,B1,True,3.38079,2.08203,614.689,378.55,1.78952,2.90582,1.80815,2.93606,
+2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,M-1,M-1,,True,2.1e+08,,False,75,11.448,86.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,M-2,M-2,,True,4e+08,,False,210,11.448,221.448,110,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,B-1,B,B-1,True,1.05e+08,,False,390,11.448,401.448,60,110,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA3,2018-09-21,2018,DNA,1M LIBOR,B-2,B,B-2,True,1.05e+08,,False,775,11.448,786.448,10,60,B1,True,3.38079,2.08203,676.158,416.406,1.14618,1.86117,1.16311,1.88866,
+2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,M1,M-1,,True,3.5e+08,,False,80,11.448,91.448,250,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,M2,M-2,,True,5.25e+08,,False,215,11.448,226.448,100,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,B1,B,B-1,True,1.75e+08,,False,370,11.448,381.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA2,2018-06-20,2018,DNA,1M LIBOR,B2,B,B-2,True,,Retained,True,1050,11.448,1061.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.04904,1.70342,1.06047,1.722,
+2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,M-1,M-1,,True,,Retained,True,80,11.448,91.448,425,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,M-2,M-2,,True,3.62e+08,,False,165,11.448,176.448,250,425,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,B-1,B,B-1,True,2.59e+08,,False,375,11.448,386.448,125,250,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HRP1,2018-05-21,2018,HRP,1M LIBOR,B-2,B,B-2,True,2.59e+08,,False,1175,11.448,1186.45,0,125,B1,True,5.00459,3.08203,400.367,246.562,2.93481,4.76553,2.9634,4.81196,
+2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,M-1,M-1,,True,2.25e+08,,False,70,11.448,81.448,320,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,M-2,M-2,,True,6.2e+08,,False,230,11.448,241.448,210,320,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,B-1,B,B-1,True,1.4e+08,,False,435,11.448,446.448,50,210,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-HQA1,2018-03-28,2018,HQA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1100,11.448,1111.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.09899,1.78454,1.11043,1.80311,
+2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,M-1,M-1,,True,2.3e+08,,False,45,11.448,56.448,310,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,M-2,M-2,,True,5.4e+08,,False,180,11.448,191.448,100,310,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,B-1,B,B-1,True,1.3e+08,,False,315,11.448,326.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2018-DNA1,2018-01-30,2018,DNA,1M LIBOR,B-2,B,B-2,True,,Retained,True,950,11.448,961.448,0,50,B1,True,5.00459,3.08203,1000.92,616.406,0.949129,1.54119,0.960566,1.55977,
+2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-1,M-1,,True,,Retained,True,80,11.448,91.448,375,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,M-2,M-2,,True,,,False,,11.448,,150,375,M1,True,0,0,0,0,,,,,no spread printed
+2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-1,B,B-1,True,,,False,,11.448,,75,150,M2,True,0,0,0,0,,,,,no spread printed
+2017-HRP1,2017-12-13,2017,HRP,1M LIBOR,B-2,B,B-2,True,,,False,,11.448,,0,75,B1,True,5.00459,3.08203,667.279,410.937,,,,,no spread printed
+2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,M-1,M-1,,True,1.2e+08,,False,55,11.448,66.448,370,450,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,M-2,M-2,,True,4.05e+08,,False,235,11.448,246.448,100,370,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,B-1,B,B-1,True,7.5e+07,,False,445,11.448,456.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA3,2017-10-18,2017,HQA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1300,11.448,1311.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.29881,2.109,1.31025,2.12757,
+2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,M-1,M-1,,True,4e+08,,False,75,11.448,86.448,250,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,M-2,M-2,,True,6e+08,,False,250,11.448,261.448,100,250,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,B-1,B,B-1,True,2e+08,,False,445,11.448,456.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA3,2017-10-04,2017,DNA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1100,11.448,1111.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.09899,1.78454,1.11043,1.80311,
+2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,M-1,M-1,,True,2.25e+08,,False,80,11.448,91.448,300,400,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,M-2,M-2,,True,4.5e+08,,False,265,11.448,276.448,100,300,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,B-1,B,B-1,True,1.125e+08,,False,475,11.448,486.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA2,2017-06-20,2017,HQA,1M LIBOR,B-2,B,B-2,True,,Retained,True,1200,11.448,1211.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.1989,1.94677,1.21034,1.96534,
+2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,M-1,M-1,,True,5.16e+08,,False,120,11.448,131.448,230,350,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,M-2,M-2,,True,5.59e+08,,False,345,11.448,356.448,100,230,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,B-1,B,B-1,True,2.155e+08,,False,515,11.448,526.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA2,2017-04-11,2017,DNA,1M LIBOR,B-2,B,B-2,True,3e+07,,False,1125,11.448,1136.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.12397,1.8251,1.13541,1.84367,
+2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,M-1,M-1,,True,2.1e+08,,False,120,11.448,131.448,325,425,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,M-2,M-2,,True,4.725e+08,,False,355,11.448,366.448,100,325,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,B-1,B,B-1,True,5.5e+07,,False,500,11.448,511.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-HQA1,2017-02-22,2017,HQA,1M LIBOR,B-2,B,B-2,True,1.5e+07,,False,1275,11.448,1286.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,1.27383,2.06844,1.28527,2.08702,
+2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,M-1,M-1,,True,2.9e+08,,False,120,11.448,131.448,255,375,AH,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,M-2,M-2,,True,3.755e+08,,False,325,11.448,336.448,100,255,M1,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,B-1,B,B-1,True,1.2e+08,,False,495,11.448,506.448,50,100,M2,True,0,0,0,0,,,,,absent: attaches at or above the baseline cumulative loss (30.8 bps)
+2017-DNA1,2017-02-07,2017,DNA,1M LIBOR,B-2,B,B-2,True,1.7e+07,,False,1000,11.448,1011.45,0,50,B1,True,5.00459,3.08203,1000.92,616.406,0.999083,1.62231,1.01052,1.64088,
