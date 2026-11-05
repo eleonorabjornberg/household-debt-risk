@@ -196,16 +196,11 @@ add2("b2_fre_1720_net_hi", f"Freddie 2017-2020 total less reinvestment per dolla
 add2("b2_fre_1720_rate_lo", f"Freddie 2017-2020 total CRT cost per dollar of cover, lowest year {p1(g4.min())}.", p1(g4.min()), g4.min(), "gse_10k.py -> freddie_crt_cost.csv min(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 add2("b2_fre_1720_rate_hi", f"Freddie 2017-2020 total CRT cost per dollar of cover, highest year {p1(g4.max())}.", p1(g4.max()), g4.max(), "gse_10k.py -> freddie_crt_cost.csv max(gross_cost_per_maxcov, 2017-2020)", "share", "2017-2020", f"research/b2_crt_pricing/README.md:{ag}", FS, "ESTIMATE")
 assert all(float(r['value']) >= 0 for r in out)
-p = 'claims/tracks/markets.csv'
-old = [r for r in csv.DictReader(open(p)) if not r['claim_id'].startswith('b2_')]
-# Rows the coordinator has already folded into claims/register.csv stay there (no duplicate ids); they must still
-# match what this script would write, apart from the location if the README moved (checked, not silently kept).
-reg = {r['claim_id']: r for r in csv.DictReader(open('claims/register.csv'))}
-for r in out:
-    if r['claim_id'] in reg:
-        g = reg[r['claim_id']]
-        assert (g['display'], g['value'], g['locations']) == (r['display'], r['value'], r['locations']), (r['claim_id'], g['locations'], r['locations'])
-out = [r for r in out if r['claim_id'] not in reg]
-with open(p, 'w', newline='') as f:
-    w = csv.DictWriter(f, fieldnames=header); w.writeheader(); w.writerows(old + out)
-print(len(out), "B2 rows")
+import sys
+sys.path.insert(0, "research/common")
+from track_rows import write_track_rows  # noqa: E402
+for r in out:   # the 2013-2016 per-tranche range is repeated in the 2017-2023 comparison bullet (skeptic s43)
+    if r["claim_id"] in ("b2_per_tranche_lo", "b2_per_tranche_hi"):
+        r["locations"] += f";research/b2_crt_pricing/README.md:{ag}"
+new = write_track_rows(out, "b2_")
+print(len(out), "B2 rows,", len(new), "not yet in claims/register.csv")
