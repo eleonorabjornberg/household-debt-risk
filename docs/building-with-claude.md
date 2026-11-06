@@ -485,3 +485,4 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Coordinator check: recomputed $0.509084 from `calls.jsonl` (30 question rows plus one checkpoint row); no key, header or email in the commit. Merged as `a5c36fe`; 93 atlas tests pass.
 - Gap caught by the coordinator: the D6 call log has no served-model field (E1's had one), so the run can't confirm Sonnet served it. Infra asked to add it.
 - Put in front of her on the review queue, round 22 (rv-d6-buildtest).
+- Follow-up (infra, 05:34 UTC): the coordinator's 05:19 instruction to send the plan first reached infra only after the run started at 05:30. Infra's plan, written after the fact, fits her choices: Sonnet, $2 run budget under the $20 cap, E1-style guards, 30 E1 questions and none of the 20 held out. The coordinator has not approved any further paid D6 call.
