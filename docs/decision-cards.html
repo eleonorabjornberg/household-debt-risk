@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 38: three D6 (Ask Hot Potato) set-up questions.</p>
+      <p class="sub">Round 39: nothing waiting. D6 preview variables are on hold (you chose later).</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "d6-store", "group": "D6 Ask Hot Potato", "tag": "D6", "title": "Where the preview keeps its visitor and daily-spend counts", "ctx": "Your limits (5 questions per visitor per day, $2/day for the whole app) need a counter that every server instance shares. Vercel runs the route on many short-lived instances, so a counter held in one instance's memory does not enforce them. Until you choose, the route refuses to serve on Vercel. Neither (a) nor (b) has been set up or priced yet, and either one adds a new service the project depends on. No recommendation is given.", "opts": [["kv", "(a) Vercel KV / Upstash Redis on its free tier, added by you to the atlas Vercel project"], ["supa", "(b) A table in a separate, non-production Supabase project or branch"], ["none", "(c) No shared store: no public preview, so D6 runs only in local tests"], ["later", "Decide later"]], "where": "tracks/infra-d6-plan.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/tracks/infra-d6-plan.md"}, {"id": "d6-data", "group": "D6 Ask Hot Potato", "tag": "D6", "title": "Where the app's tools read data from at question time", "ctx": "The tools are the D5 household-credit tools, ported to TypeScript, with tests that their outputs match the Python ones. (a) They read the JSON snapshots the site already ships (the database export), so a question never touches the database. (b) They run read-only queries on mart through Supabase's API with the publishable key, the way atlas does at build time. That reaches the production database each time a visitor asks a question. No recommendation is given.", "opts": [["snap", "(a) The shipped JSON snapshots; no database access at question time"], ["mart", "(b) Read-only queries to the production mart through Supabase's API"], ["later", "Decide later"]], "where": "tracks/infra-d6-plan.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/tracks/infra-d6-plan.md"}, {"id": "d6-key", "group": "D6 Ask Hot Potato", "tag": "D6", "title": "Preview variables for D6 (an action for you)", "ctx": "The preview route needs three variables in the atlas Vercel project, Preview environment only: HHDEBT_ANTHROPIC_API_KEY (the Anthropic key), ASK_VISITOR_SALT (any long random string; it hashes visitor ids for the 5-a-day limit) and NEXT_PUBLIC_ASK_ENABLED=1. The store you pick on d6-store adds its own variables later. Only you can add them, in the Vercel project settings. Never paste them in chat. Production stays off: the route returns 404 there whatever is set. Without these the preview route refuses to answer. Infra's offline work and the local paid build test (about 30 questions, estimated about $1 under your $20 cap) don't need them; that test uses the key already in the cloud environment, and infra reports its plan before the first paid call.", "opts": [["done", "I've added all three (Preview only)"], ["notyet", "Not yet: keep D6 local for now"], ["later", "Later"]], "where": "Vercel → atlas project → Settings → Environment Variables", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/tracks/infra-d6-plan.md"}];
+const DECISIONS = [];
 
-const GROUPS = ["D6 Ask Hot Potato"];
+const GROUPS = [];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
