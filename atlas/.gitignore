@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ask Hot Potato: generated at build time by scripts/ask-data.mjs (catalog.json stays committed)
+lib/ask/register.json
