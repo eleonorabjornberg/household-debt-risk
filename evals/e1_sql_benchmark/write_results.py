@@ -134,10 +134,39 @@ def main() -> None:
               "Sonnet).",
               "- Four answers of 36.2 on q156 (gold 36.216, tolerance $0.01 trillion) miss by rounding to one decimal, "
               "under the tolerance in the approved set.",
-              "", "## Opus no-tools baseline", "",
-              "**Open.** The baseline stopped after 24 of 240 loops at a false 10% checkpoint (a projection bug, fixed in "
-              "`5814ec3`). Eleonora's e1-baseline decision (resume or report as partial) is pending; this section is "
-              "filled in after it.", ""]
+              "", "## Opus no-tools baseline (descriptive; no pre-registered test)", ""]
+    base = HERE / "run-2026-11-05-baseline"
+    bs = json.loads((base / "summary.json").read_text())
+    br = [json.loads(l) for l in (base / "results.jsonl").read_text().splitlines() if l.strip()]
+    if bs["loops_done"] < bs["loops_planned"] or bs.get("stop"):
+        lines.append(f"**Partial:** {bs['loops_done']} of {bs['loops_planned']} loops ({bs['stop'] and bs['stop']['reason']}).")
+        lines.append("")
+    mr = [json.loads(l) for l in (RUN / "results.jsonl").read_text().splitlines() if l.strip()]
+    lines += ["`run-2026-11-05-baseline`: Opus 5.5 with no tools, answering from memory, on the same 80 questions × 3 "
+              "repetitions. It stopped after 24 loops at a false checkpoint (deviation D6) and was resumed from loop 25. "
+              "It is compared with Opus 5.5 with tools from the main run.", "",
+              "| Opus 5.5 | Answerable correct | Refusals correct | Spent | Mean per loop |", "|---|---|---|---|---|"]
+    def rate(rs, un):
+        x = [r for r in rs if (r["family"] == "UN") == un]
+        return sum(r["correct"] for r in x) / len(x), len(x)
+    opus_main = [r for r in mr if r["model"] == "claude-opus-5-5"]
+    for tag, label, rs, sp, mean in (
+            ("tools", "with tools (main run)", opus_main, s["per_model"]["claude-opus-5-5"]["spent_usd"],
+             s["per_model"]["claude-opus-5-5"]["mean_per_loop_usd"]),
+            ("notools", "no tools (baseline)", br, spend(base), spend(base) / max(1, len(br)))):
+        (ra, na), (rr, nr) = rate(rs, False), rate(rs, True)
+        da, dr, ds = pct(ra), pct(rr), f"${sp:.2f}"
+        claim(f"baseline_{tag}_answerable", f"E1: Opus 5.5 {label} answered {da} of {na} answerable-question answers "
+              "correctly (descriptive).", da, f"{ra:.4f}", "share", "run-2026-11-05-baseline/results.jsonl and "
+              "run-2026-11-05b/results.jsonl, scored by pilot.score (D1)")
+        lines.append(f"| {label} | {da} (of {na}) | {dr} (of {nr}) | {ds} | ${mean:.4f} |")
+        rows.append({**rows[-1], "claim_id": f"e1_baseline_{tag}_refusals", "display": dr, "value": f"{rr:.4f}",
+                     "claim": f"E1: Opus 5.5 {label} correct refusals {dr} of {nr} unanswerable-question answers (descriptive)."})
+        if tag == "notools":
+            rows.append({**rows[-1], "claim_id": "e1_baseline_spend", "display": ds, "value": f"{sp:.6f}", "unit": "usd",
+                         "claim": f"E1: Opus 5.5 no-tools baseline spend {ds} (all loops, incl. before the D6 resume)."})
+    lines += ["", "The baseline has no pre-registered test (CHOICE-E1-12 (b)); it shows what the tools add. "
+              "A no-tools answer is scored by the same rule, against the same gold.", ""]
     NOTE.write_text("\n".join(lines))
     keep = []
     if TRACK.exists():
