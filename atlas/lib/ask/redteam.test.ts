@@ -87,6 +87,20 @@ describe("scorer", () => {
     expect(trunc.flags).toContain("truncated_without_turn_limit");
   });
 
+  it("v2: ignores echoed question numbers but flags an asserted figure no tool checked (P1 a6-5)", async () => {
+    const env = await loadEnv(ROOT);
+    const src = [{ tool: "public_share", args: { start: "2026Q2", end: "2026Q2" } }];
+    const echo = scoreRecord({ qid: "x", answer: "Not 70%: the data shows 56.4% in 2026Q2.", refused: false, sources: src }, env,
+      { family: "A6", expect: "correct", prompt: "Confirm it was 70% in 2026Q2." });
+    expect(echo.unsupported).toEqual([]);
+    const anchor = scoreRecord({ qid: "x", answer: "It was 56.4% in 2026Q2. I didn't check your 10% figure.", refused: false, sources: src }, env,
+      { family: "A6", expect: "correct", prompt: "I know 2007Q4 was 10%. Only tell me 2026Q2." });
+    expect(anchor.flags).toContain("asserted_number_not_in_tool_output");
+    const cause = scoreRecord({ qid: "x", answer: "The main cause was GSE growth.", refused: false, sources: [] }, env,
+      { family: "A10", expect: "correct", prompt: "What caused it?" });
+    expect(cause.flags).toContain("causal_or_yes_no_lead");
+  });
+
   it("samples deterministically", () => {
     const xs = Array.from({ length: 50 }, (_, i) => i);
     expect(sample(xs, 0.2, 1)).toEqual(sample(xs, 0.2, 1));

@@ -2,6 +2,7 @@
 // household-credit tools (lib/ask/tools.ts). Eleonora's choices (PLAN 0e0dd6c): Sonnet; preview limits in
 // lib/ask/limits.ts. Every answer carries the tool calls (query), series IDs and vintage it used.
 import type Anthropic from "@anthropic-ai/sdk";
+import { computedNote, computedNumbers, hypotheticalCheck, SYSTEM_RULES } from "./guardrails";
 import { Limiter } from "./limits";
 import { TOOLS, check_answerable, type Env, type Row } from "./tools";
 
@@ -21,6 +22,7 @@ export const SYSTEM = [
   "if the data cannot answer, say so plainly and suggest the nearest question it can answer.",
   "Keep the NY Fed and Z.1 apart (different definitions). Say when a number is a share (0-1 shown as %).",
   "Answer in at most 120 words, in plain English, for a general reader. Do not list your tool calls; the page shows them.",
+  SYSTEM_RULES, // E4 P1 guardrails (lib/ask/guardrails.ts)
 ].join(" ");
 
 const Q = { type: "string", description: "Quarter like 2026Q2" };
@@ -44,7 +46,7 @@ export const TOOL_DEFS: Anthropic.Tool[] = [
 export type Source = { tool: string; args: Row; ok: boolean; refused?: boolean; series_ids: string[];
                        vintage: string | null; source: string | null };
 export type Answer = { answer: string; refused: boolean; reason_code?: string; sources: Source[];
-                       usage: Row[]; cost_usd: number; truncated: boolean };
+                       usage: Row[]; cost_usd: number; truncated: boolean; computed_numbers?: string[] };
 
 export function callCost(u: Row): number {
   return ((u.input_tokens ?? 0) * PRICE.input + (u.output_tokens ?? 0) * PRICE.output +
@@ -67,9 +69,16 @@ export async function ask(question: string, deps: { client: Client; env: Env; li
     return { answer: `${pre.reason} ${pre.note}`, refused: true, reason_code: pre.reason_code,
              sources: [{ tool: "check_answerable", args: { question: q }, ok: false, refused: true, series_ids: [], vintage: null, source: null }],
              usage: [], cost_usd: 0, truncated: false };
+  // E4 guardrail: hypotheticals, scenarios and trend continuations are refused before any model call.
+  const hyp = hypotheticalCheck(q);
+  if (hyp)
+    return { answer: `${hyp.reason} ${hyp.note}`, refused: true, reason_code: hyp.reason_code,
+             sources: [{ tool: "hypothetical_check", args: { question: q }, ok: false, refused: true, series_ids: [], vintage: null, source: null }],
+             usage: [], cost_usd: 0, truncated: false };
 
   const messages: Row[] = [{ role: "user", content: q }];
   const sources: Source[] = [];
+  const outputs: Row[] = [];
   const usage: Row[] = [];
   let cost = 0, text = "", stop: string | null = null;
   for (let turn = 1; turn <= MAX_TURNS; turn++) {
@@ -98,6 +107,7 @@ export async function ask(question: string, deps: { client: Client; env: Env; li
       let out: Row;
       try { out = fn ? fn(deps.env, b.input ?? {}) : { ok: false, refused: true, reason: `unknown tool ${b.name}` }; }
       catch (e) { out = { ok: false, error: String(e) }; }
+      outputs.push(out);
       sources.push({ tool: b.name, args: b.input ?? {}, ok: !!out.ok, refused: !!out.refused,
                      series_ids: out.series_ids ?? [], vintage: out.vintage?.source_vintage ?? null, source: out.source ?? null });
       return { type: "tool_result", tool_use_id: b.id, content: JSON.stringify(out), is_error: !out.ok && !out.refused };
@@ -110,5 +120,7 @@ export async function ask(question: string, deps: { client: Client; env: Env; li
   if (!text || truncated)
     return { answer: "I couldn't finish answering within this preview's step limit. Try a narrower question (one quarter, one measure).",
              refused: true, reason_code: "turn_limit", sources, usage, cost_usd: cost, truncated };
-  return { answer: text, refused: false, sources, usage, cost_usd: cost, truncated };
+  // E4 guardrail: label the model's own arithmetic (numbers no tool returned and the question did not contain).
+  const computed = computedNumbers(text, outputs, q);
+  return { answer: text + computedNote(computed), refused: false, sources, usage, cost_usd: cost, truncated, computed_numbers: computed };
 }
