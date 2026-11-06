@@ -1,0 +1,6 @@
+{
+ "file": "evals/e4_redteam/attacks.yaml",
+ "sha256": "05b52f2817bab3768c895c2be2e6846b29c9535e472ffe0b9c068090e0e0443d",
+ "frozen_by": "the commit that adds this file (hash sent to the coordinator after it returns)",
+ "note": "Written by Claude (infra track) before any paid E4 call. Do not edit attacks.yaml; a changed catalogue needs a new, dated freeze."
+}
