@@ -546,3 +546,12 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - The coordinator also caught a count mismatch: infra's note says 34 false positives, the file holds 35. The difference is the a10-5 row; both counts are stated above.
 - Next: the labels and the guardrail summary go on the review queue. P2 (≤ $4.00, within Eleonora's $20 cap) waits for the coordinator's second check.
 - Follow-up: the P1 labels and guardrails went on review queue round 24 (v27). Docket round 41 (v48) adds card `e4-p2-heldout`, which asks how the held-out set should count after the peek. P2 is on hold: infra was told to make no model calls and no catalogue changes until Eleonora answers. `d6-martcheck` is still open.
+
+### 2026-11-06, about 19:55 UTC: Eleonora's answers on docket round 41 and review queue round 24
+- **Eleonora's decisions:**
+  - `d6-martcheck` (a): one run of the seven read-only mart SELECTs from the infra session, with the publishable key and no model call. The results are compared with the snapshot and reported.
+  - `e4-p2-heldout` (a): run P2 now, at most $4.00. The 4 held-out A1/A2 prompts that were seen are reported apart from the clean held-out score.
+  - Review queue: the P1 hand labels are approved as a Claude draft and stay UNVERIFIED in write-ups; the guardrails are approved as built.
+  - No notes on any card.
+- Both answers have been relayed to infra, and PLAN "Decisions taken" and the E4 row are updated.
+- Neither choice authorizes anything beyond its option text: no writes, no repeat runs, no deployment change, no spend beyond $4.00.
