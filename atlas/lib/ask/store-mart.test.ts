@@ -152,3 +152,21 @@ describe("mart source (d6-data (b), fake client)", () => {
     }
   });
 });
+
+describe("vintage drift check (mart rows live, vintages from the snapshot)", () => {
+  it("passes when the live coverage matches meta.json and flags a mart refresh the snapshot has not seen", async () => {
+    const snap = await loadEnv(ROOT);
+    const same = await martEnv(fakeMart(snap).client, snap);
+    expect(same.vintage_check).toMatchObject({ matches: true });
+    expect(same.note).not.toMatch(/MISMATCH/);
+    // a refreshed mart: one quarter newer than the snapshot
+    const newer = { ...snap, tables: { ...snap.tables,
+      public_share: [...snap.tables.public_share, { ...snap.tables.public_share.at(-1), date: "2026-09-30" }] } };
+    const live = await martEnv(fakeMart(newer as Env).client, snap);
+    expect(live.vintage_check).toMatchObject({ matches: false, snapshot_mart_end: snap.tables.meta.mart_end });
+    expect(live.vintage_check!.message).toMatch(/VINTAGE MISMATCH.*public_share ends 2026-09-30/);
+    const out = TOOLS.public_share(live, {});
+    expect(out.backend_note).toMatch(/VINTAGE MISMATCH/);
+    expect(out.vintage.all.vintage_check.matches).toBe(false);
+  });
+});
