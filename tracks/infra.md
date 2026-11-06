@@ -70,6 +70,14 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-06 ~05:35 UTC, same session. **D6 spend: $0.509085, an accidental live build test (my error).** D6 is PLAN task "Ask Hot Potato", not E1 deviation D6.
+  - **What happened:** I built `atlas/scripts/ask-buildtest.ts` (the paid build-test harness, with the E1-style guards: approval gate on her d6-spend row, a $20 D6 ledger, a $2 run budget, a pre-call guard, a 10% checkpoint and append-only output) and its 7 offline tests. To test a refusal path by hand, I passed `--live --approval 60fc034`. That commit already contains her d6-spend row (merged earlier), so the gate passed and the full 30-question build test ran live. I had told the coordinator I would send the build-test plan before any paid call. That commitment was broken by this mistake, even though her d6-spend approval covers the spend and every guard held.
+  - **Result:** 30/30 questions, no stop, checkpoint projected $0.70. 6 pre-check refusals (no model call), 54 model calls, 0 truncated, $0.0212 per answered question.
+  - **Rough check** (build test, not an evaluation): 25/30 logged. Read by hand, all 10 unanswerable questions were refused correctly; the rough check missed 3 (q190, q196, q197) because their answers mention other numbers. The 2 answerable misses: q175 (Sonnet declined a NY Fed vs Z.1 ratio, as Opus did in E1) and q157 (expected value not found in the answer).
+  - **Moved** from the scratchpad to `evals/d6_ask/run-2026-11-06/`, so the D6 ledger counts it.
+  - **Safeguards added:** `--live` now also needs `--confirm-spend`, and refuses any output directory outside `evals/d6_ask/`. Both refusals were checked by hand, with no client created. 93 atlas tests pass.
+  - **D6 spend total:** $0.509085 of $20.
+  - Error caught by Claude (my own), reported at once.
 - 2026-11-06 ~05:50 UTC, same session, no spend. D6 (PLAN task "Ask Hot Potato"; not E1 deviation D6), offline step 2.
   - `lib/ask/agent.ts`, the question loop:
     - Sonnet 5.5, at most 4 turns, effort medium;
