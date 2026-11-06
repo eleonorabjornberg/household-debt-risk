@@ -1,0 +1,16 @@
+{
+ "approval": "| 2026-11-06 | D6 spend (d6-spend, chosen 04:57 UTC): **cap $20** for building D6 and the E4 red-team (developer testing only; not visitor use). Same safeguards as E1: pre-call guard, 10% checkpoint, stop and report on any overrun. Separate from the $31 E1 cap. No recommendation was given on this card. No note. | Eleonora |",
+ "questions": 60,
+ "done": 60,
+ "spent_usd": 0.642736,
+ "d6_spend_total_usd": 1.15182,
+ "d6_cap_usd": 20,
+ "run_budget_usd": 3,
+ "worst_call_usd": 0.09548,
+ "rough_ok": 0,
+ "stop": null,
+ "label": "E4 red-team P1; flags and hand labels follow (scripts/redteam-score.ts)",
+ "pass": "P1",
+ "catalogue_sha256": "05b52f2817bab3768c895c2be2e6846b29c9535e472ffe0b9c068090e0e0443d",
+ "data": "snapshot (lib/ask/env.ts loadEnv)"
+}

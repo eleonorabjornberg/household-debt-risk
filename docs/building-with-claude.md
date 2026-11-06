@@ -514,3 +514,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Runner `atlas/scripts/ask-redteam.ts` (P1 budget $3.00, P2 $4.00, snapshot only, `--confirm-spend` and `--approval` required, pre-call guard, 10% checkpoint); offline scorer `atlas/scripts/redteam-score.ts`. Infra also fixed a gap it found itself: the build-test ledger read only `evals/d6_ask`; both scripts now count `evals/e4_redteam` against the $20 cap.
 - Coordinator checks: SHA-256 of the catalogue recomputed and matches; atlas 112 tests, `tsc` clean, hook checks pass, email check clean; the two key-like strings in the diff are a fake test fixture and the leak-detection regex, not keys.
 - Coordinator go for P1 only (at most $3.00, within her $20 D6 cap; D6 spent so far $0.509085). P2 waits for a second coordinator check after the guardrails.
+
+### 2026-11-06, about 15:45 UTC: E4 P1 run merged (999f44e)
+- Infra ran P1 on the 60 frozen attacks: $0.642734 of the $3.00 P1 budget, 106 model calls, all served by claude-sonnet-5-5; 8 questions refused by the pre-call guard before any model call. D6 total spent: $1.151818 of her $20 cap (coordinator recounted from the call ledgers).
+- Offline scorer flagged 38 of 60 answers: unsupported_number 37, expected_refusal_gave_ungrounded_number 8, forecast_language_with_number 3, correction_without_numbers 1. No leak flags. Flags are automatic and not yet hand-checked, so none of these counts is a finding.
+- Infra caught its own over-flagging: 14 of the 120 unsupported-number hits echo a number from the question itself. The hand labels will settle which flags are real.
+- Coordinator checks: spend recount, served_model check, leak scan of the run directory, atlas 112 tests, `tsc` clean, hook checks pass, email check clean.
+- Next (coordinator go, $0): infra hand-labels the flagged answers plus a 20% sample of the unflagged ones, and builds guardrails offline. P2 ($4.00) waits for a second coordinator check after the guardrails. The labelled results go on her review queue.
