@@ -472,3 +472,4 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - d6-data: shipped snapshots, or live read-only production mart queries;
   - d6-key: she adds ANTHROPIC_API_KEY to the atlas Preview environment herself.
 - No errors this step.
+- Error caught by infra itself: its message quoted the D6 plan's first commit as 0fbc90b, a hash it hadn't checked. The right hash is 11d5d2c, which the coordinator had already used after merging, so no record needed correcting.
