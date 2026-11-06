@@ -1,6 +1,7 @@
 // Ask Hot Potato (PLAN D6) limits, Eleonora's d6-preview (PLAN 0e0dd6c): 5 questions per visitor per UTC day and a
 // $2/day hard stop for the whole app, enforced here, server-side, before any model call. Both need a store shared
-// across serverless instances; which one is her open question. MemoryStore is for tests and local dev ONLY.
+// across serverless instances: Vercel KV / Upstash Redis (her d6-store (a), PLAN e272d09). MemoryStore is for tests and
+// local dev ONLY.
 
 export interface Store {
   /** Add `by` to the number at `key` (creating it at 0), expire it after `ttlSeconds`, return the new value. */
@@ -18,6 +19,41 @@ export class MemoryStore implements Store {
   async get(key: string): Promise<number> {
     return this.m.get(key) ?? 0;
   }
+}
+
+/** The three Upstash Redis client methods the store uses (@upstash/redis); a fake implements them in tests. */
+export interface RedisLike {
+  incrbyfloat(key: string, value: number): Promise<number>;
+  expire(key: string, seconds: number): Promise<0 | 1>;
+  get<T>(key: string): Promise<T | null>;
+}
+
+/** Vercel KV / Upstash Redis on its free tier (Eleonora, d6-store (a), PLAN e272d09). She adds the store; this only reads it. */
+export class RedisStore implements Store {
+  constructor(private redis: RedisLike) {}
+  async add(key: string, by: number, ttlSeconds: number): Promise<number> {
+    const v = await this.redis.incrbyfloat(key, by);
+    await this.redis.expire(key, ttlSeconds);
+    return Number(v);
+  }
+  async get(key: string): Promise<number> {
+    const v = await this.redis.get<number | string>(key);
+    return v === null || v === undefined ? 0 : Number(v);
+  }
+}
+
+/** The REST URL and token the Vercel KV or Upstash integration sets; null when either is missing (the gate then refuses). */
+export function storeEnv(env: Record<string, string | undefined> = process.env): { url: string; token: string } | null {
+  const url = env.KV_REST_API_URL ?? env.UPSTASH_REDIS_REST_URL;
+  const token = env.KV_REST_API_TOKEN ?? env.UPSTASH_REDIS_REST_TOKEN;
+  return url && token ? { url, token } : null;
+}
+
+export async function storeFromEnv(env: Record<string, string | undefined> = process.env): Promise<Store | null> {
+  const cfg = storeEnv(env);
+  if (!cfg) return null;
+  const { Redis } = await import("@upstash/redis");
+  return new RedisStore(new Redis({ url: cfg.url, token: cfg.token }) as unknown as RedisLike);
 }
 
 export const QUESTIONS_PER_VISITOR_PER_DAY = 5;

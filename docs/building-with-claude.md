@@ -497,3 +497,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - rv-d6-buildtest: seen, kept in the D6 ledger.
 - No notes. No recommendation was given on any of these cards. Relayed to infra: build the KV adapter and the mart data path offline; no store provisioning, no Vercel env changes, no paid calls.
 - No errors this step.
+
+### 2026-11-06, about 15:25 UTC: coordinator merges infra's D6 store and mart path (c73a19b)
+- Infra built her d6-store (a) and d6-data (b) choices offline: an Upstash/Vercel KV limit store (fails closed with 503 on Vercel when the variables are missing) and a read-only mart data source (only `from(allowlisted mart table).select("*").order().range()`, publishable key, 503 on failure with no silent fallback). No spend, no store provisioned, no live mart read, no Vercel or production change.
+- Coordinator checks before merging: atlas 101 tests pass, `tsc` clean, hook checks pass, `git grep bjoernberg` rc=1, no key strings or service-role/DATABASE_URL in the diff. New dependency: `@upstash/redis`.
+- Coordinator note for review: in mart mode the data are live but the vintages shown come from the committed snapshot's meta.json, so the two can disagree after a mart refresh that is not followed by a snapshot export. The tools say so; it is not yet tested against the live mart.
+- Infra asked for one live read-only mart read (the seven SELECTs, no model call) to check parity with the snapshot. Her d6-data choice covers read-only mart reads at question time, not a test read by a track, so the coordinator put it on her docket instead of approving it.
