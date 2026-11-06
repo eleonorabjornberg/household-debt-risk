@@ -9,7 +9,7 @@ export type Tables = {
   crisis_event_window: Row[]; dim_crisis: Row[]; nyfed_by_type: Row[]; meta: Row;
 };
 export type Catalog = { series: Row[]; risk_buckets: Record<string, Row>; collateral_classes: Record<string, Row> };
-export type Env = { tables: Tables; catalog: Catalog; claims: Row[]; backend?: string; note?: string };
+export type Env = { tables: Tables; catalog: Catalog; claims: Row[]; backend?: string; note?: string; vintage_check?: Row };
 
 const Z1_UNITS = "USD millions, end of quarter, not seasonally adjusted (Z.1 levels)";
 const COMMON_Z1 = [
@@ -31,6 +31,7 @@ function vintages(env: Env): Row {
   // As the Python Postgres backend: the read-only API cannot see raw/core vintages, so they come from meta.json.
   if (env.backend === "mart_api")
     v.source = "meta.json snapshot; the mart API cannot report vintages, so the live data may be newer than this vintage";
+  if (env.vintage_check) v.vintage_check = env.vintage_check;
   return v;
 }
 const martRange = (env: Env): [string, string] => {

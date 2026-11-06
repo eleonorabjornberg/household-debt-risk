@@ -51,6 +51,25 @@ export async function readMartTable(client: MartClient, table: MartTable): Promi
 export async function martEnv(client: MartClient, base: Env): Promise<Env> {
   const entries = await Promise.all(MART_TABLES.map(async (t) => [t, await readMartTable(client, t)] as const));
   const tables = { ...Object.fromEntries(entries), meta: base.tables.meta } as Tables;
-  return { tables, catalog: base.catalog, claims: base.claims, backend: "mart_api",
-           note: "Live mart via Supabase's read-only API; vintages are from the committed snapshot's meta.json." };
+  const check = vintageCheck(tables);
+  return { tables, catalog: base.catalog, claims: base.claims, backend: "mart_api", vintage_check: check,
+           note: "Live mart via Supabase's read-only API; vintages are from the committed snapshot's meta.json." +
+                 (check.matches ? "" : ` ${check.message}`) };
+}
+
+/** The live rows and the snapshot's vintages can drift apart after a mart refresh: compare the latest quarter in
+ *  each live table with meta.json's mart_end, and the live public_share's first quarter with mart_start. */
+export function vintageCheck(tables: Tables): Row {
+  const meta = tables.meta ?? {};
+  const last = (rows: Row[]) => rows.reduce((m: string | null, r) => (r.date && (!m || r.date > m) ? r.date : m), null);
+  const ends: Row = {};
+  for (const t of ["public_share", "debt_by_risk_holder", "collateral_coverage"] as const) ends[t] = last(tables[t]);
+  const start = tables.public_share.reduce((m: string | null, r) => (r.date && (!m || r.date < m) ? r.date : m), null);
+  const bad = Object.entries(ends).filter(([, d]) => d !== meta.mart_end).map(([t, d]) => `${t} ends ${d}`);
+  if (start !== meta.mart_start) bad.push(`public_share starts ${start}`);
+  const matches = bad.length === 0;
+  return { matches, snapshot_mart_start: meta.mart_start ?? null, snapshot_mart_end: meta.mart_end ?? null, live_ends: ends,
+           message: matches ? "Live mart coverage matches the snapshot's meta.json."
+             : `VINTAGE MISMATCH: the live mart (${bad.join("; ")}) does not match the snapshot's meta.json ` +
+               `(${meta.mart_start} to ${meta.mart_end}); the vintages shown may be older than the live data.` };
 }
