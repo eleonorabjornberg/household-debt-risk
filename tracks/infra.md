@@ -70,6 +70,20 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-06 ~05:50 UTC, same session, no spend. D6 (PLAN task "Ask Hot Potato"; not E1 deviation D6), offline step 2.
+  - `lib/ask/agent.ts`, the question loop:
+    - Sonnet 5.5, at most 4 turns, effort medium;
+    - the system prompt and the top-level cache are both cached;
+    - a deterministic pre-check with the ported `check_answerable`, so forecasts, holder × type and similar are refused before any model call;
+    - every answer returns its sources (tool, arguments, series IDs, vintage);
+    - cost from usage × live Sonnet prices.
+  - `lib/ask/limits.ts`: 5 questions per visitor per UTC day and a $2/day app stop, with a worst-case pre-call guard. Behind a store interface; `MemoryStore` is for tests and local dev only.
+  - `lib/ask/gate.ts`: the route and the page serve only on Vercel preview deployments or in local dev. They need the preview flag and the key, and on Vercel a shared limit store. Production is refused.
+  - `app/api/ask/route.ts`: the key comes from `HHDEBT_ANTHROPIC_API_KEY`, the base URL is explicit, and the visitor is a salted hash of IP and day. The server log holds outcome and cost only.
+  - `app/ask/page.tsx` and `components/ask/AskPanel.tsx`: a separate page, so the existing pages' register line numbers are untouched.
+  - `next.config.ts` traces the data files for the route.
+  - Tests: agent and limits 8, gate 5; all 86 atlas tests pass. `next build` OK. A local production server refuses `/api/ask` and `/ask` (404) and serves `/` (200).
+  - No paid call.
 - 2026-11-06 ~05:30 UTC, same session, no spend. D6 (PLAN task "Ask Hot Potato"; not E1 deviation D6), offline step 1. The D5 MCP tools are ported to TypeScript in `atlas/lib/ask/tools.ts`, snapshot backend only.
   - `scripts/ask-data.mjs` (prebuild/predev) exports the catalog and register for the site; `copy-data.mjs` now also copies the three tables the tools read.
   - `lib/ask/env.ts` loads the tables, catalog and register. With no build copies it falls back to `web/public/data` and `claims/register.csv`; `register.json` is gitignored.
