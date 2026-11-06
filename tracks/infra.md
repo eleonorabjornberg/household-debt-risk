@@ -70,6 +70,13 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-06 ~05:30 UTC, same session, no spend. D6 (PLAN task "Ask Hot Potato"; not E1 deviation D6), offline step 1. The D5 MCP tools are ported to TypeScript in `atlas/lib/ask/tools.ts`, snapshot backend only.
+  - `scripts/ask-data.mjs` (prebuild/predev) exports the catalog and register for the site; `copy-data.mjs` now also copies the three tables the tools read.
+  - `lib/ask/env.ts` loads the tables, catalog and register. With no build copies it falls back to `web/public/data` and `claims/register.csv`; `register.json` is gitignored.
+  - Parity: `scripts/ask_parity_fixtures.py` runs the Python `core` functions on 54 calls (data, refusals, edge cases) and writes fixtures. `parity.test.ts` checks the TypeScript port against all 54 (a 1e-9 relative tolerance on numbers, exact otherwise), plus a negative check that the comparison fails on a changed number, string or key. 55 tests; all 73 atlas tests pass; tsc is clean.
+  - Dependencies added: `yaml`, `@anthropic-ai/sdk`.
+  - Errors caught by Claude: (1) tsc found an untyped array in `holdings_by_bucket`; (2) the register export first included the track files, which Python's `lookup_claim` does not read; fixed for parity.
+  - Main model, no subagents.
 - 2026-11-06 ~05:15 UTC, same session. Her e1-baseline (a) (04:50 UTC, PLAN `caa3463`; checked): prereg deviation D6 (the false-checkpoint fix, code only; prereg re-pinned), `bbd72a3`.
   - **Opus baseline resumed from loop 25 and COMPLETE:** 240/240 loops, no stop, 240 calls, 0 errors. Rehearsed on a copy with the fake client first.
   - **Baseline result:** spent $2.142404; 59/240 correct. With no tools, Opus gave no number on 180 of 180 answerable answers (0.0% correct) and declined 59/60 unanswerable (98.3%). So its refusal rate reflects declining everything, not discrimination; the note says so.

@@ -8,7 +8,9 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const src = path.join(here, "..", "..", "web", "public", "data");
 const dst = path.join(here, "..", "public", "data");
-const WANT = ["debt_by_risk_holder", "public_share", "dim_crisis", "dim_risk_bucket", "meta"];
+// The last three are read by the Ask Hot Potato tools (lib/ask, PLAN D6).
+const WANT = ["debt_by_risk_holder", "public_share", "dim_crisis", "dim_risk_bucket", "meta",
+              "collateral_coverage", "crisis_event_window", "nyfed_by_type"];
 
 await mkdir(dst, { recursive: true });
 let files;
