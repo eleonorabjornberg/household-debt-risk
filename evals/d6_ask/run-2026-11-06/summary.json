@@ -1,0 +1,13 @@
+{
+ "approval": "| 2026-11-06 | D6 spend (d6-spend, chosen 04:57 UTC): **cap $20** for building D6 and the E4 red-team (developer testing only; not visitor use). Same safeguards as E1: pre-call guard, 10% checkpoint, stop and report on any overrun. Separate from the $31 E1 cap. No recommendation was given on this card. No note. | Eleonora |",
+ "questions": 30,
+ "done": 30,
+ "spent_usd": 0.509085,
+ "d6_spend_total_usd": 0.509085,
+ "d6_cap_usd": 20,
+ "run_budget_usd": 2,
+ "worst_call_usd": 0.09548,
+ "rough_ok": 25,
+ "stop": null,
+ "label": "build test, not an evaluation"
+}
