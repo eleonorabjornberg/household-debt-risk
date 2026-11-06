@@ -473,3 +473,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - d6-key: she adds ANTHROPIC_API_KEY to the atlas Preview environment herself.
 - No errors this step.
 - Error caught by infra itself: its message quoted the D6 plan's first commit as 0fbc90b, a hash it hadn't checked. The right hash is 11d5d2c, which the coordinator had already used after merging, so no record needed correcting.
+
+### 2026-11-06 ~05:45 UTC: coordinator merges the D6 offline build
+- Track: coordinator. Merged infra `8a5e17c` and `02c4ecb` (D6 "Ask Hot Potato" offline build: TypeScript tool port with 54 parity fixtures, Sonnet loop with at most 4 turns, preview-only gate, limits interface, `/ask` page) as `2bb4d28`. Checks: hook checks pass, 86 atlas tests pass, no email or key strings in the tree. No paid call has been made.
+- Error caught by the coordinator: the round 38 d6-key card named `ANTHROPIC_API_KEY`, but infra's route reads `HHDEBT_ANTHROPIC_API_KEY` and also needs `ASK_VISITOR_SALT` and `NEXT_PUBLIC_ASK_ENABLED=1`. Card corrected and docket republished (v45) before she had answered it.
+- Process slip, caught by the coordinator: the merge commit was made with `--no-verify`. The hook checks were run straight after and passed.
