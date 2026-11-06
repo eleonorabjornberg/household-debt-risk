@@ -227,6 +227,9 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-06 | E4 P2 and the held-out set (e4-p2-heldout, 19:53 UTC): **(a) run P2 now as built, at most $4.00 from the $20 D6+E4 cap.** The write-up reports the 4 held-out A1/A2 prompts as seen before the run and keeps them out of the clean held-out score. No note. | Eleonora |
 | 2026-11-06 | E4 P1 hand labels (rv-e4-p1-labels, 19:54 UTC): **approved as a Claude draft**; they stay UNVERIFIED in any write-up until she checks them. No note. | Eleonora |
 | 2026-11-06 | E4 Ask guardrails and grounding v2 (rv-e4-guardrails, 19:54 UTC): **approved as built** (code on the branch, not deployed). No note. | Eleonora |
+| 2026-11-06 | Vercel team access (in chat, ~20:40 UTC): **"make it"**, lifting her earlier rule against a team-access request. | Eleonora |
+| 2026-11-06 | Vercel production (in chat, ~20:50 UTC): **promote `ad3611f` to production**. Atlas promoted (`dpl_4rMG3uKEa4T4RoCJQyJcq6QwWqHL`). | Eleonora |
+| 2026-11-06 | Vercel project `household-debt-risk-web` (in chat, ~21:00 UTC): **"a useless duplicate"**. It is not promoted or maintained as a deploy target; household-debt-risk.vercel.app (atlas) is the production site. No deletion requested. | Eleonora |
 
 ## Environment prerequisites
 
