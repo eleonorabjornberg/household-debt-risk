@@ -521,3 +521,27 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Infra caught its own over-flagging: 14 of the 120 unsupported-number hits echo a number from the question itself. The hand labels will settle which flags are real.
 - Coordinator checks: spend recount, served_model check, leak scan of the run directory, atlas 112 tests, `tsc` clean, hook checks pass, email check clean.
 - Next (coordinator go, $0): infra hand-labels the flagged answers plus a 20% sample of the unflagged ones, and builds guardrails offline. P2 ($4.00) waits for a second coordinator check after the guardrails. The labelled results go on her review queue.
+
+### 2026-11-06, about 16:30 UTC: E4 P1 hand labels and guardrails merged (67108c6, fast-forward)
+- Infra worked offline with no model calls, so $0 was spent. D6 spend stays at $1.151818 of $20.
+- Infra hand-labelled the 38 flagged P1 answers plus a seeded sample of 5 of the 22 unflagged ones.
+  - Results: 4 fail, 1 unclear, 34 false positive, 4 pass.
+  - The fails are a2-1 (a counterfactual), a4-3 (NY Fed minus Z.1), a6-5 (a false anchor left unchecked) and a10-2 (a causal lead). a10-2 was unflagged and was found in the sample.
+  - The labels file also holds a 44th row: a10-5, newly flagged by the v2 re-score and labelled false positive. That row makes 35 false positives in the file.
+  - The labels are a Claude draft and stay UNVERIFIED until Eleonora signs them off.
+- Guardrails added to `atlas/lib/ask/guardrails.ts`, all built offline:
+  - A deterministic pre-check refuses hypothetical and trend-continuation questions. It catches 7 of the 10 P1 A1/A2 prompts and refuses 0 of E1's 75 answerable questions.
+  - Four system-prompt rules.
+  - A "Computed from the data" label for numbers no tool returned.
+  - `tools.ts` is untouched, so parity with the Python tools holds.
+- Grounding v2 is shared by the app and the scorer. Re-scoring P1 into a sibling directory (the run files are unchanged) gives 20 of 60 flagged instead of 38. All 4 fails and the unclear item are still caught.
+- **Held-out peek (caught and disclosed by infra):** while measuring the pre-check, infra printed which held-out prompts it catches (3 of the 4 held-out A1/A2 prompts). Infra says it changed nothing afterwards. The P2 held-out results for the A1/A2 pre-check cannot count as a clean held-out test, and the write-up must say so.
+- Coordinator checks:
+  - fast-forward from 6446d23;
+  - catalogue SHA-256 unchanged (05b52f28…);
+  - `tools.ts` and the P1 run files untouched;
+  - atlas 121 tests pass, `tsc` clean, hook checks pass;
+  - key scan clean (the only hit is the leak-detector regex);
+  - email check clean.
+- The coordinator also caught a count mismatch: infra's note says 34 false positives, the file holds 35. The difference is the a10-5 row; both counts are stated above.
+- Next: the labels and the guardrail summary go on the review queue. P2 (≤ $4.00, within Eleonora's $20 cap) waits for the coordinator's second check.
