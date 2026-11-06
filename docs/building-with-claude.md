@@ -428,3 +428,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 ### 2026-11-06 ~04:55 UTC: coordinator, e1-baseline answered; docket round 35
 - Eleonora chose e1-baseline **(a)** at 04:50 UTC, with no note: resume the Opus baseline from loop 25 with the fixed checkpoint, $31 cap unchanged, false stop recorded as deviation D6. Recorded in PLAN.md "Decisions taken", credited to her.
 - Relayed to infra, with this commit as the approval commit. Docket round 35 republished with nothing open.
+
+### 2026-11-06 ~05:05 UTC: coordinator, D6 cards on the docket (round 36)
+- At Eleonora's request ("Put the D6 card on the docket now"), docket round 36 has three cards for D6 "Ask Hot Potato", the app task, not the E1 prereg deviation D6:
+  - d6-model: Opus, Sonnet, Haiku, routed, or after the E1 note review;
+  - d6-spend: build plus E4 cap of $10, $20 or $35, or offline only;
+  - d6-preview: visitor limits, or no public preview.
+- The cards quote the E1 main-run figures marked UNVERIFIED (results note not yet reviewed; baseline still running). The ~500-question spend figure is labelled an estimate. None of the cards carries a recommendation.
