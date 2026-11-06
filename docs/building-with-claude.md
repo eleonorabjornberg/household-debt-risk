@@ -555,3 +555,15 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - No notes on any card.
 - Both answers have been relayed to infra, and PLAN "Decisions taken" and the E4 row are updated.
 - Neither choice authorizes anything beyond its option text: no writes, no repeat runs, no deployment change, no spend beyond $4.00.
+
+### 2026-11-06, about 20:55 UTC: Vercel production update (coordinator)
+- **Eleonora's decisions:**
+  - "make it": she lifted her earlier rule against a Vercel team-access request. The coordinator made the request and she approved it.
+  - "let's promote to production": she approved putting `ad3611f` (branch `claude/sweet-gates-avwrcs`) into production for atlas and web.
+- **Atlas: done.** Production redeploy `dpl_4rMG3uKEa4T4RoCJQyJcq6QwWqHL` is READY. household-debt-risk.vercel.app points to it. Rollback target: `dpl_7Xkzg6UPKVT6BRPXFRMFZvEjpuDT` (the previous production build, main `085462a`).
+- **Web: not promoted.** The web preview `dpl_F85fAXtq4k42VY2nTC6GMyuQajTy` is READY. Production still serves main `085462a` (`dpl_BfFEeqrDBDSnCccGaXR3NvfTcC3r`).
+- Errors (caught by the coordinator):
+  - `request_promote` returned 422: the API cannot promote preview builds. Fix: `create_deployment` redeploys the preview with target production, using production env vars. This worked for atlas.
+  - Web returned 404 "Project not found" from `create_deployment`, `get_project` and `get_deployment`. `list_projects` does not list the web project, though deployment listings show it. The likely cause is that the access grant does not cover that project. Eleonora can fix it on her side: grant the connector access to `household-debt-risk-web`, or press Promote on the preview in the Vercel dashboard. Nothing was worked around.
+- Caveat: production atlas now runs a feature-branch build, and `main` is 443 commits behind. A later push to `main` would put older code back in production. The lasting fix is to merge the branch into `main`, which needs her ask (no PR has been opened).
+- Ask stays off in production: the D6 env vars are not set (she deferred them: "later").
