@@ -165,6 +165,14 @@ def main() -> None:
         if tag == "notools":
             rows.append({**rows[-1], "claim_id": "e1_baseline_spend", "display": ds, "value": f"{sp:.6f}", "unit": "usd",
                          "claim": f"E1: Opus 5.5 no-tools baseline spend {ds} (all loops, incl. before the D6 resume)."})
+    ans_b = [r for r in br if r["family"] != "UN"]
+    no_num = sum(r["parsed"] is None for r in ans_b)
+    disp = f"{no_num} of {len(ans_b)}"
+    lines.append("")
+    claim("baseline_notools_no_number", f"E1: Opus 5.5 with no tools gave no number on {disp} answerable-question "
+          "answers (it declined them).", disp, str(no_num), "count", "run-2026-11-05-baseline/results.jsonl (parsed is null)")
+    lines.append(f"Without tools, Opus declined to give a number on {disp} answerable-question answers, so its high "
+                 "refusal rate reflects declining nearly everything, not telling answerable from unanswerable questions.")
     lines += ["", "The baseline has no pre-registered test (CHOICE-E1-12 (b)); it shows what the tools add. "
               "A no-tools answer is scored by the same rule, against the same gold.", ""]
     NOTE.write_text("\n".join(lines))
