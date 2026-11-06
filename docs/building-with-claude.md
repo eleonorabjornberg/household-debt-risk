@@ -444,3 +444,16 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Recorded in PLAN.md "Decisions taken", credited to her; none of the cards carried a recommendation. D6 status updated. Production deployment is not covered by these choices and needs her separate OK.
 - Relayed to infra with this commit as the approval commit. D6 starts after the E1 baseline and results note. Docket round 37 republished with nothing open.
 - No errors this step.
+
+### 2026-11-06 ~05:25 UTC: coordinator, E1 complete; results note on the review queue (round 21)
+- Merged infra ed4a3de (merge 26b477a):
+  - bbd72a3 records prereg deviation D6 (Deviations section only; prereg re-pinned);
+  - write_results.py now generates the baseline section;
+  - the baseline resumed from loop 25 under approval caa3463 and finished 240/240, with no stop and 0 errors.
+- Coordinator checks:
+  - E1 tests 73/73 pass, and the register check passes (1,893 rows; 39 e1_* rows, all UNVERIFIED).
+  - Summing the three call logs gives $0.003634 + $17.900578 + $2.142404 = $20.046616 of the $31 cap, matching infra.
+  - Baseline results recounted from results.jsonl: 0/180 answerable correct, 59/60 refusals correct.
+  - No key strings in the run files; the only pattern hit is a test asserting their absence.
+- Caught by the coordinator: the RESULTS.md banner still says deviations "D1–D5". Sent back to infra to fix in write_results.py; it's noted on the card.
+- Review queue round 21 has one card, rv-e1-results, with no recommendation. Infra was given the go for D6 under her 0e0dd6c choices.
