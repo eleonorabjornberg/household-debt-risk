@@ -9,5 +9,5 @@
  "web/public/data/public_share.json": "c3dce2a416ba2ef93481cd45375b633f53077a59406cea64ab6605918fb55e67",
  "evals/e1_sql_benchmark/questions.yaml": "2842307aec0ed61d636e094a5aeea3d16835b78e3d71cfed00060ce7fa9a8761",
  "evals/e1_sql_benchmark/gold.json": "685ba34fd0d51ce6d370de1ab75c92fbe7f869cf732832d8b5e6ae46d92c3feb",
- "docs/decisions/e1-prereg.md": "5a4994ea4c85db49d2a0a0022f9da8446235ad3e483dce39473f186c8ef8f582"
+ "docs/decisions/e1-prereg.md": "e8451254984685fc8dc71264cecc5c5115d41732f41c9052e4d89fbb0e414e8a"
 }
