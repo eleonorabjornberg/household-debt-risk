@@ -230,6 +230,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-06 | Vercel team access (in chat, ~20:40 UTC): **"make it"**, lifting her earlier rule against a team-access request. | Eleonora |
 | 2026-11-06 | Vercel production (in chat, ~20:50 UTC): **promote `ad3611f` to production**. Atlas promoted (`dpl_4rMG3uKEa4T4RoCJQyJcq6QwWqHL`). | Eleonora |
 | 2026-11-06 | Vercel project `household-debt-risk-web` (in chat, ~21:00 UTC): **"a useless duplicate"**. It is not promoted or maintained as a deploy target; household-debt-risk.vercel.app (atlas) is the production site. No deletion requested. | Eleonora |
+| 2026-11-06 | Merge into `main` (in chat, ~21:05 UTC): **"merge into main"**; merged as eleonorabjornberg/household-debt-risk#1 (`02515b2`). Site address (in chat, ~21:12 UTC): **free `.vercel.app` name**; hot-potato.vercel.app was taken, so hot-potato-credit.vercel.app was added. | Eleonora |
 
 ## Environment prerequisites
 
