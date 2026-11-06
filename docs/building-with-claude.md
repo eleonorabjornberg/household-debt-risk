@@ -487,3 +487,13 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Put in front of her on the review queue, round 22 (rv-d6-buildtest).
 - Follow-up (infra, 05:34 UTC): the coordinator's 05:19 instruction to send the plan first reached infra only after the run started at 05:30. Infra's plan, written after the fact, fits her choices: Sonnet, $2 run budget under the $20 cap, E1-style guards, 30 E1 questions and none of the 20 held out. The coordinator has not approved any further paid D6 call.
 - 05:37 UTC: infra added served_model to every D6 call row, taken from the API response, with tests (`1f2187a`; merged; 93 atlas tests pass; the earlier run is not rewritten). Error caught by infra itself: it first quoted the hash as 22e3d1a, before the commit existed; the right hash is 1f2187a. Infra now quotes a hash only after the commit returns.
+
+### 2026-11-06 ~14:40 UTC: her answers on docket round 38 and review round 22
+- Track: coordinator. Recorded in PLAN "Decisions taken", credited to Eleonora:
+  - d6-store (a): Vercel KV / Upstash free tier, which she adds herself;
+  - d6-data (b): read-only production mart queries through Supabase's API;
+  - d6-key: later;
+  - rv-e1-results: approved as a Claude draft (it stays UNVERIFIED and off the sites);
+  - rv-d6-buildtest: seen, kept in the D6 ledger.
+- No notes. No recommendation was given on any of these cards. Relayed to infra: build the KV adapter and the mart data path offline; no store provisioning, no Vercel env changes, no paid calls.
+- No errors this step.
