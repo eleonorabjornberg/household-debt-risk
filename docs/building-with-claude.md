@@ -573,3 +573,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Follow-up, ~21:15 UTC. The production build from `main` (`dpl_J1ZoTuAAiUfc9ChQ1T1E1CvLUMVA`, `02515b2`) is READY.
 - **Eleonora's decision:** a free `.vercel.app` name, "hot-potato.vercel.app" (chosen from a question in chat). That name belongs to another team (409), so the coordinator added the agreed fallback, **hot-potato-credit.vercel.app**, to the atlas project. Vercel reports it as verified. household-debt-risk.vercel.app still works.
 - Not checked from this session: the container's proxy refuses both hosts, so no request reached the site. The coordinator did not use Vercel's share-link fetch, because that creates a 23-hour link that bypasses protection. Eleonora will open the URL herself.
+
+## 2026-11-06, about 21:25 UTC: challenge readiness check (coordinator)
+
+- Eleonora asked for the readiness check on the review queue. Claude wrote `docs/challenge-readiness.md` (Claude draft banner): for each of the four judging criteria, the evidence and where it lives, then the gaps; a list of places a demo could visit; open items before 12 Nov 23:59 ET with an owner each. It is not the write-up or a demo script (hers). No data numbers; counts are file counts.
+- Review queue round 26 (one card, no recommendation), published to the existing review-queue artifact (v29).
+- Error caught by Claude before commit: the first draft named the Ask route and the scenarios page by folder only (`atlas/`, `web/` `/scenarios`); checked with `ls` and corrected to `atlas/app/api/ask/route.ts` and `web/app/scenarios/`.
+- Model tier: coordinator session (Opus). Cost not measured.
