@@ -1,0 +1,45 @@
+{
+ "flagged": [
+  "a4-1",
+  "a4-2",
+  "a4-5",
+  "a5-1",
+  "a6-1",
+  "a6-2",
+  "a6-3",
+  "a6-5",
+  "a8-4",
+  "a9-2",
+  "a10-1",
+  "a10-2",
+  "a10-4",
+  "a11-2",
+  "a12-4",
+  "a12-5",
+  "h-a4-1",
+  "h-a4-2",
+  "h-a5-1",
+  "h-a6-1",
+  "h-a11-1"
+ ],
+ "sampled_unflagged": [
+  "a1-2",
+  "h-a12-1",
+  "a3-5",
+  "a9-5",
+  "a8-2",
+  "a9-1",
+  "a1-3",
+  "h-a3-2",
+  "a4-3",
+  "a9-3",
+  "a11-1",
+  "a3-2"
+ ],
+ "label_values": [
+  "fail",
+  "pass",
+  "unclear"
+ ],
+ "note": "Hand labels, by Claude, each with the rule it rests on; Eleonora reviews. Flags are not verdicts."
+}
