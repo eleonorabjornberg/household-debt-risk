@@ -70,6 +70,27 @@ Commits: `684b088` F1 · `d33d4b6` F2 · `f609788` F4 (plus this status file).
 | F4 `f609788` | READY: household-debt-risk-m8ujyyxew-eleonorabjornberg.vercel.app | no deployment (atlas/ unchanged in that commit; likely skipped by the project's ignored-build step) — F2 preview is current for atlas |
 
 ## Log notes for the coordinator
+- 2026-11-06 ~05:50 UTC, same session, no spend. D6 (PLAN task "Ask Hot Potato"; not E1 deviation D6), offline step 2.
+  - `lib/ask/agent.ts`, the question loop:
+    - Sonnet 5.5, at most 4 turns, effort medium;
+    - the system prompt and the top-level cache are both cached;
+    - a deterministic pre-check with the ported `check_answerable`, so forecasts, holder × type and similar are refused before any model call;
+    - every answer returns its sources (tool, arguments, series IDs, vintage);
+    - cost from usage × live Sonnet prices.
+  - `lib/ask/limits.ts`: 5 questions per visitor per UTC day and a $2/day app stop, with a worst-case pre-call guard. Behind a store interface; `MemoryStore` is for tests and local dev only.
+  - `lib/ask/gate.ts`: the route and the page serve only on Vercel preview deployments or in local dev. They need the preview flag and the key, and on Vercel a shared limit store. Production is refused.
+  - `app/api/ask/route.ts`: the key comes from `HHDEBT_ANTHROPIC_API_KEY`, the base URL is explicit, and the visitor is a salted hash of IP and day. The server log holds outcome and cost only.
+  - `app/ask/page.tsx` and `components/ask/AskPanel.tsx`: a separate page, so the existing pages' register line numbers are untouched.
+  - `next.config.ts` traces the data files for the route.
+  - Tests: agent and limits 8, gate 5; all 86 atlas tests pass. `next build` OK. A local production server refuses `/api/ask` and `/ask` (404) and serves `/` (200).
+  - No paid call.
+- 2026-11-06 ~05:30 UTC, same session, no spend. D6 (PLAN task "Ask Hot Potato"; not E1 deviation D6), offline step 1. The D5 MCP tools are ported to TypeScript in `atlas/lib/ask/tools.ts`, snapshot backend only.
+  - `scripts/ask-data.mjs` (prebuild/predev) exports the catalog and register for the site; `copy-data.mjs` now also copies the three tables the tools read.
+  - `lib/ask/env.ts` loads the tables, catalog and register. With no build copies it falls back to `web/public/data` and `claims/register.csv`; `register.json` is gitignored.
+  - Parity: `scripts/ask_parity_fixtures.py` runs the Python `core` functions on 54 calls (data, refusals, edge cases) and writes fixtures. `parity.test.ts` checks the TypeScript port against all 54 (a 1e-9 relative tolerance on numbers, exact otherwise), plus a negative check that the comparison fails on a changed number, string or key. 55 tests; all 73 atlas tests pass; tsc is clean.
+  - Dependencies added: `yaml`, `@anthropic-ai/sdk`.
+  - Errors caught by Claude: (1) tsc found an untyped array in `holdings_by_bucket`; (2) the register export first included the track files, which Python's `lookup_claim` does not read; fixed for parity.
+  - Main model, no subagents.
 - 2026-11-06 ~05:15 UTC, same session. Her e1-baseline (a) (04:50 UTC, PLAN `caa3463`; checked): prereg deviation D6 (the false-checkpoint fix, code only; prereg re-pinned), `bbd72a3`.
   - **Opus baseline resumed from loop 25 and COMPLETE:** 240/240 loops, no stop, 240 calls, 0 errors. Rehearsed on a copy with the fake client first.
   - **Baseline result:** spent $2.142404; 59/240 correct. With no tools, Opus gave no number on 180 of 180 answerable answers (0.0% correct) and declined 59/60 unanswerable (98.3%). So its refusal rate reflects declining everything, not discrimination; the note says so.
