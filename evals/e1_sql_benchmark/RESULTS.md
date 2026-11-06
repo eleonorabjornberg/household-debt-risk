@@ -31,7 +31,7 @@ Run `run-2026-11-05b`: 80 scored questions (60 answerable, 20 unanswerable) × H
 | Haiku 5.5 | $0.32 | $0.0013 | 191 | $0.0017 |
 
 Main run spend: $17.90. All E1 spend so far, every run directory against the one $31 cap (the stopped `run-2026-11-05`, this run, and the baseline so far):
-$18.13 of $31.
+$20.05 of $31.
 
 ## What the misses were (checked by Claude, answer by answer; no scorer artifacts)
 
@@ -39,6 +39,15 @@ $18.13 of $31.
 - Several loops hit the 4-turn limit while still fetching data (q122 for all three models; q184 for Opus and Sonnet).
 - Four answers of 36.2 on q156 (gold 36.216, tolerance $0.01 trillion) miss by rounding to one decimal, under the tolerance in the approved set.
 
-## Opus no-tools baseline
+## Opus no-tools baseline (descriptive; no pre-registered test)
 
-**Open.** The baseline stopped after 24 of 240 loops at a false 10% checkpoint (a projection bug, fixed in `5814ec3`). Eleonora's e1-baseline decision (resume or report as partial) is pending; this section is filled in after it.
+`run-2026-11-05-baseline`: Opus 5.5 with no tools, answering from memory, on the same 80 questions × 3 repetitions. It stopped after 24 loops at a false checkpoint (deviation D6) and was resumed from loop 25. It is compared with Opus 5.5 with tools from the main run.
+
+| Opus 5.5 | Answerable correct | Refusals correct | Spent | Mean per loop |
+|---|---|---|---|---|
+| with tools (main run) | 91.7% (of 180) | 91.7% (of 60) | $12.11 | $0.0505 |
+| no tools (baseline) | 0.0% (of 180) | 98.3% (of 60) | $2.14 | $0.0089 |
+
+Without tools, Opus declined to give a number on 180 of 180 answerable-question answers, so its high refusal rate reflects declining nearly everything, not telling answerable from unanswerable questions.
+
+The baseline has no pre-registered test (CHOICE-E1-12 (b)); it shows what the tools add. A no-tools answer is scored by the same rule, against the same gold.
