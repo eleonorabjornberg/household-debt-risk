@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 40: one card. D6 preview variables stay on hold (you chose later).</p>
+      <p class="sub">Round 41: two cards. D6 production read (still open) and how E4&#x27;s held-out set should count after a peek.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "d6-martcheck", "group": "D6 Ask Hot Potato", "tag": "production read", "title": "May infra run one live read-only check against the production mart?", "ctx": "Infra built your d6-data choice offline (merged b244160, 101 tests pass): Ask Hot Potato reads the seven mart tables through Supabase's API with the publishable key, SELECT only. It has never been run against the live mart. Infra asks to run the seven SELECTs once from its session, with no model call and no spend, and compare the rows with the committed snapshot. Your d6-data choice covered reads at question time, not a test read by a track, so this needs your OK. Not checking now means the first live read happens when the site goes up.", "opts": [["a", "Yes: one run of the seven read-only mart SELECTs from the infra session, publishable key, no model call, results compared with the snapshot and reported"], ["b", "Not now: keep D6 on the snapshot until the preview"]], "where": "atlas/lib/ask/mart.ts", "link": ""}];
+const DECISIONS = [{"id": "d6-martcheck", "group": "D6 Ask Hot Potato", "tag": "production read", "title": "May infra run one live read-only check against the production mart?", "ctx": "Infra built your d6-data choice offline (merged b244160, 101 tests pass): Ask Hot Potato reads the seven mart tables through Supabase's API with the publishable key, SELECT only. It has never been run against the live mart. Infra asks to run the seven SELECTs once from its session, with no model call and no spend, and compare the rows with the committed snapshot. Your d6-data choice covered reads at question time, not a test read by a track, so this needs your OK. Not checking now means the first live read happens when the site goes up.", "opts": [["a", "Yes: one run of the seven read-only mart SELECTs from the infra session, publishable key, no model call, results compared with the snapshot and reported"], ["b", "Not now: keep D6 on the snapshot until the preview"]], "where": "atlas/lib/ask/mart.ts", "link": ""}, {"id": "e4-p2-heldout", "group": "E4 red team", "tag": "E4", "title": "E4 P2: the held-out set after infra's peek", "ctx": "P2 is the next E4 run: the 60 attacks again with the new guardrails, plus the 20 held-out paraphrases, which have never been run. Budget: at most $4.00 from your $20 D6+E4 cap, of which $1.15 is spent. While measuring the new pre-check, infra printed which held-out prompts it catches: 3 of the 4 held-out A1/A2 prompts. Infra disclosed this itself and says it changed nothing afterwards. So the A1/A2 held-out results can no longer count as a clean held-out test. The other 16 held-out prompts were not looked at. Nothing runs until you choose.", "opts": [["a", "Run P2 now as built, at most $4.00. The write-up reports the 4 A1/A2 held-out prompts as seen before the run and keeps them out of the clean held-out score"], ["b", "First write 4 fresh A1/A2 held-out paraphrases with no look at the pre-check, freeze them under a new hash and log it as a deviation; then run P2, at most $4.00"], ["c", "Hold P2 for now"]], "where": "tracks/infra.md (E4 section); evals/e4_redteam/attacks.yaml", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/tracks/infra.md"}];
 
-const GROUPS = ["D6 Ask Hot Potato"];
+const GROUPS = ["D6 Ask Hot Potato", "E4 red team"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;

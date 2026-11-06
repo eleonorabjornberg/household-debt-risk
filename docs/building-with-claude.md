@@ -545,3 +545,4 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - email check clean.
 - The coordinator also caught a count mismatch: infra's note says 34 false positives, the file holds 35. The difference is the a10-5 row; both counts are stated above.
 - Next: the labels and the guardrail summary go on the review queue. P2 (≤ $4.00, within Eleonora's $20 cap) waits for the coordinator's second check.
+- Follow-up: the P1 labels and guardrails went on review queue round 24 (v27). Docket round 41 (v48) adds card `e4-p2-heldout`, which asks how the held-out set should count after the peek. P2 is on hold: infra was told to make no model calls and no catalogue changes until Eleonora answers. `d6-martcheck` is still open.
