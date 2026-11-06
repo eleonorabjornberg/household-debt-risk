@@ -77,20 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 39: nothing waiting. D6 preview variables are on hold (you chose later).</p>
+      <p class="sub">Round 40: one card. D6 preview variables stay on hold (you chose later).</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendation on these two cards: both change the frozen prereg and affect spend. A choice authorizes only what its option text says; nothing runs until you tap.</footer>
+  <footer>No recommendation on this card. A choice authorizes only what its option text says; nothing runs until you tap.</footer>
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "d6-martcheck", "group": "D6 Ask Hot Potato", "tag": "production read", "title": "May infra run one live read-only check against the production mart?", "ctx": "Infra built your d6-data choice offline (merged b244160, 101 tests pass): Ask Hot Potato reads the seven mart tables through Supabase's API with the publishable key, SELECT only. It has never been run against the live mart. Infra asks to run the seven SELECTs once from its session, with no model call and no spend, and compare the rows with the committed snapshot. Your d6-data choice covered reads at question time, not a test read by a track, so this needs your OK. Not checking now means the first live read happens when the site goes up.", "opts": [["a", "Yes: one run of the seven read-only mart SELECTs from the infra session, publishable key, no model call, results compared with the snapshot and reported"], ["b", "Not now: keep D6 on the snapshot until the preview"]], "where": "atlas/lib/ask/mart.ts", "link": ""}];
 
-const GROUPS = [];
+const GROUPS = ["D6 Ask Hot Potato"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
