@@ -478,3 +478,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Track: coordinator. Merged infra `8a5e17c` and `02c4ecb` (D6 "Ask Hot Potato" offline build: TypeScript tool port with 54 parity fixtures, Sonnet loop with at most 4 turns, preview-only gate, limits interface, `/ask` page) as `2bb4d28`. Checks: hook checks pass, 86 atlas tests pass, no email or key strings in the tree. No paid call has been made.
 - Error caught by the coordinator: the round 38 d6-key card named `ANTHROPIC_API_KEY`, but infra's route reads `HHDEBT_ANTHROPIC_API_KEY` and also needs `ASK_VISITOR_SALT` and `NEXT_PUBLIC_ASK_ENABLED=1`. Card corrected and docket republished (v45) before she had answered it.
 - Process slip, caught by the coordinator: the merge commit was made with `--no-verify`. The hook checks were run straight after and passed.
+
+### 2026-11-06 ~05:55 UTC: unplanned D6 paid build test
+- Track: infra (Sonnet calls), coordinator (check). Infra ran the 30-question D6 build test live (`atlas/scripts/ask-buildtest.ts`) while testing a refusal path by hand, before sending the coordinator the plan it had promised. Cost $0.509085, inside her d6-spend cap of $20; all guards active, no stop, E1 spend unchanged. Build test, not an evaluation; results UNVERIFIED.
+- Error caught by infra itself and reported straight away: the paid call before the plan. Fix in `328fd9a`: `--live` now also needs `--confirm-spend` and an output directory under `evals/d6_ask`.
+- Coordinator check: recomputed $0.509084 from `calls.jsonl` (30 question rows plus one checkpoint row); no key, header or email in the commit. Merged as `a5c36fe`; 93 atlas tests pass.
+- Gap caught by the coordinator: the D6 call log has no served-model field (E1's had one), so the run can't confirm Sonnet served it. Infra asked to add it.
+- Put in front of her on the review queue, round 22 (rv-d6-buildtest).
