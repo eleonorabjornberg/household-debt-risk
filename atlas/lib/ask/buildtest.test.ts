@@ -43,6 +43,9 @@ describe("D6 build-test harness", () => {
     const s = await run(client(1), out, 0, null);
     expect(s.stop).toBeNull();
     expect(s.done).toBe(30);
+    // every logged call row carries served_model (here the fake client sends none: recorded as null, not omitted)
+    const rows = readFileSync(path.join(out, "calls.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l)).filter((r) => r.qid);
+    for (const r of rows) for (const u of r.usage) expect(u).toHaveProperty("served_model");
     await expect(run(client(1), out, 0, null)).rejects.toThrow(/already holds a run/);
   });
 

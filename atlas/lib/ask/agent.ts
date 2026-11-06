@@ -84,7 +84,7 @@ export async function ask(question: string, deps: { client: Client; env: Env; li
                 cache_creation_input_tokens: resp.usage?.cache_creation_input_tokens ?? 0 };
     const c = callCost(u);
     cost += c;
-    usage.push({ turn, ...u, cost_usd: c });
+    usage.push({ turn, served_model: resp.model ?? null, ...u, cost_usd: c }); // the model that actually answered
     await deps.limiter.record(c);
     stop = resp.stop_reason;
     const blocks: Row[] = resp.content ?? [];

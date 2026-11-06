@@ -18,9 +18,9 @@ function fakeClient(opts: { loop?: boolean; answer?: string } = {}) {
         calls.push(body);
         const first = body.messages.length === 1;
         if (opts.loop || first)
-          return { usage: USAGE, stop_reason: "tool_use",
+          return { model: "claude-sonnet-5-5", usage: USAGE, stop_reason: "tool_use",
                    content: [{ type: "tool_use", id: `t${calls.length}`, name: "public_share", input: { start: "2026Q2" } }] };
-        return { usage: USAGE, stop_reason: "end_turn", content: [{ type: "text", text: opts.answer ?? "56.4% in 2026Q2." }] };
+        return { model: "claude-sonnet-5-5", usage: USAGE, stop_reason: "end_turn", content: [{ type: "text", text: opts.answer ?? "56.4% in 2026Q2." }] };
       },
     },
   };
@@ -79,6 +79,8 @@ describe("ask (fake client)", () => {
     expect(client.calls[0]).toMatchObject({ model: "claude-sonnet-5-5", output_config: { effort: "medium" },
                                             cache_control: { type: "ephemeral" } });
     expect(client.calls[0].system[0].cache_control).toEqual({ type: "ephemeral" });
+    // every call row records the model that actually answered (from the API response)
+    expect(a.usage.map((u) => u.served_model)).toEqual(["claude-sonnet-5-5", "claude-sonnet-5-5"]);
   });
 
   it("stops at the turn limit without an answer", async () => {
