@@ -9,7 +9,7 @@ export type Tables = {
   crisis_event_window: Row[]; dim_crisis: Row[]; nyfed_by_type: Row[]; meta: Row;
 };
 export type Catalog = { series: Row[]; risk_buckets: Record<string, Row>; collateral_classes: Record<string, Row> };
-export type Env = { tables: Tables; catalog: Catalog; claims: Row[] };
+export type Env = { tables: Tables; catalog: Catalog; claims: Row[]; backend?: string; note?: string };
 
 const Z1_UNITS = "USD millions, end of quarter, not seasonally adjusted (Z.1 levels)";
 const COMMON_Z1 = [
@@ -26,8 +26,12 @@ const PUBLIC_BUCKETS = ["federal_direct", "gse_agency", "state_local"];
 // ------------------------------------------------------------------ backend (SnapshotBackend)
 function vintages(env: Env): Row {
   const m = env.tables.meta;
-  return { ...m.vintages, snapshot_generated_at: m.generated_at ?? null,
-           source: `meta.json (${m.snapshot_source ?? "snapshot"} export)` };
+  const v: Row = { ...m.vintages, snapshot_generated_at: m.generated_at ?? null,
+                   source: `meta.json (${m.snapshot_source ?? "snapshot"} export)` };
+  // As the Python Postgres backend: the read-only API cannot see raw/core vintages, so they come from meta.json.
+  if (env.backend === "mart_api")
+    v.source = "meta.json snapshot; the mart API cannot report vintages, so the live data may be newer than this vintage";
+  return v;
 }
 const martRange = (env: Env): [string, string] => {
   const r = env.tables.public_share;
@@ -43,9 +47,10 @@ const between = (rows: Row[], s: string, e: string) => rows.filter((r) => s <= r
 function ok(env: Env, tool: string, data: unknown, o: { units: unknown; series_ids: string[]; source: string;
   caveats: string[]; extra?: Row }): Row {
   const v = vintages(env);
-  return { ok: true, tool, backend: "snapshot", source: o.source,
+  return { ok: true, tool, backend: env.backend ?? "snapshot", source: o.source,
            vintage: { source_vintage: v[o.source in v ? o.source : "z1"] ?? null, all: v },
-           units: o.units, series_ids: o.series_ids, caveats: o.caveats, data, ...(o.extra ?? {}) };
+           units: o.units, series_ids: o.series_ids, caveats: o.caveats, data,
+           ...(env.note ? { backend_note: env.note } : {}), ...(o.extra ?? {}) };
 }
 export function refusal(tool: string, code: string, reason: string, nearest: Row[]): Row {
   return { ok: false, refused: true, tool, backend: "snapshot", reason_code: code, reason,
