@@ -435,3 +435,12 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - d6-spend: build plus E4 cap of $10, $20 or $35, or offline only;
   - d6-preview: visitor limits, or no public preview.
 - The cards quote the E1 main-run figures marked UNVERIFIED (results note not yet reviewed; baseline still running). The ~500-question spend figure is labelled an estimate. None of the cards carries a recommendation.
+
+### 2026-11-06 ~05:15 UTC: coordinator, D6 cards answered; docket round 37
+- Eleonora answered docket round 36, with no notes:
+  - d6-model **Sonnet** (04:55 UTC);
+  - d6-spend **$20 cap** for build and E4 red-team (04:57 UTC);
+  - d6-preview **tight**: 5 questions per visitor per day, $2/day app-wide hard stop (04:57 UTC).
+- Recorded in PLAN.md "Decisions taken", credited to her; none of the cards carried a recommendation. D6 status updated. Production deployment is not covered by these choices and needs her separate OK.
+- Relayed to infra with this commit as the approval commit. D6 starts after the E1 baseline and results note. Docket round 37 republished with nothing open.
+- No errors this step.
