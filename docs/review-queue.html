@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 20: nothing open. All earlier cards answered; decisions are in PLAN.md.</p>
+      <p class="sub">Round 21: one card, the E1 results note.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "rv-e1-results", "group": "E1 benchmark", "tag": "E1", "title": "E1: question-to-SQL benchmark results note (Claude draft)", "ctx": "Infra generated the note with write_results.py from the run files; merged in 26b477a. It covers the pre-registered tests from the main run (720 loops, no stop, 0 API errors), costs, the Opus no-tools baseline (240/240 loops, no stop), deviations D1–D6 and what the misses were. Figures, all UNVERIFIED until you review: accuracy on answerable questions Sonnet 96.1%, Haiku 92.8%, Opus 91.7% (H1 supported for all three); refusals of unanswerable questions Opus 91.7% (H3 supported), Sonnet 68.3% (null), Haiku 40.0% (against); H2 null after Holm. Baseline, descriptive only: Opus without tools got 0 of 180 answerable answers right and refused 59 of 60 unanswerable ones correctly, because it gave no number on any answerable question, so its refusal rate does not show it telling the two kinds apart. E1 spend $20.05 of the $31 cap; I recomputed this from the three call logs and it matches. Tests 73/73 pass; the register check passes with 39 e1_* rows, all UNVERIFIED. Infra hand-checked all 35 answerable misses and found no scorer artifacts. Known detail: the banner at the top still says deviations D1–D5; infra will change it to D1–D6. The note stays off both sites until you approve it.", "opts": [["ok", "Approve the note as a Claude draft (it stays UNVERIFIED and off the sites until your own text replaces it)"], ["changes", "Needs changes (say which in the note)"], ["later", "Later"]], "where": "evals/e1_sql_benchmark/RESULTS.md; docs/decisions/e1-prereg.md (Deviations); claims/tracks/infra.csv", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/evals/e1_sql_benchmark/RESULTS.md"}];
 
-const GROUPS = ["B3 scenarios"];
+const GROUPS = ["E1 benchmark"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
