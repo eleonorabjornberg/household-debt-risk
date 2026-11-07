@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 26: challenge readiness check.</p>
+      <p class="sub">Round 27: one site, preview before production.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-challenge-readiness", "group": "Challenge", "tag": "F6", "title": "Challenge readiness check, criterion by criterion (Claude draft)", "ctx": "A checklist against the four judging criteria (business relevance, depth of Claude usage, rigor, documentation and demo). For each one it lists the evidence and where it lives in the repo, then the gaps. It ends with a list of places a demo could visit and the open items before 12 Nov, 23:59 ET, with an owner for each. It is not the write-up or a demo script; those are yours. Gaps it names: write-up and video not started; Ask is off in production; E4 P2 is not yet merged; E1 rows are still UNVERIFIED; E2 and E3 are in progress; A6 and B4 are blocked by cbo.gov; the duplicate Vercel project is still listed; the site has not been confirmed to load.", "opts": [["ok", "Looks right as a checklist"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "docs/challenge-readiness.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/docs/challenge-readiness.md"}];
+const DECISIONS = [{"id": "rv-one-site-preview", "group": "Site", "tag": "site-visible", "title": "One site: preview of the atlas with the story pages moved in", "ctx": "Your choice (b) on site-visible, built by the markets track. The atlas now has a top bar linking every page, and three new pages: /scenarios (the stress-test calculator), /how-it-was-built and /methods. /, /sources and /ask are as before. Ten register rows gained the new page locations; no number changed. One copy line was changed in /how-it-was-built: 'This site: the dot flow is drawn on Canvas; the other charts are hand-drawn SVG.' Keep or revert it. Checks: atlas tests 144/144, build OK, register check OK. The preview is behind Vercel login (sign in as yourself). Production is not touched; it changes only if you approve here.", "opts": [["promote", "Looks right: promote to production"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "atlas/ (preview from commit 2289a2d)", "link": "https://household-debt-risk-l5ayqpa5r-eleonorabjornberg.vercel.app"}];
 
-const GROUPS = ["Challenge"];
+const GROUPS = ["Site"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
