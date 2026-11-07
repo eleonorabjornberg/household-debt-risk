@@ -8,6 +8,28 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## One site: web pages moved into Hot Potato (2026-11-07, site-visible (b), relayed by the coordinator)
+
+- Copied, not moved: web/ is unchanged. In atlas:
+  - pages: `app/scenarios`, `app/how-it-was-built`, `app/methods`;
+  - content: `content/methods.ts` (from web/content/story.ts), `content/build.ts`, `content/series_catalog.json` (synced by `scripts/sync-catalog.mjs`);
+  - the B3 engine synced into `lib/b3/` by `scripts/sync-b3.mjs`, with its tests;
+  - the copied chart parts in `components/pages/charts/`;
+  - `components/TopBar.tsx` on every page (Hot Potato, Scenarios, How it was built, Methods, Sources);
+  - `app/pages.css`, scoped under `.pg`. The home page is unchanged below the bar.
+- One copy fix: the stack line describes this site (Canvas dot flow plus SVG charts) instead of "the story site".
+- Register (coordinator option (a)): the locations cell of 10 rows (11 locations) gained atlas twins, with the web locations kept. SCAN_FILES gained the two atlas content files.
+- Checks: atlas npm test 144/144; build OK (/, /scenarios, /how-it-was-built, /methods, /sources static; /ask and /api/ask dynamic as before); browser parity on atlas 123/123; F1 check_html 37/39 linked (2 known exceptions); register check OK. No horizontal scroll at 390 px on any route.
+- Commits: ce6d7e1 (pages), 3d667a5 (register).
+- Not done: no skeptic or editor pass this round (the copy is unchanged apart from the stack line).
+- Pre-existing issues seen, not touched:
+  - eslint reports 26 errors in atlas/lib/ask/* (Ask Hot Potato);
+  - web/lib/claims.json is stale on main (`claims/site/sync.mjs --check`).
+- **Errors this round:**
+  - A shell heredoc tripped the command safety check; it contained no removal. Caught by the harness; rerun from a script file.
+  - A loose class-name assertion in the copy script (`pg-col"` contains `col"`). Caught by the assertion itself; fixed.
+  - My message to the coordinator said 11 rows; it was 11 locations in 10 rows. Caught by Claude when applying.
+
 ## B3 browser page (2026-11-05, scope confirmed by the coordinator ~21:10 UTC)
 
 - Built `web/` route `/scenarios` (URL only; no nav link, no web/content or layout edits): `web/scripts/sync-b3.mjs` → `web/lib/b3/` (SHA-256 manifest), `web/app/scenarios/page.tsx` (Claude-draft banner and copy, no hard-coded figures; horizons and years read from the preset files), `web/components/scenarios/ScenarioTool.tsx` (+ CSS module). Commits 377b309, fd13598 and the editor commit.
