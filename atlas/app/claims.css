@@ -106,12 +106,14 @@
 .claim__status--stale { color: #b42318; }
 .claim__status--unverified { color: #7a5b00; }
 .claim__status--estimate { color: #6941c6; }
+.claim__status--definition { color: #475467; }
 @media (prefers-color-scheme: dark) {
   .claim__status--pass { color: #5fd38d; }
   .claim__status--fail,
   .claim__status--stale { color: #ff8a80; }
   .claim__status--unverified { color: #f2c94c; }
   .claim__status--estimate { color: #b9a3ff; }
+  .claim__status--definition { color: #b0b8c4; }
 }
 
 .sources__summary { color: var(--muted); }

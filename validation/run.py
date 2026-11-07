@@ -224,6 +224,169 @@ def check_headlines(res):
 
 
 # ----------------------------------------------------------------------------------------------
+# (h) Hot Potato (atlas/) data numbers (Eleonora, decision sources-verify (a), 2026-11-07)
+# Each check recomputes one register row from the raw Z.1 zip and FRED CPIAUCSL, never from analysis
+# output (analysis/results.json, analysis/tables/*, web/public/data/*), and compares at the precision the
+# site displays. A FAIL is reported with its gap; nothing is adjusted to pass.
+# ----------------------------------------------------------------------------------------------
+CPI_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL"  # same endpoint the pipeline uses
+# Real dollars follow the documented method (pipeline/src/hhdebt/transform.py, METHODOLOGY): nominal *
+# CPI(base) / CPI(q), CPI = quarterly mean of the monthly CPIAUCSL observations available. The base is the
+# latest complete CPI quarter at the registered FRED vintage (fred:2026-10-27): 2026Q3. Pinned so that a
+# later CPI release shows up as a mismatch instead of silently moving the base.
+CPI_BASE_Q = "2026Q3"
+NBER_PEAKS = ["1953Q2", "1957Q3", "1960Q2", "1969Q4", "1973Q4", "1980Q1", "1981Q3", "1990Q3", "2001Q1",
+              "2007Q4", "2019Q4"]  # NBER business-cycle peak quarters (www.nber.org/research/business-cycle-dating)
+PLACEBO_DRAWS = 400_000
+PLACEBO_SEED = 20261107  # deliberately not the notebook's seed: this is a separate Monte Carlo estimate
+
+
+def qend(qstr: str) -> pd.Timestamp:
+    return pd.Period(qstr, "Q").to_timestamp(how="end").normalize()
+
+
+def ensure_cpi(arg) -> Path:
+    if arg:
+        return Path(arg)
+    dest = DATA_DIR / "CPIAUCSL.csv"
+    if dest.exists():
+        return dest
+    import requests
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"downloading {CPI_URL} ...", file=sys.stderr)
+    r = requests.get(CPI_URL, timeout=60)
+    r.raise_for_status()
+    dest.write_bytes(r.content)
+    return dest
+
+
+def cpi_quarterly(path: Path) -> pd.Series:
+    """Quarterly mean of the monthly observations present (a missing month, e.g. Oct 2025, is skipped)."""
+    m = pd.read_csv(path)
+    m.columns = ["date", "cpi"]
+    m["date"] = pd.to_datetime(m["date"])
+    m["cpi"] = pd.to_numeric(m["cpi"], errors="coerce")
+    m = m.dropna().set_index("date")["cpi"]
+    qm = m.groupby(m.index.to_period("Q")).mean()
+    qm.index = qm.index.to_timestamp(how="end").normalize()
+    return qm
+
+
+def private_label(df: pd.DataFrame, groups) -> pd.Series:
+    """Private-securitization bucket in household scope: mortgage holders apportioned to households
+    (holder / FL893065105 * FL153165105, as for every mortgage holder) plus consumer-credit ABS issuers."""
+    m = [s["id"] for s in groups["mort_holders"] if s["risk_bucket"] == "private_securitization"]
+    c = [s["id"] for s in groups["cc_holders"] if s["risk_bucket"] == "private_securitization"]
+    return df[m].sum(axis=1) / df["FL893065105"] * df["FL153165105"] + df[c].sum(axis=1)
+
+
+def placebo_p(d16: pd.Series, starts, n_draws=PLACEBO_DRAWS, seed=PLACEBO_SEED, chunk=20_000):
+    """Share of random sets of len(starts) distinct windows whose mean forward change is >= the crisis mean.
+    Returns (p, Monte Carlo standard error)."""
+    v = d16.to_numpy()
+    n = len(starts)
+    cm = d16.loc[starts].mean()
+    rng = np.random.default_rng(seed)
+    hits = done = 0
+    while done < n_draws:
+        k = min(chunk, n_draws - done)
+        pick = np.argpartition(rng.random((k, len(v))), n, axis=1)[:, :n]  # n distinct positions per draw
+        hits += int((v[pick].mean(axis=1) >= cm).sum())
+        done += k
+    p = hits / n_draws
+    return p, math.sqrt(p * (1 - p) / n_draws)
+
+
+def rounds_to(x: float, nd: int, expected: float) -> bool:
+    """True if x, rounded half away from zero to nd decimals, equals expected (as displayed)."""
+    q = 10 ** nd
+    return math.floor(abs(x) * q + 0.5) * (1 if x >= 0 else -1) == round(expected * q)
+
+
+def check_hotpotato(df, res, cpi_q, groups, public):
+    out = []
+    base = qend(CPI_BASE_Q)
+    if base not in cpi_q.index:
+        return [Check("H0", "CPI base quarter for real dollars", CPI_BASE_Q, f"CPI ends {q(cpi_q.index[-1])}", "-", "NOT RUN",
+                      "CPIAUCSL file has no observations for the base quarter")]
+    fac = cpi_q.loc[base] / cpi_q
+    s = res["share"][res.index >= FIRST_Q]
+    T = qend
+
+    def add(cid, claim_id, desc, expected, observed, ok, note=""):
+        out.append(Check(cid, desc, expected, observed, "as displayed", "PASS" if ok else "FAIL",
+                         f"register {claim_id}" + (f"; {note}" if note else "")))
+
+    def real(x, quarter):
+        return x[T(quarter)] * fac[T(quarter)]
+
+    L = res.index[-1]
+    sc_nom = res["scope"][L] / 1e6
+    add("H1", "scope_usd_2026q2_atlas_headline", f"Household debt {q(L)}, nominal, $T", "$19 trillion",
+        f"${sc_nom:.3f}T", rounds_to(sc_nom, 0, 19))
+    pub_r = res["public"][L] * fac[L] / 1e6
+    add("H2", "public_usd_2026q2_atlas_real", f"Public part {q(L)}, {CPI_BASE_Q} dollars", "$10.8T", f"${pub_r:.3f}T",
+        rounds_to(pub_r, 1, 10.8))
+    sc_r = res["scope"][L] * fac[L] / 1e6
+    add("H3", "scope_usd_2026q2_atlas_real", f"Household debt {q(L)}, {CPI_BASE_Q} dollars", "$19.2T", f"${sc_r:.3f}T",
+        rounds_to(sc_r, 1, 19.2))
+    sc07 = real(res["scope"], "2007Q4") / 1e6
+    add("H4", "scope_usd_2007q4_atlas_real", f"Household debt 2007Q4, {CPI_BASE_Q} dollars", "$21.0T", f"${sc07:.3f}T",
+        rounds_to(sc07, 1, 21.0))
+
+    d16 = (s.shift(-16) - s).dropna()  # forward 16-quarter change, by start quarter
+    g = T("2007Q4")
+    pr = float((d16 < d16[g]).mean())
+    add("H5", "gfc_percentile", f"2007Q4 16-quarter change, rank among {len(d16)} windows {q(d16.index[0])}-{q(d16.index[-1])}",
+        "98th percentile", f"{pr * 100:.2f}th (share of windows strictly smaller)", rounds_to(pr * 100, 0, 98))
+    peaks = [T(x) for x in NBER_PEAKS if T(x) in d16.index]
+    p, se = placebo_p(d16, peaks, n_draws=PLACEBO_DRAWS)
+    lo, hi = p - 2.576 * se, p + 2.576 * se
+    band = (0.295, 0.305)  # every value that displays as 0.30
+    st = "PASS" if band[0] <= lo and hi < band[1] else ("FAIL" if hi < band[0] or lo >= band[1] else "WARN")
+    out.append(Check("H6", f"Placebo p: random sets of {len(peaks)} start quarters vs NBER-peak windows (Monte Carlo)",
+                     "p ≈ 0.30", f"p = {p:.4f} (MC 99% interval {lo:.4f}-{hi:.4f}, {PLACEBO_DRAWS:,} draws)",
+                     "MC interval within the rounding band [0.295, 0.305)", st,
+                     "register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) "
+                     "is compared at the displayed 2 decimals only"))
+    d80 = (s[T("1989Q4")] - s[T("1979Q4")]) * 100
+    add("H7", "public_1980s_pp", "Public share change 1979Q4-1989Q4, pp", "+19.0 pts", f"{d80:+.3f} pp", rounds_to(d80, 1, 19.0))
+    dcv = d16[T("2019Q4")] * 100
+    add("H8", "covid_16q_pp", "Public share change 2019Q4-2023Q4, pp", "+1.0 pts", f"{dcv:+.3f} pp", rounds_to(dcv, 1, 1.0))
+    for cid, cl, qq, exp in [("H9", "public_share_2019q4", "2019Q4", 55.2), ("H10", "public_share_2023q4", "2023Q4", 56.2),
+                             ("H20", "share_1979_atlas", "1979Q4", 13.7), ("H21", "share_1989_atlas", "1989Q4", 32.7),
+                             ("H22", "share_2006_atlas", "2006Q4", 33.8)]:
+        v = s[T(qq)] * 100
+        add(cid, cl, f"Public share {qq}", f"{exp:.1f}%", f"{v:.3f}%", rounds_to(v, 1, exp))
+    cov = df["FL155035015"][L] / df["FL153165105"][L]
+    add("H11", "home_coverage_2026q2", f"Owner-occupied real estate / home mortgages {q(L)}", "3.56×", f"{cov:.4f}×",
+        rounds_to(cov, 2, 3.56))
+    pub_c = [x["id"] for x in groups["cc_holders"] if x["risk_bucket"] in public]
+    pc = df[pub_c].sum(axis=1)
+    stu = pc[L] / df["FL153166220"][L] * 100
+    add("H12", "public_share_of_student_loans", f"Public holdings / student loans {q(L)}", "86%", f"{stu:.2f}%",
+        rounds_to(stu, 0, 86), "public = federal (FL313066220) + GSE Sallie Mae (FL403066005, zero since 2004)")
+    for cid, cl, qq, exp in [("H13", "public_share_of_uncoll_2026q2", q(L), 51), ("H14", "public_share_of_uncoll_2007q4", "2007Q4", 7)]:
+        t = T(qq)
+        v = pc[t] / (df["FL153166220"][t] + df["FL153166100"][t]) * 100
+        add(cid, cl, f"Public holdings / (student + revolving) {qq}", f"{exp}%", f"{v:.2f}%", rounds_to(v, 0, exp))
+    pl = private_label(df, groups)
+    vals = {}
+    for cid, cl, qq, exp in [("H15", "private_label_2006_real", "2006Q4", 4.6), ("H16", "private_label_2007q4_real", "2007Q4", 4.5),
+                             ("H17", "private_label_2011q4_real", "2011Q4", 1.7)]:
+        vals[qq] = real(pl, qq) / 1e6
+        add(cid, cl, f"Private-label pile {qq}, {CPI_BASE_Q} dollars", f"${exp:.1f}T", f"${vals[qq]:.3f}T", rounds_to(vals[qq], 1, exp))
+    loss = 1 - vals["2011Q4"] / vals["2007Q4"]
+    add("H18", "private_label_loss_2007_2011", "Private-label pile, fall 2007Q4-2011Q4 (real)", "almost two-thirds (0.63)",
+        f"{loss:.4f}", rounds_to(loss, 2, 0.63) and loss < 2 / 3, "'almost two-thirds' also requires < 2/3")
+    plL = pl[L] * fac[L] / 1e3
+    add("H19", "private_label_2026q2_real", f"Private-label pile {q(L)}, {CPI_BASE_Q} dollars", "$681B", f"${plL:.2f}B",
+        rounds_to(plL, 0, 681))
+    order = {f"H{i}": i for i in range(1, 23)}
+    return sorted(out, key=lambda c: order.get(c.id, 0))
+
+
+# ----------------------------------------------------------------------------------------------
 # (d) snapshots and database
 # ----------------------------------------------------------------------------------------------
 SNAP_FIELDS = [("scope_total_musd", "scope", 1.0), ("public_musd", "public", 1.0),
@@ -643,6 +806,7 @@ def main(argv=None) -> int:
     ap.add_argument("--z1-zip", help="path to FRB_Z1_csv.zip (default: data/validation/, downloaded if absent)")
     ap.add_argument("--prev-z1-zip", help="previous-vintage Z.1 zip (Z1.csv long format, or per-table z1_csv_files.zip)")
     ap.add_argument("--no-network-prev", action="store_true", help="skip probing the Fed archive for the previous vintage")
+    ap.add_argument("--cpi-csv", help="FRED CPIAUCSL csv for the H checks (default: data/validation/, downloaded if absent)")
     ap.add_argument("--nyfed-xlsx", help="NY Fed HHD_C_Report workbook for the E1 gold checks (default: data/validation/nyfed/, "
                     "downloaded if absent)")
     args = ap.parse_args(argv)
@@ -671,10 +835,13 @@ def main(argv=None) -> int:
     else:
         f_checks, prev_info = check_revisions(df, res, groups, public, args.prev_z1_zip, urls_log)
     checks += f_checks
+    cpi_path = ensure_cpi(args.cpi_csv)
+    checks += check_hotpotato(df, res, cpi_quarterly(cpi_path), groups, public)
     checks += e1_gold.run_checks(df, cat, groups, res, Check, Path(args.nyfed_xlsx) if args.nyfed_xlsx else None)
 
     meta = {"vintage": ts.strftime("%Y-%m-%d %H:%M"), "latest": q(df.index[-1]), "zip_name": zip_path.name,
             "zip_bytes": zip_path.stat().st_size, "sha256": sha,
+            "cpi_csv": cpi_path.name, "cpi_sha256": zparse.sha256_file(cpi_path), "cpi_last_obs": str(pd.read_csv(cpi_path).iloc[-1, 0]),
             "run_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")}
     table = render_table(checks)
     print(f"Z.1 vintage {meta['vintage']} (latest {meta['latest']})  sha256 {sha[:16]}...  run {meta['run_at']}Z")

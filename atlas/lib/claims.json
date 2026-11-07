@@ -1,7 +1,8 @@
 {
  "site": "atlas",
  "generatedFrom": [
-  "claims/register.csv"
+  "claims/register.csv",
+  "claims/tracks/infra.csv"
  ],
  "claims": [
   {
@@ -26,7 +27,7 @@
     "n/a"
    ],
    "vintage": "n/a",
-   "validation": "UNVERIFIED",
+   "validation": "DEFINITION",
    "checkId": "",
    "notes": "Design constant, not a data claim. Tested for dot conservation in atlas/lib/timeline.test.ts.",
    "register": "claims/register.csv",
@@ -58,7 +59,7 @@
     "n/a"
    ],
    "vintage": "n/a",
-   "validation": "UNVERIFIED",
+   "validation": "DEFINITION",
    "checkId": "",
    "notes": "Design constant, not a data claim.",
    "register": "claims/register.csv",
@@ -95,8 +96,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H8",
    "notes": "web/content/story.ts defines covidDelta but no copy line uses facts.covidDelta today. Atlas COVID step moved to 2023Q4 (16 quarters) on 2026-11-04; web fact covidDelta removed.",
    "register": "claims/register.csv",
    "anchors": [
@@ -171,8 +172,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H5",
    "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent.",
    "register": "claims/register.csv",
    "anchors": [
@@ -200,8 +201,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H11",
    "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
    "register": "claims/register.csv",
    "anchors": [
@@ -230,8 +231,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H15",
    "notes": "Real 2026 dollars.",
    "register": "claims/register.csv",
    "anchors": [
@@ -262,8 +263,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H16",
    "notes": "Same display as public_added_mortgage_usd ($4.5T) but a different quantity.",
    "register": "claims/register.csv",
    "anchors": [
@@ -292,8 +293,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H17",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -323,8 +324,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H19",
    "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'.",
    "register": "claims/register.csv",
    "anchors": [
@@ -354,8 +355,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H18",
    "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%.",
    "register": "claims/register.csv",
    "anchors": [
@@ -390,8 +391,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H7",
    "notes": "web/content/story.ts defines public1980s but no copy line uses facts.public1980s today; the atlas prints 'about 19 points'.",
    "register": "claims/register.csv",
    "anchors": [
@@ -534,8 +535,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H9",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -569,8 +570,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H10",
    "notes": "Corrected 2026-11-04 from 56.3%: the 4-decimal table value 0.5625 had been rounded a second time; unrounded 0.56249. Atlas COVID step ({share} at 2023-12-31, fmtPct) shows it since 2026-11-04.",
    "register": "claims/register.csv",
    "anchors": [
@@ -636,8 +637,8 @@
     "FL313066220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H12",
    "notes": "Holdings, not guarantees: bank-held FFEL loans carried federal guarantees but are counted private.",
    "register": "claims/register.csv",
    "anchors": [
@@ -666,8 +667,8 @@
     "FL313066220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H14",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -694,8 +695,8 @@
     "FL313066220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H13",
    "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans.",
    "register": "claims/register.csv",
    "anchors": [
@@ -729,8 +730,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H2",
    "notes": "Token {public}. Real 2026-dollar total x nominal public share, so it differs from the nominal $10.77T in README/findings. Readers see $10.8T of $19.2T in the atlas and $10.77T of $19.10T elsewhere; consider saying 'in 2026 dollars' in the step.",
    "register": "claims/register.csv",
    "anchors": [
@@ -766,9 +767,9 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed.",
+   "validation": "PASS",
+   "checkId": "H6",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) gives 0.300, 99% interval inside the band that displays as 0.30; the notebook's 0.3025 is within its own Monte Carlo error.",
    "register": "claims/register.csv",
    "anchors": [],
    "exact": [
@@ -795,8 +796,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H4",
    "notes": "Token {total}. Real 2026 dollars; the nominal 2007Q4 scope total is $13.19T (check B7). The step does not say 'in 2026 dollars'.",
    "register": "claims/register.csv",
    "anchors": [
@@ -825,8 +826,8 @@
     "FL153166000"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H1",
    "notes": "Rounded from $19.10T nominal ($19.2T in the atlas's 2026-dollar series).",
    "register": "claims/register.csv",
    "anchors": [
@@ -854,8 +855,8 @@
     "CPIAUCSL"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H3",
    "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders.",
    "register": "claims/register.csv",
    "anchors": [
@@ -889,8 +890,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H20",
    "notes": "Token filled at render time by fmtPct(series.publicShare[q]) in atlas/components/Experience.tsx (fill) from web/public/data/public_share.json (field public_share); the value is the snapshot field, the rendering itself is not independently tested.",
    "register": "claims/register.csv",
    "anchors": [
@@ -923,8 +924,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H21",
    "notes": "Token filled at render time by fmtPct(series.publicShare[q]) in atlas/components/Experience.tsx (fill) from web/public/data/public_share.json (field public_share); the value is the snapshot field, the rendering itself is not independently tested.",
    "register": "claims/register.csv",
    "anchors": [
@@ -957,8 +958,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H22",
    "notes": "Token filled at render time by fmtPct(series.publicShare[q]) in atlas/components/Experience.tsx (fill) from web/public/data/public_share.json (field public_share); the value is the snapshot field, the rendering itself is not independently tested.",
    "register": "claims/register.csv",
    "anchors": [

@@ -10,8 +10,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-05 19:03:16 |
-| Result | 113 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
+| Run timestamp (UTC) | 2026-11-07 16:35:42 |
+| Result | 135 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
 
@@ -61,6 +61,28 @@ recomputes everything from components. No number is changed by this suite; it on
 | F3 | **PASS** | Headline shares, previous -> current vintage | equal at published 0.1 pp precision | 2026Q1 (latest common): 56.60% -> 56.59%; 2011Q4: 49.22% -> 49.22%; 2007Q4: 36.12% -> 36.12%; 1952Q1: 3.22% -> 3.22% | 0.1 pp |  |
 | F4 | **PASS** | All-time-high quarter, previous vs current (through common quarters) | same quarter | prev 2021Q1 58.60%; now 2021Q1 58.60% | exact quarter |  |
 | F5 | **PASS** | New quarter(s) in current vintage | report | 2026Q2 | - | URLs tried: https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html \| https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html \| https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed |
+| H1 | **PASS** | Household debt 2026Q2, nominal, $T | $19 trillion | $19.097T | as displayed | register scope_usd_2026q2_atlas_headline |
+| H2 | **PASS** | Public part 2026Q2, 2026Q3 dollars | $10.8T | $10.814T | as displayed | register public_usd_2026q2_atlas_real |
+| H3 | **PASS** | Household debt 2026Q2, 2026Q3 dollars | $19.2T | $19.179T | as displayed | register scope_usd_2026q2_atlas_real |
+| H4 | **PASS** | Household debt 2007Q4, 2026Q3 dollars | $21.0T | $20.950T | as displayed | register scope_usd_2007q4_atlas_real |
+| H5 | **PASS** | 2007Q4 16-quarter change, rank among 282 windows 1952Q1-2022Q2 | 98th percentile | 98.23th (share of windows strictly smaller) | as displayed | register gfc_percentile |
+| H6 | **PASS** | Placebo p: random sets of 11 start quarters vs NBER-peak windows (Monte Carlo) | p ≈ 0.30 | p = 0.3004 (MC 99% interval 0.2986-0.3023, 400,000 draws) | MC interval within the rounding band [0.295, 0.305) | register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) is compared at the displayed 2 decimals only |
+| H7 | **PASS** | Public share change 1979Q4-1989Q4, pp | +19.0 pts | +19.027 pp | as displayed | register public_1980s_pp |
+| H8 | **PASS** | Public share change 2019Q4-2023Q4, pp | +1.0 pts | +1.025 pp | as displayed | register covid_16q_pp |
+| H9 | **PASS** | Public share 2019Q4 | 55.2% | 55.224% | as displayed | register public_share_2019q4 |
+| H10 | **PASS** | Public share 2023Q4 | 56.2% | 56.249% | as displayed | register public_share_2023q4 |
+| H11 | **PASS** | Owner-occupied real estate / home mortgages 2026Q2 | 3.56× | 3.5624× | as displayed | register home_coverage_2026q2 |
+| H12 | **PASS** | Public holdings / student loans 2026Q2 | 86% | 86.38% | as displayed | register public_share_of_student_loans; public = federal (FL313066220) + GSE Sallie Mae (FL403066005, zero since 2004) |
+| H13 | **PASS** | Public holdings / (student + revolving) 2026Q2 | 51% | 50.68% | as displayed | register public_share_of_uncoll_2026q2 |
+| H14 | **PASS** | Public holdings / (student + revolving) 2007Q4 | 7% | 7.27% | as displayed | register public_share_of_uncoll_2007q4 |
+| H15 | **PASS** | Private-label pile 2006Q4, 2026Q3 dollars | $4.6T | $4.608T | as displayed | register private_label_2006_real |
+| H16 | **PASS** | Private-label pile 2007Q4, 2026Q3 dollars | $4.5T | $4.508T | as displayed | register private_label_2007q4_real |
+| H17 | **PASS** | Private-label pile 2011Q4, 2026Q3 dollars | $1.7T | $1.666T | as displayed | register private_label_2011q4_real |
+| H18 | **PASS** | Private-label pile, fall 2007Q4-2011Q4 (real) | almost two-thirds (0.63) | 0.6305 | as displayed | register private_label_loss_2007_2011; 'almost two-thirds' also requires < 2/3 |
+| H19 | **PASS** | Private-label pile 2026Q2, 2026Q3 dollars | $681B | $681.30B | as displayed | register private_label_2026q2_real |
+| H20 | **PASS** | Public share 1979Q4 | 13.7% | 13.701% | as displayed | register share_1979_atlas |
+| H21 | **PASS** | Public share 1989Q4 | 32.7% | 32.728% | as displayed | register share_1989_atlas |
+| H22 | **PASS** | Public share 2006Q4 | 33.8% | 33.754% | as displayed | register share_2006_atlas |
 | E1-q101 | **PASS** | E1 gold q101 (PS/L): raw vs snapshot | 0.405376779 | 0.405376779 | 5e-05 |  |
 | E1-q103 | **PASS** | E1 gold q103 (PS/L): raw vs snapshot | 0.1795060273 | 0.1795060273 | 5e-05 |  |
 | E1-q104 | **PASS** | E1 gold q104 (PS/L): raw vs snapshot | 13.186611 | 13.186611 | 0.001 |  |

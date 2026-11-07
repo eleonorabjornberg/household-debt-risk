@@ -1,7 +1,8 @@
 {
  "site": "web",
  "generatedFrom": [
-  "claims/register.csv"
+  "claims/register.csv",
+  "claims/tracks/infra.csv"
  ],
  "claims": [
   {
@@ -497,8 +498,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H5",
    "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent.",
    "register": "claims/register.csv",
    "anchors": [
@@ -801,8 +802,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H11",
    "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
    "register": "claims/register.csv",
    "anchors": [
@@ -1474,8 +1475,8 @@
     "FL313066220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H12",
    "notes": "Holdings, not guarantees: bank-held FFEL loans carried federal guarantees but are counted private.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1512,8 +1513,8 @@
     "FL313066220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H14",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -1551,8 +1552,8 @@
     "FL313066220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "H13",
    "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1729,9 +1730,9 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed.",
+   "validation": "PASS",
+   "checkId": "H6",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) gives 0.300, 99% interval inside the band that displays as 0.30; the notebook's 0.3025 is within its own Monte Carlo error.",
    "register": "claims/register.csv",
    "anchors": [
     "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952, recession windows are statistically indistinguishable (p ≈",

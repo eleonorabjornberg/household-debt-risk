@@ -58,7 +58,7 @@ SCHEMA = [
     "claim_id", "claim", "display", "value", "unit", "period", "locations",
     "computation", "series_ids", "vintage", "validation", "check_id", "notes",
 ]
-STATUSES = {"PASS", "FAIL", "UNVERIFIED", "ESTIMATE", "STALE"}
+STATUSES = {"PASS", "FAIL", "UNVERIFIED", "ESTIMATE", "STALE", "DEFINITION"}  # DEFINITION: design setting, not a data claim
 REQUIRED = ["claim_id", "claim", "display", "value", "unit", "period", "locations",
             "computation", "vintage", "validation"]
 
