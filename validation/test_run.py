@@ -138,9 +138,11 @@ def test_hotpotato_checks_wiring_and_failures_are_reported(monkeypatch):
     res = run.compute(df, groups, public)
     cpi = pd.Series(100.0, index=pd.date_range("1947-03-31", "2026-09-30", freq="QE"))
     out = run.check_hotpotato(df, res, cpi, groups, public)
-    assert [c.id for c in out] == [f"H{i}" for i in range(1, 23)]
-    assert all(c.status == "FAIL" for c in out)  # nothing is adjusted to pass
-    reg = {r["claim_id"]: r for r in csv.DictReader(REGISTER.open(newline="", encoding="utf-8"))}
+    assert [c.id for c in out] == [f"H{i}" for i in range(1, 24)]
+    # nothing is adjusted to pass; H23 (pool size) depends only on the quarter range, which the synthetic frame shares
+    assert all(c.status == "FAIL" for c in out if c.id != "H23")
+    reg = {r["claim_id"]: r for f in [REGISTER, *sorted((REGISTER.parent / "tracks").glob("*.csv"))]
+           for r in csv.DictReader(f.open(newline="", encoding="utf-8"))}
     for c in out:
         cid = c.note.split(";")[0].removeprefix("register ").strip()
         assert cid in reg, cid

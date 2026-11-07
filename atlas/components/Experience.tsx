@@ -133,7 +133,7 @@ export default function Experience({ series }: { series: Series }) {
     return (
       <div className="tip" style={{ left: `clamp(130px, ${hover.x}px, calc(100% - 130px))`, top: hover.y }} role="status">
         <strong>{PILE_LONG[b]}</strong>
-        <span>{fmtTrillions(v)} in 2026 dollars · {lens === "dollars" ? Math.round(v / DOLLAR_UNIT_MUSD) : Math.round(shareNow * SHARE_DOTS)} dots</span>
+        <span>{fmtTrillions(v)} in 2026Q3 dollars · {lens === "dollars" ? Math.round(v / DOLLAR_UNIT_MUSD) : Math.round(shareNow * SHARE_DOTS)} dots</span>
         <span>{fmtPct(shareNow)} of all household debt</span>
         <span>
           {delta >= 0 ? "+" : "−"}

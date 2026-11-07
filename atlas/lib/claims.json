@@ -2,12 +2,13 @@
  "site": "atlas",
  "generatedFrom": [
   "claims/register.csv",
+  "claims/tracks/analysis.csv",
   "claims/tracks/infra.csv"
  ],
  "claims": [
   {
    "id": "atlas_dot_unit",
-   "claim": "In the atlas, each dot is $50 billion of debt in 2026 dollars.",
+   "claim": "In the atlas, each dot is $50 billion of debt in 2026Q3 dollars.",
    "display": [
     "$50 billion",
     "$50B",
@@ -175,8 +176,8 @@
    "notes": "Atlas rounds to '13 points'. Findings also gives the same gap as 'largest change of any crisis'.",
    "register": "claims/register.csv",
    "anchors": [
-    "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to",
-    "today, in 2026 dollars."
+    "Across eleven recessions, a placebo test finds no detectable excess in the shift after a crisis (p ≈ 0.30, low power), against random sets of start quarters drawn from all 282 overlapping 16-quarter windows, 1952Q1–2022Q2. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private securitization and REITs, incl. card ABS, went from $4.6T in 2006 to",
+    "today, in 2026Q3 dollars."
    ],
    "exact": []
   },
@@ -212,7 +213,7 @@
    "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent. Check H5: share of windows strictly smaller (98.2); counting ties or excluding the window itself gives 98.6 (displays as 99). The five larger windows start 2006Q3-2007Q3, the same episode; excluding windows overlapping 2007Q4 gives 99.6 (ana-62, ana-72).",
    "register": "claims/register.csv",
    "anchors": [
-    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    "In four years the private securitization and REITs pile, incl. card ABS, loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
     ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
@@ -393,8 +394,43 @@
    "exact": []
   },
   {
+   "id": "placebo_pool_windows",
+   "claim": "The placebo test draws random start quarters from all 282 overlapping 16-quarter windows starting 1952Q1-2022Q2.",
+   "display": [
+    "282"
+   ],
+   "value": "282",
+   "unit": "count",
+   "period": "1952Q1-2022Q2",
+   "locations": [
+    "atlas/content/story.ts:119"
+   ],
+   "computation": "validation/run.py check H23: number of forward 16-quarter changes in the public share from 1952Q1 to the latest Z.1 quarter (2026Q2)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "H23",
+   "notes": "Eleonora, copy-placebo (a), 2026-11-07: the placebo pool is stated in the copy. Same pool as checks H5 and H6.",
+   "register": "claims/tracks/analysis.csv",
+   "anchors": [
+    "Across eleven recessions, a placebo test finds no detectable excess in the shift after a crisis (p ≈ 0.30, low power), against random sets of start quarters drawn from all 282 overlapping 16-quarter windows, 1952Q1–2022Q2. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private securitization and REITs, incl. card ABS, went from $4.6T in 2006 to",
+    "today, in 2026Q3 dollars."
+   ],
+   "exact": []
+  },
+  {
    "id": "private_label_2006_real",
-   "claim": "The private-label pile was about $4.6T in 2006 (2026 dollars).",
+   "claim": "The pile of private securitization and REITs, incl. card ABS, was about $4.6T in 2006 (2026Q3 dollars).",
    "display": [
     "$4.6T"
    ],
@@ -415,19 +451,19 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H15",
-   "notes": "Real 2026 dollars. Check H15 (2026-11-07): the bucket includes consumer-credit ABS ($1.02T of the $4.61T) and mortgage REITs; ABS-issuer mortgages alone are $3.43T (skeptic ana-59).",
+   "notes": "Real 2026 dollars. Check H15 (2026-11-07): the bucket includes consumer-credit ABS ($1.02T of the $4.61T) and mortgage REITs; ABS-issuer mortgages alone are $3.43T (skeptic ana-59). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
     "Wall Street securitization grows fast enough to take market share from the agencies. From the 2001 recession to 2006 the public share falls to",
-    ", while the private-label pile swells to about $4.6T in today's dollars.",
-    "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to",
-    "today, in 2026 dollars."
+    ", while the pile of private securitization and REITs, incl. card ABS, swells to about $4.6T in 2026Q3 dollars.",
+    "Across eleven recessions, a placebo test finds no detectable excess in the shift after a crisis (p ≈ 0.30, low power), against random sets of start quarters drawn from all 282 overlapping 16-quarter windows, 1952Q1–2022Q2. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private securitization and REITs, incl. card ABS, went from $4.6T in 2006 to",
+    "today, in 2026Q3 dollars."
    ],
    "exact": []
   },
   {
    "id": "private_label_2007q4_real",
-   "claim": "The private-label pile was $4.5T at the end of 2007 (2026 dollars).",
+   "claim": "The pile of private securitization and REITs, incl. card ABS, was $4.5T at the end of 2007 (2026Q3 dollars).",
    "display": [
     "$4.5T"
    ],
@@ -447,17 +483,17 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H16",
-   "notes": "Same display as public_added_mortgage_usd ($4.5T) but a different quantity. Check H16: includes consumer-credit ABS ($1.04T) and mortgage REITs (skeptic ana-59).",
+   "notes": "Same display as public_added_mortgage_usd ($4.5T) but a different quantity. Check H16: includes consumer-credit ABS ($1.04T) and mortgage REITs (skeptic ana-59). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    "In four years the private securitization and REITs pile, incl. card ABS, loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
     ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
   {
    "id": "private_label_2011q4_real",
-   "claim": "The private-label pile was $1.7T at the end of 2011 (2026 dollars).",
+   "claim": "The pile of private securitization and REITs, incl. card ABS, was $1.7T at the end of 2011 (2026Q3 dollars).",
    "display": [
     "$1.7T"
    ],
@@ -477,17 +513,17 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H17",
-   "notes": "Check H17: consumer-credit ABS is $0.07T here, after a $0.79T fall in 2010Q1 (skeptic ana-58).",
+   "notes": "Check H17: consumer-credit ABS is $0.07T here, after a $0.79T fall in 2010Q1 (skeptic ana-58). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    "In four years the private securitization and REITs pile, incl. card ABS, loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
     ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
   },
   {
    "id": "private_label_2026q2_real",
-   "claim": "Private-label holdings are $681B today (2026 dollars).",
+   "claim": "Private securitization and REITs, incl. card ABS, hold $681B today (2026Q3 dollars).",
    "display": [
     "$681B"
    ],
@@ -508,18 +544,18 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H19",
-   "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'. Check H19: includes $0.02T consumer-credit ABS and $0.13T mortgage REITs; the 2006-to-today comparison crosses the 2010Q1 break (skeptic ana-59).",
+   "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'. Check H19: includes $0.02T consumer-credit ABS and $0.13T mortgage REITs; the 2006-to-today comparison crosses the 2010Q1 break (skeptic ana-59). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
     "What does this mean?",
-    "Across eleven recessions, the shift after a crisis looks like any other period's in a placebo test. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private-label debt went from $4.6T in 2006 to",
-    "today, in 2026 dollars."
+    "Across eleven recessions, a placebo test finds no detectable excess in the shift after a crisis (p ≈ 0.30, low power), against random sets of start quarters drawn from all 282 overlapping 16-quarter windows, 1952Q1–2022Q2. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private securitization and REITs, incl. card ABS, went from $4.6T in 2006 to",
+    "today, in 2026Q3 dollars."
    ],
    "exact": []
   },
   {
    "id": "private_label_loss_2007_2011",
-   "claim": "The private-label pile lost almost two-thirds of its value between 2007 and 2011.",
+   "claim": "The pile of private securitization and REITs, incl. card ABS, lost almost two-thirds of its value between 2007 and 2011.",
    "display": [
     "almost two-thirds"
    ],
@@ -539,10 +575,10 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H18",
-   "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%. Check H18 verifies 0.6305 for the bucket as defined. Most of the card-ABS part fell in one quarter, 2010Q1 ($0.88T to $0.09T real), which coincides with FAS 166/167 consolidation (cause not verified here); without consumer-credit ABS the fall is 54% (ABS-issuer mortgages alone 53%) (skeptic ana-58, open for Eleonora).",
+   "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%. Check H18 verifies 0.6305 for the bucket as defined. Most of the card-ABS part fell in one quarter, 2010Q1 ($0.88T to $0.09T real), which coincides with FAS 166/167 consolidation (cause not verified here); without consumer-credit ABS the fall is 54% (ABS-issuer mortgages alone 53%) (skeptic ana-58, open for Eleonora). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    "In four years the private securitization and REITs pile, incl. card ABS, loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
     ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
@@ -613,7 +649,7 @@
    "notes": "Public = federal direct + GSE/agency pools + state & local. The atlas copy gets this through the {share} token at step 1952-03-31 (fmtPct of the snapshot value); web copy reads facts.publicShareFirst.",
    "register": "claims/register.csv",
    "anchors": [
-    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held",
+    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026Q3 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held",
     "public_share_1952q1"
    ],
    "exact": []
@@ -649,11 +685,11 @@
    "notes": "Atlas 2007 step prints it through {share} (token at 2007-12-31); the 2011 step hard-codes '36.1%'.",
    "register": "claims/register.csv",
    "anchors": [
-    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    "In four years the private securitization and REITs pile, incl. card ABS, loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
     ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing.",
     "Total debt is",
     ". The public sector holds",
-    "of it. Keep an eye on the private-label pile."
+    "of it. Keep an eye on the private securitization and REITs pile."
    ],
    "exact": []
   },
@@ -687,7 +723,7 @@
    "notes": "Atlas 2011 step prints it through {share} (token at 2011-12-31).",
    "register": "claims/register.csv",
    "anchors": [
-    "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
+    "In four years the private securitization and REITs pile, incl. card ABS, loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
     ", a rise bigger than 98% of all four-year windows. It is the one crisis that moved the share for good, and a little over half of the jump came from private lenders shrinking, not from Fannie Mae and Freddie Mac growing."
    ],
    "exact": []
@@ -794,7 +830,7 @@
    "notes": "Atlas 'Today' step and the first 'What does this mean?' stat use the {share} token (latest quarter, fmtPct of public_share). web/app/page.tsx renders it from the mart snapshot with pct(.,1).",
    "register": "claims/register.csv",
    "anchors": [
-    "in 2026 dollars, or",
+    "in 2026Q3 dollars, or",
     ", sits with the public sector. It mostly got there slowly. One crisis made it permanent.",
     "public_share_2026q2"
    ],
@@ -824,7 +860,7 @@
    "notes": "Holdings, not guarantees: bank-held FFEL loans carried federal guarantees but are counted private.",
    "register": "claims/register.csv",
    "anchors": [
-    "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
+    "The public sector holds 86% of student loans and 51% of household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
    ],
    "exact": [
     "86%"
@@ -854,13 +890,13 @@
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
-    "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
+    "The public sector holds 86% of student loans and 51% of household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
    ],
    "exact": []
   },
   {
    "id": "public_share_of_uncoll_2026q2",
-   "claim": "The public sector holds 51% of all uncollateralized household debt.",
+   "claim": "The public sector holds 51% of uncollateralized household debt (revolving plus student loans).",
    "display": [
     "51%"
    ],
@@ -879,10 +915,10 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H13",
-   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans. Check H13: denominator is revolving + student loans (methods definition); other non-revolving credit ($378B), part of it unsecured, is outside it; including it gives 45% (skeptic ana-61, open for Eleonora on the word 'all').",
+   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans. Check H13: denominator is revolving + student loans (methods definition); other non-revolving credit ($378B), part of it unsecured, is outside it; including it gives 45% (skeptic ana-61, open for Eleonora on the word 'all'). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
+    "The public sector holds 86% of student loans and 51% of household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
    ],
    "exact": []
   },
@@ -917,14 +953,14 @@
    "notes": "Token {public}. Real 2026-dollar total x nominal public share, so it differs from the nominal $10.77T in README/findings. Readers see $10.8T of $19.2T in the atlas and $10.77T of $19.10T elsewhere; consider saying 'in 2026 dollars' in the step. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
    "register": "claims/register.csv",
    "anchors": [
-    "in 2026 dollars, or",
+    "in 2026Q3 dollars, or",
     ", sits with the public sector. It mostly got there slowly. One crisis made it permanent."
    ],
    "exact": []
   },
   {
    "id": "ratchet_placebo_p",
-   "claim": "Crisis windows are indistinguishable from placebo windows (p about 0.30; 30% of random date sets do as well).",
+   "claim": "A placebo test finds no detectable excess in the public-share change after crisis peaks (p about 0.30, low power; 30% of random date sets from the 282 windows 1952Q1-2022Q2 do as well).",
    "display": [
     "p ≈ 0.30",
     "0.30",
@@ -951,7 +987,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H6",
-   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71).",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [],
    "exact": [
@@ -988,7 +1024,7 @@
   },
   {
    "id": "scope_usd_2007q4_atlas_real",
-   "claim": "The atlas 2007 step shows total household debt as $21.0T (2026 dollars).",
+   "claim": "The atlas 2007 step shows total household debt as $21.0T (2026Q3 dollars).",
    "display": [
     "$21.0T"
    ],
@@ -1008,12 +1044,12 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H4",
-   "notes": "Token {total}. Real 2026 dollars; the nominal 2007Q4 scope total is $13.19T (check B7). The step does not say 'in 2026 dollars'. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
+   "notes": "Token {total}. Real 2026 dollars; the nominal 2007Q4 scope total is $13.19T (check B7). The step does not say 'in 2026 dollars'. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
     "Total debt is",
     ". The public sector holds",
-    "of it. Keep an eye on the private-label pile."
+    "of it. Keep an eye on the private securitization and REITs pile."
    ],
    "exact": []
   },
@@ -1047,7 +1083,7 @@
   },
   {
    "id": "scope_usd_2026q2_atlas_real",
-   "claim": "The atlas 'Today' step shows total household debt as $19.2T (2026 dollars).",
+   "claim": "The atlas 'Today' step shows total household debt as $19.2T (2026Q3 dollars).",
    "display": [
     "$19.2T"
    ],
@@ -1067,10 +1103,10 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H3",
-   "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
+   "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "in 2026 dollars, or",
+    "in 2026Q3 dollars, or",
     ", sits with the public sector. It mostly got there slowly. One crisis made it permanent."
    ],
    "exact": []
@@ -1174,7 +1210,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "Wall Street securitization grows fast enough to take market share from the agencies. From the 2001 recession to 2006 the public share falls to",
-    ", while the private-label pile swells to about $4.6T in today's dollars."
+    ", while the pile of private securitization and REITs, incl. card ABS, swells to about $4.6T in 2026Q3 dollars."
    ],
    "exact": []
   },
