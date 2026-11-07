@@ -46,7 +46,7 @@ describe("lib/claims.json", () => {
     expect(new Set(file.claims.map((c) => c.id)).size).toBe(file.claims.length);
     for (const c of file.claims) {
       expect(c.display.length, c.id).toBeGreaterThan(0);
-      expect(["PASS", "FAIL", "UNVERIFIED", "ESTIMATE", "STALE"], c.id).toContain(c.validation);
+      expect(["PASS", "FAIL", "UNVERIFIED", "ESTIMATE", "STALE", "DEFINITION"], c.id).toContain(c.validation);
       expect(c.locations.every((l) => l.startsWith(`${file.site}/`)), c.id).toBe(true);
     }
   });

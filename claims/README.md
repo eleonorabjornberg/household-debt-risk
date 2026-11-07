@@ -31,6 +31,7 @@ it was computed, its series, its vintage and a validation status.
 | `UNVERIFIED` | Traced to code or a results file, but no independent check yet. Not a defect, a to-do. |
 | `ESTIMATE` | Model output, imputation or proxy. Must be labelled as an estimate where it is published. |
 | `STALE` | The displayed value disagrees with the current source. The note says by how much; the copy needs fixing. |
+| `DEFINITION` | A design setting chosen for the site, not a data claim (for example, one atlas dot = $50B). Nothing to recompute; `check_id` is empty. |
 
 ## Adding or changing a row
 

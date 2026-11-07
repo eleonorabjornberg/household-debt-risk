@@ -78,3 +78,89 @@ def test_never_reversed_rule_distinguishes_readings():
     assert c9(mk([0.36, 0.49, 0.50, 0.51])).status == "PASS"
     weaker = c9(mk([0.36, 0.49, 0.45, 0.51]))
     assert weaker.status == "FAIL" and "rewording" in weaker.note
+
+
+# ---- (h) Hot Potato checks (sources-verify (a)) ------------------------------------------------
+import csv  # noqa: E402
+import itertools  # noqa: E402
+import math  # noqa: E402
+
+import numpy as np  # noqa: E402
+import pytest  # noqa: E402
+
+REGISTER = Path(__file__).resolve().parent.parent / "claims" / "register.csv"
+
+
+def test_rounds_to_is_half_away_from_zero_at_display_precision():
+    assert run.rounds_to(56.249, 1, 56.2) and not run.rounds_to(56.25, 1, 56.2)
+    assert run.rounds_to(0.6305, 2, 0.63) and run.rounds_to(19.097, 0, 19)
+    assert run.rounds_to(-1.05, 1, -1.1)
+    assert not run.rounds_to(3.565, 2, 3.56)
+
+
+def test_cpi_quarterly_skips_missing_month(tmp_path):
+    f = tmp_path / "cpi.csv"
+    f.write_text("observation_date,CPIAUCSL\n2025-10-01,.\n2025-11-01,10\n2025-12-01,20\n2026-01-01,30\n")
+    q = run.cpi_quarterly(f)
+    assert q[pd.Timestamp("2025-12-31")] == 15  # two-month mean, as the pipeline documents
+    assert q[pd.Timestamp("2026-03-31")] == 30
+
+
+def test_private_label_apportions_mortgage_holders():
+    idx = pd.to_datetime(["2007-12-31"])
+    df = pd.DataFrame({"FL893065105": [200.0], "FL153165105": [100.0], "FL673065105": [40.0],
+                       "FL643065173": [20.0], "FL673066000": [5.0]}, index=idx)
+    _, _, _, groups = run.load_catalog()
+    assert run.private_label(df, groups)[idx[0]] == pytest.approx((40 + 20) / 200 * 100 + 5)
+
+
+def test_placebo_p_matches_exact_enumeration():
+    d16 = pd.Series([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0], index=pd.date_range("2000-03-31", periods=8, freq="QE"))
+    starts = list(d16.index[[2, 6, 7]])
+    cm = d16[starts].mean()
+    combos = list(itertools.combinations(d16.values, 3))
+    exact = sum(np.mean(c) >= cm for c in combos) / len(combos)
+    p, se = run.placebo_p(d16, starts, n_draws=200_000, seed=1)
+    assert abs(p - exact) < 4 * se + 1e-9
+
+
+def _synthetic_full(value=1.0):
+    """Every catalog Z.1 series constant over 1952Q1-2026Q2: the checks run end to end and must FAIL."""
+    cat, rows, public, groups = run.load_catalog()
+    idx = pd.date_range("1951-12-31", "2026-06-30", freq="QE")
+    df = pd.DataFrame({s["id"]: value for s in rows}, index=idx)
+    return df, groups, public
+
+
+def test_hotpotato_checks_wiring_and_failures_are_reported(monkeypatch):
+    monkeypatch.setattr(run, "PLACEBO_DRAWS", 2_000)
+    df, groups, public = _synthetic_full()
+    res = run.compute(df, groups, public)
+    cpi = pd.Series(100.0, index=pd.date_range("1947-03-31", "2026-09-30", freq="QE"))
+    out = run.check_hotpotato(df, res, cpi, groups, public)
+    assert [c.id for c in out] == [f"H{i}" for i in range(1, 23)]
+    assert all(c.status == "FAIL" for c in out)  # nothing is adjusted to pass
+    reg = {r["claim_id"]: r for r in csv.DictReader(REGISTER.open(newline="", encoding="utf-8"))}
+    for c in out:
+        cid = c.note.split(";")[0].removeprefix("register ").strip()
+        assert cid in reg, cid
+        spellings = [d.strip() for d in reg[cid]["display"].split("|")]
+        assert any(sp in c.expected for sp in spellings), (c.id, c.expected, spellings)
+
+
+def test_hotpotato_not_run_without_cpi_base():
+    df, groups, public = _synthetic_full()
+    res = run.compute(df, groups, public)
+    cpi = pd.Series(100.0, index=pd.date_range("1947-03-31", "2026-06-30", freq="QE"))
+    out = run.check_hotpotato(df, res, cpi, groups, public)
+    assert len(out) == 1 and out[0].status == "NOT RUN"
+
+
+def test_placebo_sampling_is_uniform_over_sets():
+    # The argpartition draw must pick every 2-of-5 set equally often (10 sets, 0.1 each).
+    rng = np.random.default_rng(3)
+    k, n, N = 5, 2, 200_000
+    pick = np.sort(np.argpartition(rng.random((N, k)), n, axis=1)[:, :n], axis=1)
+    _, counts = np.unique(pick, axis=0, return_counts=True)
+    assert len(counts) == 10
+    assert np.abs(counts / N - 0.1).max() < 0.004  # about 6 standard errors

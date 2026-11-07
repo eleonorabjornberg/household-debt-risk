@@ -5,7 +5,12 @@
     "zip_name": "FRB_Z1_csv.zip",
     "zip_bytes": 64219006,
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
-    "run_at": "2026-11-05 19:03:16"
+    "cpi_csv": "CPIAUCSL.csv",
+    "cpi_sha256": "8556b710094027fa4724641d48be620cc37c04abfa15a0c496378cf1146c1549",
+    "cpi_retrieved_utc": "2026-11-07 16:31",
+    "cpi_base_quarter": "2026Q3",
+    "cpi_last_obs": "2026-09-01",
+    "run_at": "2026-11-07 16:43:00"
   },
   "checks": [
     {
@@ -403,6 +408,204 @@
       "tolerance": "-",
       "status": "PASS",
       "note": "URLs tried: https://www.federalreserve.gov/releases/z1/20260611/ -> HTTP 403 text/html | https://www.federalreserve.gov/releases/z1/20260611/data/FRB_Z1_csv.zip -> HTTP 404 text/html | https://www.federalreserve.gov/releases/z1/20260611/FRB_Z1_csv.zip -> HTTP 404 text/html | https://www.federalreserve.gov/releases/z1/20260611/Z1_csv.zip -> HTTP 404 text/html | https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
+    },
+    {
+      "id": "H1",
+      "description": "Household debt 2026Q2, nominal, $T",
+      "expected": "$19 trillion",
+      "observed": "$19.097T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register scope_usd_2026q2_atlas_headline"
+    },
+    {
+      "id": "H2",
+      "description": "Public part 2026Q2, 2026Q3 dollars",
+      "expected": "$10.8T",
+      "observed": "$10.814T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_usd_2026q2_atlas_real"
+    },
+    {
+      "id": "H3",
+      "description": "Household debt 2026Q2, 2026Q3 dollars",
+      "expected": "$19.2T",
+      "observed": "$19.179T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register scope_usd_2026q2_atlas_real"
+    },
+    {
+      "id": "H4",
+      "description": "Household debt 2007Q4, 2026Q3 dollars",
+      "expected": "$21.0T",
+      "observed": "$20.950T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register scope_usd_2007q4_atlas_real"
+    },
+    {
+      "id": "H5",
+      "description": "2007Q4 16-quarter change, rank among 282 windows 1952Q1-2022Q2",
+      "expected": "98th percentile",
+      "observed": "98.23th (share of windows strictly smaller)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_percentile; definition: share of windows strictly smaller (counting ties or excluding itself gives 98.6, which displays as 99); every larger window starts 2006Q3-2007Q3, the same episode"
+    },
+    {
+      "id": "H6",
+      "description": "Placebo p: random sets of 11 start quarters from 1952Q1-2022Q2 vs NBER-peak windows (Monte Carlo)",
+      "expected": "p \u2248 0.30",
+      "observed": "p = 0.3004 (MC 99% interval 0.2986-0.3023, 400,000 draws)",
+      "tolerance": "MC interval within the rounding band [0.295, 0.305)",
+      "status": "PASS",
+      "note": "register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) is compared at the displayed 2 decimals only"
+    },
+    {
+      "id": "H7",
+      "description": "Public share change 1979Q4-1989Q4, pp",
+      "expected": "+19.0 pts",
+      "observed": "+19.027 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_1980s_pp"
+    },
+    {
+      "id": "H8",
+      "description": "Public share change 2019Q4-2023Q4, pp",
+      "expected": "+1.0 pts",
+      "observed": "+1.025 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register covid_16q_pp"
+    },
+    {
+      "id": "H9",
+      "description": "Public share 2019Q4",
+      "expected": "55.2%",
+      "observed": "55.224%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_2019q4"
+    },
+    {
+      "id": "H10",
+      "description": "Public share 2023Q4",
+      "expected": "56.2%",
+      "observed": "56.249%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_2023q4"
+    },
+    {
+      "id": "H11",
+      "description": "Owner-occupied real estate / home mortgages 2026Q2",
+      "expected": "3.56\u00d7",
+      "observed": "3.5624\u00d7",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register home_coverage_2026q2"
+    },
+    {
+      "id": "H12",
+      "description": "Public holdings / student loans 2026Q2",
+      "expected": "86%",
+      "observed": "86.38%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_of_student_loans; public = federal (FL313066220) + GSE Sallie Mae (FL403066005, zero since 2004)"
+    },
+    {
+      "id": "H13",
+      "description": "Public holdings / (student + revolving) 2026Q2",
+      "expected": "51%",
+      "observed": "50.68%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_of_uncoll_2026q2"
+    },
+    {
+      "id": "H14",
+      "description": "Public holdings / (student + revolving) 2007Q4",
+      "expected": "7%",
+      "observed": "7.27%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_of_uncoll_2007q4"
+    },
+    {
+      "id": "H15",
+      "description": "Private-label pile 2006Q4, 2026Q3 dollars",
+      "expected": "$4.6T",
+      "observed": "$4.608T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register private_label_2006_real"
+    },
+    {
+      "id": "H16",
+      "description": "Private-label pile 2007Q4, 2026Q3 dollars",
+      "expected": "$4.5T",
+      "observed": "$4.508T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register private_label_2007q4_real"
+    },
+    {
+      "id": "H17",
+      "description": "Private-label pile 2011Q4, 2026Q3 dollars",
+      "expected": "$1.7T",
+      "observed": "$1.666T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register private_label_2011q4_real"
+    },
+    {
+      "id": "H18",
+      "description": "Private-label pile, fall 2007Q4-2011Q4 (real)",
+      "expected": "almost two-thirds (0.63)",
+      "observed": "0.6305",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register private_label_loss_2007_2011; 'almost two-thirds' also requires < 2/3"
+    },
+    {
+      "id": "H19",
+      "description": "Private-label pile 2026Q2, 2026Q3 dollars",
+      "expected": "$681B",
+      "observed": "$681.30B",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register private_label_2026q2_real"
+    },
+    {
+      "id": "H20",
+      "description": "Public share 1979Q4",
+      "expected": "13.7%",
+      "observed": "13.701%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register share_1979_atlas"
+    },
+    {
+      "id": "H21",
+      "description": "Public share 1989Q4",
+      "expected": "32.7%",
+      "observed": "32.728%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register share_1989_atlas"
+    },
+    {
+      "id": "H22",
+      "description": "Public share 2006Q4",
+      "expected": "33.8%",
+      "observed": "33.754%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register share_2006_atlas"
     },
     {
       "id": "E1-q101",
@@ -1808,7 +2011,7 @@
     "https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
   ],
   "summary": {
-    "PASS": 113,
+    "PASS": 135,
     "FAIL": 0,
     "WARN": 2,
     "NOT RUN": 1

@@ -1,7 +1,7 @@
 // GENERATED COPY: edit claims/site/claims-core.ts in the repo root, not the copy in a site.
 // Matches registered numbers in rendered copy (PLAN F1). See claims/site/README.md.
 
-export type Validation = "PASS" | "FAIL" | "UNVERIFIED" | "ESTIMATE" | "STALE";
+export type Validation = "PASS" | "FAIL" | "UNVERIFIED" | "ESTIMATE" | "STALE" | "DEFINITION";
 
 export interface Claim {
   id: string;
@@ -36,6 +36,7 @@ export const STATUS_TEXT: Record<string, string> = {
   UNVERIFIED: "Traced to code or a results file; no independent check yet",
   ESTIMATE: "Estimate, imputation or proxy",
   STALE: "Disagrees with the current source; the copy needs fixing",
+  DEFINITION: "Design setting, not a data claim",
 };
 
 const norm = (s: string) => s.replace(/\s+/g, " ").trim();
