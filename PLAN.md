@@ -236,6 +236,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-07 | Review queue round 27, `rv-one-site-preview`: **promote**. The one-site build (2289a2d) went to production. | Eleonora |
 | 2026-11-07 | Decision docket round 45, wording raised by the analysis reviewers. **`copy-privlabel` (c):** rename the pile to "private securitization and REITs, incl. card ABS". **`copy-2026-dollars` (a):** label the base as 2026Q3 dollars, or footnote it. **`copy-all-uncoll` (a):** drop "all" from "all household debt with no collateral". **`copy-placebo` (a):** reword to "no detectable excess (p ≈ 0.30, low power)" and state the placebo pool. **`placebo-stored` (b):** keep the stored value 0.3025. | Eleonora |
 | 2026-11-07 | Review queue round 28, `rv-h-checks`: **promote**. The H1–H22 checks, DEFINITION status and new `/sources` go to production. | Eleonora |
+| 2026-11-07 | Review queue round 29, `rv-copy45-live`: **ok**. The live round-45 wording and the short canvas label "Private sec. & REITs" are approved. | Eleonora |
+| 2026-11-07 | Decision docket round 46, `copy-placebo-elsewhere` **(b)**: use the Hot Potato placebo wording ("no detectable excess (p ≈ 0.30, low power)") in README.md, analysis/findings.md and web/content/story.ts. | Eleonora |
 
 ## Environment prerequisites
 
