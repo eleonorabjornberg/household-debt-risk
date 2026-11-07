@@ -7,8 +7,10 @@
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
     "cpi_csv": "CPIAUCSL.csv",
     "cpi_sha256": "8556b710094027fa4724641d48be620cc37c04abfa15a0c496378cf1146c1549",
+    "cpi_retrieved_utc": "2026-11-07 16:31",
+    "cpi_base_quarter": "2026Q3",
     "cpi_last_obs": "2026-09-01",
-    "run_at": "2026-11-07 16:35:42"
+    "run_at": "2026-11-07 16:43:00"
   },
   "checks": [
     {
@@ -450,11 +452,11 @@
       "observed": "98.23th (share of windows strictly smaller)",
       "tolerance": "as displayed",
       "status": "PASS",
-      "note": "register gfc_percentile"
+      "note": "register gfc_percentile; definition: share of windows strictly smaller (counting ties or excluding itself gives 98.6, which displays as 99); every larger window starts 2006Q3-2007Q3, the same episode"
     },
     {
       "id": "H6",
-      "description": "Placebo p: random sets of 11 start quarters vs NBER-peak windows (Monte Carlo)",
+      "description": "Placebo p: random sets of 11 start quarters from 1952Q1-2022Q2 vs NBER-peak windows (Monte Carlo)",
       "expected": "p \u2248 0.30",
       "observed": "p = 0.3004 (MC 99% interval 0.2986-0.3023, 400,000 draws)",
       "tolerance": "MC interval within the rounding band [0.295, 0.305)",

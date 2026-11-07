@@ -154,3 +154,13 @@ def test_hotpotato_not_run_without_cpi_base():
     cpi = pd.Series(100.0, index=pd.date_range("1947-03-31", "2026-06-30", freq="QE"))
     out = run.check_hotpotato(df, res, cpi, groups, public)
     assert len(out) == 1 and out[0].status == "NOT RUN"
+
+
+def test_placebo_sampling_is_uniform_over_sets():
+    # The argpartition draw must pick every 2-of-5 set equally often (10 sets, 0.1 each).
+    rng = np.random.default_rng(3)
+    k, n, N = 5, 2, 200_000
+    pick = np.sort(np.argpartition(rng.random((N, k)), n, axis=1)[:, :n], axis=1)
+    _, counts = np.unique(pick, axis=0, return_counts=True)
+    assert len(counts) == 10
+    assert np.abs(counts / N - 0.1).max() < 0.004  # about 6 standard errors

@@ -10,7 +10,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-07 16:35:42 |
+| Run timestamp (UTC) | 2026-11-07 16:43:00 |
 | Result | 135 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
@@ -65,8 +65,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | H2 | **PASS** | Public part 2026Q2, 2026Q3 dollars | $10.8T | $10.814T | as displayed | register public_usd_2026q2_atlas_real |
 | H3 | **PASS** | Household debt 2026Q2, 2026Q3 dollars | $19.2T | $19.179T | as displayed | register scope_usd_2026q2_atlas_real |
 | H4 | **PASS** | Household debt 2007Q4, 2026Q3 dollars | $21.0T | $20.950T | as displayed | register scope_usd_2007q4_atlas_real |
-| H5 | **PASS** | 2007Q4 16-quarter change, rank among 282 windows 1952Q1-2022Q2 | 98th percentile | 98.23th (share of windows strictly smaller) | as displayed | register gfc_percentile |
-| H6 | **PASS** | Placebo p: random sets of 11 start quarters vs NBER-peak windows (Monte Carlo) | p ≈ 0.30 | p = 0.3004 (MC 99% interval 0.2986-0.3023, 400,000 draws) | MC interval within the rounding band [0.295, 0.305) | register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) is compared at the displayed 2 decimals only |
+| H5 | **PASS** | 2007Q4 16-quarter change, rank among 282 windows 1952Q1-2022Q2 | 98th percentile | 98.23th (share of windows strictly smaller) | as displayed | register gfc_percentile; definition: share of windows strictly smaller (counting ties or excluding itself gives 98.6, which displays as 99); every larger window starts 2006Q3-2007Q3, the same episode |
+| H6 | **PASS** | Placebo p: random sets of 11 start quarters from 1952Q1-2022Q2 vs NBER-peak windows (Monte Carlo) | p ≈ 0.30 | p = 0.3004 (MC 99% interval 0.2986-0.3023, 400,000 draws) | MC interval within the rounding band [0.295, 0.305) | register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) is compared at the displayed 2 decimals only |
 | H7 | **PASS** | Public share change 1979Q4-1989Q4, pp | +19.0 pts | +19.027 pp | as displayed | register public_1980s_pp |
 | H8 | **PASS** | Public share change 2019Q4-2023Q4, pp | +1.0 pts | +1.025 pp | as displayed | register covid_16q_pp |
 | H9 | **PASS** | Public share 2019Q4 | 55.2% | 55.224% | as displayed | register public_share_2019q4 |

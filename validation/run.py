@@ -298,7 +298,10 @@ def placebo_p(d16: pd.Series, starts, n_draws=PLACEBO_DRAWS, seed=PLACEBO_SEED, 
 
 
 def rounds_to(x: float, nd: int, expected: float) -> bool:
-    """True if x, rounded half away from zero to nd decimals, equals expected (as displayed)."""
+    """True if x, rounded half away from zero to nd decimals, equals expected (as displayed).
+    Tie convention: half away from zero. Python's format and JS toFixed can differ at exact binary ties
+    (e.g. 3.565); no H value is within 0.001 display units of a tie except H10 (56.249%, 0.001 pp below one),
+    which the register notes as revision-sensitive."""
     q = 10 ** nd
     return math.floor(abs(x) * q + 0.5) * (1 if x >= 0 else -1) == round(expected * q)
 
@@ -338,13 +341,15 @@ def check_hotpotato(df, res, cpi_q, groups, public):
     g = T("2007Q4")
     pr = float((d16 < d16[g]).mean())
     add("H5", "gfc_percentile", f"2007Q4 16-quarter change, rank among {len(d16)} windows {q(d16.index[0])}-{q(d16.index[-1])}",
-        "98th percentile", f"{pr * 100:.2f}th (share of windows strictly smaller)", rounds_to(pr * 100, 0, 98))
+        "98th percentile", f"{pr * 100:.2f}th (share of windows strictly smaller)", rounds_to(pr * 100, 0, 98),
+        "definition: share of windows strictly smaller (counting ties or excluding itself gives 98.6, which displays as 99); "
+        "every larger window starts 2006Q3-2007Q3, the same episode")
     peaks = [T(x) for x in NBER_PEAKS if T(x) in d16.index]
     p, se = placebo_p(d16, peaks, n_draws=PLACEBO_DRAWS)
     lo, hi = p - 2.576 * se, p + 2.576 * se
     band = (0.295, 0.305)  # every value that displays as 0.30
     st = "PASS" if band[0] <= lo and hi < band[1] else ("FAIL" if hi < band[0] or lo >= band[1] else "WARN")
-    out.append(Check("H6", f"Placebo p: random sets of {len(peaks)} start quarters vs NBER-peak windows (Monte Carlo)",
+    out.append(Check("H6", f"Placebo p: random sets of {len(peaks)} start quarters from {q(d16.index[0])}-{q(d16.index[-1])} vs NBER-peak windows (Monte Carlo)",
                      "p ≈ 0.30", f"p = {p:.4f} (MC 99% interval {lo:.4f}-{hi:.4f}, {PLACEBO_DRAWS:,} draws)",
                      "MC interval within the rounding band [0.295, 0.305)", st,
                      "register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) "
@@ -841,7 +846,9 @@ def main(argv=None) -> int:
 
     meta = {"vintage": ts.strftime("%Y-%m-%d %H:%M"), "latest": q(df.index[-1]), "zip_name": zip_path.name,
             "zip_bytes": zip_path.stat().st_size, "sha256": sha,
-            "cpi_csv": cpi_path.name, "cpi_sha256": zparse.sha256_file(cpi_path), "cpi_last_obs": str(pd.read_csv(cpi_path).iloc[-1, 0]),
+            "cpi_csv": cpi_path.name, "cpi_sha256": zparse.sha256_file(cpi_path),
+            "cpi_retrieved_utc": datetime.fromtimestamp(cpi_path.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d %H:%M"),
+            "cpi_base_quarter": CPI_BASE_Q, "cpi_last_obs": str(pd.read_csv(cpi_path).iloc[-1, 0]),
             "run_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")}
     table = render_table(checks)
     print(f"Z.1 vintage {meta['vintage']} (latest {meta['latest']})  sha256 {sha[:16]}...  run {meta['run_at']}Z")

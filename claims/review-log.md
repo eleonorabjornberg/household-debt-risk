@@ -819,3 +819,55 @@ Resolutions are written by the main session or Eleonora, never by the reviewer t
 - **Evidence:** Q7_EVIDENCE.md:20, 24.
 - **Proposed resolution:** Mark ownership as unverified for Sparkassen, Landesbanken and non-KfW members of the block until a source is found, or list the block's members.
 - **Status:** resolved: README:18 and CROSSWALK.md:11 say public ownership is sourced only for KfW, not for savings banks and Landesbanken.
+
+## 2026-11-07: Hot Potato validation checks H1-H22 (sources-verify (a)), skeptic and quant-reviewer round
+
+Code: `validation/run.py` section (h), tests `validation/test_run.py`; first commit f10c32d. Both reviewers recomputed key values from `data/validation/` and found no arithmetic error, and found that no H check reads analysis output (inputs are the Z.1 zip, CPIAUCSL and the series catalog).
+
+### R-20261107-ana-58 · skeptic · blocker (copy, not the check) · register `private_label_loss_2007_2011`; atlas/content/story.ts:81
+- **Objection:** the "private-label pile" includes consumer-credit ABS (FL673066000), which fell from $0.88T to $0.09T (real) in 2010Q1 alone, the quarter FAS 166/167 took effect. Without card ABS the 2007Q4-2011Q4 fall is 54% (ABS-issuer mortgages alone 53%), not "almost two-thirds".
+- **Evidence:** recomputed by Claude from the Z.1 zip (2026-09-11) and CPI base 2026Q3.
+- **Status:** H18 stays PASS (it verifies 0.6305 for the bucket as defined). Caveat added to the register notes. Restating or caveating the copy is Eleonora's call: proposed card sent to the coordinator. Open.
+
+### R-20261107-ana-59 · skeptic · major · H15-H17, H19; story.ts:67, 81, 119
+- **Objection:** the private-label figures include card ABS ($1.02T of $4.61T in 2006) and mortgage REITs; the 2006-to-today comparison crosses the 2010Q1 break.
+- **Status:** composition added to the register notes; relabelling or splitting is in the same proposed card. Open.
+
+### R-20261107-ana-60 · skeptic · major · H2-H4, H15-H19 (CPI base)
+- **Objection:** the checks pin the CPI base at 2026Q3, but the site fills the values at render time from its data, so a later base would change the site while the checks still pass. The site says "2026 dollars"; on a calendar-2026 base H2-H4 and H19 would read $10.7T, $19.0T, $20.8T and $676B.
+- **Status:** base quarter and CPI retrieval date now in `results.json` meta and the register notes. A check comparing the site export's base was not added, because the task bars reading `web/public/data/*`. The "2026 dollars" label goes in the proposed card. Open.
+
+### R-20261107-ana-61 · skeptic · major · H13; story.ts:124 ("all household debt with no collateral")
+- **Objection:** the denominator, revolving + student loans, leaves out other non-revolving credit ($378B), part of which is unsecured; including it gives 45%.
+- **Status:** H13 matches the methods definition (transform.py: uncollateralized = revolving + student). Note added; the word "all" is in the proposed card. Open.
+
+### R-20261107-ana-62 · skeptic · minor · H5 (also quant ana-72)
+- **Objection:** the pass depends on the percentile definition: strictly smaller gives 98.2; ties or excluding the window itself gives 98.6 (displays as 99). The larger windows (2006Q3-2007Q3) are the same episode; excluding overlapping windows gives 99.6.
+- **Status:** accepted. The definition and overlap are stated in the H5 note and the register notes. "98th percentile" holds under the notebook's definition.
+
+### R-20261107-ana-63 · skeptic · minor · ensure_cpi / CPI vintage
+- **Objection:** CPI was downloaded 2026-11-07, while the register claims fred:2026-10-27; the vintage is asserted, not verified.
+- **Status:** partly accepted. The retrieval date, SHA-256 and last observation are now in `results.json` meta and the register notes. ALFRED (alfred.stlouisfed.org) is a host the pipeline does not use, so it was not fetched. No CPI release fell between the two dates.
+
+### R-20261107-ana-64 · skeptic · minor · H10
+- **Objection:** 56.249% is 0.001 pp below a rounding boundary.
+- **Status:** accepted; noted in the register row and the `rounds_to` docstring. The F-series revision checks run on every Z.1 update.
+
+### R-20261107-ana-65 · skeptic · note · independence
+- **Objection:** compute() and private_label() reuse the catalog's holder-to-bucket mapping, so the checks verify arithmetic, not classification.
+- **Status:** noted as a limit. Classification is a separate review.
+
+### R-20261107-ana-70 · quant-reviewer · low · `ratchet_placebo_p` value 0.3025
+- **Objection:** H6 settles "0.30", not 0.3025. The notebook's 20,000-draw interval (0.294-0.311) crosses the display boundary, and the earlier note's "within its own MC error" was not computed.
+- **Status:** note rewritten with the numbers (0.7 SE apart). Changing the stored value to 0.30 is a register-value change and is proposed to the coordinator, not made here. Open.
+
+### R-20261107-ana-71 · quant-reviewer · medium · ratchet_placebo_p wording; README.md:15, analysis/findings.md:10/17
+- **Objection:** "indistinguishable", "that gap is noise" and similar wording treat a non-rejection as proof of no effect, with 11 overlapping windows (variants give p from 0.07 to 0.89). The pool runs 1952Q1-2022Q2, while the register period says 1953Q2-2019Q4; drawing only up to 2019Q4 gives p = 0.342.
+- **Status:** the pool is now stated in the H6 description and the register note. The copy wording is hers: in the proposed card. Open.
+
+### R-20261107-ana-72 · quant-reviewer · low · gfc_percentile
+- Same as ana-62; resolved there.
+
+### R-20261107-ana-73 · quant-reviewer · low · test_run.py
+- **Objection:** the tie convention in rounds_to differs from Python's format and JS toFixed at exact binary ties; the enumeration test covers one tail only.
+- **Status:** accepted. The convention is documented in rounds_to (no H value sits at a tie). A test was added that the argpartition draw is uniform over all 2-of-5 sets.

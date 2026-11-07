@@ -174,7 +174,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H5",
-   "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent.",
+   "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent. Check H5: share of windows strictly smaller (98.2); counting ties or excluding the window itself gives 98.6 (displays as 99). The five larger windows start 2006Q3-2007Q3, the same episode; excluding windows overlapping 2007Q4 gives 99.6 (ana-62, ana-72).",
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
@@ -233,7 +233,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H15",
-   "notes": "Real 2026 dollars.",
+   "notes": "Real 2026 dollars. Check H15 (2026-11-07): the bucket includes consumer-credit ABS ($1.02T of the $4.61T) and mortgage REITs; ABS-issuer mortgages alone are $3.43T (skeptic ana-59).",
    "register": "claims/register.csv",
    "anchors": [
     "Wall Street securitization grows fast enough to take market share from the agencies. From the 2001 recession to 2006 the public share falls to",
@@ -265,7 +265,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H16",
-   "notes": "Same display as public_added_mortgage_usd ($4.5T) but a different quantity.",
+   "notes": "Same display as public_added_mortgage_usd ($4.5T) but a different quantity. Check H16: includes consumer-credit ABS ($1.04T) and mortgage REITs (skeptic ana-59).",
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
@@ -295,7 +295,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H17",
-   "notes": "",
+   "notes": "Check H17: consumer-credit ABS is $0.07T here, after a $0.79T fall in 2010Q1 (skeptic ana-58).",
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
@@ -326,7 +326,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H19",
-   "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'.",
+   "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'. Check H19: includes $0.02T consumer-credit ABS and $0.13T mortgage REITs; the 2006-to-today comparison crosses the 2010Q1 break (skeptic ana-59).",
    "register": "claims/register.csv",
    "anchors": [
     "What does this mean?",
@@ -357,7 +357,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H18",
-   "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%.",
+   "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%. Check H18 verifies 0.6305 for the bucket as defined. Most of the card-ABS part fell in one quarter, 2010Q1 ($0.88T to $0.09T real), which coincides with FAS 166/167 consolidation (cause not verified here); without consumer-credit ABS the fall is 54% (ABS-issuer mortgages alone 53%) (skeptic ana-58, open for Eleonora).",
    "register": "claims/register.csv",
    "anchors": [
     "In four years the private-label pile loses almost two-thirds, from $4.5T to $1.7T. Banks shrink too. The agencies and the federal government keep growing. The public share jumps from 36.1% to",
@@ -572,7 +572,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H10",
-   "notes": "Corrected 2026-11-04 from 56.3%: the 4-decimal table value 0.5625 had been rounded a second time; unrounded 0.56249. Atlas COVID step ({share} at 2023-12-31, fmtPct) shows it since 2026-11-04.",
+   "notes": "Corrected 2026-11-04 from 56.3%: the 4-decimal table value 0.5625 had been rounded a second time; unrounded 0.56249. Atlas COVID step ({share} at 2023-12-31, fmtPct) shows it since 2026-11-04. Check H10: 56.249% is 0.001 pp below the rounding boundary, so a Z.1 revision could move the display to 56.3% (ana-64).",
    "register": "claims/register.csv",
    "anchors": [
     "The sharpest jump in unemployment since the 1930s, and four years after the 2019 peak the share has gone from 55.2% to",
@@ -697,7 +697,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H13",
-   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans.",
+   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans. Check H13: denominator is revolving + student loans (methods definition); other non-revolving credit ($378B), part of it unsecured, is outside it; including it gives 45% (skeptic ana-61, open for Eleonora on the word 'all').",
    "register": "claims/register.csv",
    "anchors": [
     "The public sector holds 86% of student loans and 51% of all household debt with no collateral, up from 7% in 2007. Part of that is relabelling: before 2010 most student loans held by banks already carried a federal guarantee. The debt can't be repossessed, but it is hard to discharge and can be collected from wages and tax refunds, so losses depend on collection, not collateral."
@@ -732,7 +732,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H2",
-   "notes": "Token {public}. Real 2026-dollar total x nominal public share, so it differs from the nominal $10.77T in README/findings. Readers see $10.8T of $19.2T in the atlas and $10.77T of $19.10T elsewhere; consider saying 'in 2026 dollars' in the step.",
+   "notes": "Token {public}. Real 2026-dollar total x nominal public share, so it differs from the nominal $10.77T in README/findings. Readers see $10.8T of $19.2T in the atlas and $10.77T of $19.10T elsewhere; consider saying 'in 2026 dollars' in the step. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
    "register": "claims/register.csv",
    "anchors": [
     "in 2026 dollars, or",
@@ -769,7 +769,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H6",
-   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) gives 0.300, 99% interval inside the band that displays as 0.30; the notebook's 0.3025 is within its own Monte Carlo error.",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71).",
    "register": "claims/register.csv",
    "anchors": [],
    "exact": [
@@ -798,7 +798,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H4",
-   "notes": "Token {total}. Real 2026 dollars; the nominal 2007Q4 scope total is $13.19T (check B7). The step does not say 'in 2026 dollars'.",
+   "notes": "Token {total}. Real 2026 dollars; the nominal 2007Q4 scope total is $13.19T (check B7). The step does not say 'in 2026 dollars'. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
    "register": "claims/register.csv",
    "anchors": [
     "Total debt is",
@@ -857,7 +857,7 @@
    "vintage": "z1:2026-09-11 fred:2026-10-27",
    "validation": "PASS",
    "checkId": "H3",
-   "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders.",
+   "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
    "register": "claims/register.csv",
    "anchors": [
     "in 2026 dollars, or",

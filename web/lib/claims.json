@@ -500,7 +500,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H5",
-   "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent.",
+   "notes": "Rank within the 282 overlapping 16-quarter windows 1952Q1-2022Q2; windows overlap, so ranks are not independent. Check H5: share of windows strictly smaller (98.2); counting ties or excluding the window itself gives 98.6 (displays as 99). The five larger windows start 2006Q3-2007Q3, the same episode; excluding windows overlapping 2007Q4 gives 99.6 (ana-62, ana-72).",
    "register": "claims/register.csv",
    "anchors": [
     "The financial crisis is the exception. The public share rose",
@@ -1554,7 +1554,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H13",
-   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans.",
+   "notes": "Atlas wording 'all household debt with no collateral behind it' means cards plus student loans. Check H13: denominator is revolving + student loans (methods definition); other non-revolving credit ($378B), part of it unsecured, is outside it; including it gives 45% (skeptic ana-61, open for Eleonora on the word 'all').",
    "register": "claims/register.csv",
    "anchors": [
     "The change is inside the public book. It is still about",
@@ -1732,7 +1732,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H6",
-   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) gives 0.300, 99% interval inside the band that displays as 0.30; the notebook's 0.3025 is within its own Monte Carlo error.",
+   "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71).",
    "register": "claims/register.csv",
    "anchors": [
     "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952, recession windows are statistically indistinguishable (p ≈",
