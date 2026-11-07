@@ -70,6 +70,41 @@
    "exact": []
   },
   {
+   "id": "cc_holders_count",
+   "claim": "The 9 consumer-credit holders sum exactly to household consumer credit.",
+   "display": [
+    "9 consumer-credit holders"
+   ],
+   "value": "9",
+   "unit": "count",
+   "period": "1952Q1-2026Q2",
+   "locations": [
+    "atlas/content/methods.ts:16"
+   ],
+   "computation": "A2",
+   "series": [
+    "FL153166000",
+    "FL313066220",
+    "FL403066005",
+    "FL763066005",
+    "FL473066000",
+    "FL673066000",
+    "FL613066005",
+    "FL103066003",
+    "FL113066003",
+    "FL163066223"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "A2",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Z.1 reports who holds all 1–4 family mortgages, including those owed by businesses. We take each holder's share of that total and apply it to the household liability, so holder amounts are apportioned rather than reported. The 17 mortgage holders sum exactly to the all-sector total, and the 9 consumer-credit holders sum exactly to household consumer credit."
+   ],
+   "exact": []
+  },
+  {
    "id": "covid_16q_pp",
    "claim": "The 2019Q4 (COVID) window added about 1 pp.",
    "display": [
@@ -207,6 +242,153 @@
    "register": "claims/register.csv",
    "anchors": [
     "The public sector holds most household debt, but holding a loan is not the same as losing on it. Most of the public book is mortgages, and in aggregate homes are worth 3.56× the mortgages against them. Borrowers' equity, private mortgage insurance and the GSEs' risk-transfer deals stand in front of the taxpayer; this site does not measure how much they absorb. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008."
+   ],
+   "exact": []
+  },
+  {
+   "id": "mortgage_holders_count",
+   "claim": "The 17 mortgage holders sum exactly to the all-sector mortgage total.",
+   "display": [
+    "17 mortgage holders"
+   ],
+   "value": "17",
+   "unit": "count",
+   "period": "1952Q1-2026Q2",
+   "locations": [
+    "atlas/content/methods.ts:16"
+   ],
+   "computation": "A1",
+   "series": [
+    "FL893065105",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "(+13",
+    "more",
+    "holder",
+    "series",
+    "in",
+    "pipeline/series_catalog.yaml)"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "A1",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Z.1 reports who holds all 1–4 family mortgages, including those owed by businesses. We take each holder's share of that total and apply it to the household liability, so holder amounts are apportioned rather than reported. The 17 mortgage holders sum exactly to the all-sector total, and the 9 consumer-credit holders sum exactly to household consumer credit."
+   ],
+   "exact": []
+  },
+  {
+   "id": "nyfed_mortgage_change",
+   "claim": "NY Fed mortgage balances fell $74B in 2026Q2.",
+   "display": [
+    "−$74B",
+    "$74B"
+   ],
+   "value": "-74",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/methods.ts:29"
+   ],
+   "computation": "mart.nyfed_by_type: balance_busd(mortgage, 2026-06-30) - balance_busd(mortgage, 2026-03-31) = 13,117 - 13,191",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "NY Fed and Z.1 can disagree",
+    "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
+   ],
+   "exact": []
+  },
+  {
+   "id": "nyfed_sample_share",
+   "claim": "The NY Fed series comes from a 5% sample of credit reports.",
+   "display": [
+    "5% sample"
+   ],
+   "value": "0.05",
+   "unit": "share",
+   "period": "n/a",
+   "locations": [
+    "atlas/content/methods.ts:29"
+   ],
+   "computation": "external description of the NY Fed Consumer Credit Panel (not computed in this repo)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Source: NY Fed Household Debt and Credit Report methodology; add the citation URL when this is checked.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "NY Fed and Z.1 can disagree",
+    "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
+   ],
+   "exact": []
+  },
+  {
+   "id": "out_of_scope_share",
+   "claim": "About 13% of household liabilities are out of scope.",
+   "display": [
+    "13%"
+   ],
+   "value": "0.1272",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/methods.ts:15",
+    "atlas/content/methods.ts:23"
+   ],
+   "computation": "derived: 1 - analysis/results.json now.scope_of_total_liab",
+   "series": [
+    "FL154104015",
+    "FL154190005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "12.7% rounds to 13%.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The unit is the household sector as the Fed defines it, which includes nonprofit organizations. Scope is home mortgages on 1–4 family properties plus consumer credit (Z.1 series FL154104015). That is about 87% of household liabilities; the remaining 13% is excluded.",
+    "About 13% of liabilities are out of scope",
+    "Commercial mortgages owed by nonprofits, deferred and unpaid life insurance premiums and other loans are excluded. The public share is a share of mortgages plus consumer credit, not of all household liabilities."
+   ],
+   "exact": []
+  },
+  {
+   "id": "pipeline_test_count",
+   "claim": "The pipeline has more than 40 automated tests.",
+   "display": [
+    "More than 40"
+   ],
+   "value": "40",
+   "unit": "count",
+   "period": "2026-11-04",
+   "locations": [
+    "atlas/content/build.ts:9"
+   ],
+   "computation": "cd pipeline && uv run pytest --collect-only -q  (50 collected on 2026-11-04)",
+   "series": [
+    "n/a"
+   ],
+   "vintage": "n/a",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "A Python package (hhdebt, managed with uv) downloads the sources, checks that every holder adds up to its published total, and builds the analysis tables. More than 40 automated tests."
    ],
    "exact": []
   },
@@ -777,6 +959,34 @@
    ]
   },
   {
+   "id": "scope_share_of_liabilities",
+   "claim": "In-scope debt is about 87% of household liabilities.",
+   "display": [
+    "87%",
+    "about 87%"
+   ],
+   "value": "0.8728",
+   "unit": "share",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/methods.ts:15"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.scope_of_total_liab",
+   "series": [
+    "FL154104015",
+    "FL154190005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Findings.md intro (outside the Headline findings section) prints 87.3%.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "The unit is the household sector as the Fed defines it, which includes nonprofit organizations. Scope is home mortgages on 1–4 family properties plus consumer credit (Z.1 series FL154104015). That is about 87% of household liabilities; the remaining 13% is excluded."
+   ],
+   "exact": []
+  },
+  {
    "id": "scope_usd_2007q4_atlas_real",
    "claim": "The atlas 2007 step shows total household debt as $21.0T (2026 dollars).",
    "display": [
@@ -965,6 +1175,92 @@
    "anchors": [
     "Wall Street securitization grows fast enough to take market share from the agencies. From the 2001 recession to 2006 the public share falls to",
     ", while the private-label pile swells to about $4.6T in today's dollars."
+   ],
+   "exact": []
+  },
+  {
+   "id": "uncoll_break_2005q4",
+   "claim": "Uncollateralized debt was 7.6% of in-scope household debt in 2005Q4, counting revolving credit only (no student-loan imputation).",
+   "display": [
+    "7.6%"
+   ],
+   "value": "0.0763",
+   "unit": "share",
+   "period": "2005Q4",
+   "locations": [
+    "atlas/content/methods.ts:24"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2005Q4_rev_only (0.0763)",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL153166205"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "ESTIMATE",
+   "checkId": "",
+   "notes": "Pre-2006 student loans are imputed by a linear ramp, so the 'without imputation' framing depends on an estimate. The 2006Q1 value is row uncoll_share_2006q1 (split 2026-11-04, D3 claim-check finding).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Consumer credit types are partly estimated",
+    "Z.1 splits out revolving credit from 1968 and student loans only from 2006 Q1. Before 2006 student loans sit inside \"other non-revolving\"; the pipeline imputes them with a linear ramp from 1965 and flags those quarters as estimated, which removes a break that would otherwise make uncollateralized debt jump from 7.6% to 11.5% in 2006 Q1."
+   ],
+   "exact": []
+  },
+  {
+   "id": "uncoll_share_2006q1",
+   "claim": "Uncollateralized debt was 11.5% of in-scope household debt in 2006Q1, the first quarter with reported student loans.",
+   "display": [
+    "11.5%"
+   ],
+   "value": "0.1146",
+   "unit": "share",
+   "period": "2006Q1",
+   "locations": [
+    "atlas/content/methods.ts:24"
+   ],
+   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2006Q1 (0.1146)",
+   "series": [
+    "FL153166100",
+    "FL153166220",
+    "FL153166205"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "ESTIMATE",
+   "checkId": "",
+   "notes": "Split from uncoll_break_2005q4 (D3 claim-check finding, infra track).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Consumer credit types are partly estimated",
+    "Z.1 splits out revolving credit from 1968 and student loans only from 2006 Q1. Before 2006 student loans sit inside \"other non-revolving\"; the pipeline imputes them with a linear ramp from 1965 and flags those quarters as estimated, which removes a break that would otherwise make uncollateralized debt jump from 7.6% to 11.5% in 2006 Q1."
+   ],
+   "exact": []
+  },
+  {
+   "id": "z1_mortgage_change",
+   "claim": "Z.1 household mortgages rose $150B in 2026Q2 (not seasonally adjusted).",
+   "display": [
+    "+$150B",
+    "$150B"
+   ],
+   "value": "150.4",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/content/methods.ts:29"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.d_mort_qoq_busd (150.4)",
+   "series": [
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "",
+   "register": "claims/register.csv",
+   "anchors": [
+    "NY Fed and Z.1 can disagree",
+    "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
    ],
    "exact": []
   }

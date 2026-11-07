@@ -63,7 +63,8 @@ REQUIRED = ["claim_id", "claim", "display", "value", "unit", "period", "location
             "computation", "vintage", "validation"]
 
 # Files whose published copy is scanned for unregistered numbers.
-SCAN_FILES = ["README.md", "atlas/content/story.ts", "web/content/story.ts", "analysis/recommendation.md"] + sorted(
+SCAN_FILES = ["README.md", "atlas/content/story.ts", "atlas/content/methods.ts", "atlas/content/build.ts",
+              "web/content/story.ts", "analysis/recommendation.md"] + sorted(
     str(p.relative_to(ROOT)) for p in (ROOT / "research").glob("*/README.md"))  # every research write-up
 
 # Non-claims. Each entry: file (exact path), pattern (regex matched with fullmatch against the
