@@ -420,7 +420,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H23",
-   "notes": "Eleonora, copy-placebo (a), 2026-11-07: the placebo pool is stated in the copy. Same pool as checks H5 and H6.",
+   "notes": "Eleonora, copy-placebo (a), 2026-11-07: the placebo pool is stated in the copy. Same pool as checks H5 and H6. Also stated in README, findings and the web story (copy-placebo-elsewhere (b), 2026-11-07).",
    "register": "claims/tracks/analysis.csv",
    "anchors": [
     "Across eleven recessions, a placebo test finds no detectable excess in the shift after a crisis (p ≈ 0.30, low power), against random sets of start quarters drawn from all 282 overlapping 16-quarter windows, 1952Q1–2022Q2. 2007–11 is the exception: it added 13.1 points, about half of it from private lenders pulling back, and the share has not fallen below its end-2011 level since. Private securitization and REITs, incl. card ABS, went from $4.6T in 2006 to",
