@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 43: two cards. Making the work visible on the live site, and the 24 UNVERIFIED numbers on /sources.</p>
+      <p class="sub">Round 44: nothing waiting. You answered site-visible (b) and sources-verify (a).</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "site-visible", "group": "Live site", "tag": "production", "title": "How should the project's work show up on the live site?", "ctx": "Why you see nothing new: production does serve the latest main (02515b2), but the home page design was not changed. The only new links are two words at the very bottom (\"claims register\" -> /sources, and GitHub, which judges cannot open while the repo is private). /ask is switched off in production (D6). The pages that tell the story of the work (/scenarios, /how-it-was-built, /methods) live in the web/ story site, which has no deployment: the Vercel project you deleted last week was very likely that site, not a duplicate of Hot Potato. Every option starts on the branch and a preview deployment you can look at; nothing reaches production until you OK the preview. No spend on the Hobby plan.", "opts": [["a", "Bring the story site back: a new Vercel project from web/ (preview first, then a *.vercel.app production address after your OK), plus a visible top bar on Hot Potato linking Sources, Scenarios, How it was built and Methods"], ["b", "One site: move the web/ pages (scenarios, how it was built, methods) into Hot Potato under the same address, with a top bar. More work and more to test before 12 Nov"], ["c", "Minimal: only a visible top bar on Hot Potato linking /sources and a short new 'How it was built' page; no scenarios"], ["d", "Leave the site as it is"]], "where": "atlas/components/Coda.tsx; web/app/", "link": ""}, {"id": "sources-verify", "group": "Claims register", "tag": "integrity", "title": "The 24 UNVERIFIED numbers on Hot Potato's /sources: what should be done before 12 Nov?", "ctx": "UNVERIFIED does not mean the data source is unknown. Every row names its Fed Z.1 or FRED series and vintage. It means the number is traced to the code that printed it, but no separate check has recomputed it from the raw series. Of Hot Potato's 29 numbers: 5 PASS (checks C1, C2, C4, C5). 2 are design constants, not data: $50B per dot and 1,000 dots = 0.1%. 22 are data numbers with no independent check. These are 4 dollar totals, 6 crisis-window results (percentile, placebo p, 1980s, COVID, 2019Q4/2023Q4 shares), 1 collateral ratio, 3 student-loan or uncollateralized shares, 5 private-label figures and 3 headline shares. Across the whole register: 86 PASS, 133 ESTIMATE, 1,635 UNVERIFIED. Checks are built by Claude and reviewed by skeptic and quant-reviewer; any check that fails is reported, not adjusted. The checks then go on the review queue for you.", "opts": [["a", "Write independent checks in validation/run.py for all 22 data numbers on Hot Potato. Each recomputes from the raw series, not from the analysis code's output. Mark the 2 design constants with a new DEFINITION status. Rebuild /sources on a preview. No spend"], ["b", "Same as (a) but only for the numbers on Hot Potato's opening screens (dollar totals and headline shares, 7 rows); the rest stay UNVERIFIED and are named as a limit in the write-up"], ["c", "No new checks; the write-up states the 5 of 29 figure as a limit"]], "where": "claims/register.csv; validation/run.py; atlas/app/sources/", "link": ""}];
+const DECISIONS = [];
 
-const GROUPS = ["Live site", "Claims register"];
+const GROUPS = [];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
