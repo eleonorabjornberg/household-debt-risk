@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 27: one site, preview before production.</p>
+      <p class="sub">Round 28: independent checks for the numbers on /sources.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-one-site-preview", "group": "Site", "tag": "site-visible", "title": "One site: preview of the atlas with the story pages moved in", "ctx": "Your choice (b) on site-visible, built by the markets track. The atlas now has a top bar linking every page, and three new pages: /scenarios (the stress-test calculator), /how-it-was-built and /methods. /, /sources and /ask are as before. Ten register rows gained the new page locations; no number changed. One copy line was changed in /how-it-was-built: 'This site: the dot flow is drawn on Canvas; the other charts are hand-drawn SVG.' Keep or revert it. Checks: atlas tests 144/144, build OK, register check OK. The preview is behind Vercel login (sign in as yourself). Production is not touched; it changes only if you approve here.", "opts": [["promote", "Looks right: promote to production"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "atlas/ (preview from commit 2289a2d)", "link": "https://household-debt-risk-l5ayqpa5r-eleonorabjornberg.vercel.app"}];
+const DECISIONS = [{"id": "rv-h-checks", "group": "Claims register", "tag": "sources-verify", "title": "H1–H22: independent checks for the 22 Hot Potato numbers", "ctx": "Your choice (a) on sources-verify, built by the analysis track. Each check recomputes one number from the Z.1 zip (vintage 2026-09-11) and FRED CPIAUCSL, never from the analysis outputs, and compares at the precision shown. Result: 22 PASS, 0 FAIL, 0 NOT RECOMPUTABLE. The placebo p was checked with its own simulation. The two design constants now show DEFINITION ('Design setting, not a data claim'), explained on the /sources legend. Register: 108 PASS, 2 DEFINITION, 133 ESTIMATE, 1,650 UNVERIFIED (those are numbers elsewhere in the project, not on Hot Potato). The skeptic and quant-reviewer found no arithmetic error; their wording questions are on the docket. Not in production yet: the live /sources still shows UNVERIFIED. Approving deploys this to production.", "opts": [["promote", "Looks right: put the new /sources in production"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "validation/run.py section (h), validation/REPORT.md, claims/register.csv", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/validation/REPORT.md"}];
 
-const GROUPS = ["Site"];
+const GROUPS = ["Claims register"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;

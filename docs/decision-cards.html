@@ -77,20 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 44: nothing waiting. You answered site-visible (b) and sources-verify (a).</p>
+      <p class="sub">Round 45: five wording questions on Hot Potato numbers. All 22 numbers now pass the independent checks; these cards are about how the copy describes them.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendation on this card. A choice authorizes only what its option text says; nothing runs until you tap.</footer>
+  <footer>No recommendation on these cards. A choice authorizes only what its option text says. Figures come from the analysis track&#x27;s checks and reviews (claims/review-log.md, R-20261107-ana-58..73).</footer>
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "copy-privlabel", "group": "Hot Potato copy", "tag": "ana-58/59", "title": "The 'private-label' pile: what it includes", "ctx": "The copy says the pile fell by 'almost two-thirds'. That is correct for the bucket as defined: a 63% fall. But the bucket also contains consumer-credit ABS and mortgage REITs. Card ABS dropped from $0.88T to $0.09T (real) in 2010Q1, the quarter of the FAS 166/167 accounting change (the cause is not verified here). Without card ABS the fall is 54%. ABS-issuer mortgages alone fell 53%, from $3.47T to $1.60T.", "opts": [["a", "Keep the copy and add a caveat on the 2010Q1 break"], ["b", "Restate on mortgages only ('about half', $3.47T to $1.60T)"], ["c", "Rename the pile 'private securitization and REITs, incl. card ABS'"]]}, {"id": "copy-2026-dollars", "group": "Hot Potato copy", "tag": "ana-60", "title": "'2026 dollars' label", "ctx": "The real figures use 2026Q3 prices (CPI), not the calendar-2026 average. On a calendar-2026 base they would read $10.7T, $19.0T, $20.8T and $676B.", "opts": [["a", "Label them '2026Q3 dollars' or add a footnote"], ["b", "Leave as is"]]}, {"id": "copy-all-uncoll", "group": "Hot Potato copy", "tag": "ana-61", "title": "'all household debt with no collateral'", "ctx": "Behind the 51%: the denominator is revolving credit plus student loans. Other non-revolving credit ($378B, partly unsecured) is not in it. Including it gives 45%.", "opts": [["a", "Drop 'all'"], ["b", "Give the definition next to the number"], ["c", "Leave as is"]]}, {"id": "copy-placebo", "group": "Hot Potato copy", "tag": "ana-71", "title": "Placebo wording: 'indistinguishable' / 'that gap is noise'", "ctx": "Both phrases treat a non-rejection as proof of no effect. The test uses 11 overlapping windows. Variants give p from 0.07 to 0.89; drawing only up to 2019Q4 gives 0.34. The headline is p = 0.30 (checked separately: 400,000 draws, 99% interval 0.299 to 0.302).", "opts": [["a", "Reword to 'no detectable excess (p ≈ 0.30, low power)' and state the pool"], ["b", "Leave as is"]]}, {"id": "placebo-stored", "group": "Hot Potato copy", "tag": "ana-70", "title": "Placebo p in the register: 0.30 or 0.3025?", "ctx": "The register stores 0.3025; the site shows 0.30. The row's note already gives both. This only changes what the register stores, not what the site shows.", "opts": [["a", "Store 0.30"], ["b", "Keep 0.3025"]]}];
 
-const GROUPS = [];
+const GROUPS = ["Hot Potato copy"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
