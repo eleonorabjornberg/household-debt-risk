@@ -1,0 +1,23 @@
+/* PLAN B3 /scenarios in Hot Potato: layout for the scenario tool, in atlas tokens (app/globals.css, app/pages.css). */
+.tool { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+.figure { width: 100%; margin: 0; }
+.note, .hint { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.fields { border: 2px solid var(--ink); padding: 0.75rem 1rem 1rem; margin: 0; min-width: 0; }
+.fields legend { font-weight: 600; padding: 0 0.25rem; }
+.grid { display: grid; gap: 0.5rem; }
+.head, .row { display: grid; grid-template-columns: minmax(9rem, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 0.5rem; align-items: center; }
+.head { color: var(--muted); font-size: 0.8rem; }
+.cls { display: flex; gap: 0.4rem; align-items: center; }
+.row input[type="number"], .pair input { width: 100%; min-width: 0; font: inherit; padding: 0.25rem 0.4rem; border: 2px solid var(--ink); background: var(--paper); }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+.pair label { display: grid; gap: 0.25rem; font-size: 0.9rem; }
+.error { color: var(--accent); font-weight: 600; margin: 0; }
+.totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.75rem; margin: 0; }
+.totals div { border-top: 3px solid var(--ink); padding-top: 0.35rem; }
+.totals dt { color: var(--muted); font-size: 0.8rem; }
+.totals dd { margin: 0; font-family: var(--font-display), Georgia, serif; font-weight: 800; font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) {
+  .head { display: none; }
+  .row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cls { grid-column: 1 / -1; }
+}

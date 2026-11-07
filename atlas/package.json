@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/copy-data.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
-    "predev": "node scripts/copy-data.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
+    "prebuild": "node scripts/copy-data.mjs && node scripts/sync-b3.mjs && node scripts/sync-catalog.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
+    "predev": "node scripts/copy-data.mjs && node scripts/sync-b3.mjs && node scripts/sync-catalog.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:b3-browser": "node ../research/b3_scenarios/test_browser.mjs --site atlas"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",
