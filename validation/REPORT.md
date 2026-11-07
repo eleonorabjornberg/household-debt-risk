@@ -10,8 +10,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-07 16:43:00 |
-| Result | 135 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
+| Run timestamp (UTC) | 2026-11-07 16:57:23 |
+| Result | 136 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
 
@@ -83,6 +83,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | H20 | **PASS** | Public share 1979Q4 | 13.7% | 13.701% | as displayed | register share_1979_atlas |
 | H21 | **PASS** | Public share 1989Q4 | 32.7% | 32.728% | as displayed | register share_1989_atlas |
 | H22 | **PASS** | Public share 2006Q4 | 33.8% | 33.754% | as displayed | register share_2006_atlas |
+| H23 | **PASS** | Placebo pool: overlapping 16-quarter windows by start quarter | 282 (1952Q1-2022Q2) | 282 (1952Q1-2022Q2) | as displayed | register placebo_pool_windows; pool stated in the atlas copy (copy-placebo (a)) |
 | E1-q101 | **PASS** | E1 gold q101 (PS/L): raw vs snapshot | 0.405376779 | 0.405376779 | 5e-05 |  |
 | E1-q103 | **PASS** | E1 gold q103 (PS/L): raw vs snapshot | 0.1795060273 | 0.1795060273 | 5e-05 |  |
 | E1-q104 | **PASS** | E1 gold q104 (PS/L): raw vs snapshot | 13.186611 | 13.186611 | 0.001 |  |

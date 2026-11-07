@@ -354,6 +354,10 @@ def check_hotpotato(df, res, cpi_q, groups, public):
                      "MC interval within the rounding band [0.295, 0.305)", st,
                      "register ratchet_placebo_p; separate seed and code from the notebook; its 0.3025 (20,000 draws) "
                      "is compared at the displayed 2 decimals only"))
+    first, last = d16.index[0], d16.index[-1]
+    add("H23", "placebo_pool_windows", "Placebo pool: overlapping 16-quarter windows by start quarter", "282 (1952Q1-2022Q2)",
+        f"{len(d16)} ({q(first)}-{q(last)})", len(d16) == 282 and q(first) == "1952Q1" and q(last) == "2022Q2",
+        "pool stated in the atlas copy (copy-placebo (a))")
     d80 = (s[T("1989Q4")] - s[T("1979Q4")]) * 100
     add("H7", "public_1980s_pp", "Public share change 1979Q4-1989Q4, pp", "+19.0 pts", f"{d80:+.3f} pp", rounds_to(d80, 1, 19.0))
     dcv = d16[T("2019Q4")] * 100
@@ -387,7 +391,7 @@ def check_hotpotato(df, res, cpi_q, groups, public):
     plL = pl[L] * fac[L] / 1e3
     add("H19", "private_label_2026q2_real", f"Private-label pile {q(L)}, {CPI_BASE_Q} dollars", "$681B", f"${plL:.2f}B",
         rounds_to(plL, 0, 681))
-    order = {f"H{i}": i for i in range(1, 23)}
+    order = {f"H{i}": i for i in range(1, 24)}
     return sorted(out, key=lambda c: order.get(c.id, 0))
 
 

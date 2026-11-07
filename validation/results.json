@@ -10,7 +10,7 @@
     "cpi_retrieved_utc": "2026-11-07 16:31",
     "cpi_base_quarter": "2026Q3",
     "cpi_last_obs": "2026-09-01",
-    "run_at": "2026-11-07 16:43:00"
+    "run_at": "2026-11-07 16:57:23"
   },
   "checks": [
     {
@@ -606,6 +606,15 @@
       "tolerance": "as displayed",
       "status": "PASS",
       "note": "register share_2006_atlas"
+    },
+    {
+      "id": "H23",
+      "description": "Placebo pool: overlapping 16-quarter windows by start quarter",
+      "expected": "282 (1952Q1-2022Q2)",
+      "observed": "282 (1952Q1-2022Q2)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register placebo_pool_windows; pool stated in the atlas copy (copy-placebo (a))"
     },
     {
       "id": "E1-q101",
@@ -2011,7 +2020,7 @@
     "https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
   ],
   "summary": {
-    "PASS": 135,
+    "PASS": 136,
     "FAIL": 0,
     "WARN": 2,
     "NOT RUN": 1
