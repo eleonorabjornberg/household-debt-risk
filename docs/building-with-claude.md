@@ -607,3 +607,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - nothing else in the home-page design or animation.
   Most of the work since then lives in the pipeline, analysis, evals and `web/`, none of which shows on the atlas home page. Error caught by Eleonora: Claude had reported the production update without saying how little of it would be visible.
 - Model tier: coordinator (Opus). Cost not measured.
+
+### 2026-11-07: "I don't see any of it" (coordinator)
+
+- Eleonora reported that none of the new work is visible on hot-potato-credit.vercel.app. Production does serve main `02515b2`, which builds `/sources` and `/ask`. But the home page design is unchanged, and the only new links are "claims register" (to `/sources`) and GitHub (private repo) at the very bottom of the page. `/ask` is switched off in production (D6). The pages that show the work (`/scenarios`, `/how-it-was-built`, `/methods`) are in `web/`, which has had no deployment since the Vercel project she deleted last week. That project was very likely the `web/` story site, not a duplicate of Hot Potato. The coordinator's earlier "useless duplicate" framing did not make that clear. Error caught by Eleonora.
+- Decision docket round 43: one card, `site-visible` (options a–d, no recommendation). Nothing is built for production until she chooses; any option starts on the branch with a preview deployment.
+- The publish first created a stray new docket page (https://claude.ai/artifact/3butoPfaNf4f41LHW25KdN) instead of updating the usual docket. Caught by Claude. Republished to the usual docket. The stray page is left for her to delete or ignore.
+- E4 P2 hand labels (33 answers): still with infra. They go on the review queue when they are back; nothing is waiting on her now.

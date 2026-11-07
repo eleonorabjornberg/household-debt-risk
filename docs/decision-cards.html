@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 42: nothing waiting. You answered d6-martcheck (a) and e4-p2-heldout (a).</p>
+      <p class="sub">Round 43: one card. How to make the work visible on the live site before 12 Nov.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [];
+const DECISIONS = [{"id": "site-visible", "group": "Live site", "tag": "production", "title": "How should the project's work show up on the live site?", "ctx": "Why you see nothing new: production does serve the latest main (02515b2), but the home page design was not changed. The only new links are two words at the very bottom (\"claims register\" -> /sources, and GitHub, which judges cannot open while the repo is private). /ask is switched off in production (D6). The pages that tell the story of the work (/scenarios, /how-it-was-built, /methods) live in the web/ story site, which has no deployment: the Vercel project you deleted last week was very likely that site, not a duplicate of Hot Potato. Every option starts on the branch and a preview deployment you can look at; nothing reaches production until you OK the preview. No spend on the Hobby plan.", "opts": [["a", "Bring the story site back: a new Vercel project from web/ (preview first, then a *.vercel.app production address after your OK), plus a visible top bar on Hot Potato linking Sources, Scenarios, How it was built and Methods"], ["b", "One site: move the web/ pages (scenarios, how it was built, methods) into Hot Potato under the same address, with a top bar. More work and more to test before 12 Nov"], ["c", "Minimal: only a visible top bar on Hot Potato linking /sources and a short new 'How it was built' page; no scenarios"], ["d", "Leave the site as it is"]], "where": "atlas/components/Coda.tsx; web/app/", "link": ""}];
 
-const GROUPS = [];
+const GROUPS = ["Live site"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
