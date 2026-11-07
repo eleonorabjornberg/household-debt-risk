@@ -1,0 +1,30 @@
+{
+  "engine.mjs": {
+    "source": "research/b3_scenarios/engine.mjs",
+    "sha256": "f28189ffb396e97ddf89615e81904f841b7a9a79bd2403ec36d1b23d4462e737"
+  },
+  "cases.json": {
+    "source": "research/b3_scenarios/fixtures/cases.json",
+    "sha256": "c98f1f752953a85cbc5bab0830356dbf3a2357b51966e94a00c4f7f2aa901c6f"
+  },
+  "exposures.json": {
+    "source": "research/b3_scenarios/exposures.json",
+    "sha256": "4a4994f6dabf30eb13dcd41d107dd5a1895c14cd38f69b06e2581ac53dcbfa5b"
+  },
+  "preset_dfast2026.json": {
+    "source": "research/b3_scenarios/presets/dfast2026.json",
+    "sha256": "9fb49c945730d6c0d4e36cd02c747e6ab1640d88b1f52322924f34ee7074878a"
+  },
+  "preset_replay_2008_2012.json": {
+    "source": "research/b3_scenarios/presets/replay_2008_2012.json",
+    "sha256": "48f3544f9597f6cb5a97636219fc1dcc1babb0c626ddc1f5b93daabc601128d0"
+  },
+  "results_dfast2026.json": {
+    "source": "research/b3_scenarios/results_dfast2026.json",
+    "sha256": "7e7da4c75ed7007b9c1aad57b005528406fd64c653e22bd06c836041d8504479"
+  },
+  "results_replay_2008_2012.json": {
+    "source": "research/b3_scenarios/results_replay_2008_2012.json",
+    "sha256": "3f0aef1eb2b4b1af66a9a79616acc77cd9aec3dc68dca7ef4125a0902d90412c"
+  }
+}

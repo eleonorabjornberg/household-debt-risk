@@ -1,7 +1,8 @@
 {
  "site": "atlas",
  "generatedFrom": [
-  "claims/register.csv"
+  "claims/register.csv",
+  "claims/tracks/infra.csv"
  ],
  "claims": [
   {

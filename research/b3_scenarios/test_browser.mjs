@@ -18,7 +18,11 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
 const here = dirname(fileURLToPath(import.meta.url));
-const web = join(here, "..", "..", "web");
+// --site web (default) or --site atlas: the page lives in both while web/ stays in the repo (site-visible (b), 2026-11-07)
+const siteArg = process.argv.indexOf("--site");
+const site = siteArg > 0 ? process.argv[siteArg + 1] : "web";
+if (!["web", "atlas"].includes(site)) throw new Error(`unknown site ${site}`);
+const web = join(here, "..", "..", site);
 const cases = JSON.parse(readFileSync(join(here, "fixtures", "cases.json"), "utf8"));
 const presets = {
   ...JSON.parse(readFileSync(join(here, "presets", "dfast2026.json"), "utf8")).presets,
@@ -64,7 +68,7 @@ function invariants(name, r, transfer) {
 const freePort = () => new Promise((res) => { const s = createServer(); s.listen(0, () => { const p = s.address().port; s.close(() => res(p)); }); });
 
 async function main() {
-  if (!existsSync(join(web, ".next", "BUILD_ID"))) throw new Error("web/ is not built: run `npm run build` in web/ first");
+  if (!existsSync(join(web, ".next", "BUILD_ID"))) throw new Error(`${site}/ is not built: run \`npm run build\` in ${site}/ first`);
   const port = await freePort();
   const server = spawn("npx", ["next", "start", "-p", String(port)], { cwd: web, stdio: "ignore", detached: true });
   const base = `http://127.0.0.1:${port}/scenarios`;
@@ -149,7 +153,7 @@ async function main() {
           const p = await ctx.newPage();
           await p.goto(base);
           await p.getByRole("radio", { name: PRESET_BUTTON.replay_2008_2012_proxy, exact: true }).click();
-          await p.screenshot({ path: join(process.env.SCREENSHOT_DIR, `scenarios-${tag}-${scheme}.png`), fullPage: true });
+          await p.screenshot({ path: join(process.env.SCREENSHOT_DIR, `${site}-scenarios-${tag}-${scheme}.png`), fullPage: true });
           const wide = await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
           check(!wide, `no horizontal scroll at ${tag} width (${scheme})`);
           await ctx.close();
@@ -160,7 +164,7 @@ async function main() {
     await browser.close();
     try { process.kill(-server.pid); } catch { /* already gone */ }
   }
-  console.log(fail ? `${fail} of ${checks} checks failed` : `ok: ${checks} browser checks match the Python core`);
+  console.log(fail ? `${fail} of ${checks} checks failed (${site})` : `ok: ${checks} browser checks match the Python core (${site})`);
   process.exit(fail ? 1 : 0);
 }
 
