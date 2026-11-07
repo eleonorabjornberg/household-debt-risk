@@ -580,3 +580,30 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Review queue round 26 (one card, no recommendation), published to the existing review-queue artifact (v29).
 - Error caught by Claude before commit: the first draft named the Ask route and the scenarios page by folder only (`atlas/`, `web/` `/scenarios`); checked with `ls` and corrected to `atlas/app/api/ask/route.ts` and `web/app/scenarios/`.
 - Model tier: coordinator session (Opus). Cost not measured.
+
+## 2026-11-07: readiness replies, E4 P2 verified and merged (coordinator)
+
+- **Eleonora's replies** on the readiness card:
+  - she added the cbo.gov limit (A6, B4) to her write-up;
+  - "Delete it" for the duplicate Vercel project;
+  - she will submit a GitHub link;
+  - she asked what E4 P2 needs.
+  Recorded in PLAN "Decisions taken".
+- **Vercel web project not deleted.** `household-debt-risk-web` is not in her team's project list, and `get_project_deletion_link` returns 404 "Project not found". The connector cannot delete projects in any case; it only returns a dashboard link. She has to delete it in the Vercel dashboard, under whichever account owns it. Note for her: the web project appears to be the deployment of `web/` (the long-form site with `/scenarios`, B3). Deleting it leaves `web/` with no live URL; the code stays in the repo.
+- **Repository visibility.** `list_repos` reports the repo as **private**. A GitHub link only works for the judges once she makes it public or gives them access. That is her change; Claude did not touch it.
+- **E4 P2 verified by the coordinator**, then merged as `a2d1e94` (infra `a843771`; data files only, no code). Checks:
+  - 80 call rows, 80 unique question ids, plus one checkpoint row;
+  - the ledger sums to $0.778705, matching the commit message; `summary.json` says $0.778707, a $0.000002 rounding difference;
+  - run budget $4 and D6 cap $20 both respected;
+  - 21 questions were refused by the pre-check with no model call;
+  - the other 59 made 118 model calls, all served by `claude-sonnet-5-5`;
+  - the leak scan found no keys, auth headers or connection strings, and no personal email.
+  Still to do: hand labels for the 21 flagged and 12 sampled answers (infra, offline, $0), then her review.
+- **"Looks the same" (her report on the live site).** Production is the new build: `dpl_J1ZoTuAAiUfc9ChQ1T1E1CvLUMVA`, from `main` @ `02515b2`, READY. hot-potato-credit.vercel.app is attached and verified. Between the previous production commit (`085462a`) and `02515b2`, `atlas/` changed in only a few visible ways:
+  - source popovers on numbers;
+  - a new `/sources` page;
+  - an `/ask` page, with Ask off;
+  - revised 2008 copy and Coda;
+  - nothing else in the home-page design or animation.
+  Most of the work since then lives in the pipeline, analysis, evals and `web/`, none of which shows on the atlas home page. Error caught by Eleonora: Claude had reported the production update without saying how little of it would be visible.
+- Model tier: coordinator (Opus). Cost not measured.

@@ -44,7 +44,7 @@
 | Red team of the Ask app | `evals/e4_redteam/` |
 | CI | `.github/workflows/ci.yml` |
 
-**Gaps.** E1 results note is a Claude draft with rows still UNVERIFIED until you check them. E2 (planted errors) and E3 (regression suite) are in progress. A6 and B4 are blocked by cbo.gov returning 403 (a limit to state, not hide).
+**Gaps.** E1 results note is a Claude draft with rows still UNVERIFIED until you check them. E2 (planted errors) and E3 (regression suite) are in progress. A6 and B4 are blocked by cbo.gov returning 403 (a limit to state, not hide). Update 2026-11-07: Eleonora has added this limit to her write-up.
 
 ## Criterion 4: quality of documentation and demo
 
@@ -74,6 +74,6 @@
 - Demo video, 3–5 min (Eleonora).
 - Confirm the production site loads (Eleonora).
 - Decide whether Ask is shown live (D6 env vars; Eleonora).
-- Verify and merge E4 P2 (coordinator, then your review).
+- E4 P2: run verified and merged 2026-11-07 (coordinator). Still needed: hand labels for the flagged and sampled answers (infra track, offline), then her review of them.
 - Check the E1 UNVERIFIED rows (Eleonora).
-- Choose GitHub link vs ZIP for the artifacts (Eleonora); the repo must be visible to the judges if you submit a link.
+- Artifacts: Eleonora chose a GitHub link (2026-11-07). The repository is **private** as of 2026-11-07, so the judges cannot open the link until she makes it public or gives them access (Eleonora).
