@@ -59,8 +59,9 @@ models: $(Z1_CSV) $(Z1_ZIP)  ## analysis notebook + research scripts
 	  [ -f "$$s" ] || continue; echo "models: $$s"; $(PY) "$$s" --z1-zip $(Z1_ZIP); done
 
 # ---------------------------------------------------------------- build
-site-copies:  ## refresh lib/claims.json and the shared F1 files in each site
+site-copies:  ## refresh lib/claims.json, the shared F1 files in each site, and atlas/content/findings.md
 	node claims/site/sync.mjs
+	node atlas/scripts/sync-findings.mjs
 
 site-test:
 	@for s in $(SITES); do (cd $$s && npm ci --no-audit --no-fund --silent && npm test --silent); done
@@ -90,6 +91,7 @@ repro:  ## regenerated results match the committed ones
 check: test f1-links repro  ## after a full run
 	$(PY) claims/check_register.py
 	node claims/site/sync.mjs --check
+	node atlas/scripts/sync-findings.mjs --check
 
 evals:  ## E3: which evals need rerunning (prompts, models or code changed), then chart results over time
 	$(PY) evals/regression.py status
@@ -101,6 +103,7 @@ ci: ci-static test site-test site-build f1-links
 ci-static:  ## register check and stale-copy check (before any build rewrites the copies)
 	$(PY) claims/check_register.py
 	node claims/site/sync.mjs --check
+	node atlas/scripts/sync-findings.mjs --check
 	node web/scripts/make-downloads.mjs --check
 	node opendata/archive.mjs --check
 	python3 plugin/sync.py --check

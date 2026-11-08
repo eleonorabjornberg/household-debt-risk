@@ -97,3 +97,11 @@
 @media (max-width: 560px) {
   .lineage li { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* /findings: analysis/findings.md rendered as it stands */
+.findings h1 { margin-top: 0; }
+.findings h2 { margin-top: 48px; padding-top: 18px; border-top: 3px solid var(--ink); }
+.findings ol, .findings ul { padding-left: 1.4em; }
+.findings li > ul, .findings li > ol { margin-top: 8px; }
+.findings .tablewrap { margin: 16px 0 24px; }
+.findings td:first-child { min-width: 7rem; }
