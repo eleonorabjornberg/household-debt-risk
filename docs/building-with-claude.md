@@ -650,3 +650,5 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 
 ### 2026-11-08 ~01:00 UTC: analysis track, docket 47 copy edits
 - Merged claude/sweet-gates-avwrcs (b86b5a5). Main model only. Cost not measured. Applied her three choices: README.md:15 "rejects" → "does not support"; analysis/findings.md:10 "That gap is noise." → "That gap is not statistically detectable."; web/content/story.ts:147 "They don't." deleted. No line moved, so the register locations are unchanged. Hook, web test (31) and build pass. No errors this round.
+
+- 2026-11-08, coordinator: merged d4570eb from the analysis track (fast-forward). It applies Eleonora's docket 47 edits, and the word diff shows exactly her three changes ("rejects" to "does not support", "noise." to "not statistically detectable.", "They don't." deleted). checks.sh passed, web tests passed (31/31), and the site copies are clean. Production (c8c9a7c) differs from HEAD in atlas/ only by the placebo_pool_windows note in atlas/lib/claims.json, which is shown in the Sources list. web/content/story.ts, the README and findings are not deployed (one site). The redeploy is waiting for Eleonora's OK.
