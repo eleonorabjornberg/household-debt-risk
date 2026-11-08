@@ -1136,7 +1136,7 @@
    "notes": "Eleonora, copy-placebo (a), 2026-11-07: the placebo pool is stated in the copy. Same pool as checks H5 and H6. Also stated in README, findings and the web story (copy-placebo-elsewhere (b), 2026-11-07).",
    "register": "claims/tracks/analysis.csv",
    "anchors": [
-    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952 (282 windows, 1952Q1–2022Q2), a placebo test finds no detectable excess in recession windows (p ≈",
+    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. Compared with every other 16-quarter window since 1952 (282 windows, 1952Q1–2022Q2), a placebo test finds no detectable excess in recession windows (p ≈",
     ", low power), and only",
     "recessions beat the median window. The big gains of the 1970s and 1980s happened inside recessions and outside them alike, because the agencies were growing the whole time."
    ],
@@ -1731,7 +1731,7 @@
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
-    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952 (282 windows, 1952Q1–2022Q2), a placebo test finds no detectable excess in recession windows (p ≈",
+    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. Compared with every other 16-quarter window since 1952 (282 windows, 1952Q1–2022Q2), a placebo test finds no detectable excess in recession windows (p ≈",
     ", low power), and only",
     "recessions beat the median window. The big gains of the 1970s and 1980s happened inside recessions and outside them alike, because the agencies were growing the whole time."
    ],
@@ -1772,7 +1772,7 @@
    "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. They don't. Compared with every other 16-quarter window since 1952 (282 windows, 1952Q1–2022Q2), a placebo test finds no detectable excess in recession windows (p ≈",
+    "If crises ratcheted risk onto public balance sheets, these windows should show bigger gains than any other four-year stretch. Compared with every other 16-quarter window since 1952 (282 windows, 1952Q1–2022Q2), a placebo test finds no detectable excess in recession windows (p ≈",
     ", low power), and only",
     "recessions beat the median window. The big gains of the 1970s and 1980s happened inside recessions and outside them alike, because the agencies were growing the whole time."
    ],
