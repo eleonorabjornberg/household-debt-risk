@@ -77,20 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 47: three sentences that may overstate a low-power placebo result.</p>
+      <p class="sub">Round 48: the edits that a redeploy can&#x27;t put on the site.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendation on these cards. A choice authorizes only what its option text says; nothing is deployed without a separate OK. Raised by the analysis track after copy-placebo-elsewhere (b).</footer>
+  <footer>No recommendation on these cards. A choice authorizes only what its option text says. Production was redeployed from daf6522 on 2026-11-08 at your request.</footer>
 </div>
 
 <script>
-const DECISIONS = [{"id": "copy-rejects-readme", "group": "Copy", "tag": "README", "title": "README line 15: keep 'The data rejects that as a general pattern'?", "ctx": "The sentence after it now says a placebo test finds 'no detectable excess (p ≈ 0.30, low power)'. Failing to detect an effect with a low-power test is not the same as rejecting the thesis. The analysis track suggested 'The data does not support that as a general pattern'.", "opts": [["a", "Change to 'The data does not support that as a general pattern'"], ["b", "Leave it as it is"]], "where": "README.md:15"}, {"id": "copy-gap-noise", "group": "Copy", "tag": "findings", "title": "findings.md line 10: keep 'That gap is noise.'?", "ctx": "The line refers to the 3.7 vs 3.0 pp gap between crisis and ordinary windows (p ≈ 0.30). Calling it noise says more than the test shows. A narrower version would be 'That gap is not statistically detectable.'", "opts": [["a", "Change to 'That gap is not statistically detectable.'"], ["b", "Leave it as it is"]], "where": "analysis/findings.md:10"}, {"id": "copy-they-dont", "group": "Copy", "tag": "web story", "title": "web story: keep 'They don't.'?", "ctx": "In web/content/story.ts:147 the copy says recession windows 'should show bigger gains than any other four-year stretch', then 'They don't.', then the new placebo sentence. 'They don't' reads as a finding of no effect. A narrower version would be 'The data can't tell them apart.'", "opts": [["a", "Change to 'The data can't tell them apart.'"], ["b", "Delete 'They don't.' and let the placebo sentence carry it"], ["c", "Leave it as it is"]], "where": "web/content/story.ts:147"}];
+const DECISIONS = [{"id": "site-findings", "group": "Site", "tag": "one site", "title": "Show the README / findings text on the live site?", "ctx": "Production now runs everything merged so far. Your round 46–47 edits to README.md, analysis/findings.md and web/content/story.ts are in the repo, but the live site (Hot Potato) does not render any of those three files, so they can't appear there by redeploying. Hot Potato's own copy already uses your placebo wording ('no detectable excess (p ≈ 0.30, low power)') and has none of the 'rejects', 'noise' or 'They don't' sentences.", "opts": [["a", "Fine as it is: the edits stay in the repo, and the site keeps its own copy"], ["b", "Add a /findings page to Hot Potato that renders analysis/findings.md (a track builds it; preview first, production only after a separate OK)"], ["c", "Fold the edited sentences into the existing /methods page (preview first, production only after a separate OK)"]], "where": "atlas/app, README.md, analysis/findings.md, web/content/story.ts"}];
 
-const GROUPS = ["Copy"];
+const GROUPS = ["Site"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
