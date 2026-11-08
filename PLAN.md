@@ -240,6 +240,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-07 | Decision docket round 46, `copy-placebo-elsewhere` **(b)**: use the Hot Potato placebo wording ("no detectable excess (p ≈ 0.30, low power)") in README.md, analysis/findings.md and web/content/story.ts. | Eleonora |
 | 2026-11-08 | Decision docket round 47: `copy-rejects-readme` **(a)**, README.md:15 "The data rejects that as a general pattern" becomes "The data does not support that as a general pattern"; `copy-gap-noise` **(a)**, analysis/findings.md:10 "That gap is noise." becomes "That gap is not statistically detectable."; `copy-they-dont` **(b)**, delete "They don't." in web/content/story.ts:147 and let the placebo sentence carry it. | Eleonora |
 | 2026-11-08 | "All edits should reach the live site": production redeployed from daf6522. | Eleonora |
+| 2026-11-08 | Docket 48 site-findings (b): add a /findings page to Hot Potato that renders analysis/findings.md. A track builds it; preview first, production only after a separate OK. | Eleonora |
 
 ## Environment prerequisites
 
