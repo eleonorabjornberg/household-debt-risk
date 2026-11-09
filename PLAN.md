@@ -248,6 +248,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-09 | Docket 51 findings-rounding (a): change the eight double-rounded numbers in analysis/findings.md to the singly rounded value (55%, 102%, +8.4, +8.3, +0.2, 69%, 69%, 8.2%), update their register rows, re-sync the /findings copy. | Eleonora |
 | 2026-11-09 | Docket 51 findings-scan (a): trace the 251 display-match numbers in findings.md, add rows where needed, then make the scan require a row citing the file and line. | Eleonora |
 | 2026-11-09 | Review 30 rv-findings-preview: ok (the /findings preview looks right). | Eleonora |
+| 2026-11-09 | Docket 52 rewrite-main (b): force-push the rewritten history to every branch except `main`; `main` is rewritten at its next reviewed merge, so production is not rebuilt from older content now. | Eleonora |
 
 ## Environment prerequisites
 
