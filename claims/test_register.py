@@ -114,3 +114,15 @@ def test_drifted_location_is_caught(tmp_path):
     reg.write_text(head + "\n" + row.format(ln=1) + "\n")
     errs, _ = cr.validate_register(root=root, register=reg, results_path=root / "results.json")
     assert [e for e in errs if "drifted" in e]
+
+
+def test_line_cited_files_need_a_row_citing_the_line(tmp_path):
+    """In LINE_CITED_FILES a matching display elsewhere is not enough (docket 51 findings-scan (a))."""
+    import check_register as cr
+    (tmp_path / "f.md").write_text("Share is 56.4% now.\nAnd 56.4% again.\n")
+    rows = [{"display": "56.4%", "locations": "f.md:1"}]
+    assert cr.scan_files(rows, root=tmp_path, scan_files_=["f.md"], line_cited={"f.md"}) == [("f.md", 2, "56.4%")]
+    assert cr.scan_files(rows, root=tmp_path, scan_files_=["f.md"], line_cited=set()) == []
+    rows.append({"display": "56.4%", "locations": "other.md:9;f.md:2"})
+    assert cr.scan_files(rows, root=tmp_path, scan_files_=["f.md"], line_cited={"f.md"}) == []
+    assert "analysis/findings.md" in cr.LINE_CITED_FILES

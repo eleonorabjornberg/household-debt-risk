@@ -53,3 +53,5 @@ that a `PASS`/`FAIL` row agrees with its check, locations that exist). It then s
 `display`. The token regex, the normalisation and the allowlist are documented at the top of the script. Tokens that
 reach the page only through a template (`{share}`, `{pls}`, `${facts.x}`) are registered by hand, with the resolved
 value in `display` and the data field in `notes`.
+
+In `analysis/findings.md` (`LINE_CITED_FILES` in the script) a number counts as registered only if a row cites that exact `file:line`; a matching `display` on some other row is not enough (Eleonora, docket 51 findings-scan (a)).

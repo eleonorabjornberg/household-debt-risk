@@ -16,7 +16,8 @@ Part 1, the register itself (errors):
   * every location is `path:line`, the file exists and the line is in range
 
 Part 2, the scan (errors): every number-like token in SCAN_FILES must equal a token found in some
-row's `display` (after normalisation), unless it is allowlisted. Unmatched tokens are printed as
+row's `display` (after normalisation), unless it is allowlisted. In LINE_CITED_FILES (analysis/findings.md) the row must also cite
+that file:line in its `locations`. Unmatched tokens are printed as
 file:line.
 
 What counts as a number-like token (TOKEN_RE, first alternative that matches wins):
@@ -252,7 +253,23 @@ def validate_register(root: Path = ROOT, register: Path = REGISTER, results_path
     return errors, rows
 
 
-def scan_files(rows, root: Path = ROOT, scan_files_=SCAN_FILES, allowlist=ALLOWLIST):
+# Files where a token counts as registered only if a row cites that exact file:line (Eleonora, docket 51
+# findings-scan (a), 2026-11-09): a matching display on some other row is not enough there.
+LINE_CITED_FILES = {"analysis/findings.md"}
+
+
+def cited_tokens(rows, rel: str) -> dict[int, set[str]]:
+    """line -> normalised tokens of the rows whose locations cite rel:line."""
+    out: dict[int, set[str]] = {}
+    for r in rows:
+        for loc in r.get("locations", "").split(";"):
+            m = LOC_RE.match(loc.strip())
+            if m and m["path"] == rel:
+                out.setdefault(int(m["line"]), set()).update(register_tokens([r.get("display", "")]))
+    return out
+
+
+def scan_files(rows, root: Path = ROOT, scan_files_=SCAN_FILES, allowlist=ALLOWLIST, line_cited=LINE_CITED_FILES):
     covered = register_tokens([r["display"] for r in rows])
     out = []
     for rel in scan_files_:
@@ -260,7 +277,15 @@ def scan_files(rows, root: Path = ROOT, scan_files_=SCAN_FILES, allowlist=ALLOWL
         if not p.is_file():
             out.append((rel, 0, "<file missing>"))
             continue
-        for line, tok in scan_text(rel, p.read_text(encoding="utf-8"), covered, allowlist):
+        text = p.read_text(encoding="utf-8")
+        if rel in line_cited:
+            by_line = cited_tokens(rows, rel)
+            for i, line in publishable_lines(rel, text):
+                for tok in extract_tokens(line):
+                    if normalize(tok) not in by_line.get(i, set()) and not is_allowlisted(rel, tok, allowlist):
+                        out.append((rel, i, tok))
+            continue
+        for line, tok in scan_text(rel, text, covered, allowlist):
             out.append((rel, line, tok))
     return out
 
