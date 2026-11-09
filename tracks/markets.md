@@ -8,6 +8,25 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## /research on Hot Potato (2026-11-09, Eleonora's request in chat; PLAN Decisions taken at faddf48)
+
+- The branch was re-cut from origin/claude/sweet-gates-avwrcs at faddf48 (rewritten history; no old SHAs).
+- What's in atlas:
+  - `/research` index: 17 entries. A6 is blocked, with PLAN's reason. C1b and C2 point to the joint-holdout write-up; B3 also links `/scenarios`.
+  - `/research/<slug>`: 14 write-ups, each a README copied as it stands by `scripts/sync-research.mjs`. Only relative links change: other READMEs go to their /research page, repo files to their GitHub blob on main (every target checked on origin/main).
+  - A layout banner marks the section as Claude drafts; each README keeps its own banner. The parser gains fenced code and blockquotes, and the top bar links Research.
+- Index text:
+  - Questions and status fragments are verbatim from PLAN; `lib/research.test.ts` checks them.
+  - Methods are one-line Claude drafts with no figures.
+  - C1b has no PLAN row: its question is mine and its status quotes the C2 row (labelled). The joint holdout's status quotes the C1 row (labelled).
+- Numbers: none new and no new rows. The README numbers are registered at their research/ locations, and the register check passes. As with findings.md, the atlas copies are not scanned.
+- Stale README status lines, shown as they stand: B1 "ready for review" (PLAN: done, inconclusive), B2 "ready for review" (PLAN: done), B3 "awaiting Eleonora's review" (PLAN: page approved). The index shows PLAN's status beside each.
+- Checks: atlas tests 161/161, tsc clean, build OK; web tests 31/31; make site-copies leaves the tree clean; Playwright on all routes (200, both banners, no relative links, no horizontal scroll at 390 px).
+- Commit 61f7d7d.
+- **Errors:**
+  - An old markdown test helper narrowed `Block` by elimination, so it broke when the union grew. Caught by tsc.
+  - The first link rewrite missed links whose text is a code span. Caught by Claude from the empty rewrite count.
+
 ## One site: web pages moved into Hot Potato (2026-11-07, site-visible (b), relayed by the coordinator)
 
 - Copied, not moved: web/ is unchanged. In atlas:
