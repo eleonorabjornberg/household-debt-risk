@@ -251,6 +251,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-09 | Docket 52 rewrite-main (b): force-push the rewritten history to every branch except `main`; `main` is rewritten at its next reviewed merge, so production is not rebuilt from older content now. | Eleonora |
 | 2026-11-09 | Review round 31 rv-findings-live: **ok**, the live /findings page (production 5879127) looks right. No note. | Eleonora |
 | 2026-11-09 | In chat: "Make sure our quantitative work is visible there as well", meaning the live site. The research write-ups (A–C) go onto Hot Potato as labelled Claude drafts: built on a branch, then a preview, with production only after her OK on the preview. E1 stays off the sites, per her 2026-11-06 rv-e1-results decision, unless she changes that. | Eleonora |
+| 2026-11-09 | Review round 32 rv-research-preview: **ok-prod**, the /research preview (7efabcc) looks right; promote to production. No note. | Eleonora |
+| 2026-11-09 | Review round 32 rv-research-status: **sync**, update the stale status lines in the A3, A4, B1, B2 and B3 READMEs to match PLAN. No note. | Eleonora |
 
 ## Environment prerequisites
 

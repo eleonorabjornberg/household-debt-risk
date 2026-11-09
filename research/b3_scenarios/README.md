@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** The engine and its tests are built and checked. Its scenario presets follow Eleonora's Q-B3 decision (2026-11-04). The DFAST preset and the 2008–12 replay are built, both labelled proxies. The design is Claude's proposal ([`METHOD.md`](METHOD.md)).
 
-**PLAN task B3. Status: engine, tests and both preset families done (proxies); browser page built at `web/` /scenarios (URL only, preview), awaiting Eleonora's review.**
+**PLAN task B3. Status: engine, tests and both preset families done (proxies); browser page at /scenarios; page and copy approved by Eleonora as Claude drafts 2026-11-05 (rv-b3-page).**
 
 ## What it does
 - **Inputs.** Loss parameters for each loan class (mortgages, federal student loans, other consumer credit): a cumulative default rate, a loss given default, and a quarterly timing vector.
