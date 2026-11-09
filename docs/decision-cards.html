@@ -77,18 +77,18 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 48: the edits that a redeploy can&#x27;t put on the site.</p>
+      <p class="sub">Round 49: the /findings page is built but not promoted.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendation on these cards. A choice authorizes only what its option text says. Production was redeployed from daf6522 on 2026-11-08 at your request.</footer>
+  <footer>No recommendation on these cards. A choice authorizes only what its option text says. Production still runs daf6522; nothing from the /findings build is deployed.</footer>
 </div>
 
 <script>
-const DECISIONS = [{"id": "site-findings", "group": "Site", "tag": "one site", "title": "Show the README / findings text on the live site?", "ctx": "Production now runs everything merged so far. Your round 46–47 edits to README.md, analysis/findings.md and web/content/story.ts are in the repo, but the live site (Hot Potato) does not render any of those three files, so they can't appear there by redeploying. Hot Potato's own copy already uses your placebo wording ('no detectable excess (p ≈ 0.30, low power)') and has none of the 'rejects', 'noise' or 'They don't' sentences.", "opts": [["a", "Fine as it is: the edits stay in the repo, and the site keeps its own copy"], ["b", "Add a /findings page to Hot Potato that renders analysis/findings.md (a track builds it; preview first, production only after a separate OK)"], ["c", "Fold the edited sentences into the existing /methods page (preview first, production only after a separate OK)"]], "where": "atlas/app, README.md, analysis/findings.md, web/content/story.ts"}];
+const DECISIONS = [{"id": "findings-register", "group": "Site", "tag": "register rule", "title": "The /findings page shows 380 numbers with no register row. What should happen before it goes live?", "ctx": "The analysis track built the /findings page you chose in round 48 (branch claude/track-analysis, 86a769d). It shows analysis/findings.md unedited, and all checks and tests pass. The register hook has never scanned findings.md, though. Scanned with the hook's own rules, 380 of its 689 number tokens have no claims/register.csv row (the coordinator re-ran the scan and got the same 380). The opening and headline section (lines 1–18) lacks only 3: 87.3%, $198.5B and a bare 13.1. The rest are spread over §0–§7 and the caveats. CLAUDE.md says every published number needs a row. The page is not merged into the main branch yet.", "opts": [["a", "Register all ~380 numbers first (rows traced to analysis/results.json and tables, status UNVERIFIED, about a day of track work), add findings.md to the hook's scan, then a preview for your review"], ["b", "Publish a shorter page: the opening, headline findings and verdict only (the 3 missing numbers get rows), with a link to the full findings.md on GitHub; preview first"], ["c", "Publish the full page with a visible note that numbers below the headlines are not individually registered (an exception to the register rule); preview first"], ["d", "Hold the page; don't publish it for now"]], "where": "atlas/app/findings/page.tsx on claude/track-analysis; analysis/findings.md"}, {"id": "findings-all", "group": "Site", "tag": "copy", "title": "findings.md line 14 still says “51% of all uncollateralized household debt”", "ctx": "In round copy-all-uncoll you chose (a), dropping “all” on Hot Potato. analysis/findings.md:14 still has “all”. Once /findings is live, the two pages on the same site would word this differently.", "opts": [["a", "Drop “all” in findings.md too, to match Hot Potato"], ["b", "Keep findings.md as it is"]], "where": "analysis/findings.md:14"}];
 
 const GROUPS = ["Site"];
 const answers = {};          // id -> {choice, note}
