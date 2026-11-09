@@ -12,6 +12,9 @@ Branch: `claude/track-analysis` · Tasks, in order: A2, A5, A8 · Rules: PLAN.md
 | A7 | ready for review: run to prereg 206e126 + addenda; H1 abnormal S1 fall 0.39 pp (rank p 0.022), not significant after Holm; H2/H3 fit failed; H4 mechanics as expected; quant review done | `research/a7_causal/` |
 | A8 | done, partial by design (accepted 17:00 UTC). Q7 (c) applied and accepted (rv-q7c); q7-promo-2 (c): public-law banks only (29.1%); a8-promo (b) applied 2026-11-05: the 1.1% is the Bundesbank special-tasks banks category (promotional banks, DZ Bank and others), unclassified, with the four-guarantees context note | `research/a8_international/`. a8-promo approved 18:55; a8-holder (b) applied, ready for her review |
 
+## Handoff (2026-11-09, about 02:10 UTC)
+- docket 49 applied: 369 rows (claims/tracks/analysis.csv) for the 380 unregistered findings.md tokens; findings.md in the hook scan; findings:14 "all" dropped. 8 STALE (double rounding; copy unchanged, for her). Open: 251 tokens covered only by unrelated rows' displays (proposal sent). /findings preview: branch push; production waits for her OK.
+
 ## Handoff (2026-11-08, about 22:10 UTC)
 - /findings page built on claude/track-analysis (docket 48 site-findings (b)); preview only. Waiting on her: 380 of 689 number tokens in findings.md have no register row (proposed card sent to the coordinator). Don't promote until that is decided.
 
