@@ -243,6 +243,11 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-08 | Docket 48 site-findings (b): add a /findings page to Hot Potato that renders analysis/findings.md. A track builds it; preview first, production only after a separate OK. | Eleonora |
 | 2026-11-09 | Docket 49 findings-register (a): add a claims/register.csv row for every unregistered number in analysis/findings.md (~380), add findings.md to the hook scan, then a preview of /findings. | Eleonora |
 | 2026-11-09 | Docket 49 findings-all (a): drop "all" in analysis/findings.md:14 ("51% of uncollateralized household debt"), to match Hot Potato. | Eleonora |
+| 2026-11-09 | Docket 51 repo-public (b): rewrite history to remove both of her email addresses (all branches force-pushed; she authorized that force push with this choice), then she flips the repo to public herself. | Eleonora |
+| 2026-11-09 | Docket 51 findings-prod (a): promote /findings to production once the hook passes on the merged branch, tests pass and the preview is READY; she checks the live page after. | Eleonora |
+| 2026-11-09 | Docket 51 findings-rounding (a): change the eight double-rounded numbers in analysis/findings.md to the singly rounded value (55%, 102%, +8.4, +8.3, +0.2, 69%, 69%, 8.2%), update their register rows, re-sync the /findings copy. | Eleonora |
+| 2026-11-09 | Docket 51 findings-scan (a): trace the 251 display-match numbers in findings.md, add rows where needed, then make the scan require a row citing the file and line. | Eleonora |
+| 2026-11-09 | Review 30 rv-findings-preview: ok (the /findings preview looks right). | Eleonora |
 
 ## Environment prerequisites
 
