@@ -20,6 +20,11 @@ function Inl({ c }: { c: Inline[] }) {
   );
 }
 
+/** Inline Markdown on its own (the /research index renders PLAN quotes with it). */
+export function MarkdownInline({ c }: { c: Inline[] }) {
+  return <Inl c={c} />;
+}
+
 function List({ b }: { b: ListBlock }) {
   const items = b.items.map((it, i) => (
     <li key={i}>
@@ -50,6 +55,10 @@ export function Markdown({ blocks }: { blocks: Block[] }) {
                 </table>
               </div>
             );
+          case "fence":
+            return <pre key={i} className="md-fence"><code>{b.text}</code></pre>;
+          case "quote":
+            return <blockquote key={i} className="md-quote"><Markdown blocks={b.blocks} /></blockquote>;
         }
       })}
     </>

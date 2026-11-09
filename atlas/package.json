@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/copy-data.mjs && node scripts/sync-b3.mjs && node scripts/sync-catalog.mjs && node scripts/sync-findings.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
-    "predev": "node scripts/copy-data.mjs && node scripts/sync-b3.mjs && node scripts/sync-catalog.mjs && node scripts/sync-findings.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
+    "prebuild": "node scripts/copy-data.mjs && node scripts/sync-b3.mjs && node scripts/sync-catalog.mjs && node scripts/sync-findings.mjs && node scripts/sync-research.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
+    "predev": "node scripts/copy-data.mjs && node scripts/sync-b3.mjs && node scripts/sync-catalog.mjs && node scripts/sync-findings.mjs && node scripts/sync-research.mjs && node scripts/sync-claims.mjs && node scripts/ask-data.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

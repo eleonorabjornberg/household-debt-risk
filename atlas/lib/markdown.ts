@@ -1,6 +1,7 @@
 // A small Markdown reader for /findings (docket 48 site-findings (b)): renders analysis/findings.md as it stands.
 // Covers what that file uses: #/## headings, paragraphs, **bold**, *italic*, `code`, [text](url) links,
-// ordered and unordered lists (nested by indent) and pipe tables. No raw HTML is ever emitted, so the
+// ordered and unordered lists (nested by indent) and pipe tables. Added for /research (2026-11-09): fenced code
+// blocks and "> " blockquotes, which the research write-ups use (the Claude-draft banner is a blockquote). No raw HTML is ever emitted, so the
 // text cannot inject markup; anything unrecognised renders as plain text.
 
 export type Inline =
@@ -16,10 +17,14 @@ export type Block =
   | { t: "heading"; level: number; id: string; c: Inline[] }
   | { t: "para"; c: Inline[] }
   | ListBlock
-  | { t: "table"; head: Inline[][]; rows: Inline[][][] };
+  | { t: "table"; head: Inline[][]; rows: Inline[][][] }
+  | { t: "fence"; lang: string; text: string }
+  | { t: "quote"; blocks: Block[] };
 
 const LIST_RE = /^(\s*)([-*]|\d+\.)\s+(.*)$/;
 const isTableLine = (l: string) => l.trim().startsWith("|");
+const isFence = (l: string) => /^\s*```/.test(l);
+const isQuote = (l: string) => /^\s*>/.test(l);
 const isSep = (l: string) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$/.test(l);
 
 export function slug(s: string): string {
@@ -103,6 +108,21 @@ export function parseMarkdown(src: string): Block[] {
   while (i < lines.length) {
     const l = lines[i];
     if (!l.trim()) { i += 1; continue; }
+    if (isFence(l)) {
+      const lang = l.trim().slice(3).trim();
+      const body: string[] = [];
+      i += 1;
+      while (i < lines.length && !isFence(lines[i])) { body.push(lines[i]); i += 1; }
+      i += 1;                                              // closing fence (or end of file)
+      blocks.push({ t: "fence", lang, text: body.join("\n") });
+      continue;
+    }
+    if (isQuote(l)) {
+      const inner: string[] = [];
+      while (i < lines.length && isQuote(lines[i])) { inner.push(lines[i].replace(/^\s*>\s?/, "")); i += 1; }
+      blocks.push({ t: "quote", blocks: parseMarkdown(inner.join("\n")) });
+      continue;
+    }
     const h = l.match(/^(#{1,6})\s+(.*)$/);
     if (h) {
       const c = parseInline(h[2].trim());
@@ -122,6 +142,7 @@ export function parseMarkdown(src: string): Block[] {
       const start = i;
       i += 1;
       while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !isTableLine(lines[i]) &&
+             !isFence(lines[i]) && !isQuote(lines[i]) &&
              (LIST_RE.test(lines[i]) || /^\s+\S/.test(lines[i]))) i += 1;
       blocks.push(parseList(lines.slice(start, i)));
       continue;
@@ -129,6 +150,7 @@ export function parseMarkdown(src: string): Block[] {
     const start = i;
     i += 1;
     while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !LIST_RE.test(lines[i]) &&
+           !isFence(lines[i]) && !isQuote(lines[i]) &&
            !(isTableLine(lines[i]) && i + 1 < lines.length && isSep(lines[i + 1]))) i += 1;
     blocks.push({ t: "para", c: parseInline(lines.slice(start, i).map((x) => x.trim()).join(" ")) });
   }

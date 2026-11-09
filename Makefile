@@ -59,9 +59,10 @@ models: $(Z1_CSV) $(Z1_ZIP)  ## analysis notebook + research scripts
 	  [ -f "$$s" ] || continue; echo "models: $$s"; $(PY) "$$s" --z1-zip $(Z1_ZIP); done
 
 # ---------------------------------------------------------------- build
-site-copies:  ## refresh lib/claims.json, the shared F1 files in each site, and atlas/content/findings.md
+site-copies:  ## refresh lib/claims.json, the shared F1 files in each site, atlas/content/findings.md and atlas/content/research/
 	node claims/site/sync.mjs
 	node atlas/scripts/sync-findings.mjs
+	node atlas/scripts/sync-research.mjs
 
 site-test:
 	@for s in $(SITES); do (cd $$s && npm ci --no-audit --no-fund --silent && npm test --silent); done

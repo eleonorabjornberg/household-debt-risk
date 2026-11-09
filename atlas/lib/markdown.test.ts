@@ -12,7 +12,7 @@ function words(blocks: Block[]): string[] {
   for (const b of blocks) {
     if (b.t === "heading" || b.t === "para") out.push(plain(b.c));
     else if (b.t === "list") list(b);
-    else { b.head.forEach((c) => out.push(plain(c))); b.rows.forEach((r) => r.forEach((c) => out.push(plain(c)))); }
+    else if (b.t === "table") { b.head.forEach((c) => out.push(plain(c))); b.rows.forEach((r) => r.forEach((c) => out.push(plain(c)))); }
   }
   return out.join(" ").split(/\s+/).filter(Boolean);
 }
@@ -65,5 +65,26 @@ describe("analysis/findings.md on /findings", () => {
   it("keeps every heading and table", () => {
     expect(blocks.filter((b) => b.t === "heading")).toHaveLength(src.split("\n").filter((l) => /^#{1,6}\s/.test(l)).length);
     expect(blocks.filter((b) => b.t === "table")).toHaveLength(src.split("\n").filter((l) => /^\|\s*-{3,}/.test(l)).length);
+  });
+});
+
+
+describe("fences and blockquotes (/research, 2026-11-09)", () => {
+  it("keeps a fenced block verbatim, markup and all", () => {
+    const b = parseMarkdown("text\n```bash\nuv run x.py   # **not bold** [not](link)\n\nsecond\n```\nafter");
+    expect(b.map((x) => x.t)).toEqual(["para", "fence", "para"]);
+    expect(b[1]).toEqual({ t: "fence", lang: "bash", text: "uv run x.py   # **not bold** [not](link)\n\nsecond" });
+  });
+  it("parses a blockquote's inside as blocks", () => {
+    const b = parseMarkdown("> **Claude draft, not the author's text.** Line one\n> line two\n\nnext");
+    expect(b[0].t).toBe("quote");
+    const q = b[0] as Extract<Block, { t: "quote" }>;
+    expect(q.blocks).toHaveLength(1);
+    expect(plain((q.blocks[0] as Extract<Block, { t: "para" }>).c)).toBe("Claude draft, not the author's text. Line one line two");
+    expect(b[1].t).toBe("para");
+  });
+  it("ends a paragraph or list at a fence or quote", () => {
+    expect(parseMarkdown("para\n> quote").map((x) => x.t)).toEqual(["para", "quote"]);
+    expect(parseMarkdown("- item\n```\ncode\n```").map((x) => x.t)).toEqual(["list", "fence"]);
   });
 });

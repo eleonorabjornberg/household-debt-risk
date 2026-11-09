@@ -105,3 +105,22 @@
 .findings li > ul, .findings li > ol { margin-top: 8px; }
 .findings .tablewrap { margin: 16px 0 24px; }
 .findings td:first-child { min-width: 7rem; }
+
+/* ---------- /research (2026-11-09) ---------- */
+.research-banner-wrap { padding-bottom: 0; }
+.research-banner-wrap .pg-banner { margin-bottom: 0; }
+.research-list { list-style: none; padding: 0; margin: 32px 0 0; display: grid; gap: 0; }
+.research-item { border-top: 3px solid var(--ink); padding: 18px 0 22px; }
+.research-item h2 { margin: 0 0 10px; font-size: 18px; }
+.research-item dl { margin: 0; display: grid; gap: 8px; max-width: 52rem; }
+.research-item dl div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 4px 16px; }
+.research-item dt { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.research-item dd { margin: 0; }
+.research-links { margin: 12px 0 0; font-weight: 700; }
+.pg .md-fence { background: var(--wash); border: 2px solid var(--ink); padding: 10px 12px; overflow-x: auto; font-size: 13px; }
+.pg .md-fence code { background: none; padding: 0; white-space: pre; }
+.pg .md-quote { margin: 0 0 20px; border: 2px solid var(--ink); background: var(--sun); padding: 4px 14px; box-shadow: 4px 4px 0 var(--ink); }
+.research-doc { max-width: 52rem; overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .research-item dl div { grid-template-columns: minmax(0, 1fr); }
+}
