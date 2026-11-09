@@ -74,10 +74,10 @@ Windows overlap and the series is autocorrelated, so there are effectively about
 
 | Peak | Δ public | Prior 16q | Pctile | Federal | GSE/agency | S&L | Banks/CUs | Private sec. | Other private | Public $ growth | Private $ growth |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 1953Q2 | −0.06 | — | 20% | −0.93 | +0.83 | +0.04 | +3.66 | 0.00 | −3.60 | +56% | +58% |
+| 1953Q2 | −0.06 | — | 20% | −0.93 | +0.83 | +0.04 | +3.66 | 0.00 | −3.60 | +55% | +58% |
 | 1957Q3 | +0.66 | +0.11 | 30% | +0.13 | +0.29 | +0.24 | +4.26 | 0.00 | −4.92 | +65% | +37% |
 | 1960Q2 | −1.33 | +1.45 | 9% | −0.66 | −0.61 | −0.06 | +3.91 | 0.00 | −2.58 | −4% | +44% |
-| 1969Q4 | +2.19 | +2.44 | 45% | −0.86 | +3.05 | 0.00 | +3.86 | +0.25 | −6.30 | +103% | +38% |
+| 1969Q4 | +2.19 | +2.44 | 45% | −0.86 | +3.05 | 0.00 | +3.86 | +0.25 | −6.30 | +102% | +38% |
 | 1973Q4 | +4.09 | +2.19 | 69% | +0.56 | +3.40 | +0.13 | +1.33 | −0.26 | −5.15 | +137% | +44% |
 | 1980Q1 | +9.30 | +3.85 | 93% | +0.03 | +8.29 | +0.99 | −10.06 | −0.01 | +0.78 | +118% | +18% |
 | 1981Q3 | +8.34 | +5.14 | 86% | −0.29 | +8.30 | +0.32 | −8.62 | +1.02 | −0.74 | +122% | +32% |
@@ -93,11 +93,11 @@ Windows overlap and the series is autocorrelated, so there are effectively about
 | Period | Δ public | Federal | GSE | S&L | What happened |
 |---|---|---|---|---|---|
 | 1952Q1–1969Q4 | +1.8 | −1.3 | +3.0 | +0.1 | |
-| 1969Q4–1979Q4 | +8.7 | −0.3 | +8.5 | +0.5 | Ginnie Mae and Freddie Mac pools |
+| 1969Q4–1979Q4 | +8.7 | −0.3 | +8.4 | +0.5 | Ginnie Mae and Freddie Mac pools |
 | 1979Q4–1989Q4 | **+19.0** | −0.6 | **+18.8** | +0.8 | |
-| 1989Q4–1999Q4 | +8.4 | +0.4 | +8.6 | −0.7 | |
+| 1989Q4–1999Q4 | +8.3 | +0.4 | +8.6 | −0.7 | |
 | 1999Q4–2007Q4 | **−5.0** | −0.1 | −4.4 | −0.5 | Private-label boom |
-| 2007Q4–2012Q4 | **+14.3** | +4.2 | +9.8 | +0.3 | |
+| 2007Q4–2012Q4 | **+14.3** | +4.2 | +9.8 | +0.2 | |
 | 2012Q4–2019Q4 | +4.8 | +4.0 | +0.9 | −0.1 | Student loans on the federal book |
 | 2019Q4–2026Q2 | +1.2 | −0.5 | +1.8 | −0.2 | |
 
@@ -176,8 +176,8 @@ The weekly maximum was $2,740B on 2022-04-13. On 2026-10-21 holdings were $1,895
 | 1953Q2 | 4.93× | 4.61× | 3.96× | 3.96× | 80% → 75% |
 | 1957Q3 | 3.93× | 3.78× | 3.35× | 3.35× | 75% → 70% |
 | 1960Q2 | 3.54× | 3.37× | 2.92× | 2.92× | 72% → 66% |
-| 1969Q4 | 2.99× | 3.06× | 3.27× | 2.99× | 67% → 70% |
-| 1973Q4 | 3.27× | 3.11× | 3.13× | 2.99× | 70% → 68% |
+| 1969Q4 | 2.99× | 3.06× | 3.27× | 2.99× | 67% → 69% |
+| 1973Q4 | 3.27× | 3.11× | 3.13× | 2.99× | 69% → 68% |
 | 1980Q1 | 3.16× | 3.22× | 3.34× | 3.16× | 68% → 70% |
 | 1981Q3 | 3.30× | 3.34× | 3.34× | 3.26× | 70% → 70% |
 | 1990Q3 | 2.92× | 2.82× | 2.66× | 2.66× | 66% → 62% |
@@ -214,7 +214,7 @@ Card balances shrank relative to total debt in every crisis since 2001. The 2007
 - Coverage fell from 14.5× (1953Q2) to 6.9× (1990Q3) and 5.6× (2007Q4), with a low of **4.77× in 2017Q3**. It is **5.79× now**.
 - It rises in crises, when auto lending contracts.
 - Its long decline means auto debt has outgrown the goods that could secure it.
-- Auto loans are 8.3% of scope debt.
+- Auto loans are 8.2% of scope debt.
 
 Charts: `figures/q5_collateral.png`, `figures/q5_vehicle_proxy.png`.
 
