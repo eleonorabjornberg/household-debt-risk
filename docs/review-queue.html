@@ -77,7 +77,7 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 29: your round-45 wording, now live.</p>
+      <p class="sub">Round 30: the /findings preview.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
@@ -88,9 +88,9 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-copy45-live", "group": "Hot Potato copy", "tag": "docket 45", "title": "Your round-45 wording and the H checks are in production", "ctx": "Your approval of rv-h-checks put this in production (commit c8c9a7c, hot-potato-credit.vercel.app). The site now uses your round-45 wording: 'private securitization and REITs, incl. card ABS', '2026Q3 dollars', 'household debt with no collateral' (no 'all'), and 'no detectable excess (p ≈ 0.30, low power)' against all 282 overlapping 16-quarter windows, 1952Q1–2022Q2. The stored p stays 0.3025. Because the copy now states the pool, the analysis track added check H23 for it (PASS), so /sources has no new unverified number. One thing for your eye: under the pile on the canvas, the full name does not fit, so the short label reads 'Private sec. & REITs'. The long name shows on hover and in the text. Claude cannot open *.vercel.app from here, so the live check is yours.", "opts": [["ok", "Live site and short label look right"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "atlas/content/story.ts, atlas/components/Experience.tsx, claims/register.csv", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/atlas/content/story.ts"}];
+const DECISIONS = [{"id": "rv-findings-preview", "group": "Hot Potato /findings", "tag": "docket 49", "title": "The /findings page on the preview", "ctx": "Preview from 40ace02 on claude/track-analysis, READY according to the analysis track: household-debt-risk-git-claude-track-analysis-eleonorabjornberg.vercel.app/findings. It renders analysis/findings.md as it stands. The text now says “51% of uncollateralized household debt” (no “all”, your round 49 choice). The eight double-rounded numbers are unchanged until you answer findings-rounding on the docket. Claude cannot open *.vercel.app from here, so no Claude session has looked at the page. Production still runs daf6522.", "opts": [["ok", "Page looks right"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "atlas/app/findings/page.tsx, atlas/content/findings.md"}];
 
-const GROUPS = ["Hot Potato copy"];
+const GROUPS = ["Hot Potato /findings"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
