@@ -742,3 +742,5 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Errors caught by Claude: the first edit of the uniqueness test went into the generated atlas copy instead of `claims/site` (reverted); stale `.next` types still referenced the deleted /findings page (rebuilt); one tile print imported the wrong alias.
 - Checks: hook rc 0, atlas 176/176, atlas build OK, web 31/31. Production unchanged (853747e).
 - Model tier: main model only. Tokens and cost: not measured.
+- Review queue round 34 (version 37): rv-dashboard-34, the dashboard and the site fixes since 853747e, for Eleonora's production OK.
+- Eleonora sent github.com/US-CBO/cbo-data for CBO data. Claude checked it: a shallow clone at 284a956 works (the GitHub API answered 403 through the proxy; git did not). It holds budget and economic datasets by vintage, including per-account outlays (spending_detail). It does not hold the fair-value subsidy estimates A6 needs or the student-lending shift B4 needs. How to use it is her call, so it went to the docket as round 55 (version 64), card cbo-repo-55, along with gradients-55 for the gradients already on the site.

@@ -77,20 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 33: /research on the live site.</p>
+      <p class="sub">Round 34: the dashboard tab, and the site fixes since production 853747e.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendations on review cards. &#x27;Open&#x27; shows the files on GitHub.</footer>
+  <footer>No recommendations on review cards. &#x27;Open&#x27; shows the files on GitHub. Nothing here reaches production without your OK.</footer>
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-research-live", "group": "Hot Potato /research", "tag": "round 32", "title": "The /research section on the live site", "ctx": "Production now runs 853747e (dpl_7jxbpBx9AvzqxoXYn6pDPEjoFduN, READY) at hot-potato-credit.vercel.app/research. This is the preview you approved plus your 'sync' choice: the A3, A4, B1, B2 and B3 README status lines now use PLAN's wording. Claude cannot open *.vercel.app from here, so no Claude session has seen the live page. Previous production: 5879127 (dpl_C1mDpFrriYbYj7wHo1H3mk6kxMXU), still a rollback candidate.", "opts": [["ok", "Live pages look right"], ["rollback", "Roll back to 5879127"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "atlas/app/research/, research/*/README.md"}];
+const DECISIONS = [{"id": "rv-dashboard-34", "group": "Hot Potato", "tag": "F7", "title": "The /dashboard tab (findings merged in) and the round-53 site fixes", "ctx": "Branch claude/sweet-gates-avwrcs at ab4fbfc. /dashboard is built to your round-54 answers: a market reader, Core scope, merged with findings. It has four tiles with the change on the quarter and the year (debt in scope $19.10T, public share 56.4%, home coverage 3.56×, and serious-delinquency transitions by loan type). It also has holder-mix and loan-type panels with loan-type and date-range filters. Below the panels sits analysis/findings.md, whole, with a contents list. /findings redirects to /dashboard#findings. Changes show as neutral ▲/▼ arrows, not green and red. Every tile number has a register row (23 new, UNVERIFIED). Please also check one change: Claude exempted dashboard-only claims from the 'one display spelling per claim' site test, because the table repeats small deltas across loan types. The release would also carry the round-53 fixes (colour, tables, /scenarios, /how-it-was-built, the laptop layout) and a fix for the sideways scroll on every inner page. Claude cannot open *.vercel.app or reach the Vercel connector from here, so the branch preview has to be opened from your Vercel dashboard.", "opts": [["ok-prod", "Looks right: release to production"], ["hold", "Looks right, but hold production"], ["changes", "Needs changes (say what in the note)"], ["later", "Later"]], "where": "atlas/app/dashboard/, atlas/components/dashboard/, atlas/lib/dashboard.ts, claims/register.csv"}];
 
-const GROUPS = ["Hot Potato /research"];
+const GROUPS = ["Hot Potato"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
