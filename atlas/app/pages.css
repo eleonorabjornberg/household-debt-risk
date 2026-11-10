@@ -27,13 +27,15 @@
   --band: rgba(27, 26, 51, 0.06); --band-active: rgba(27, 26, 51, 0.14);
   --band-over: rgba(255, 255, 255, 0.32); --band-over-active: rgba(27, 26, 51, 0.16); --band-over-rule: rgba(27, 26, 51, 0.55);
   --sans: var(--font-text), system-ui, sans-serif;
-  max-width: 72rem; margin: 0 auto; padding: 32px 16px 80px;
+  max-width: 56rem; margin: 0 auto; padding: 32px 16px 80px;
 }
 .pg h1 { font-size: clamp(34px, 6vw, 60px); line-height: 1.02; margin: 14px 0 16px; }
 .pg h2 { font-size: clamp(24px, 3.4vw, 32px); line-height: 1.1; margin: 0 0 14px; }
 .pg h3 { font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 28px 0 8px; }
-.pg-col { max-width: 46rem; }
-.pg-lede { font-size: 19px; color: var(--ink); max-width: 46rem; }
+/* One centred column on every tab (Eleonora, 2026-11-10: content hugged the left on laptops, and tabs started at
+   different left edges). Text, banners, section rules and tables share the .pg edges. */
+.pg-col { max-width: none; }
+.pg-lede { font-size: 19px; color: var(--ink); max-width: none; }
 .pg-section { margin-top: 56px; padding-top: 18px; border-top: 3px solid var(--ink); }
 .pg-caption { color: var(--muted); font-size: 14px; }
 .pg code, .pg .code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.86em; background: var(--wash); padding: 0 4px; }
@@ -120,7 +122,7 @@
 .research-list { list-style: none; padding: 0; margin: 32px 0 0; display: grid; gap: 0; }
 .research-item { border-top: 3px solid var(--ink); padding: 18px 0 22px; }
 .research-item h2 { margin: 0 0 10px; font-size: 18px; }
-.research-item dl { margin: 0; display: grid; gap: 8px; max-width: 52rem; }
+.research-item dl { margin: 0; display: grid; gap: 8px; }
 .research-item dl div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 4px 16px; }
 .research-item dt { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
 .research-item dd { margin: 0; }
@@ -128,7 +130,7 @@
 .pg .md-fence { background: var(--wash); border: 2px solid var(--ink); padding: 10px 12px; overflow-x: auto; font-size: 13px; }
 .pg .md-fence code { background: none; padding: 0; white-space: pre; }
 .pg .md-quote { margin: 0 0 20px; border: 2px solid var(--ink); background: var(--sun); padding: 4px 14px; box-shadow: 4px 4px 0 var(--ink); }
-.research-doc { max-width: 52rem; overflow-wrap: anywhere; }
+.research-doc { max-width: none; overflow-wrap: anywhere; }
 @media (max-width: 560px) {
   .research-item dl div { grid-template-columns: minmax(0, 1fr); }
 }
@@ -222,7 +224,7 @@ main.pg::before {
 @media (prefers-reduced-motion: reduce) { .research-item, .research-item:hover { transition: none; transform: none; } }
 
 /* /scenarios overview (Eleonora, 2026-11-10: "I have no overview") */
-.sc-def { margin-top: 0.75rem; max-width: 46rem; }
+.sc-def { margin-top: 0.75rem; }
 .sc-def summary { cursor: pointer; font-weight: 700; color: var(--accent); }
 .sc-def p { margin: 0.5rem 0 0; font-size: 0.95rem; }
 ul.sc-caveats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
