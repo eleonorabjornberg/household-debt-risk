@@ -49,9 +49,9 @@ export function Markdown({ blocks }: { blocks: Block[] }) {
           case "table":
             return (
               <div key={i} className="tablewrap">
-                <table>
-                  <thead><tr>{b.head.map((h, j) => <th key={j} scope="col"><Inl c={h} /></th>)}</tr></thead>
-                  <tbody>{b.rows.map((r, j) => <tr key={j}>{r.map((c, k) => <td key={k}><Inl c={c} /></td>)}</tr>)}</tbody>
+                <table className="md-table">
+                  <thead><tr>{b.head.map((h, j) => <th key={j} scope="col" className={`al-${b.align[j] ?? "left"}`}><Inl c={h} /></th>)}</tr></thead>
+                  <tbody>{b.rows.map((r, j) => <tr key={j}>{r.map((c, k) => <td key={k} className={`al-${b.align[k] ?? "left"}`}><Inl c={c} /></td>)}</tr>)}</tbody>
                 </table>
               </div>
             );

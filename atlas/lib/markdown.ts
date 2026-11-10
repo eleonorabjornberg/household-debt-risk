@@ -17,9 +17,34 @@ export type Block =
   | { t: "heading"; level: number; id: string; c: Inline[] }
   | { t: "para"; c: Inline[] }
   | ListBlock
-  | { t: "table"; head: Inline[][]; rows: Inline[][][] }
+  | { t: "table"; head: Inline[][]; rows: Inline[][][]; align: Align[] }
   | { t: "fence"; lang: string; text: string }
   | { t: "quote"; blocks: Block[] };
+
+export type Align = "left" | "right" | "center";
+
+// Numeric-looking cell: numbers with signs, %, pp, $, ×, ranges and arrows ("+8.7", "-0.3 pp", "32.8% → 40.2%",
+// "$1.99", "—"). A column whose body cells are all numeric (blanks and dashes ignored) is right-aligned unless the
+// separator row sets an alignment explicitly.
+const NUM_RE = /^[(]?[-+−–~≈$]?\d[\d,.]*\s*(%|pp|bp|×|x|\$|bn|tn|m)?[)]?(\s*(→|–|-|to)\s*[-+−$]?\d[\d,.]*\s*(%|pp|bp|×|x)?)?(\s*\(.*\))?$/i;
+const BLANK_RE = /^(|—|–|-|n\/a)$/i;
+
+export function isNumericCell(s: string): boolean {
+  const t = s.replace(/\*\*|`/g, "").trim();
+  return NUM_RE.test(t);
+}
+
+function alignments(sep: string, head: string[], rows: string[][]): Align[] {
+  const marks = splitRow(sep);
+  return head.map((_, j) => {
+    const m = (marks[j] ?? "").trim();
+    if (m.startsWith(":") && m.endsWith(":")) return "center";
+    if (m.endsWith(":")) return "right";
+    if (m.startsWith(":")) return "left";
+    const cells = rows.map((r) => (r[j] ?? "").replace(/\*\*|`/g, "").trim()).filter((c) => !BLANK_RE.test(c));
+    return cells.length > 0 && cells.every(isNumericCell) ? "right" : "left";
+  });
+}
 
 const LIST_RE = /^(\s*)([-*]|\d+\.)\s+(.*)$/;
 const isTableLine = (l: string) => l.trim().startsWith("|");
@@ -131,11 +156,17 @@ export function parseMarkdown(src: string): Block[] {
       continue;
     }
     if (isTableLine(l) && i + 1 < lines.length && isSep(lines[i + 1])) {
-      const head = splitRow(l).map(parseInline);
-      const rows: Inline[][][] = [];
+      const headRaw = splitRow(l);
+      const sep = lines[i + 1];
+      const raw: string[][] = [];
       i += 2;
-      while (i < lines.length && isTableLine(lines[i])) { rows.push(splitRow(lines[i]).map(parseInline)); i += 1; }
-      blocks.push({ t: "table", head, rows });
+      while (i < lines.length && isTableLine(lines[i])) { raw.push(splitRow(lines[i])); i += 1; }
+      blocks.push({
+        t: "table",
+        head: headRaw.map(parseInline),
+        rows: raw.map((r) => r.map(parseInline)),
+        align: alignments(sep, headRaw, raw),
+      });
       continue;
     }
     if (LIST_RE.test(l)) {

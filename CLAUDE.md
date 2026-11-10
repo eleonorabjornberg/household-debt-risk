@@ -8,7 +8,7 @@ Research platform on who holds America's household credit risk, how it is priced
 3. Stop for Eleonora's approval at the end of every phase.
 
 ## Rules
-- Authorship (course rule): the design, validation and write-up are Eleonora's. Claude builds, checks and drafts. Any analysis text Claude writes (recommendation, research write-ups, memos, paper) starts with a "Claude draft" banner and stays a draft until Eleonora replaces it with her own text. Claude does not write in her voice or present its text as hers. Her decisions go in PLAN.md "Decisions taken" and the log as she makes them; the log names who caught each error.
+- Authorship (course rule): the design, validation and write-up are Eleonora's. Claude builds, checks and drafts. Any analysis text Claude writes (recommendation, research write-ups, memos, paper) starts with a "Claude draft" banner and stays a draft until Eleonora replaces it with her own text. Per her voice-53 (a) (2026-11-10), site and research pages may be drafted in her register with the `eleonora-writing` skill, but each keeps its "Claude draft" banner until she approves that page; Claude never presents its text as hers. Her decisions go in PLAN.md "Decisions taken" and the log as she makes them; the log names who caught each error.
 - Never present an unverified number as fact. Label estimates, imputations and proxies.
 - Never fabricate data. Check a source is available (and free) before building on it; propose a free proxy for paywalled series.
 - Every published number needs a row in `claims/register.csv` (query or code path, series IDs, vintage, validation status).

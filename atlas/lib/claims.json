@@ -377,7 +377,7 @@
    "unit": "count",
    "period": "2026-11-04",
    "locations": [
-    "atlas/content/build.ts:9"
+    "atlas/content/build.ts:12"
    ],
    "computation": "cd pipeline && uv run pytest --collect-only -q  (50 collected on 2026-11-04)",
    "series": [
@@ -389,7 +389,7 @@
    "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change.",
    "register": "claims/register.csv",
    "anchors": [
-    "A Python package (hhdebt, managed with uv) downloads the sources, checks that every holder adds up to its published total, and builds the analysis tables. More than 40 automated tests."
+    "A Python package (hhdebt, managed with uv) downloads the sources, checks that every holder adds up to its published total, and builds the analysis tables. More than 40 automated tests check it."
    ],
    "exact": []
   },

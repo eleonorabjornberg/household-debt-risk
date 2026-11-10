@@ -105,6 +105,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
 
   return (
     <div className={styles.tool}>
+      <div className={styles.picker}>
       <Segmented
         id="b3-preset"
         label="Scenario"
@@ -119,66 +120,31 @@ function Tool({ testCase }: { testCase: Case | null }) {
         </p>
       )}
 
-      <fieldset className={styles.fields}>
-        <legend>Loss assumptions by loan class{preset ? " (from the preset; edit any to make your own)" : ""}</legend>
-        <div className={styles.grid} role="table">
-          <div role="row" className={styles.head}>
-            <span role="columnheader">Loan class</span>
-            <span role="columnheader">{preset ? "Loss rate, % (as default rate)" : "Default rate, %"}</span>
-            <span role="columnheader">Loss given default, %</span>
-            <span role="columnheader">Number of quarters</span>
-          </div>
-          {CLASS_ORDER.map((c) => {
-            const v = shown[c];
-            return (
-              <div role="row" key={c} className={styles.row}>
-                <label role="cell" className={styles.cls}>
-                  <input type="checkbox" checked={v.on} data-testid={`b3-on-${c}`}
-                         onChange={(e) => edit(c, { on: e.target.checked })} /> {CLASS_LABEL[c]}
-                </label>
-                <input role="cell" type="number" min={0} max={100} step="any" value={v.pdPct} disabled={!v.on}
-                       aria-label={`${CLASS_LABEL[c]}: default rate, percent`} data-testid={`b3-pd-${c}`}
-                       onChange={(e) => edit(c, { pdPct: Number(e.target.value) })} />
-                <input role="cell" type="number" min={0} max={100} step="any" value={v.lgdPct} disabled={!v.on}
-                       aria-label={`${CLASS_LABEL[c]}: loss given default, percent`} data-testid={`b3-lgd-${c}`}
-                       onChange={(e) => edit(c, { lgdPct: Number(e.target.value) })} />
-                <input role="cell" type="number" min={1} max={40} step={1} value={v.quarters} disabled={!v.on || Boolean(preset)}
-                       aria-label={`${CLASS_LABEL[c]}: number of quarters`} data-testid={`b3-q-${c}`}
-                       onChange={(e) => edit(c, { quarters: Number(e.target.value) })} />
-              </div>
-            );
-          })}
-        </div>
-        <p className={styles.hint}>
-          {preset ? "Presets give a loss rate directly, entered here as a default rate with 100% loss given default, and keep their own quarter-by-quarter timing. " : "Your own scenario spreads each class’s losses evenly over its quarters. "}
-          The default rate is the share of today’s balance that defaults over the whole scenario; loss given default is the
-          share of a defaulted loan that is lost after recoveries.
-        </p>
-      </fieldset>
-
-      <fieldset className={styles.fields}>
-        <legend>
-          <label><input type="checkbox" checked={transferOn} data-testid="b3-transfer-on"
-                        onChange={(e) => setTransferOn(e.target.checked)} /> Move part of the losses on GSE and agency-pool mortgages to private risk-takers</label>
-        </legend>
-        <p className={styles.hint}>
-          Stands for credit-risk transfer (deals in which the GSEs pay private investors to absorb part of their mortgage
-          losses) and private mortgage insurance: a share of the losses on mortgages held by the GSEs and in agency pools moves
-          from the public to the private side, up to a cap. A cap of zero moves nothing, so set both. The group also includes
-          Ginnie Mae pools of FHA and VA loans, whose cover works differently, so a large share with a high cap overstates what
-          transfer can move. Off by default; the presets apply no transfer.
-        </p>
-        <div className={styles.pair}>
-          <label>Share moved, % <input type="number" min={0} max={100} step="any" value={sharePct} disabled={!transferOn}
-                                        data-testid="b3-share" onChange={(e) => setSharePct(Number(e.target.value))} /></label>
-          <label>Cap, $ billions <input type="number" min={0} step="any" value={capB} disabled={!transferOn}
-                                         data-testid="b3-cap" onChange={(e) => setCapB(Number(e.target.value))} /></label>
-        </div>
-      </fieldset>
-
+      </div>
+      <div className={styles.dash}>
+        <div className={styles.results}>
       {out.error && <p className={styles.error} role="alert" data-testid="b3-error">These inputs are not valid: {out.error}</p>}
       {r && (
         <>
+          <div className={styles.answer} data-testid="b3-answer">
+            <p className={styles.kicker}>The answer, under this scenario</p>
+            <p className={styles.big}>
+              <span className={styles.pubTxt}>Public books</span> record <strong>{pct(shareOfLosses, 0)}</strong> of{" "}
+              <strong>{usdFromMillions(r.sum.total)}</strong> in losses
+            </p>
+            <div className={styles.bars} aria-hidden="true">
+              {[{ k: "Share of losses", v: shareOfLosses }, { k: "Share of balances", v: allBalance > 0 ? publicBalance / allBalance : null }].map((b) => (
+                <div key={b.k} className={styles.barRow}>
+                  <span className={styles.barLabel}>{b.k}</span>
+                  <span className={styles.bar}>
+                    <span className={styles.barPub} style={{ width: `${Math.round((b.v ?? 0) * 100)}%` }}>{pct(b.v, 0)}</span>
+                    <span className={styles.barPriv}>{b.v == null ? "" : pct(1 - b.v, 0)}</span>
+                  </span>
+                </div>
+              ))}
+              <p className={styles.barKey}><span className={styles.pubTxt}>■ public</span> <span className={styles.privTxt}>■ private</span></p>
+            </div>
+          </div>
           <dl className={styles.totals} aria-live="polite">
             <div><dt>Total losses</dt><dd data-testid="b3-total">{usdFromMillions(r.sum.total)}</dd></div>
             <div><dt>Losses on public books</dt><dd data-testid="b3-public">{usdFromMillions(r.sum.public)}</dd></div>
@@ -222,6 +188,67 @@ function Tool({ testCase }: { testCase: Case | null }) {
           )}
         </>
       )}
+        </div>
+        <div className={styles.controls}>
+      <fieldset className={`${styles.fields} ${styles.assume}`}>
+        <legend>Loss assumptions by loan class{preset ? " (from the preset; edit any to make your own)" : ""}</legend>
+        <div className={styles.grid} role="table">
+          <div role="row" className={styles.head}>
+            <span role="columnheader">Loan class</span>
+            <span role="columnheader">{preset ? "Loss rate, % (as default rate)" : "Default rate, %"}</span>
+            <span role="columnheader">Loss given default, %</span>
+            <span role="columnheader">Number of quarters</span>
+          </div>
+          {CLASS_ORDER.map((c) => {
+            const v = shown[c];
+            return (
+              <div role="row" key={c} className={styles.row}>
+                <label role="cell" className={styles.cls}>
+                  <input type="checkbox" checked={v.on} data-testid={`b3-on-${c}`}
+                         onChange={(e) => edit(c, { on: e.target.checked })} /> {CLASS_LABEL[c]}
+                </label>
+                <input role="cell" type="number" min={0} max={100} step="any" value={v.pdPct} disabled={!v.on}
+                       aria-label={`${CLASS_LABEL[c]}: default rate, percent`} data-testid={`b3-pd-${c}`}
+                       onChange={(e) => edit(c, { pdPct: Number(e.target.value) })} />
+                <input role="cell" type="number" min={0} max={100} step="any" value={v.lgdPct} disabled={!v.on}
+                       aria-label={`${CLASS_LABEL[c]}: loss given default, percent`} data-testid={`b3-lgd-${c}`}
+                       onChange={(e) => edit(c, { lgdPct: Number(e.target.value) })} />
+                <input role="cell" type="number" min={1} max={40} step={1} value={v.quarters} disabled={!v.on || Boolean(preset)}
+                       aria-label={`${CLASS_LABEL[c]}: number of quarters`} data-testid={`b3-q-${c}`}
+                       onChange={(e) => edit(c, { quarters: Number(e.target.value) })} />
+              </div>
+            );
+          })}
+        </div>
+        <p className={styles.hint}>
+          {preset ? "Presets give a loss rate directly, entered here as a default rate with 100% loss given default, and keep their own quarter-by-quarter timing. " : "Your own scenario spreads each class’s losses evenly over its quarters. "}
+          The default rate is the share of today’s balance that defaults over the whole scenario; loss given default is the
+          share of a defaulted loan that is lost after recoveries.
+        </p>
+      </fieldset>
+
+      <fieldset className={`${styles.fields} ${styles.transfer}`}>
+        <legend>
+          <label><input type="checkbox" checked={transferOn} data-testid="b3-transfer-on"
+                        onChange={(e) => setTransferOn(e.target.checked)} /> Move part of the losses on GSE and agency-pool mortgages to private risk-takers</label>
+        </legend>
+        <p className={styles.hint}>
+          Stands for credit-risk transfer (deals in which the GSEs pay private investors to absorb part of their mortgage
+          losses) and private mortgage insurance: a share of the losses on mortgages held by the GSEs and in agency pools moves
+          from the public to the private side, up to a cap. A cap of zero moves nothing, so set both. The group also includes
+          Ginnie Mae pools of FHA and VA loans, whose cover works differently, so a large share with a high cap overstates what
+          transfer can move. Off by default; the presets apply no transfer.
+        </p>
+        <div className={styles.pair}>
+          <label>Share moved, % <input type="number" min={0} max={100} step="any" value={sharePct} disabled={!transferOn}
+                                        data-testid="b3-share" onChange={(e) => setSharePct(Number(e.target.value))} /></label>
+          <label>Cap, $ billions <input type="number" min={0} step="any" value={capB} disabled={!transferOn}
+                                         data-testid="b3-cap" onChange={(e) => setCapB(Number(e.target.value))} /></label>
+        </div>
+      </fieldset>
+
+        </div>
+      </div>
       <pre hidden data-testid="b3-result">{JSON.stringify({ classes, transfer, result: r, error: out.error })}</pre>
     </div>
   );

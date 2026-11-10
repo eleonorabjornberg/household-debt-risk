@@ -717,3 +717,14 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 
 ### 2026-11-10: review round 33 (coordinator)
 - Eleonora answered rv-research-live with ok: the live /research pages (production 853747e) look right. No note. The review queue has no open cards. The docket has no new answers since round 52.
+
+### 2026-11-10: site fixes from Eleonora's review; docket round 53 (coordinator)
+- **Docket.** Eleonora said her decision docket was empty while Claude (coordinator) had told her items were waiting on her there. That claim was wrong: the round had not been published. Caught by Eleonora (twice). Fix: round 53 published to the docket artifact (version 62).
+- **Her round-53 answers** (recorded in PLAN "Decisions taken"): voice-53 (a), e1-site-53 (a), d6-key-53 (a) with the note "just tell me which api key and how", visibility-53 (a), purge-53 (b). CLAUDE.md's authorship rule amended per voice-53 (a).
+- **Tables.** Eleonora caught that the Markdown tables on /research and /findings left-aligned every column. Fix: numeric columns right-align, explicit `:-:`/`-:` alignment is honoured, with a new test (atlas 162/162).
+- **Colour.** At her request ("more fun, colorful and aesthetic") the site got a colour pass in `atlas/app/pages.css`: gradient top stripe, pill navigation, coloured section rules, peach table headers.
+- **/scenarios.** Eleonora caught that the page gave no overview. Fix: an answer card first (the public share of losses and of balances as two bars), assumptions beside the results, caveats as cards, definitions folded away.
+- **/how-it-was-built.** Eleonora caught that it was factually incorrect: it described one session, three agents, a Vercel connector that was never used, and left out the tracks, the cards, the pre-registrations, the subagents, the claims register and her role. Rewritten from this log and PLAN as a Claude draft in her register (eleonora-writing skill), under a draft banner. The register row for the pipeline test count was moved to the new line.
+- Errors Claude made in this work, caught by Claude: a caveat-card style broke sentences mid-line; a register check failed after the copy moved (case of "More than 40"). Both fixed before commit.
+- Checks: hook rc 0, atlas 162/162, atlas build OK. Production unchanged (853747e); the Vercel connector failed to connect this session.
+- Model tier: main model only. Tokens and cost: not measured.

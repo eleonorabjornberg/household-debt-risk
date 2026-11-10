@@ -34,13 +34,18 @@ export default function ScenariosPage() {
           <p className="tag">Scenarios</p>
           <h1>If loans go bad, which lenders’ books record the losses?</h1>
           <p className="pg-lede">
-            Pick a scenario, or set your own default rates and loss severities. The tool applies them to the household debt
-            outstanding in the Federal Reserve’s latest Financial Accounts of the United States (the “Z.1” release; data as of{" "}
-            {exposures.as_of}, released {exposures.z1_release}) and splits the losses by who holds each loan. Public side: the
-            federal government, the government-sponsored enterprises Fannie Mae and Freddie Mac (the GSEs) and the mortgage
-            pools guaranteed by them and by Ginnie Mae (agency pools), and state and local governments. Private side: banks,
-            finance companies and private securitization (loans packaged into bonds without a government guarantee).
+            Pick a scenario. The tool applies it to today’s household debt (Fed Z.1, data as of {exposures.as_of}, released{" "}
+            {exposures.z1_release}) and shows how the losses split between public and private books.
           </p>
+          <details className="sc-def">
+            <summary>Who counts as public, who as private</summary>
+            <p>
+              <strong>Public:</strong> the federal government, Fannie Mae and Freddie Mac (the GSEs), the mortgage pools
+              guaranteed by them and by Ginnie Mae (agency pools), and state and local governments.{" "}
+              <strong>Private:</strong> banks, finance companies and private securitization (loans packaged into bonds without a
+              government guarantee).
+            </p>
+          </details>
         </div>
       </header>
       <section style={{ marginTop: 32 }}>
@@ -51,9 +56,9 @@ export default function ScenariosPage() {
         </div>
       </section>
       <section className="pg-section">
-        <div className="pg-col">
+        <div>
           <h2>Read this before quoting a number</h2>
-          <ul>
+          <ul className="sc-caveats">
             <li>
               <strong>Who holds is not who bears.</strong> Losses are assigned to whoever holds the loan. Mortgage insurance,
               credit-risk transfer (deals in which the GSEs pay private investors to absorb part of their mortgage losses) and

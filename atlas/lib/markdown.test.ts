@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { type Block, type ListBlock, parseInline, parseMarkdown, plain } from "./markdown";
+import { type Block, type ListBlock, isNumericCell, parseInline, parseMarkdown, plain } from "./markdown";
 
 const COPY = path.join(__dirname, "..", "content", "findings.md");
 const SOURCE = path.join(__dirname, "..", "..", "analysis", "findings.md");
@@ -86,5 +86,14 @@ describe("fences and blockquotes (/research, 2026-11-09)", () => {
   it("ends a paragraph or list at a fence or quote", () => {
     expect(parseMarkdown("para\n> quote").map((x) => x.t)).toEqual(["para", "quote"]);
     expect(parseMarkdown("- item\n```\ncode\n```").map((x) => x.t)).toEqual(["list", "fence"]);
+  });
+  it("right-aligns numeric table columns and honours explicit alignment", () => {
+    const b = parseMarkdown("| Peak | Share | Change | Note |\n|---|---|:---:|---|\n| 1980Q1 | 14.3% | +9.3 pp | x |\n| 2019Q4 | **55.2%** | — | 32.8% → 40.2% |");
+    if (b[0].t !== "table") throw new Error("not a table");
+    expect(b[0].align).toEqual(["left", "right", "center", "left"]);
+    expect(isNumericCell("32.8% → 40.2%")).toBe(true);
+    expect(isNumericCell("-0.3")).toBe(true);
+    expect(isNumericCell("Private-label boom")).toBe(false);
+    expect(isNumericCell("1999Q4–2007Q4")).toBe(false);
   });
 });

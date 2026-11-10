@@ -254,6 +254,11 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-09 | Review round 32 rv-research-preview: **ok-prod**, the /research preview (7efabcc) looks right; promote to production. No note. | Eleonora |
 | 2026-11-09 | Review round 32 rv-research-status: **sync**, update the stale status lines in the A3, A4, B1, B2 and B3 READMEs to match PLAN. No note. | Eleonora |
 | 2026-11-10 | Review round 33 rv-research-live: **ok**, the live /research pages (production 853747e) look right. No note. | Eleonora |
+| 2026-11-10 | In chat: the /research and /findings tables are badly aligned ("Why is the text aligned to the left only?"); she loves the vivid orange and pink and wants the site "more fun, colorful and aesthetic"; /scenarios gives her no overview; /how-it-was-built is factually incorrect. | Eleonora |
+| 2026-11-10 | Docket 53 voice-53: **(a)** rewrite the site and research pages with the eleonora-writing skill; keep the "Claude draft" banner on them until she approves each page; amend the CLAUDE.md rule to say so. | Eleonora |
+| 2026-11-10 | Docket 53 e1-site-53: **(a)** add E1 to /research as a Claude draft, marked UNVERIFIED (branch first; production only after her review-queue OK). Replaces her 2026-11-06 rule keeping E1 off the sites. | Eleonora |
+| 2026-11-10 | Docket 53 d6-key-53: **(a)** she adds the preview API key and the KV store herself, then D6 is deployed to a preview only. Note: "just tell me which api key and how". | Eleonora |
+| 2026-11-10 | Docket 53 visibility-53: **(a)** she makes the repository public herself. purge-53: **(b)** no history purge needed. | Eleonora |
 
 ## Environment prerequisites
 

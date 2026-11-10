@@ -5,7 +5,7 @@ import { Sourced } from "@/components/claims/SourceRef";
 // Moved from web/app/how-it-was-built (site-visible (b), 2026-11-07: one site). Copy in content/build.ts.
 export const metadata: Metadata = {
   title: "How it was built · Hot Potato",
-  description: "The stack, the connectors and the division of work behind Hot Potato.",
+  description: "The sessions, tools, connectors and division of work behind Hot Potato.",
 };
 
 function DefinitionList({ items }: { items: { name: string; body: string }[] }) {
@@ -24,6 +24,13 @@ function DefinitionList({ items }: { items: { name: string; body: string }[] }) 
 export default function HowItWasBuiltPage() {
   return (
     <main className="pg">
+      <div className="pg-banner" role="note" data-testid="build-draft-banner">
+        <p style={{ margin: 0 }}>
+          <strong>Claude draft</strong>
+          This page was drafted by Claude in Eleonora&apos;s register for her to review. It is not her text until she
+          approves it.
+        </p>
+      </div>
       <header className="pg-col">
         <p className="tag">How it was built</p>
         <h1>Built with Claude Code</h1>
@@ -61,7 +68,7 @@ export default function HowItWasBuiltPage() {
 
       <section className="pg-section" aria-labelledby="agents">
         <div className="pg-col">
-          <h2 id="agents">Parallel agents</h2>
+          <h2 id="agents">Sessions, subagents and skills</h2>
           <p>{build.agentsLede}</p>
           <DefinitionList items={build.agents} />
         </div>
@@ -69,7 +76,7 @@ export default function HowItWasBuiltPage() {
 
       <section className="pg-section" aria-labelledby="human">
         <div className="pg-col">
-          <h2 id="human">What the person did</h2>
+          <h2 id="human">What Eleonora did</h2>
           <ol className="lineage">
             {build.human.map((h, i) => (
               <li key={h}>

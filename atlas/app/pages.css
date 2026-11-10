@@ -61,6 +61,14 @@
 .pg thead th { border-bottom: 2px solid var(--ink); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 .pg td.desc { min-width: 16rem; }
 .tablewrap { overflow-x: auto; max-width: 100%; }
+/* Markdown tables (/research, /findings): size to content, numbers right-aligned on tabular figures (2026-11-10) */
+.pg table.md-table { width: auto; min-width: 0; font-variant-numeric: tabular-nums lining-nums; }
+.pg table.md-table th, .pg table.md-table td { padding: 7px 0 7px 28px; }
+.pg table.md-table th:first-child, .pg table.md-table td:first-child { padding-left: 0; }
+.pg table.md-table td.al-left:last-child { min-width: 14rem; }
+.pg table.md-table .al-right { text-align: right; white-space: nowrap; }
+.pg table.md-table .al-center { text-align: center; }
+.pg table.md-table .al-left { text-align: left; }
 .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 6px; border: 2px solid var(--private); color: var(--ink); }
 .pill--public { border-color: var(--public); background: var(--public); color: var(--paper); }
 
@@ -124,3 +132,103 @@
 @media (max-width: 560px) {
   .research-item dl div { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- colour pass (Eleonora: "more fun, colorful and aesthetic", 2026-11-10) ----------
+   Orange and pink lead, the other risograph inks rotate through sections. Text stays ink on light washes
+   (contrast holds); colour carries rules, stickers, highlights and shadows, never body text. */
+:root {
+  --hot: linear-gradient(90deg, var(--pile-3) 0%, var(--pile-4) 55%, var(--pile-0) 100%);
+  --peach: #fff1e8;
+  --blush: #ffe8f1;
+  --lilac: #f4eafa;
+  --mint: #e6f7ee;
+  --sky: #e8f0fd;
+  --butter: #fff6d6;
+}
+.topbar { border-bottom: 0; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; background: var(--hot); }
+.topbar__brand { background: var(--hot); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.topbar__brand:hover { background: var(--hot); color: var(--paper); -webkit-background-clip: border-box; background-clip: border-box; }
+.topbar__nav a { border-radius: 999px; }
+.topbar__nav a[aria-current="page"] { background: var(--accent); color: var(--paper); border-color: var(--ink); transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--ink); }
+.topbar__nav a:nth-child(5n+1):hover { background: var(--pile-3); }
+.topbar__nav a:nth-child(5n+2):hover { background: var(--pile-4); }
+.topbar__nav a:nth-child(5n+3):hover { background: var(--pile-0); }
+.topbar__nav a:nth-child(5n+4):hover { background: var(--pile-1); }
+.topbar__nav a:nth-child(5n+5):hover { background: var(--pile-2); }
+
+/* page backdrop: a halftone wash of pink dots fading out under the header */
+main.pg { position: relative; }
+main.pg::before {
+  content: ""; position: absolute; inset: 0 -50vw auto; height: 340px; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle, rgba(229, 38, 122, 0.22) 1.4px, transparent 1.6px) 0 0 / 14px 14px,
+    linear-gradient(180deg, var(--peach), rgba(255, 255, 255, 0));
+  -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent);
+  mask-image: linear-gradient(180deg, #000 30%, transparent);
+}
+.pg .tag { background: var(--accent); color: var(--paper); transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--ink); }
+.pg h1 {
+  background: linear-gradient(transparent 64%, rgba(255, 196, 0, 0.75) 64%, rgba(255, 196, 0, 0.75) 92%, transparent 92%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline;
+}
+.pg h1 + * { margin-top: 22px; }
+.pg-banner { background: var(--sun); box-shadow: 5px 5px 0 var(--accent); border-color: var(--ink); transform: rotate(-0.4deg); }
+.pg-banner strong { background: var(--ink); color: var(--sun); padding: 2px 6px; }
+.pg-section { border-top: 0; position: relative; }
+.pg-section::before, .findings h2::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--hot);
+}
+.pg code, .pg .code { background: var(--blush); color: #a3124f; border-radius: 3px; }
+.pg a { text-decoration-color: var(--pile-3); }
+.pg a:hover { background: var(--pile-4); }
+
+/* section headings rotate through the inks */
+.findings h2 { border-top: 0; position: relative; }
+.findings h2:nth-of-type(5n+2)::before { background: linear-gradient(90deg, var(--pile-4), var(--pile-0)); }
+.findings h2:nth-of-type(5n+3)::before { background: linear-gradient(90deg, var(--pile-0), var(--pile-1)); }
+.findings h2:nth-of-type(5n+4)::before { background: linear-gradient(90deg, var(--pile-1), var(--pile-2)); }
+.findings h2:nth-of-type(5n+5)::before { background: linear-gradient(90deg, var(--pile-5), var(--pile-3)); }
+.findings h3 { color: var(--accent); }
+
+/* tables: ink header rule over a peach band, soft zebra, a pink row highlight on hover */
+.pg table.md-table { border-top: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--blush); background: var(--paper); }
+.pg table.md-table thead th { background: var(--peach); border-bottom: 3px solid var(--accent); padding-top: 10px; padding-bottom: 10px; }
+.pg table.md-table thead th:first-child, .pg table.md-table td:first-child { padding-left: 12px; }
+.pg table.md-table th:last-child, .pg table.md-table td:last-child { padding-right: 12px; }
+.pg table.md-table tbody tr:nth-child(even) td { background: #fffaf6; }
+.pg table.md-table tbody tr:hover td { background: var(--blush); }
+.pg table.md-table td { border-bottom: 1px solid #f1d9e3; }
+.pg table.md-table strong { color: #b0105a; }
+
+/* quotes and fenced code */
+.pg .md-quote { background: var(--butter); box-shadow: 5px 5px 0 var(--pile-3); }
+.pg .md-fence { background: var(--lilac); box-shadow: 4px 4px 0 var(--pile-0); }
+
+/* research index: sticker cards, one ink each */
+.research-list { gap: 22px; }
+.research-item {
+  border: 2px solid var(--ink); border-top-width: 8px; padding: 18px 20px 20px; background: var(--paper);
+  box-shadow: 6px 6px 0 var(--ink); transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.research-item:hover { transform: translate(-2px, -2px) rotate(-0.3deg); box-shadow: 9px 9px 0 var(--ink); }
+.research-item:nth-child(6n+1) { border-top-color: var(--pile-3); background: var(--peach); }
+.research-item:nth-child(6n+2) { border-top-color: var(--pile-4); background: var(--blush); }
+.research-item:nth-child(6n+3) { border-top-color: var(--pile-0); background: var(--lilac); }
+.research-item:nth-child(6n+4) { border-top-color: var(--pile-1); background: var(--sky); }
+.research-item:nth-child(6n+5) { border-top-color: var(--pile-2); background: var(--mint); }
+.research-item:nth-child(6n+6) { border-top-color: var(--pile-5); background: var(--butter); }
+.research-item .tag { transform: rotate(-3deg); }
+@media (prefers-reduced-motion: reduce) { .research-item, .research-item:hover { transition: none; transform: none; } }
+
+/* /scenarios overview (Eleonora, 2026-11-10: "I have no overview") */
+.sc-def { margin-top: 0.75rem; max-width: 46rem; }
+.sc-def summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+.sc-def p { margin: 0.5rem 0 0; font-size: 0.95rem; }
+ul.sc-caveats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+ul.sc-caveats li { border: 2px solid var(--ink); padding: 0.8rem 1rem; font-size: 0.92rem; background: #fff; box-shadow: 4px 4px 0 var(--pile-1); }
+ul.sc-caveats li:nth-child(2) { box-shadow: 4px 4px 0 var(--pile-3); }
+ul.sc-caveats li:nth-child(3) { box-shadow: 4px 4px 0 var(--pile-0); }
+ul.sc-caveats li:nth-child(4) { box-shadow: 4px 4px 0 var(--pile-2); }
+ul.sc-caveats li:nth-child(5) { box-shadow: 4px 4px 0 var(--pile-5); }
+ul.sc-caveats li strong:first-child { font-size: 1rem; color: var(--accent); }
