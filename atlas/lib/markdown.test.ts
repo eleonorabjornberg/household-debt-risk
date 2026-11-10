@@ -52,7 +52,7 @@ describe("parseMarkdown", () => {
   });
 });
 
-describe("analysis/findings.md on /findings", () => {
+describe("analysis/findings.md on /dashboard", () => {
   const src = readFileSync(COPY, "utf8");
   const blocks = parseMarkdown(src);
   it("is an exact copy of analysis/findings.md (run scripts/sync-findings.mjs)", () => {

@@ -51,8 +51,11 @@ describe("lib/claims.json", () => {
     }
   });
   it("has no display spelling shared by two claims on this site", () => {
+    // Dashboard rows (atlas, PLAN F7) are exempt: its table repeats small deltas ("0.00 pp", "+0.03 pp") across
+    // loan types by nature, and each is linked by id through <ClaimRef>, never matched from prose by <Sourced>.
+    const idOnly = (c: { locations: string[] }) => c.locations.every((l) => l.startsWith("atlas/components/dashboard/"));
     const seen = new Map<string, string>();
-    for (const c of file.claims)
+    for (const c of file.claims.filter((x) => !idOnly(x)))
       for (const d of c.display) {
         expect(seen.get(d) ?? c.id, `"${d}" in ${c.id} and ${seen.get(d)}`).toBe(c.id);
         seen.set(d, c.id);

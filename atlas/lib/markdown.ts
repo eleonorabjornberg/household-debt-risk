@@ -1,4 +1,4 @@
-// A small Markdown reader for /findings (docket 48 site-findings (b)): renders analysis/findings.md as it stands.
+// A small Markdown reader for the findings on /dashboard (docket 48 site-findings (b); merged into the dashboard per docket 54): renders analysis/findings.md as it stands.
 // Covers what that file uses: #/## headings, paragraphs, **bold**, *italic*, `code`, [text](url) links,
 // ordered and unordered lists (nested by indent) and pipe tables. Added for /research (2026-11-09): fenced code
 // blocks and "> " blockquotes, which the research write-ups use (the Claude-draft banner is a blockquote). No raw HTML is ever emitted, so the

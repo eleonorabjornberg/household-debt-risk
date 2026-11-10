@@ -1,4 +1,4 @@
-// Copies ../analysis/findings.md into content/findings.md for the /findings page (docket 48 site-findings (b)),
+// Copies ../analysis/findings.md into content/findings.md for the findings on /dashboard (docket 48 site-findings (b)),
 // so the page shows the findings as they stand and a later edit reaches it on the next build.
 // Runs before every build and dev start; if the source isn't reachable it keeps the committed copy.
 // --check: exit 1 if the committed copy is stale (no write).

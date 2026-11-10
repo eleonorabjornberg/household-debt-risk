@@ -143,6 +143,588 @@
    "exact": []
   },
   {
+   "id": "dash_home_cov_dq",
+   "claim": "Home collateral coverage changed +0.04× in 2026Q2.",
+   "display": [
+    "+0.04×"
+   ],
+   "value": "0.0426",
+   "unit": "ratio",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:150"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/collateral_coverage.json coverage_ratio, home_backed (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "FL155035015",
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Dashboard tile.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "dash_home_cov_dq"
+   ],
+   "exact": []
+  },
+  {
+   "id": "dash_home_cov_dy",
+   "claim": "Home collateral coverage changed −0.02× over the year to 2026Q2.",
+   "display": [
+    "−0.02×"
+   ],
+   "value": "-0.0192",
+   "unit": "ratio",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:151"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/collateral_coverage.json coverage_ratio, home_backed (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "FL155035015",
+    "FL153165105"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Dashboard tile.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "dash_home_cov_dy"
+   ],
+   "exact": []
+  },
+  {
+   "id": "dash_public_share_dq",
+   "claim": "The public share changed −0.2 pp in 2026Q2.",
+   "display": [
+    "−0.2 pp"
+   ],
+   "value": "-0.2085",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:145"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/public_share.json public_share (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Dashboard tile.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "dash_public_share_dq"
+   ],
+   "exact": []
+  },
+  {
+   "id": "dash_public_share_dy",
+   "claim": "The public share changed −0.2 pp over the year to 2026Q2.",
+   "display": [
+    "−0.2 pp"
+   ],
+   "value": "-0.2434",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:146"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/public_share.json public_share (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000",
+    "FL313065105",
+    "FL403065105",
+    "FL413065105",
+    "FL213065103",
+    "FL313066220",
+    "FL403066005"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Dashboard tile.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "dash_public_share_dy"
+   ],
+   "exact": []
+  },
+  {
+   "id": "dash_scope_dy",
+   "claim": "In-scope household debt rose +$533B over the year to 2026Q2.",
+   "display": [
+    "+$533B"
+   ],
+   "value": "532.693",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:141"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/public_share.json scope_total_musd (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Dashboard tile, nominal, not seasonally adjusted.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "dash_scope_dy"
+   ],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_auto",
+   "claim": "Auto loan balances moving into serious delinquency ran at 3.00% (annualized) in 2026Q2.",
+   "display": [
+    "3.00%"
+   ],
+   "value": "3",
+   "unit": "pct",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:75"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, auto, 2026-06-30",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_auto_dq",
+   "claim": "The auto loan serious-delinquency transition rate changed +0.03 pp in 2026Q2.",
+   "display": [
+    "+0.03 pp"
+   ],
+   "value": "0.03",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:76"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, auto (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_auto_dy",
+   "claim": "The auto loan serious-delinquency transition rate changed +0.07 pp over the year to 2026Q2.",
+   "display": [
+    "+0.07 pp"
+   ],
+   "value": "0.07",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:77"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, auto (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_credit_card",
+   "claim": "Credit card balances moving into serious delinquency ran at 6.97% (annualized) in 2026Q2.",
+   "display": [
+    "6.97%"
+   ],
+   "value": "6.97",
+   "unit": "pct",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:75"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, credit_card, 2026-06-30",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_credit_card_dq",
+   "claim": "The credit card serious-delinquency transition rate changed −0.13 pp in 2026Q2.",
+   "display": [
+    "−0.13 pp"
+   ],
+   "value": "-0.13",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:76"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, credit_card (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_credit_card_dy",
+   "claim": "The credit card serious-delinquency transition rate changed +0.04 pp over the year to 2026Q2.",
+   "display": [
+    "+0.04 pp"
+   ],
+   "value": "0.04",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:77"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, credit_card (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_heloc",
+   "claim": "Home equity line balances moving into serious delinquency ran at 1.15% (annualized) in 2026Q2.",
+   "display": [
+    "1.15%"
+   ],
+   "value": "1.15",
+   "unit": "pct",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:75"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, heloc, 2026-06-30",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_heloc_dq",
+   "claim": "The home equity line serious-delinquency transition rate changed 0.00 pp in 2026Q2.",
+   "display": [
+    "0.00 pp"
+   ],
+   "value": "0.0",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:76"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, heloc (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_heloc_dy",
+   "claim": "The home equity line serious-delinquency transition rate changed 0.00 pp over the year to 2026Q2.",
+   "display": [
+    "0.00 pp"
+   ],
+   "value": "0.0",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:77"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, heloc (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_mortgage",
+   "claim": "Mortgage balances moving into serious delinquency ran at 1.52% (annualized) in 2026Q2.",
+   "display": [
+    "1.52%"
+   ],
+   "value": "1.52",
+   "unit": "pct",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:75"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, mortgage, 2026-06-30",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_mortgage_dq",
+   "claim": "The mortgage serious-delinquency transition rate changed +0.04 pp in 2026Q2.",
+   "display": [
+    "+0.04 pp"
+   ],
+   "value": "0.04",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:76"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, mortgage (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_mortgage_dy",
+   "claim": "The mortgage serious-delinquency transition rate changed +0.23 pp over the year to 2026Q2.",
+   "display": [
+    "+0.23 pp"
+   ],
+   "value": "0.23",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:77"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, mortgage (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_other",
+   "claim": "Other balances moving into serious delinquency ran at 5.19% (annualized) in 2026Q2.",
+   "display": [
+    "5.19%"
+   ],
+   "value": "5.19",
+   "unit": "pct",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:75"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, other, 2026-06-30",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_other_dq",
+   "claim": "The other serious-delinquency transition rate changed +0.03 pp in 2026Q2.",
+   "display": [
+    "+0.03 pp"
+   ],
+   "value": "0.03",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:76"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, other (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_other_dy",
+   "claim": "The other serious-delinquency transition rate changed −0.23 pp over the year to 2026Q2.",
+   "display": [
+    "−0.23 pp"
+   ],
+   "value": "-0.23",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:77"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, other (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_student",
+   "claim": "Student loan balances moving into serious delinquency ran at 7.83% (annualized) in 2026Q2.",
+   "display": [
+    "7.83%"
+   ],
+   "value": "7.83",
+   "unit": "pct",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:75"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, student, 2026-06-30",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published. Distorted by re-reporting after collections resumed in May 2025.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_student_dq",
+   "claim": "The student loan serious-delinquency transition rate changed −3.03 pp in 2026Q2.",
+   "display": [
+    "−3.03 pp"
+   ],
+   "value": "-3.03",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:76"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, student (2026-06-30 minus 2026-03-31)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published. Distorted by re-reporting after collections resumed in May 2025.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
+   "id": "dash_trans_student_dy",
+   "claim": "The student loan serious-delinquency transition rate changed −5.05 pp over the year to 2026Q2.",
+   "display": [
+    "−5.05 pp"
+   ],
+   "value": "-5.05",
+   "unit": "pp",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:77"
+   ],
+   "computation": "atlas/lib/dashboard.ts computeTiles over atlas/public/data/nyfed_by_type.json transition_serious_pct, student (2026-06-30 minus 2025-06-30)",
+   "series": [
+    "NYFED_HHDC"
+   ],
+   "vintage": "nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published. Distorted by re-reporting after collections resumed in May 2025.",
+   "register": "claims/register.csv",
+   "anchors": [],
+   "exact": []
+  },
+  {
    "id": "gfc_jump_pp",
    "claim": "The public share rose 13.1 percentage points from 2007Q4 to 2011Q4.",
    "display": [
@@ -229,7 +811,8 @@
    "unit": "ratio",
    "period": "2026Q2",
    "locations": [
-    "atlas/content/story.ts:114"
+    "atlas/content/story.ts:114",
+    "atlas/components/dashboard/Dashboard.tsx:149"
    ],
    "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.home_cov_latest; mart.collateral_coverage where collateral_class='home_backed' and date='2026-06-30'",
    "series": [
@@ -242,7 +825,8 @@
    "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
    "register": "claims/register.csv",
    "anchors": [
-    "The public sector holds most household debt, but holding a loan is not the same as losing on it. Most of the public book is mortgages, and in aggregate homes are worth 3.56× the mortgages against them. Borrowers' equity, private mortgage insurance and the GSEs' risk-transfer deals stand in front of the taxpayer; this site does not measure how much they absorb. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008."
+    "The public sector holds most household debt, but holding a loan is not the same as losing on it. Most of the public book is mortgages, and in aggregate homes are worth 3.56× the mortgages against them. Borrowers' equity, private mortgage insurance and the GSEs' risk-transfer deals stand in front of the taxpayer; this site does not measure how much they absorb. Fannie Mae and Freddie Mac have been in federal conservatorship since 2008.",
+    "home_coverage_2026q2"
    ],
    "exact": []
   },
@@ -810,7 +1394,8 @@
    "locations": [
     "atlas/content/story.ts:95",
     "atlas/content/story.ts:112",
-    "atlas/app/page.tsx:27"
+    "atlas/app/page.tsx:27",
+    "atlas/components/dashboard/Dashboard.tsx:144"
    ],
    "computation": "C2",
    "series": [
@@ -1050,6 +1635,34 @@
     "Total debt is",
     ". The public sector holds",
     "of it. Keep an eye on the private securitization and REITs pile."
+   ],
+   "exact": []
+  },
+  {
+   "id": "scope_usd_2026q2",
+   "claim": "Household 1-4 family mortgages plus consumer credit totalled $19.10T in 2026Q2.",
+   "display": [
+    "$19.10T"
+   ],
+   "value": "19.1",
+   "unit": "usd_tn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:139"
+   ],
+   "computation": "C3",
+   "series": [
+    "FL154104015",
+    "FL153165105",
+    "FL153166000"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "PASS",
+   "checkId": "C3",
+   "notes": "Nominal dollars (19,097,196 $M); FL154104015 = FL153165105 + FL153166000 (A4).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "scope_usd_2026q2"
    ],
    "exact": []
   },
@@ -1297,6 +1910,33 @@
    "anchors": [
     "NY Fed and Z.1 can disagree",
     "Delinquency and the 2026 Q2 news hook come from the New York Fed's credit-report sample (a 5% sample of credit files). Everything else comes from Z.1, built from lenders' balance sheets. In 2026 Q2 the NY Fed shows mortgage balances down $74B; Z.1 shows them up $150B, before seasonal adjustment."
+   ],
+   "exact": []
+  },
+  {
+   "id": "z1_scope_change",
+   "claim": "Z.1 in-scope household debt rose $199B in 2026Q2 (not seasonally adjusted).",
+   "display": [
+    "+$199B",
+    "$199B"
+   ],
+   "value": "198.53",
+   "unit": "usd_bn",
+   "period": "2026Q2",
+   "locations": [
+    "atlas/components/dashboard/Dashboard.tsx:140"
+   ],
+   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.d_total_qoq_busd (198.5); web/public/data/public_share.json scope_total_musd diff = 198,530 $M",
+   "series": [
+    "FL154104015"
+   ],
+   "vintage": "z1:2026-09-11",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Corrected 2026-11-04 from $198B: the change is $198.53B, which rounds to $199B. findings.md prints +$198.5B (consistent).",
+   "register": "claims/register.csv",
+   "anchors": [
+    "z1_scope_change"
    ],
    "exact": []
   }

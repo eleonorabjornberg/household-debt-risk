@@ -162,7 +162,7 @@
 /* page backdrop: a halftone wash of pink dots fading out under the header */
 main.pg { position: relative; }
 main.pg::before {
-  content: ""; position: absolute; inset: 0 -50vw auto; height: 340px; z-index: -1; pointer-events: none;
+  content: ""; position: absolute; inset: 0 calc(50% - 50vw) auto; /* exactly to the viewport edges; -50vw made every page scroll sideways */ height: 340px; z-index: -1; pointer-events: none;
   background:
     radial-gradient(circle, rgba(229, 38, 122, 0.22) 1.4px, transparent 1.6px) 0 0 / 14px 14px,
     linear-gradient(180deg, var(--peach), rgba(255, 255, 255, 0));
@@ -234,3 +234,36 @@ ul.sc-caveats li:nth-child(3) { box-shadow: 4px 4px 0 var(--pile-0); }
 ul.sc-caveats li:nth-child(4) { box-shadow: 4px 4px 0 var(--pile-2); }
 ul.sc-caveats li:nth-child(5) { box-shadow: 4px 4px 0 var(--pile-5); }
 ul.sc-caveats li strong:first-child { font-size: 1rem; color: var(--accent); }
+
+/* /dashboard (F7, docket 54): filters, tiles and panels above the findings */
+.dash { margin-top: 28px; }
+.dash-filters { display: grid; gap: 12px; padding: 14px 16px; border: 2px solid var(--ink); background: var(--wash); position: sticky; top: 0; z-index: 5; }
+.dash-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.dash-tile { border: 2px solid var(--ink); background: var(--surface); padding: 14px 16px; box-shadow: 4px 4px 0 var(--ink); min-width: 0; }
+.dash-tile--wide { grid-column: 1 / -1; }
+.dash-tile__label { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.dash-tile__value { margin: 6px 0 8px; font-size: clamp(30px, 4vw, 42px); font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.dash-tile__moves { display: flex; gap: 18px; margin: 0; font-size: 14px; }
+.dash-tile__moves dt { font-size: 12px; color: var(--muted); }
+.dash-tile__moves dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dash-tile__note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+.dash-delta.up::before { content: "▲ "; font-size: 0.7em; vertical-align: 0.12em; }
+.dash-delta.down::before { content: "▼ "; font-size: 0.7em; vertical-align: 0.12em; }
+/* direction only, in ink: whether a move is good or bad depends on the reader (more debt, more delinquency) */
+.pg table.dash-mini { width: auto; min-width: 0; font-variant-numeric: tabular-nums; margin-top: 8px; }
+.pg table.dash-mini th, .pg table.dash-mini td { padding: 5px 0 5px 24px; text-align: right; white-space: nowrap; }
+.pg table.dash-mini th:first-child { padding-left: 0; text-align: left; }
+.dash-panel { display: grid; gap: 14px; }
+.dash-panel h2 { margin-bottom: 0; }
+.dash-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.dash-toc { columns: 2; column-gap: 32px; padding-left: 1.4em; margin: 8px 0 0; }
+.dash-toc li { break-inside: avoid; }
+#findings { margin-top: 24px; }
+@media (max-width: 860px) {
+  .dash-tiles, .dash-two { grid-template-columns: minmax(0, 1fr); }
+  .dash-toc { columns: 1; }
+}
+@media (max-width: 560px) {
+  .dash-filters { position: static; }
+  .pg table.dash-mini th, .pg table.dash-mini td { padding-left: 12px; }
+}

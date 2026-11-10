@@ -259,6 +259,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-10 | Docket 53 e1-site-53: **(a)** add E1 to /research as a Claude draft, marked UNVERIFIED (branch first; production only after her review-queue OK). Replaces her 2026-11-06 rule keeping E1 off the sites. | Eleonora |
 | 2026-11-10 | Docket 53 d6-key-53: **(a)** she adds the preview API key and the KV store herself, then D6 is deployed to a preview only. Note: "just tell me which api key and how". | Eleonora |
 | 2026-11-10 | Docket 53 visibility-53: **(a)** she makes the repository public herself. purge-53: **(b)** no history purge needed. | Eleonora |
+| 2026-11-10 | In chat: add "a proper analytical dashboard"; the home page stays, but the data should be actionable. | Eleonora |
+| 2026-11-10 | Docket 54 dash-reader-54: **(a)** the dashboard is for a market reader. dash-scope-54: **(a)** Core: headline tiles with change on the quarter and the year (total debt, public share, home coverage, serious-delinquency transitions), holder-mix and loan-type panels, filters for date range and loan type. dash-place-54 (note, no option): "A new dashboard tab, merge it with findings. Don't duplicate effort, just display the findings in a better way. Make sure findings don't get lost." | Eleonora |
 
 ## Environment prerequisites
 
@@ -385,6 +387,7 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 | F4 | **Open data**: downloads, a public read-only API, accessible chart descriptions | 0.5, D2 | CSV/JSON downloads with a data dictionary and licence notes; API documented; every chart has a text description | done (2026-11-04, downloads, dictionary, licence notes, chart-text check; API documented in `opendata/api-plan.md`, exposure per F4-2) |
 | F5 | **Building-with-Claude log**: models per task, token cost, errors and how they were caught | 0.6 | Kept up to date every session (started in 0.6) | todo (ongoing) |
 | F6 | **Outputs**: working-paper draft (SSRN format); short op-ed | all | Every number passes `claim-check`; `skeptic` and `editor` reviews logged | todo |
+| F7 | **Dashboard tab** (docket 54): one /dashboard tab that replaces /findings, for a market reader, with Core tiles and panels on top and the full findings below | F1, F4 | Tiles for total debt, public share, home coverage and serious-delinquency transitions with change on the quarter and the year; holder-mix and loan-type panels with date-range and loan-type filters; every number has a register row; analysis/findings.md shown whole, with a contents list; /findings redirects to /dashboard | built on the branch (2026-11-10), awaiting her review (review queue round 34); production only after her OK |
 
 ---
 

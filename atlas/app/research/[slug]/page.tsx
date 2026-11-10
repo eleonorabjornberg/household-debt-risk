@@ -8,7 +8,7 @@ import { Markdown } from "@/components/Markdown";
 import { research } from "@/content/research";
 
 // One research write-up, research/<task>/README.md as it stands (copied to content/research/<slug>.md by
-// scripts/sync-research.mjs, which only rewrites relative links). Like /findings, rendered without raw HTML.
+// scripts/sync-research.mjs, which only rewrites relative links). Like the findings on /dashboard, rendered without raw HTML.
 const SLUGS = [...new Set(research.map((r) => r.slug).filter((s): s is string => Boolean(s)))];
 
 export const dynamicParams = false;
