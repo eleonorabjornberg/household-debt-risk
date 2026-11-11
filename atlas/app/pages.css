@@ -61,15 +61,17 @@
 .pg table { border-collapse: collapse; width: 100%; font-size: 14px; }
 .pg th, .pg td { text-align: left; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--muted-line); vertical-align: top; }
 .pg thead th { border-bottom: 2px solid var(--ink); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
-.pg td.desc { min-width: 16rem; }
+.pg td.desc { min-width: 12rem; }
 .tablewrap { overflow-x: auto; max-width: 100%; }
+/* Tables break out to the right of the text column on wide screens, left edge stays aligned (review P1, 2026-11-11) */
+.pg .tablewrap { width: calc(100% + clamp(0px, (100vw - 56rem) / 2 - 16px, 16rem)); max-width: none; }
 /* Markdown tables (/research, /findings): size to content, numbers right-aligned on tabular figures (2026-11-10) */
 .pg table.md-table { width: 100%; min-width: 0; font-variant-numeric: tabular-nums lining-nums; }
 .pg table.md-table th, .pg table.md-table td { padding: 7px 0 7px 28px; }
 .pg table.md-table th:first-child, .pg table.md-table td:first-child { padding-left: 0; }
 .pg table.md-table td.al-left:last-child { min-width: 14rem; }
 .pg table.md-table .al-right { text-align: right; white-space: nowrap; }
-.pg table.md-table .al-center { text-align: center; }
+.pg table.md-table .al-center { text-align: left; }
 .pg table.md-table .al-left { text-align: left; }
 .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 6px; border: 2px solid var(--private); color: var(--ink); }
 .pill--public { border-color: var(--public); background: var(--public); color: var(--paper); }
@@ -106,6 +108,8 @@
 
 @media (max-width: 560px) {
   .lineage li { grid-template-columns: minmax(0, 1fr); }
+  .pg table.md-table td.al-left:last-child { min-width: 0; }
+  .pg td.desc { min-width: 0; }
 }
 
 /* /findings: analysis/findings.md rendered as it stands */
@@ -325,3 +329,13 @@ a.build-tile:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var
 .sc-sides figcaption { font-size: 15px; line-height: 1.35; }
 .sc-sides figcaption strong { display: block; font-size: 18px; }
 .build-cast figcaption { font-size: 14px; font-weight: 700; }
+
+/* /research/<slug>: "In short" box above the write-up (review list P1, 2026-11-11) */
+.in-short { border: 2px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); background: var(--butter); padding: 14px 18px; margin: 12px 0 28px; }
+.in-short .tag { margin: 0 0 6px; }
+.in-short ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+/* /sources: filter by page (review list P1, 2026-11-11) */
+.sources-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 20px; font-size: 14px; }
+.sources-filter span { font-weight: 700; }
+.sources-filter button { font: inherit; padding: 4px 10px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+.sources-filter button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }

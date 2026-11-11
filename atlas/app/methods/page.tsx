@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -74,6 +75,7 @@ export default async function MethodsPage() {
         <p className="tag">Methods</p>
         <h1>How this was made</h1>
         <p className="pg-lede"><Sourced text={methods.lede} /></p>
+        <p className="pg-caption">Every number with its computation and check: <Link href="/sources">Sources</Link>.</p>
       </header>
 
       <section className="pg-section" aria-labelledby="lineage">
@@ -119,7 +121,8 @@ export default async function MethodsPage() {
             <h2 id="catalog">Series catalog</h2>
             <p className="pg-caption">{methods.catalogIntro}</p>
           </div>
-          <div className="catalog">
+          <details className="catalog findings-fold">
+            <summary>Show all {cat.series.length} series</summary>
             <h3>Risk buckets</h3>
             <div className="tablewrap">
               <table>
@@ -183,7 +186,7 @@ export default async function MethodsPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </details>
         </div>
       </section>
 

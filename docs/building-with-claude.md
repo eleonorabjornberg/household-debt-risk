@@ -809,3 +809,19 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Error caught by the register check: a case mismatch ("more than 40" in copy vs "More than 40" in the register). Copy changed to match.
 - Still open from the review list: /methods cuts, research table widths and captions, the /sources intro, and merging the top bar. Not done yet.
 - Checked: tsc clean, atlas 176/176, next build OK, hook rc 0, screenshots at 1440 px (home, dashboard, scenarios, how-it-was-built) and 390 px (dashboard). Branch only; production waits on her OK. Main model only; cost not measured.
+
+### 2026-11-11: rest of the review list on /methods, /research, /sources and the top bar (coordinator)
+- Eleonora's request: "do the rest of the review list too" (the P1 and P2 items left open in the entry above). Done in the coordinator, main model, cost not measured.
+- /methods: the copy in content/methods.ts was cut. Lineage is now five short steps, scope is four short lines, and the caveats are one sentence each. Every registered number was kept on the page: 87%, 13%, the 17 and 9 holders, p ≈ 0.30, 7.6%, 11.5%, the 5% sample, $74B and $150B. The series catalog tables now sit in a closed "Show all 43 series" fold.
+- Register: the methods.ts refs moved to new lines (15→16, 16→17, 18→19). The 13% row dropped its methods.ts:15 location, because 13% now appears only on the caveat line (23).
+- Tables: on wide screens tables extend to the right of the text column, by up to 16rem. The left edge stays aligned with the text. Centered cells are now left-aligned. The description and last-column minimum widths are removed below 560 px.
+- /research: the caption "Methods are Claude's one-line summaries…" is deleted. Each write-up now opens with an "In short" box.
+  - The box contains no new text: it shows the task question from PLAN.md, the existing method line and a pointer to the write-up.
+  - It also contains no new numbers, so it needs no new register rows.
+  - Box text written in her own words is hers to add if she wants it.
+- /sources: the header now uses the .pg pattern, the intro is "Every number, its computation and its check.", and the page has a filter by page.
+  - Filter options: Home, Dashboard, Methods, How it was built. It works client-side by register id.
+  - The shared SourcesList copy is untouched.
+- Top bar: Methods and Sources merged into one entry, "Methods & sources", which is highlighted on both pages. Both routes remain, and each page links to the other.
+- Not changed: the how-it-was-built tiles still link to `tree/main`. Pointing them at the working branch would break once it merges.
+- Checked: tsc clean, atlas 176/176, next build OK, hook rc 0. Screenshots at 1440 px and 390 px (methods, research, a write-up, sources): no horizontal overflow. The Methods filter shows 10 of 63 rows. Branch only; production waits on her OK. No errors caught this round.

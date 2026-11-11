@@ -16,7 +16,6 @@ export default function ResearchIndex() {
         <p className="tag">Research</p>
         <h1>The quantitative work behind the site</h1>
         <p className="pg-lede">Each question, its method and the write-up, failed and inconclusive ones included.</p>
-        <p className="pg-caption">Methods are Claude’s one-line summaries. Write-ups keep their “Claude draft” banners.</p>
       </header>
       <ol className="research-list">
         {research.map((r) => (
