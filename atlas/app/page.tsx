@@ -13,8 +13,6 @@ export default async function Page() {
   return (
     <main>
       <header className="hero">
-        <span className="hero__disc hero__disc--a" aria-hidden />
-        <span className="hero__disc hero__disc--b" aria-hidden />
         <span className="hero__disc hero__disc--c" aria-hidden />
         <div className="hero__inner">
           <p className="hero__kicker tag">{site.kicker}</p>

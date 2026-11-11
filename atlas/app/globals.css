@@ -79,20 +79,10 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 .hero__lede .pub { background: var(--public); color: var(--paper-2); }
 .hero__lede .old { background: var(--sun); color: var(--ink); }
 .hero__cue { margin-top: 40px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 13px; }
-/* Big halftone discs bleeding off the edge. */
+/* One flat disc (the halftone discs were cut 2026-11-11: they clipped into ragged blocks). */
 .hero__disc {
   position: absolute; pointer-events: none; mix-blend-mode: multiply;
   border-radius: 50%;
-}
-.hero__disc--a {
-  width: 58vmin; height: 58vmin; left: -18vmin; top: -10vmin;
-  background: radial-gradient(var(--pile-1) 32%, transparent 34%) 0 0 / 14px 14px;
-  opacity: 0.55;
-}
-.hero__disc--b {
-  width: 48vmin; height: 48vmin; right: -12vmin; bottom: -14vmin;
-  background: radial-gradient(var(--pile-3) 36%, transparent 38%) 0 0 / 11px 11px;
-  opacity: 0.6;
 }
 .hero__disc--c {
   width: 18vmin; height: 18vmin; right: 9vmin; top: 12vmin;
