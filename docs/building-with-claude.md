@@ -752,3 +752,10 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - cbo-repo-55 (b) relayed to the markets track (catalog entry, provenance record, B4 proxy; every number UNVERIFIED in the register).
 - The gradient change came after the round 34 review; Claude asked her before shipping it to production.
 - Checks: hook rc 0, atlas 176/176, atlas build OK. Model tier: main model only. Tokens and cost: not measured.
+
+### 2026-11-11: dashboard released to production; review queue round 35 (coordinator)
+- Eleonora said she had answered the docket. Claude re-read both card pages; nothing was new or changed since the last record.
+- Per her rv-dashboard-34 ok-prod: the promote call returned 422, so Claude redeployed the reviewed commit 6ec789d to production (dpl_HmveLFPi7yeVaENkfYp8TXq1UFJY). It is READY on hot-potato-credit.vercel.app and household-debt-risk.vercel.app. Only the reviewed build went out. The gradient-free build 1397d94 did not.
+- Claude first said the sandbox's network couldn't reach vercel.app. Eleonora caught that it is on the proxy allowlist now. Claude then checked the live site: /dashboard returned 200 with the tiles, filters and delinquency table, no console errors and no sideways scroll at 1280 px or 390 px; /findings returned 307 to /dashboard#findings; household-debt-risk.vercel.app also returned 200.
+- Review queue round 35 asks for her production OK on the gradient-free build, and whether the radial-gradient dots count as gradients.
+- Model tier: main model only. Tokens and cost: not measured.
