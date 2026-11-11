@@ -61,7 +61,7 @@ def section() -> tuple[list[str], list[dict]]:
           f"enhancement of every tranche it lists (sold, and a few retained). From 2017 it covers {R['deals']} deals and {R['tranches']} tranches. "
           f"{R['tranches_her_classes']} are in her three classes (M-1, including M-1A and M-1B; M-2; B, including "
           f"B-1 and B-2); the other {R['tranches_outside_classes']} ({oc['A-1']} A-1, {oc['M-3']} M-3) are kept in the "
-          "tranche file but not summarised. Fannie Mae's CAS deals are not covered: its host is not reachable "
+          "tranche file but not summarized. Fannie Mae's CAS deals are not covered: its host is not reachable "
           "(`sources.md`).",
           [num("deals", f"STACR deals closing 2017 or later in the workbook: {R['deals']}.", str(R["deals"]), R["deals"],
                "count", years, "stacr_2017_results.json deals"),
@@ -81,7 +81,7 @@ def section() -> tuple[list[str], list[dict]]:
     s.add(f"- **Spread.** As printed at issuance, over the deal's benchmark. Deals on one-month LIBOR "
           f"({lib.min()}–{lib.max()}) get the published LIBOR-to-SOFR adjustment of {adj} bps added (Federal "
           "Reserve, Regulation ZZ, 12 CFR part 253, section 4(c)(2); `sources.md`), so every spread below is over SOFR. The "
-          "adjustment is a fixed fallback spread, not the LIBOR–SOFR gap on each deal's pricing date.",
+          "adjustment is a fixed fallback spread; the LIBOR–SOFR gap on each deal's pricing date would differ.",
           [num("libor_adj", f"LIBOR-to-SOFR adjustment for one-month LIBOR: {adj} bps (Regulation ZZ).", f"{adj} bps",
                adj, "bp", "n/a", "LIBOR_1M_ADJ_BP", "UNVERIFIED",
                "Source constant: Federal Reserve Regulation ZZ final rule, 12 CFR part 253 section 4(c)(2), quoted in sources.md.",
@@ -95,7 +95,7 @@ def section() -> tuple[list[str], list[dict]]:
                f"{f1(cum)} bps", cum, "bp", "n/a", "stacr_2017_results.json baseline.cum_loss_bp_of_original",
                "ESTIMATE", "Model output under FHFA's 2016 baseline scenario.")])
     s.add(f"- **\"(Indicative)\" tranches.** {R['retained_indicative']} tranches in 2017–2018 were retained by Freddie "
-          "and carry an indicative spread, not a sale price. They are kept and flagged (`retained_indicative`).",
+          "and carry an indicative spread in place of a sale price. They are kept and flagged (`retained_indicative`).",
           [num("indicative", f"Retained tranches with an indicative spread, 2017+: {R['retained_indicative']}.",
                str(R["retained_indicative"]), R["retained_indicative"], "count", "2017-2018",
                "stacr_2017_results.json retained_indicative")])
@@ -109,7 +109,7 @@ def section() -> tuple[list[str], list[dict]]:
         cells, nums = [str(y)], []
         for c in ("M-1", "M-2", "B"):
             if c not in g.index:
-                cells += ["—", "—"] if c != "B" else ["—", "—", "—", "—", "—"]
+                cells += ["–", "–"] if c != "B" else ["–", "–", "–", "–", "–"]
                 continue
             r = g.loc[c]
             k = c.lower().replace("-", "")
@@ -134,7 +134,7 @@ def section() -> tuple[list[str], list[dict]]:
                                 f"stacr_2017_by_year_class.csv spread_sofr_bp_{nm}[{y},B]"))
             wm = int(r["with_multiple"])
             wi = int(r["with_multiple_indicative"])
-            mcell = [str(wm) + (f" ({wi})" if wi else ""), "—", "—"]
+            mcell = [str(wm) + (f" ({wi})" if wi else ""), "–", "–"]
             nums.append(num(f"{y}_b_with_multiple", f"{y}, class B: {wm} tranches with a multiple.", mcell[0], wm,
                             "count", str(y), f"stacr_2017_by_year_class.csv with_multiple[{y},B]"))
             if wm:
@@ -215,7 +215,7 @@ def section() -> tuple[list[str], list[dict]]:
     s.text("",
            "- **Each class's contents change by year.** B holds B-1 and B-2 in shifting shares, and only B-1 in 2023 "
            "and 2026; M-1 holds M-1A and M-1B from 2022; attachment points drift within each class. A change in a "
-           "class's median spread can therefore reflect its make-up, not only price. Tranche detail is in "
+           "class's median spread can therefore reflect its make-up as well as price. Tranche detail is in "
            "`stacr_2017_tranches.csv`.")
     s.text("",
            "- **Not like for like with 2013–2016.** There, FHFA's credit cost is a cost per dollar of the reference "

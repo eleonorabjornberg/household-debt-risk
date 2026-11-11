@@ -824,7 +824,7 @@
    "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
    "register": "claims/register.csv",
    "anchors": [
-    "Holding a loan is not losing on it: homes are worth 3.56× the mortgages against them.",
+    "A holder loses only what the collateral fails to cover, and homes are worth 3.56× the mortgages against them.",
     "home_coverage_2026q2"
    ],
    "exact": []
@@ -1371,7 +1371,7 @@
    "notes": "Atlas 'Today' step and the first 'What does this mean?' stat use the {share} token (latest quarter, fmtPct of public_share). web/app/page.tsx renders it from the mart snapshot with pct(.,1).",
    "register": "claims/register.csv",
    "anchors": [
-    ", sits with the public sector. Mostly slowly; one crisis made it permanent.",
+    ", sits with the public sector. Most of the shift was gradual; one crisis made it permanent.",
     "public_share_2026q2"
    ],
    "exact": []
@@ -1463,7 +1463,7 @@
    "notes": "Token {public}. Real 2026-dollar total x nominal public share, so it differs from the nominal $10.77T in README/findings. Readers see $10.8T of $19.2T in the atlas and $10.77T of $19.10T elsewhere; consider saying 'in 2026 dollars' in the step. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60).",
    "register": "claims/register.csv",
    "anchors": [
-    ", sits with the public sector. Mostly slowly; one crisis made it permanent."
+    ", sits with the public sector. Most of the shift was gradual; one crisis made it permanent."
    ],
    "exact": []
   },
@@ -1643,7 +1643,7 @@
    "notes": "Token {total}, real 2026 dollars (CPI base 2026Q3, web/public/data/meta.json) versus nominal $19.10T. The comment at the top of atlas/content/story.ts gives $19.1T as the example, which is the nominal figure, not what renders. Real dollars at the 2026Q3 CPI base (quarterly mean of CPIAUCSL), checked against FRED data retrieved 2026-11-07 (latest observation Sept 2026); the site says '2026 dollars' (ana-60). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    ", sits with the public sector. Mostly slowly; one crisis made it permanent."
+    ", sits with the public sector. Most of the shift was gradual; one crisis made it permanent."
    ],
    "exact": []
   },

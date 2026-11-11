@@ -42,7 +42,7 @@ txt = f"""## Results: development sample only (targets to 2023Q2; holdout not ru
 - It does not show accuracy on unseen data: the holdout has not been run.
 - The samples are small (about 20–28 targets per k in RT). All p-values are descriptive.
 - C2's placebo and outcome leakage checks are not implemented for C1 (see Deviations).
-- The bias finding suggests adding the agency monthly summaries (indicator set 2c), but that would be a new, separately pre-registered run. It must not be a change to this one.
+- The bias finding suggests adding the agency monthly summaries (indicator set 2c), but that would be a new, separately pre-registered run and never a change to this one.
 
 """
 p = 'research/c1_nowcast/README.md'; s = open(p).read()

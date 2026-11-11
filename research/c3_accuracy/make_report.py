@@ -132,9 +132,9 @@ def num(cid: str, claim: str, disp: str, val: float, unit: str, period: str, com
 
 
 def cell(cid, claim, val, unit, period, comp, note, series=SER_C2, fmt=f2, suffix=""):
-    """(table cell text, register row) for one number; '—' and no row when the value is missing."""
+    """(table cell text, register row) for one number; '–' and no row when the value is missing."""
     if val is None:
-        return "—", None
+        return "–", None
     disp = fmt(val) + suffix
     return disp, num(cid, claim.format(d=disp), disp, val, unit, period, comp, note, series)
 
@@ -227,7 +227,7 @@ def banner(d: Doc) -> None:
            "them, because they point into list-valued JSON.", "",
            "This is the report that `docs/decisions/scoring-protocol.md` (\"What C3 must publish\") asks for. The "
            "quantity forecast is the public share: the part of US household mortgages and consumer credit held by "
-           "federal programmes, the GSE and agency pools, and state and local governments. It is computed from the "
+           "federal programs, the GSE and agency pools, and state and local governments. It is computed from the "
            "Federal Reserve's Z.1 Financial Accounts as defined in the protocol (\"Target\"; denominator "
            "`FL154104015`). Errors are in percentage points (pp) of that share. \"Latest vintage\" means the "
            "Z.1 release dated 2026-09-11.", "")
@@ -261,7 +261,7 @@ def banner(d: Doc) -> None:
            "  - Holm is a step-down correction that holds the chance of any false positive across a family of tests.",
            "  - HAC lag means the autocorrelation allowance in a test's variance.",
            "- Scores of whole predictive distributions, where lower is better:",
-           "  - The interval score penalises interval width and misses.",
+           "  - The interval score penalizes interval width and misses.",
            "  - CRPS, the continuous ranked probability score, scores the full forecast distribution.",
            "- Coverage tests:",
            "  - Kupiec tests whether the coverage rate is right.",
@@ -273,7 +273,7 @@ def banner(d: Doc) -> None:
            "and the protocol allows only one opening. An earlier approved run (77460b4) stopped with an error before "
            "writing or printing anything (deviation c1b-dev-1, section 7). Everything else is the development "
            "sample, scored before the holdout was opened.", "",
-           "**What a reader should take from it**", "")
+           "**Main results**", "")
 
 
 def fail_counts(d: Doc, fc: list[dict]) -> None:
@@ -302,7 +302,7 @@ def fail_counts(d: Doc, fc: list[dict]) -> None:
           "horizon. The number of them falling in the protocol's 2007Q4–2011Q4 or 2020 windows is, "
           + ". And ".join(parts) + ". \"Chance\" is the count expected if the ten had fallen at random among all "
           "development forecasts at that horizon. The rest of the ten fall outside both windows (section 3). Errors "
-          "at h = 4 and 8 overlap, so neighbouring quarters in these lists are one episode. " + gfc_note(fc), nums)
+          "at h = 4 and 8 overlap, so neighboring quarters in these lists are one episode. " + gfc_note(fc), nums)
 
 
 def gfc_note(fc: list[dict]) -> str:
@@ -550,7 +550,7 @@ def registry(d: Doc, scores2: list[dict], placebo_old: dict, placebo: dict, sc1:
              for c, k in zip(cells, (1, 2, 3))]
     table_row(d, ["C1b", "`bridge_c1b`", "frozen (Freddie Mac monthly data; Fannie Mae and Ginnie Mae carried flat, an assumption)", "577c572",
                   commit_date("577c572")], cells)
-    d.text("| C1b | Ginnie Mae input | planned, not built: no downloadable file found on 2026-11-04 | — | — | — | — | — |", "",
+    d.text("| C1b | Ginnie Mae input | planned, not built: no downloadable file found on 2026-11-04 | – | – | – | – | – |", "",
            "Not specifications, listed for completeness: the dry run of the holdout script on a pretend holdout inside "
            "development (2026-11-04, not committed, not a result), and the first joint holdout run approved at "
            "77460b4, which stopped with an error before anything was written (deviation c1b-dev-1).", "")
@@ -697,7 +697,7 @@ def origin_subset(d: Doc, hf: list[dict]) -> None:
                           suffix=" pp")]
             for m in ("Z-DIR", "Z-DAMP", "ZC1-DIR", "drift", "ar_bic", "seasonal_naive"):
                 if m == "ZC1-DIR" and dn == "rolling":
-                    cells.append(("—", None))
+                    cells.append(("–", None))
                     continue
                 rel, n = rel_on_rows(rows, m, "no_change")
                 assert n == len(rows)
@@ -829,8 +829,8 @@ def coverage(d: Doc, hold: dict, cov_dev: list[dict]) -> None:
                                 nums.append(c[1])
                             if m in ("Z-DIR", "Z-DAMP"):
                                 h3.setdefault(m, []).append(rr[lev][key])
-                d.add(f"| {smp} | {h} | {m} | {rr[0.8]['n']} | {txt[0]} | {txt[1]} | {', '.join(tests['kupiec_p']) or '—'} "
-                      f"| {', '.join(tests['christoffersen_p']) or '—'} |", [n for n in nums if n])
+                d.add(f"| {smp} | {h} | {m} | {rr[0.8]['n']} | {txt[0]} | {txt[1]} | {', '.join(tests['kupiec_p']) or '–'} "
+                      f"| {', '.join(tests['christoffersen_p']) or '–'} |", [n for n in nums if n])
     lines = []
     for m, ps in h3.items():
         ok = all(p is not None and p >= 0.05 for p in ps)
@@ -842,7 +842,7 @@ def coverage(d: Doc, hold: dict, cov_dev: list[dict]) -> None:
            "correct ones.")
     d.text("", "**H3 (\"intervals are reliable\", protocol hypothesis H3 and its decision wording).** The protocol's "
            "wording needs coverage \"not rejected at either "
-           "level on development data\" and sets no test level; reading \"rejected\" as p below five per cent (a "
+           "level on development data\" and sets no test level; reading \"rejected\" as p below five percent (a "
            "reading, not a protocol rule): " + "; ".join(lines) + ". At h = 4 and 8 no test exists, so the wording "
            "cannot be used there. " + high_h_note(dc) + " That too is descriptive."
            + (f" One or more p-values sit just above the cut ({', '.join(near)}), so the outcome depends on the reading."
@@ -1134,7 +1134,7 @@ def regimes(d: Doc, fc: list[dict], nc1: list[dict], nc1b: list[dict]) -> None:
                                   f"{C1BD}/nowcasts_dev.csv [k={k}, target in {lo}–{hi}] RMSE(bridge_c1b) / RMSE(no_change)",
                                   f"n = {len(rb)}.", SER_C1))
             else:
-                cells.append(("—", None))
+                cells.append(("–", None))
             out += [{"task": "C1", "split_by": "target", "window": f"{lo}–{hi} ({sample})", "horizon": f"k={k}",
                      "n": len(rows), "model": m, "rmse_pp": v} for m, v in e.items()]
             table_row(d, ["C1", sample, f"{name} ({lo}–{hi})", k, nmark(len(rows))], cells)

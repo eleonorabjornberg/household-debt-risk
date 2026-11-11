@@ -2,7 +2,7 @@
 
 > **Claude draft.** Written by the markets track from committed result files by `make_report.py`. Eleonora replaces it with her own text before anything here is published. No model was rerun and the holdout was not reopened. Most numbers are copied from the committed results. The script itself computes only these: the C1 verdicts (section 2), the holdout bias table (with C1b's own `mean_hac1`), the ten-largest-error lists, the regime splits and the chance counts in the headline, each from committed per-forecast tables. The register rows are all UNVERIFIED: the claim checker cannot recompute most of them, because they point into list-valued JSON.
 
-This is the report that `docs/decisions/scoring-protocol.md` ("What C3 must publish") asks for. The quantity forecast is the public share: the part of US household mortgages and consumer credit held by federal programmes, the GSE and agency pools, and state and local governments. It is computed from the Federal Reserve's Z.1 Financial Accounts as defined in the protocol ("Target"; denominator `FL154104015`). Errors are in percentage points (pp) of that share. "Latest vintage" means the Z.1 release dated 2026-09-11.
+This is the report that `docs/decisions/scoring-protocol.md` ("What C3 must publish") asks for. The quantity forecast is the public share: the part of US household mortgages and consumer credit held by federal programs, the GSE and agency pools, and state and local governments. It is computed from the Federal Reserve's Z.1 Financial Accounts as defined in the protocol ("Target"; denominator `FL154104015`). Errors are in percentage points (pp) of that share. "Latest vintage" means the Z.1 release dated 2026-09-11.
 
 **Status of the verdicts.** The verdicts apply the decision rule as corrected by `docs/decisions/scoring-protocol-erratum-2026-11-05.md`: rule (b), which Eleonora chose at the freeze and confirmed on card c3-rule. Under (b) a model "beats" a benchmark when three things hold: its development RMSE is lower and significant after Holm, and its holdout RMSE is lower (rule (a)); its RMSE ratio is 0.95 or below in both samples; and its 80% coverage is not rejected on development data. The protocol sets no test level for "not rejected" and says nothing about models without intervals. Eleonora settled both on 2026-11-05 (18:54 UTC): "not rejected" means the Kupiec coverage test at the 80% level, h = 1, has p of 0.05 or more (card c3-b-level, reading (iv)); Christoffersen's independence test is reported but does not enter the verdict. A model without intervals is "undetermined" (card c3-b-nointv (c)). No reading compared in section 2 gives more "beats" than (iv); p < 0.01 on either test gives the same three. Section 2 shows what the other readings would give.
 
@@ -18,7 +18,7 @@ This is the report that `docs/decisions/scoring-protocol.md` ("What C3 must publ
   - Holm is a step-down correction that holds the chance of any false positive across a family of tests.
   - HAC lag means the autocorrelation allowance in a test's variance.
 - Scores of whole predictive distributions, where lower is better:
-  - The interval score penalises interval width and misses.
+  - The interval score penalizes interval width and misses.
   - CRPS, the continuous ranked probability score, scores the full forecast distribution.
 - Coverage tests:
   - Kupiec tests whether the coverage rate is right.
@@ -29,13 +29,13 @@ This is the report that `docs/decisions/scoring-protocol.md` ("What C3 must publ
 
 **The holdout** is 2023Q3–2026Q2. It was opened once, in commit a0d9151, under Eleonora's approval 432fed0, and the protocol allows only one opening. An earlier approved run (77460b4) stopped with an error before writing or printing anything (deviation c1b-dev-1, section 7). Everything else is the development sample, scored before the holdout was opened.
 
-**What a reader should take from it**
+**Main results**
 
 - **C2 forecasts.** On point-forecast error (RMSE), no frozen candidate beats the no-change forecast or the AR benchmark at any horizon in either window design. In development, the Z candidates' RMSE is below no-change's at every horizon. In the holdout it is above at every horizon and in both designs (all ratios in section 2 are above one). The two samples point in opposite directions. The holdout has 12 targets from one three-year period and carries no test, and no explanation for the flip has been tested. On CRPS, a score of the whole forecast distribution, `Z-DIR` and `Z-DAMP` are below no-change in the holdout at every horizon (section 2), so the picture depends on the loss. Under rule (b) (erratum) every "beats" is against the seasonal naive at h = 1. Under Eleonora's reading of the coverage clause (card c3-b-level (iv), Kupiec only at 5%) there are 3; the readings compared in section 2 give 1 to 3; none gives more than (iv), and p < 0.01 on either test gives the same three. Independence of 80% misses (Christoffersen, not in the verdict under (iv)) for the "beats": expanding `Z-DIR` p = 0.449; expanding `Z-DAMP` p = 0.057; rolling `Z-DAMP` p = 0.027. Rolling `Z-DAMP`'s 80% coverage passes (Kupiec p = 0.958), but the independence test rejects at 5% (Christoffersen p = 0.027; one test, not corrected for the three "beats"). On either test it would still count at p < 0.01 and not at p < 0.05 or p < 0.1.
 - **Holdout targets are barely revised.** All samples are scored on the 2026-09-11 vintage. A holdout target has had 0 to 11 later Z.1 releases since its first release; development targets from 2016 on have had at least 12. Development errors therefore include more revision than holdout errors, which affects any development-versus-holdout comparison (skeptic mkt-s45).
 - **C1 nowcast.** Under the same rule, no C1 comparison is a "beats"; bridge_reg vs no_change at k = 2 meets every loss condition of rule (b) and is "undetermined", not a failure: C1 issues no intervals for the coverage clause (Eleonora's c3-b-nointv (c)). At the other instants the same comparison has holdout ratios above one (section 2), and the three instants share the same 12 target quarters, so they are not independent. This report computed the verdicts by applying rule (b) to C1's committed tests and holdout scores; no frozen C1 code issues verdicts. The bridge regression had the lowest development ratio, but on fewer targets (16/16/10 against the bridge's 28/28/22 at k = 1/2/3). Its pooled holdout RMSE is no lower than no-change's.
 - **C1b.** Its verdict under the decision rules of `docs/decisions/c1b-prereg.md` is "improves on C1". It rests on development tests significant after Holm (section 2) and on a lower pooled holdout RMSE over 35 instants in 12 target quarters, a comparison without a test.
-- **Largest errors and crisis windows.** Section 3 lists Z-DIR's ten largest development errors at each horizon. The number of them falling in the protocol's 2007Q4–2011Q4 or 2020 windows is, by target quarter, 1 at h = 1 (chance 1.6; 2011Q1); 3 at h = 4 (chance 1.6; 2007Q4, 2008Q2, 2008Q3); 4 at h = 8 (chance 1.7; 2008Q3, 2008Q4, 2009Q2, 2009Q3). And by origin quarter, 1 at h = 1 (chance 1.6; 2010Q4); 0 at h = 4 (chance 1.6); 0 at h = 8 (chance 1.7). "Chance" is the count expected if the ten had fallen at random among all development forecasts at that horizon. The rest of the ten fall outside both windows (section 3). Errors at h = 4 and 8 overlap, so neighbouring quarters in these lists are one episode. In the GFC window, by either split and at every horizon, the Z candidates' RMSE relative to no-change is lower than outside both windows (section 4). The 2020 window is mixed, and it rests on four forecasts per cell.
+- **Largest errors and crisis windows.** Section 3 lists Z-DIR's ten largest development errors at each horizon. The number of them falling in the protocol's 2007Q4–2011Q4 or 2020 windows is, by target quarter, 1 at h = 1 (chance 1.6; 2011Q1); 3 at h = 4 (chance 1.6; 2007Q4, 2008Q2, 2008Q3); 4 at h = 8 (chance 1.7; 2008Q3, 2008Q4, 2009Q2, 2009Q3). And by origin quarter, 1 at h = 1 (chance 1.6; 2010Q4); 0 at h = 4 (chance 1.6); 0 at h = 8 (chance 1.7). "Chance" is the count expected if the ten had fallen at random among all development forecasts at that horizon. The rest of the ten fall outside both windows (section 3). Errors at h = 4 and 8 overlap, so neighboring quarters in these lists are one episode. In the GFC window, by either split and at every horizon, the Z candidates' RMSE relative to no-change is lower than outside both windows (section 4). The 2020 window is mixed, and it rests on four forecasts per cell.
 - **Holdout openings.** C2's individual holdout forecasts come from a second, separately gated opening (deviation D1, Eleonora's c3-errors (b)). It reproduced the first run's scores exactly and wrote only the per-forecast table (section 3). The regime windows fall in development only. Cells with fewer than ten forecasts are marked ‡. The unmarked holdout cells, with 11 or 12 forecasts, are also small.
 
 ## 1. Specification registry, including superseded and abandoned versions
@@ -60,7 +60,7 @@ Development scores: RMSE relative to no-change on the same targets (below 1 is b
 | C1 | `bridge` (P2a) | pseudo-real-time sample P2a, indicator set 2a (not real time) | 99d56cd | 2026-11-04 | 0.83 (53) | 0.73 (53) | 0.72 (41) |
 | C1 | `bridge` (RT@58a93d8) | superseded: fourth instant pooled into k = 3, 2016Q4 target missing; replaced at 99d56cd after review | 58a93d8 | 2026-11-04 | 0.74 (26) | 0.74 (26) | 0.80 (25) |
 | C1b | `bridge_c1b` | frozen (Freddie Mac monthly data; Fannie Mae and Ginnie Mae carried flat, an assumption) | 577c572 | 2026-11-04 | 0.58 (28) | 0.42 (28) | 0.37 (22) |
-| C1b | Ginnie Mae input | planned, not built: no downloadable file found on 2026-11-04 | — | — | — | — | — |
+| C1b | Ginnie Mae input | planned, not built: no downloadable file found on 2026-11-04 | – | – | – | – | – |
 
 Not specifications, listed for completeness: the dry run of the holdout script on a pretend holdout inside development (2026-11-04, not committed, not a result), and the first joint holdout run approved at 77460b4, which stopped with an error before anything was written (deviation c1b-dev-1).
 
@@ -77,9 +77,9 @@ RMSE relative to no-change on the holdout. Pseudo out-of-sample on latest-vintag
 | expanding | 1 | 0.18 pp | 1.16 | 1.10 | 1.31 | 1.53 | 1.23 | 1.33 |
 | expanding | 4 | 0.34 pp | 1.40 | 1.42 | 3.98 | 2.69 | 1.44 | 1.69 |
 | expanding | 8 | 0.69 pp | 1.90 | 1.31 | 5.34 | 2.94 | 1.86 | 2.89 |
-| rolling | 1 | 0.18 pp | 1.16 | 1.09 | — | 1.61 | 1.28 | 1.33 |
-| rolling | 4 | 0.34 pp | 1.34 | 1.42 | — | 2.73 | 1.60 | 1.69 |
-| rolling | 8 | 0.69 pp | 2.15 | 1.31 | — | 3.03 | 1.78 | 2.89 |
+| rolling | 1 | 0.18 pp | 1.16 | 1.09 | – | 1.61 | 1.28 | 1.33 |
+| rolling | 4 | 0.34 pp | 1.34 | 1.42 | – | 2.73 | 1.60 | 1.69 |
+| rolling | 8 | 0.69 pp | 2.15 | 1.31 | – | 3.03 | 1.78 | 2.89 |
 
 All losses, expanding design (the primary window). Interval scores and CRPS are in pp; lower is better. The rolling design's full table is in `tables/c2_holdout_scores.csv`.
 
@@ -88,21 +88,21 @@ All losses, expanding design (the primary window). Interval scores and CRPS are 
 | 1 | no_change | 0.18 | 0.16 | 1.35 | 2.12 | 0.17 |
 | 1 | Z-DIR | 0.20 | 0.18 | 0.97 | 1.62 | 0.13 |
 | 1 | Z-DAMP | 0.19 | 0.16 | 0.91 | 1.57 | 0.13 |
-| 1 | ZC1-DIR | 0.23 | 0.20 | — | — | — |
+| 1 | ZC1-DIR | 0.23 | 0.20 | – | – | – |
 | 1 | drift | 0.27 | 0.23 | 1.38 | 2.15 | 0.16 |
 | 1 | ar_bic | 0.22 | 0.19 | 0.96 | 1.67 | 0.14 |
 | 1 | seasonal_naive | 0.23 | 0.19 | 1.26 | 2.06 | 0.16 |
 | 4 | no_change | 0.34 | 0.30 | 4.05 | 7.51 | 0.53 |
 | 4 | Z-DIR | 0.48 | 0.36 | 3.14 | 5.49 | 0.35 |
 | 4 | Z-DAMP | 0.49 | 0.43 | 3.02 | 5.40 | 0.35 |
-| 4 | ZC1-DIR | 1.37 | 1.20 | — | — | — |
+| 4 | ZC1-DIR | 1.37 | 1.20 | – | – | – |
 | 4 | drift | 0.92 | 0.86 | 4.14 | 7.69 | 0.52 |
 | 4 | ar_bic | 0.49 | 0.39 | 3.33 | 5.25 | 0.35 |
 | 4 | seasonal_naive | 0.58 | 0.52 | 3.64 | 5.33 | 0.43 |
 | 8 | no_change | 0.69 | 0.47 | 7.47 | 13.77 | 1.12 |
 | 8 | Z-DIR | 1.31 | 0.91 | 6.87 | 11.83 | 0.74 |
 | 8 | Z-DAMP | 0.91 | 0.79 | 5.85 | 11.81 | 0.66 |
-| 8 | ZC1-DIR | 3.70 | 3.59 | — | — | — |
+| 8 | ZC1-DIR | 3.70 | 3.59 | – | – | – |
 | 8 | drift | 2.04 | 1.95 | 7.82 | 14.15 | 1.10 |
 | 8 | ar_bic | 1.29 | 0.95 | 6.56 | 12.15 | 0.71 |
 | 8 | seasonal_naive | 2.00 | 1.74 | 8.17 | 15.79 | 1.20 |
@@ -116,9 +116,9 @@ The same holdout restricted to origins from 2023Q2 on, as the protocol's option 
 | expanding | 1 | 12 | 0.18 pp | 1.16 | 1.10 | 1.31 | 1.53 | 1.23 | 1.33 |
 | expanding | 4 | 9‡ | 0.27 pp | 1.97 | 1.96 | 4.01 | 2.89 | 2.01 | 2.30 |
 | expanding | 8 | 5‡ | 0.11 pp | 6.55 | 6.86 | 27.24 | 12.96 | 6.33 | 10.84 |
-| rolling | 1 | 12 | 0.18 pp | 1.16 | 1.09 | — | 1.61 | 1.28 | 1.33 |
-| rolling | 4 | 9‡ | 0.27 pp | 1.95 | 1.96 | — | 2.95 | 2.32 | 2.30 |
-| rolling | 8 | 5‡ | 0.11 pp | 6.72 | 6.86 | — | 12.90 | 6.06 | 10.84 |
+| rolling | 1 | 12 | 0.18 pp | 1.16 | 1.09 | – | 1.61 | 1.28 | 1.33 |
+| rolling | 4 | 9‡ | 0.27 pp | 1.95 | 1.96 | – | 2.95 | 2.32 | 2.30 |
+| rolling | 8 | 5‡ | 0.11 pp | 6.72 | 6.86 | – | 12.90 | 6.06 | 10.84 |
 
 ### C2 tests and verdicts
 
@@ -194,30 +194,30 @@ Share of outcomes inside the model's 80% and 95% intervals, with Clopper–Pears
 | development | 1 | Z-DAMP | 89 | 0.79 [0.69, 0.87] | 0.93 [0.86, 0.97] | 0.752, 0.473 | 0.057, 0.390 |
 | development | 1 | no_change | 89 | 0.74 [0.64, 0.83] | 0.81 [0.71, 0.88] | 0.182, 2.2e-06 | 9.7e-08, 2.7e-05 |
 | development | 1 | ar_bic | 89 | 0.84 [0.75, 0.91] | 0.94 [0.87, 0.98] | 0.300, 0.793 | 0.855, 0.250 |
-| development | 4 | Z-DIR | 83 | 0.77 [0.67, 0.86] | 0.83 [0.73, 0.90] | — | — |
-| development | 4 | Z-DAMP | 83 | 0.75 [0.64, 0.84] | 0.82 [0.72, 0.90] | — | — |
-| development | 4 | no_change | 83 | 0.70 [0.59, 0.79] | 0.78 [0.68, 0.87] | — | — |
-| development | 4 | ar_bic | 83 | 0.75 [0.64, 0.84] | 0.83 [0.73, 0.90] | — | — |
-| development | 8 | Z-DIR | 75 | 0.67 [0.55, 0.77] | 0.75 [0.63, 0.84] | — | — |
-| development | 8 | Z-DAMP | 75 | 0.67 [0.55, 0.77] | 0.72 [0.60, 0.82] | — | — |
-| development | 8 | no_change | 75 | 0.65 [0.53, 0.76] | 0.71 [0.59, 0.81] | — | — |
-| development | 8 | ar_bic | 75 | 0.65 [0.53, 0.76] | 0.75 [0.63, 0.84] | — | — |
-| holdout | 1 | Z-DIR | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 1 | Z-DAMP | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 1 | no_change | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 1 | ar_bic | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 4 | Z-DIR | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 4 | Z-DAMP | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 4 | no_change | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 4 | ar_bic | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 8 | Z-DIR | 12 | 0.92 [0.62, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 8 | Z-DAMP | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 8 | no_change | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
-| holdout | 8 | ar_bic | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | — | — |
+| development | 4 | Z-DIR | 83 | 0.77 [0.67, 0.86] | 0.83 [0.73, 0.90] | – | – |
+| development | 4 | Z-DAMP | 83 | 0.75 [0.64, 0.84] | 0.82 [0.72, 0.90] | – | – |
+| development | 4 | no_change | 83 | 0.70 [0.59, 0.79] | 0.78 [0.68, 0.87] | – | – |
+| development | 4 | ar_bic | 83 | 0.75 [0.64, 0.84] | 0.83 [0.73, 0.90] | – | – |
+| development | 8 | Z-DIR | 75 | 0.67 [0.55, 0.77] | 0.75 [0.63, 0.84] | – | – |
+| development | 8 | Z-DAMP | 75 | 0.67 [0.55, 0.77] | 0.72 [0.60, 0.82] | – | – |
+| development | 8 | no_change | 75 | 0.65 [0.53, 0.76] | 0.71 [0.59, 0.81] | – | – |
+| development | 8 | ar_bic | 75 | 0.65 [0.53, 0.76] | 0.75 [0.63, 0.84] | – | – |
+| holdout | 1 | Z-DIR | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 1 | Z-DAMP | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 1 | no_change | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 1 | ar_bic | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 4 | Z-DIR | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 4 | Z-DAMP | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 4 | no_change | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 4 | ar_bic | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 8 | Z-DIR | 12 | 0.92 [0.62, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 8 | Z-DAMP | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 8 | no_change | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
+| holdout | 8 | ar_bic | 12 | 1.00 [0.74, 1.00] | 1.00 [0.74, 1.00] | – | – |
 
 Holdout coverage is descriptive. At h = 4 and 8 the holdout brackets also assume independent outcomes and are too narrow. A coverage of 1.00 on 12 forecasts fits intervals that are too wide as well as correct ones.
 
-**H3 ("intervals are reliable", protocol hypothesis H3 and its decision wording).** The protocol's wording needs coverage "not rejected at either level on development data" and sets no test level; reading "rejected" as p below five per cent (a reading, not a protocol rule): `Z-DIR`: not rejected at h = 1; `Z-DAMP`: not rejected at h = 1. At h = 4 and 8 no test exists, so the wording cannot be used there. There, development coverage of the 95% intervals is below nominal for every model shown. That too is descriptive. One or more p-values sit just above the cut (0.057), so the outcome depends on the reading.
+**H3 ("intervals are reliable", protocol hypothesis H3 and its decision wording).** The protocol's wording needs coverage "not rejected at either level on development data" and sets no test level; reading "rejected" as p below five percent (a reading, not a protocol rule): `Z-DIR`: not rejected at h = 1; `Z-DAMP`: not rejected at h = 1. At h = 4 and 8 no test exists, so the wording cannot be used there. There, development coverage of the 95% intervals is below nominal for every model shown. That too is descriptive. One or more p-values sit just above the cut (0.057), so the outcome depends on the reading.
 
 ### C1 and C1b nowcasts (real time, first-release targets)
 
@@ -489,9 +489,9 @@ Nowcasts. C1's real-time sample starts with target 2016Q3, so it covers 2020 but
 | C1 | RT | 2020 (2020Q1–2020Q4) | 1 | 4‡ | 0.60 pp | 0.73 | 0.49 |
 | C1 | RT | 2020 (2020Q1–2020Q4) | 2 | 4‡ | 0.60 pp | 0.71 | 0.31 |
 | C1 | RT | 2020 (2020Q1–2020Q4) | 3 | 3‡ | 0.62 pp | 0.65 | 0.16 |
-| C1 | P2a | GFC (part) (2010Q2–2011Q4) | 1 | 7‡ | 0.66 pp | 0.81 | — |
-| C1 | P2a | GFC (part) (2010Q2–2011Q4) | 2 | 7‡ | 0.66 pp | 0.67 | — |
-| C1 | P2a | GFC (part) (2010Q2–2011Q4) | 3 | 5‡ | 0.73 pp | 0.67 | — |
+| C1 | P2a | GFC (part) (2010Q2–2011Q4) | 1 | 7‡ | 0.66 pp | 0.81 | – |
+| C1 | P2a | GFC (part) (2010Q2–2011Q4) | 2 | 7‡ | 0.66 pp | 0.67 | – |
+| C1 | P2a | GFC (part) (2010Q2–2011Q4) | 3 | 5‡ | 0.73 pp | 0.67 | – |
 
 ## 5. First release against latest vintage
 

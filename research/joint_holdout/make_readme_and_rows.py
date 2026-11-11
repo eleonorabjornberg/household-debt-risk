@@ -124,7 +124,7 @@ def main() -> int:
         for bench in ("no_change", "ar_bic", "seasonal_naive"):
             v = b.get(bench)
             if v is None or v.get("holdout_rel_rmse") is None:
-                cells.append("—")
+                cells.append("–")
                 continue
             disp = f2(v["holdout_rel_rmse"])
             cells.append(f"{disp} ({v['verdict']})")

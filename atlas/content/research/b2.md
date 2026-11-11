@@ -12,13 +12,13 @@ Later FHFA reports show issuance spreads only as charts, and secondary-market sp
 
 ## Result
 
-**At issuance, transferred first-loss risk was priced at several times FHFA's own baseline expected loss.** These are ex-ante model estimates of what the deals cost, not realised payments. Under the baseline scenario a pool loses about 31 bps of its original balance over ten years. In the 21 deals where the GSE sold the first loss (attachment point 0), the investors' slice absorbs all of it.
+**At issuance, transferred first-loss risk was priced at several times FHFA's own baseline expected loss.** These are ex-ante model estimates of what the deals cost, made before any payment was realized. Under the baseline scenario a pool loses about 31 bps of its original balance over ten years. In the 21 deals where the GSE sold the first loss (attachment point 0), the investors' slice absorbs all of it.
 - **Credit cost:** a median 32 bps a year (range 25–43).
 - **Multiple of the slice's baseline expected loss:** a median 6.4 (range 5.0 to 8.6), when expected loss is put per year of the average outstanding balance (5.0 bps). That is the footing on which guarantee fees are charged.
 - **On the original balance instead** (3.1 bps a year), the median multiple is 10.4.
 - **What the range means:** every zero-attach slice has the same baseline loss, so the range of the multiple is just the range of the cost.
 
-**Unit check.** In every deal with both figures, FHFA's estimated guarantee fee equals the credit cost plus 21 or 30 bps (Treasury allocation, administrative cost and residual risk, per FHFA's footnote). That confirms the cost is in bps a year on the guarantee-fee footing. It also means the cost's share of the fee is an identity, not a finding.
+**Unit check.** In every deal with both figures, FHFA's estimated guarantee fee equals the credit cost plus 21 or 30 bps (Treasury allocation, administrative cost and residual risk, per FHFA's footnote). That confirms the cost is in bps a year on the guarantee-fee footing. The cost's share of the fee is therefore an identity.
 
 **Deals that kept the first loss** (attachment at 30–100 bps) were cheaper, with a median cost of 13 bps. Their slice starts at or above the baseline's cumulative loss, so a multiple of expected loss is unstable or undefined for them. 17 of them have no baseline loss at all, and their multiple is recorded as absent.
 
@@ -37,16 +37,16 @@ The weighted cost rose from 2014 to 2016. Over that period the GSEs moved to sel
 - For CAS: "The estimated credit cost of CAS issuances increased in 2016 because Fannie Mae sold the first loss position to investors."
 - For STACR: costs "increased modestly over the first half of 2016 primarily due to widening spreads in the credit markets, but then moderated".
 
-## What this does and does not show
+## What this shows
 
-- **This is FHFA's estimate, not a market spread series.** The cost is derived from issuance pricing under one scenario, and it assumes the whole slice is sold.
-- **A multiple above 1 is the premium over FHFA's baseline, not over expected losses in general.** It mixes investors' risk aversion with any belief that losses will exceed the baseline, and the two cannot be separated here. It also depends on the loss basis (about 6.4 or 10.4).
+- **This is FHFA's estimate and no market spread series.** The cost is derived from issuance pricing under one scenario, and it assumes the whole slice is sold.
+- **A multiple above 1 is the premium over FHFA's baseline only.** It mixes investors' risk aversion with any belief that losses will exceed the baseline, and the two cannot be separated here. It also depends on the loss basis (about 6.4 or 10.4).
 - **Tie to A2.** The priced deals cover most of each year's CRT reference UPB (last column). The rest is insurance (CIRT, ACIS) and unpriced deals. The two sources are not reconciled deal by deal. A2's net-exposure bounds (`research/a2_net_exposure/`) are the quantity this price applies to. B2 does not recompute them.
 - **2017 onward has no FHFA deal-level cost.** Instead: the aggregate 10-K measure and, for STACR only, tranche spreads from Freddie's pricing workbook (sections below). Reading issuance spreads off FHFA's charts would be an estimate with a stated reading error; it was not done.
 
 ## 2017–2023: aggregate annual cost from the GSEs' 10-Ks
 
-Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no longer prints deal-level credit costs, and the GSEs' deal data were not reachable from here when this section was written (crt.freddiemac.com, capitalmarkets.freddiemac.com; `sources.md`; Freddie's STACR pricing workbook became reachable later, section "STACR 2017+" below). What the 10-Ks give instead is the yearly cost of each GSE's whole CRT programme. It is a coarser measure than the deal table above: a cost per dollar of protection outstanding, pooled over every vintage still in force, not a price set at issuance. It is not set against FHFA's expected loss. Code: `gse_10k.py`; data: `freddie_crt_cost.csv`, `fannie_crt_cost.csv`.
+Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no longer prints deal-level credit costs, and the GSEs' deal data were not reachable from here when this section was written (crt.freddiemac.com, capitalmarkets.freddiemac.com; `sources.md`; Freddie's STACR pricing workbook became reachable later, section "STACR 2017+" below). What the 10-Ks give instead is the yearly cost of each GSE's whole CRT program. It is a coarser measure than the deal table above: a cost per dollar of protection outstanding, pooled over every vintage still in force, not a price set at issuance. It is not set against FHFA's expected loss. Code: `gse_10k.py`; data: `freddie_crt_cost.csv`, `fannie_crt_cost.csv`.
 
 **Freddie Mac** ($ millions a year; each year from the first 10-K that prints it):
 
@@ -73,24 +73,24 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 | 2023 | 906 | 409 | 1,315 | 3.3% |
 
 - **Freddie's series breaks in 2021.** From its FY2021 10-K on, Freddie no longer prints the interest on its CRT debt (STACR debt notes), which was $736 million in 2020. From 2021 only the credit-enhancement expense is shown, and for 2022–2023 only the consolidated figure. So 2021–2023 are lower bounds and are not comparable with 2017–2020. The table's 2021 figure is single-family; the consolidated 2021 figure, printed in the FY2022 10-K, is $1,518 million (3.4% of cover), so the multifamily part was $48 million that year. The split is not printed for 2022–2023 in the statements read.
-- **What the last column does and does not show.** Credit-enhancement expense is printed every year, but before 2021 the denominator also counts debt-note cover whose cost sits in the interest column, not here. The expense covers all freestanding credit enhancements (CRT trust notes and insurance, and also lender risk sharing), not CRT alone. Freddie's own reasons for the rise: more cumulative CRT outstanding in every year, and the move away from debt notes (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy"); for 2022, "higher spreads on transactions executed during 2022"; for 2023, "higher losses on STACR Trust note repurchases", a one-off cost rather than premium (FY2022 and FY2023 10-Ks).
-- **Denominator relabelled in FY2022.** Freddie's FY2022 10-K moved part of the 2021 cover from the CRT rows to "Other" ($531 million of maximum coverage, A2 `restated_crt_maxcov_musd`). The table uses each year's own filing.
+- **What the last column shows.** Credit-enhancement expense is printed every year, but before 2021 the denominator also counts debt-note cover whose cost sits in the interest column. The expense covers all freestanding credit enhancements (CRT trust notes and insurance, and also lender risk sharing), which is wider than CRT. Freddie's own reasons for the rise: more cumulative CRT outstanding in every year, and the move away from debt notes (FY2019 10-K: "We no longer issue debt with embedded credit enhancements as part of our primary CRT strategy"); for 2022, "higher spreads on transactions executed during 2022"; for 2023, "higher losses on STACR Trust note repurchases", a one-off cost rather than premium (FY2022 and FY2023 10-Ks).
+- **Denominator relabeled in FY2022.** Freddie's FY2022 10-K moved part of the 2021 cover from the CRT rows to "Other" ($531 million of maximum coverage, A2 `restated_crt_maxcov_musd`). The table uses each year's own filing.
 - **Gross against net.** Freddie's interest on CRT debt is gross interest; Fannie's CAS figure is interest net of LIBOR or SOFR, plus CAS REMIC and CLN payments. Freddie prints its own estimate of reinvestment income on the debt proceeds, shown in the "less" column. The two GSEs are not compared directly.
 - **Different denominators.** Freddie: maximum coverage of its CRT, from the 10-K coverage tables (A2, `research/a2_net_exposure/freddie_ce_outstanding.csv`), averaged over the two year ends. Fannie: CRT risk in force, printed rounded to whole billions and found at both year ends only for 2021–2023 (A2, `fannie_ce_outstanding.csv`); other years are n/a.
 - **Excluded.** Fannie's lender risk-sharing payments (in `fannie_crt_cost.csv`) and mortgage insurance.
 - **Fannie's CIRT cash includes one-off cancellation fees** in 2021–2023 (10-K footnote: it "includes cancellation fees paid on certain CIRT transactions where we determined that the cost of these deals exceeded the expected remaining benefit"). Fannie's risk in force is printed rounded to whole billions, which moves each rate by less than 0.05 percentage points.
-- **Restatements kept, not smoothed.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both. On the restated 2019 expense ($734 million) the 2019 rates would be 5.4% (total) and 2.2% (expense only).
+- **Restatements are kept.** Freddie's FY2020 10-K restates its 2018 and 2019 credit-enhancement expense; the table shows first publication, the CSV both. On the restated 2019 expense ($734 million) the 2019 rates would be 5.4% (total) and 2.2% (expense only).
 - **Against 2013–2016.** FHFA's 2013–2016 cost is derived from issuance pricing, a spread over the reference rate, so the closer comparison is Freddie's total less its reinvestment estimate: 3.8%–4.4% a year per dollar of cover in 2017–2020 (4.6%–5.2% gross). Both fall inside the 3.3–6.9% range of FHFA's cost per dollar of tranche. The top of that band is about twice its bottom, and the bases differ (outstanding cover of all vintages against an issuance estimate for the whole slice), so this is weak support for consistency, not a test of the earlier result.
 
 ## STACR 2017+: issuance spread and baseline-loss multiple, by tranche class
 
 > **Claude draft, not the author's text.** Built to Eleonora's choices of 2026-11-05: on cards b2-1723 (15:55 UTC) measure (ii), tranches (b), indicative (b) and LIBOR→SOFR (b); on cards b2-sofr-src (a), b2-upb (a) and b2-empty (a) (18:54 UTC). Method: `METHOD.md`, "STACR 2017+". Code: `stacr_2017.py`; data: `stacr_2017_tranches.csv`, `stacr_2017_by_year_class.csv`.
 
-Freddie Mac's STACR pricing workbook prints, for each deal, the spread at issuance and the credit enhancement of every tranche it lists (sold, and a few retained). From 2017 it covers 78 deals and 289 tranches. 274 are in her three classes (M-1, including M-1A and M-1B; M-2; B, including B-1 and B-2); the other 15 (13 A-1, 2 M-3) are kept in the tranche file but not summarised. Fannie Mae's CAS deals are not covered: its host is not reachable (`sources.md`).
+Freddie Mac's STACR pricing workbook prints, for each deal, the spread at issuance and the credit enhancement of every tranche it lists (sold, and a few retained). From 2017 it covers 78 deals and 289 tranches. 274 are in her three classes (M-1, including M-1A and M-1B; M-2; B, including B-1 and B-2); the other 15 (13 A-1, 2 M-3) are kept in the tranche file but not summarized. Fannie Mae's CAS deals are not covered: its host is not reachable (`sources.md`).
 
-- **Spread.** As printed at issuance, over the deal's benchmark. Deals on one-month LIBOR (2017–2020) get the published LIBOR-to-SOFR adjustment of 11.448 bps added (Federal Reserve, Regulation ZZ, 12 CFR part 253, section 4(c)(2); `sources.md`), so every spread below is over SOFR. The adjustment is a fixed fallback spread, not the LIBOR–SOFR gap on each deal's pricing date.
+- **Spread.** As printed at issuance, over the deal's benchmark. Deals on one-month LIBOR (2017–2020) get the published LIBOR-to-SOFR adjustment of 11.448 bps added (Federal Reserve, Regulation ZZ, 12 CFR part 253, section 4(c)(2); `sources.md`), so every spread below is over SOFR. The adjustment is a fixed fallback spread; the LIBOR–SOFR gap on each deal's pricing date would differ.
 - **Multiple.** Spread ÷ the tranche's expected loss a year per dollar of tranche under FHFA's December 2016 baseline (10% prepayment, 0.2% annual defaults, 25% loss given default, redemption at 10 years), on the average outstanding balance. Applying that 2016 baseline to later deals is an assumption. The baseline pool loses 30.8 bps of its original balance over ten years, so only a tranche attaching below 30.8 bps has an expected loss and a multiple.
-- **"(Indicative)" tranches.** 8 tranches in 2017–2018 were retained by Freddie and carry an indicative spread, not a sale price. They are kept and flagged (`retained_indicative`).
+- **"(Indicative)" tranches.** 8 tranches in 2017–2018 were retained by Freddie and carry an indicative spread in place of a sale price. They are kept and flagged (`retained_indicative`).
 
 **By year and class** (spreads over SOFR in bps, median with range; multiples for B tranches that have one, median):
 
@@ -102,10 +102,10 @@ Freddie Mac's STACR pricing workbook prints, for each deal, the spread at issuan
 | 2020 | 11 | 121 | 11 | 280 | 22 | 536 (241–1150) | 11 | 3.0 | 4.9 |
 | 2021 | 10 | 78 | 10 | 208 | 20 | 425 (265–780) | 10 | 3.2 | 5.3 |
 | 2022 | 20 | 258 | 10 | 530 | 12 | 730 (340–1290) | 6 | 5.3 | 8.6 |
-| 2023 | 9 | 210 | 5 | 550 | 2 | 788 (760–815) | 0 | — | — |
-| 2024 | 5 | 120 | 5 | 180 | — | — | — | — | — |
-| 2025 | 5 | 110 | 5 | 150 | — | — | — | — | — |
-| 2026 | 5 | 120 | 5 | 150 | 3 | 190 (185–210) | 0 | — | — |
+| 2023 | 9 | 210 | 5 | 550 | 2 | 788 (760–815) | 0 | – | – |
+| 2024 | 5 | 120 | 5 | 180 | – | – | – | – | – |
+| 2025 | 5 | 110 | 5 | 150 | – | – | – | – | – |
+| 2026 | 5 | 120 | 5 | 150 | 3 | 190 (185–210) | 0 | – | – |
 
 - **The multiple exists for few tranches.** Of the 274 tranches in her classes, 50 have a multiple, all of them B-2 tranches. The rest: 218 attach at or above the baseline's 30.8 bps loss, 3 have no known detachment point (2019-FTR1, -FTR3 and -FTR4 list only B-2 and the senior class), and 3 have no single spread (2017-HRP1's M-2, B-1 and B-2 print a par/discount/IO split, not parsed), so the table above covers 271. Of the 50 multiples, 6 are on retained B-2 tranches with an indicative spread (2017–2018). M-1, M-2 and B-1 never get a multiple; for them the measure is the spread alone. From 2023 no sold tranche attaches below 30.8 bps.
 - **The multiple moves with where B-2 sits, and with price.** A B-2 that attaches higher takes less of the baseline loss, and a thicker one spreads that loss over more notional; either raises the multiple at the same spread. Freddie moved B-2's attachment point up over these years, which moves the yearly medians above. Holding the slice fixed (attach 25 bps, detach 75 bps), the median multiple is 5.0 in 2020, 3.2 in 2021, 5.3 in 2022, so changes on a fixed slice are changes in spread. By slice:
@@ -120,7 +120,7 @@ Freddie Mac's STACR pricing workbook prints, for each deal, the spread at issuan
 | 25–75 | 22 | 2020–2022 | 5.8 | 3.9 (2.5–6.8) |
 | 25–125 | 2 | 2018–2019 | 5.8 | 10.7 (10.2–11.2) |
 
-- **Each class's contents change by year.** B holds B-1 and B-2 in shifting shares, and only B-1 in 2023 and 2026; M-1 holds M-1A and M-1B from 2022; attachment points drift within each class. A change in a class's median spread can therefore reflect its make-up, not only price. Tranche detail is in `stacr_2017_tranches.csv`.
+- **Each class's contents change by year.** B holds B-1 and B-2 in shifting shares, and only B-1 in 2023 and 2026; M-1 holds M-1A and M-1B from 2022; attachment points drift within each class. A change in a class's median spread can therefore reflect its make-up as well as price. Tranche detail is in `stacr_2017_tranches.csv`.
 
 - **Not like for like with 2013–2016.** There, FHFA's credit cost is a cost per dollar of the reference pool for the whole transferred slice; here, each tranche's spread is set against that tranche's own expected loss. Both use the same baseline and the same loss engine.
 - **What a multiple above 1 means** is the same as for 2013–2016: the premium over FHFA's baseline loss, mixing risk aversion with any belief that losses will exceed the baseline. Below 1, the spread is less than the baseline loss on the tranche, which the baseline (a 2016 scenario) may overstate for later pools. The expected loss per dollar of tranche also assumes the tranche runs down with the pool.

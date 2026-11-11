@@ -8,7 +8,7 @@ Data: Fed Z.1 dated 2026-09-11; FRED retrieved 2026-11-04. Sample 1986Q1–2026Q
 
 ## Result
 
-**Inconclusive. The data show no robust association in either direction.** The regression holds fixed the rate level, rate volatility, curve slope, the corporate Baa spread and a refinancing proxy. Under the reading rule fixed in advance, the 30-year mortgage rate's spread over the 10-year Treasury shows no robust association with the public share of household mortgages in any pre-specified variant. The test is weak, though: it could not have detected a sizeable compression either.
+**Inconclusive: the data show no robust association in either direction.** Holding fixed the rate level, rate volatility, curve slope, the corporate Baa spread and a refinancing proxy, and under the reading rule fixed in advance, the 30-year mortgage rate's spread over the 10-year Treasury shows no robust association with the public share of household mortgages in any pre-specified variant. The test is also weak: it could not have detected a sizeable compression.
 
 | Specification | Coefficient on public share (pp of spread per unit of share) | 95% HAC interval | Residual ADF |
 |---|---|---|---|
@@ -37,17 +37,17 @@ All coefficients and the first-differences version of every row are in `regressi
 | 2008Q3–2019Q4 | 59.9% | 1.73 pp |
 | 2020Q1–2026Q2 | 66.5% | 2.27 pp |
 
-The share rose by about 18 points across the three periods, and the average spread did not fall. Part of the 2020s level reflects the PMMS method change. These are period averages, not evidence about cause.
+The share rose by about 18 points across the three periods, and the average spread did not fall. Part of the 2020s level reflects the PMMS method change. These are period averages and carry no evidence about cause.
 
-**Agency versus privately held credit risk, 2017–2026 only (descriptive).** This comparison is confounded. Jumbo loans are too large for the GSEs to guarantee, so lenders keep the risk. But jumbo borrowers have higher incomes and credit scores, and banks compete for them as relationship clients. So the comparison does not price the *same* risk publicly and privately. With that caveat: the jumbo − conforming 30-year rate (Optimal Blue) averaged 0.03 pp, ranging from −0.48 to 0.38 pp by quarter. FHA − conforming averaged −0.05 pp. The public share was almost flat over these ten years, so there is no regression.
+**Agency versus privately held credit risk, 2017–2026 only (descriptive).** This comparison is confounded. Jumbo loans are too large for the GSEs to guarantee, so lenders keep the risk; but jumbo borrowers have higher incomes and credit scores, and banks compete for them as relationship clients, so the two rates price different risks. With that caveat, the jumbo − conforming 30-year rate (Optimal Blue) averaged 0.03 pp, ranging from −0.48 to 0.38 pp by quarter. FHA − conforming averaged −0.05 pp. The public share was almost flat over these ten years, so there is no regression.
 
-## What this does and does not show
+## What this shows
 
-- **The proxies are not the price of credit risk.** The PMMS spread bundles several things: the guarantee fee (set by Fannie, Freddie and FHFA, not by a market), loan-level price adjustments, the prepayment option, servicing and originator margins, and the agency MBS spread. For most of the sample, a public guarantor prices the credit risk in it administratively. Guarantee fees rose after 2012, so a flat spread can hide offsetting moves. Agency MBS option-adjusted spreads and private-label spreads would separate these, but they are paywalled (Bloomberg, ICE, Intex). FHFA's annual guarantee-fee reports (free, 2009+) would allow a fee control. That is a possible extension.
-- **Who holds the loan is not who bears the risk.** The share counts holdings. Credit-risk transfer (STACR, CAS), private mortgage insurance and FHA/VA insurance on loans that banks hold move risk between public and private hands without changing the share. A2 builds the net measure.
+- **The proxies bundle more than the price of credit risk.** The PMMS spread holds the guarantee fee (set administratively by Fannie, Freddie and FHFA), loan-level price adjustments, the prepayment option, servicing and originator margins, and the agency MBS spread. For most of the sample, a public guarantor prices the credit risk in it administratively. Guarantee fees rose after 2012, so a flat spread can hide offsetting moves. Agency MBS option-adjusted spreads and private-label spreads would separate these, but they are paywalled (Bloomberg, ICE, Intex). FHFA's annual guarantee-fee reports (free, 2009+) would allow a fee control, a possible extension.
+- **The share counts holdings, and the holder need not bear the risk.** Credit-risk transfer (STACR, CAS), private mortgage insurance and FHA/VA insurance on loans that banks hold move risk between public and private hands without changing the share. A2 builds the net measure.
 - **Units do not match exactly.** The share is a quarter-end stock of all outstanding loans. The spread is a quarterly average of rates on new loans.
-- **Association, not cause.** The share moved with the 2008 crisis, which also moved every control. Nothing here identifies an effect; A7 is where that would come from.
-- **A data gap.** FHFA's MIRS (discontinued May 2019) has non-jumbo rates back to the 1980s but no jumbo table. Backing out a jumbo rate would need assumptions about the loan mix. That is a possible extension.
+- **Nothing here identifies an effect.** The share moved with the 2008 crisis, which also moved every control; identification is A7's task.
+- **A data gap.** FHFA's MIRS (discontinued May 2019) has non-jumbo rates back to the 1980s but no jumbo table. Backing out a jumbo rate would need assumptions about the loan mix, another possible extension.
 
 ## Reproduce
 

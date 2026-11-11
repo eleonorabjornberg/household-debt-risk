@@ -14,13 +14,13 @@ Data: Fed Distributional Financial Accounts (DFA, files dated 2026-09-15, throug
 | Next 40% | 48.9% | 34.9% | |
 | Top 10% | 28.5% | | 68.9% |
 
-- **The bottom half by wealth owes half the consumer credit but a fifth of the mortgages.** In 1989Q3 the split was 27.5% of mortgages and 43.8% of consumer credit; the mortgage share peaked at 34.6% in 2010Q3 (`figures/dfa_bottom50_shares.png`). Groups are ranked by net worth, and debt lowers net worth, so heavily indebted households sort into the bottom half partly by construction; and who is in the bottom half changes as house prices move. The comparison over time is between groups whose membership changes, not between the same households.
+- **The bottom half by wealth owes half the consumer credit but a fifth of the mortgages.** In 1989Q3 the split was 27.5% of mortgages and 43.8% of consumer credit; the mortgage share peaked at 34.6% in 2010Q3 (`figures/dfa_bottom50_shares.png`). Groups are ranked by net worth, and debt lowers net worth, so heavily indebted households sort into the bottom half partly by construction. Membership of the bottom half also changes as house prices move, so the comparison over time is between groups, with different households in them at each date.
 - **By income, mortgages sit at the top.** The top 20% by income owe 53.2% of home mortgages; the bottom 20% owe 3.3% of mortgages and 7.1% of consumer credit.
-- **Leverage is concentrated at the bottom, but lower than in 2007.** The bottom 50% by wealth owe 58.4% of their assets in debt, down from 81.5% in 2007Q4 and a peak of 95.3% in 2010Q4. For the top 0.1% the ratio is 1.1%. (`dfa_leverage.csv`; the DFA values real estate at market prices, so these ratios move with house prices.)
+- **Leverage is concentrated at the bottom, and lower than in 2007.** The bottom 50% by wealth owe 58.4% of their assets in debt, down from 81.5% in 2007Q4 and a peak of 95.3% in 2010Q4. For the top 0.1% the ratio is 1.1%. (`dfa_leverage.csv`; the DFA values real estate at market prices, so these ratios move with house prices.)
 
 ## Who holds the loans (Z.1, 2026Q2)
 
-Public holders (federal government, GSEs and agency pools, state and local) hold 65.6% of household mortgages and 31.3% of consumer credit, which is mostly federal student loans (`loan_type_public_share.csv`). These are national shares by loan type. **No free source says which borrowers' loans the public sector holds** (`AVAILABILITY.md`); the estimate below joins the tables under stated assumptions (Eleonora's choice, Q4).
+Public holders (federal government, GSEs and agency pools, state and local) hold 65.6% of household mortgages and 31.3% of consumer credit, which is mostly federal student loans (`loan_type_public_share.csv`). These are national shares by loan type. **No free source says which borrowers' loans the public sector holds** (`AVAILABILITY.md`), so the estimate below joins the tables under stated assumptions (Eleonora's choice, Q4).
 
 ### Estimate: whose loans does the public sector hold? (Q4, option c, with option b beside it)
 
@@ -34,13 +34,13 @@ Option (c) gives each group a slice of the federal student loans, sized by its s
 | Top 1% | 3.5% | 3.9% | 51.0% | 57.9% |
 
 - **Splitting out student loans moves public exposure toward the bottom half.** In the SCF the bottom 50% by wealth owe 68.5% of student-loan debt, and 86.4% of student loans are held by the federal government (Z.1; this leaves out privately held FFEL loans that carry a federal guarantee).
-- **Under these assumptions** the public sector holds about half or more of every wealth group's debt. That follows from the assumed uniform public share of mortgages (two thirds) and the weight of mortgages in each group's debt, not from data on any group. Jumbo loans, which the GSEs cannot buy, are concentrated at the top, so the top groups' public share is probably overstated, as the bottom groups' is probably understated.
+- **Under these assumptions** the public sector holds about half or more of every wealth group's debt. That follows from the assumed uniform public share of mortgages (two thirds) and the weight of mortgages in each group's debt; no data on any single group enter it. Jumbo loans, which the GSEs cannot buy, are concentrated at the top, so the top groups' public share is probably overstated and the bottom groups' understated.
 - By income the shift is smaller: the bottom 20% carry 4.0% of public exposure under (c) and 3.8% under (b).
 
 **Assumptions and gaps of the estimate** (beyond the uniform mortgage share above):
 - Every group has the same federal share of its student loans.
 - The SCF records $1.15T of education loans against $1.86T of student loans in Z.1. Only the SCF's *distribution* across groups is used, scaled to the Z.1 total, so the gap matters only if the missing debt is distributed differently.
-- SCF net worth leaves out defined-benefit pensions and DFA's includes them, so the two "bottom 50%" groups are not the same households.
+- SCF net worth leaves out defined-benefit pensions and DFA's includes them, so the two "bottom 50%" groups hold different households.
 - SCF and DFA do not agree on who owes consumer credit at the top (`public_by_group.csv`, columns `scf_cc_share` and `dfa_cc_share`).
 - SCF income groups are not exact fifths because many households report the same income; the group sizes are in `results_public_by_group.json`.
 
@@ -54,9 +54,9 @@ Option (c) gives each group a slice of the federal student loans, sized by its s
 
 - **State level only.** The NY Fed lists a county-level product but no county file could be found (AVAILABILITY.md), so no claim here is below state level.
 - **Sampling.** NY Fed state figures come from a 5% sample (1% for student loans) and may not match the national report. Puerto Rico is in the file but excluded here.
-- **Per person, not per household or per borrower.** The denominator is people aged 18+ with a credit file, so states with fewer homeowners show lower mortgage debt per person without any difference in loan size.
+- **Figures are per person.** The denominator is people aged 18+ with a credit file, so states with fewer homeowners show lower mortgage debt per person without any difference in loan size.
 - **No income denominator by state yet.** Census ACS needs `api.census.gov`, which the network policy refuses.
-- **DFA is model-based.** It allocates Z.1 aggregates across groups using survey data (the Fed's DFA methodology; not yet quoted in `sources.md`), so quarter-to-quarter movements within a group are estimated, not observed.
+- **DFA is model-based.** It allocates Z.1 aggregates across groups using survey data (the Fed's DFA methodology; not yet quoted in `sources.md`), so quarter-to-quarter movements within a group are estimates.
 - **Revisions.** DFA, Z.1 and the NY Fed state data are all revised; rerun after each release.
 
 ## Files and how to rerun
@@ -68,6 +68,6 @@ uv run --project pipeline --with matplotlib python research/a5_distribution/figu
 ```
 
 - `distribution.py`: tables and `results.json`; asserts that DFA shares add to 100, that the state file has the 50 states and DC with no gaps, and that the loan-type shares weight back to the overall public share.
-- `public_by_group.py`: the labelled estimate of public exposure by wealth and income group, options (c) and (b); asserts both add up to the Z.1 public total and that imputed student loans fit inside each group's DFA consumer credit. Output `public_by_group.csv`, `results_public_by_group.json`.
+- `public_by_group.py`: the labeled estimate of public exposure by wealth and income group, options (c) and (b); asserts both add up to the Z.1 public total and that imputed student loans fit inside each group's DFA consumer credit. Output `public_by_group.csv`, `results_public_by_group.json`.
 - `figures.py`: two DFA charts (chart-from-sql skill) and three state tile maps, each with alt text and a JSON sidecar.
 - `dfa_shares.csv`, `dfa_leverage.csv`, `state_2025.csv`, `loan_type_public_share.csv`: the tables.
