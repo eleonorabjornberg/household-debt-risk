@@ -77,20 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Finished work for your review</h1>
-      <p class="sub">Round 37: the B4 volume side you asked for in docket 56 (b).</p>
+      <p class="sub">Round 38: shorter site text and the hot-potato figures you asked for.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendations on review cards. &#x27;Open&#x27; shows the files on GitHub. Nothing here reaches production without your OK.</footer>
+  <footer>No recommendations on review cards. &#x27;Open&#x27; shows the change on GitHub. Nothing here reaches production without your OK.</footer>
 </div>
 
 <script>
-const DECISIONS = [{"id": "rv-b4-ed-37", "group": "B4", "tag": "B4", "title": "B4 volume side: the Education Department's estimate (your docket 56 (b))", "ctx": "Merged into claude/sweet-gates-avwrcs on 2026-11-11 (b754b8b) from the markets track (02bb223, 871e185). Source: ED final rule 91 FR 23768, Regulatory Impact Analysis Table 3.1 (FR page 23855), from the free GovInfo PDF, hashed in sources.md. ed_volume.py checks the transcribed rows against ED's printed difference and the rule's text. The new README subsection 'Volume side: ED's estimate of federal lending' shows ED's 'Pre' and 'Post' columns by loan type: non-consolidated disbursements 2026-2035 of $946.4B and $722.5B, a fall of $223.9B, mostly graduate loans ($170.9B) and Parent PLUS ($49.3B); consolidation shown separately. It is not combined with the CBO proxy, covers federal lending only (the move to private lending is not estimated), and gives no loss or share. Every number is UNVERIFIED and a Claude draft, with 15 register rows. The skeptic raised 4 objections (1 major), all fixed before the merge. The loss engine is unchanged. The same text would appear on the /research B4 page at the next release.", "opts": [["ok", "OK as a draft: keep it on the branch as a labelled Claude draft."], ["ok-prod", "OK: release to production as a labelled UNVERIFIED Claude draft."], ["changes", "Changes needed: say what in the note."], ["later", "Later: not reviewed yet."]], "where": "research/b4_policy_scenarios/README.md"}];
+const DECISIONS = [{"id": "rv-potato-38", "group": "Site", "tag": "Site", "title": "Shorter text and hot-potato figures (f8539cf)", "ctx": "First tier of the site review. Ledes, story steps and scenario notes cut to a sentence or two; /how-it-was-built is now tiles and steps. Hand-drawn potato holders (your idea), solid fills, no gradients. Data-driven on the dashboard (1 potato ≈ 5% of debt) and the home public/private pair; decorative elsewhere. Screenshots are in the chat.", "flag": "Still to do from the review list: /methods cuts, research table widths and captions, /sources intro, and merging the top bar.", "opts": [["ok-prod", "OK: release to production."], ["ok-branch", "OK, but keep it on the branch and finish the remaining review items first."], ["changes", "Changes needed: say what in the note."], ["later", "Later: not reviewed yet."]], "link": "https://github.com/eleonorabjornberg/household-debt-risk/commit/f8539cf", "where": "atlas/components/Potato.tsx"}];
 
-const GROUPS = ["B4"];
+const GROUPS = ["Site"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
