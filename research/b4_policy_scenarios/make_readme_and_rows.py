@@ -30,7 +30,7 @@ txt = f"""# B4: Policy-regime scenarios
 |---|---|---|
 | Recession | — | Losses from {bn(REC['total_musd'][0])} to {bn(REC['total_musd'][1])} on 2026Q2 balances. The public share of losses is {pc(REC['public_share_of_losses'][0])} to {pc(REC['public_share_of_losses'][1])} (federal student loans excluded: no loss rate in either preset). The range runs from B3's DFAST proxy to its 2008–12 replay; both are proxies. |
 | GSEs released from conservatorship | FHFA's conservatorship page, retrieved 2026-11-04, says "Fannie Mae and Freddie Mac continue to operate under conservatorship, as they have since 2008". The page carries no date of its own and cites the 2025 Scorecard, so it may lag. Only the first page of FHFA news releases (10 items) was checked, and none concerned an exit. So the status is **unconfirmed beyond those two pages**. | Public share of mortgage and other consumer-credit losses (federal student loans excluded) from {pc(lo)} to {pc(hi)} across both recession proxies and 0–100% of the Fannie and Freddie book turning private (below). |
-| Student-loan reform | P.L. 119-21, approved July 4, 2025: no Federal Direct PLUS loans for graduate and professional students for periods from July 1, 2026, subject to the statute's transition exception ("Subject to paragraph (8)"); new limits; a Repayment Assistance Plan. | Budget-side proxy only (Eleonora, card cbo-repo-55 (b), 2026-11-11; section below). CBO's projected outlays of the Direct Loan program account over FY{SP['fy_first']}–FY{SP['fy_last']} fell from {bn(SP['sum_before_musd'])} in its January 2025 baseline to {bn(SP['sum_after_musd'])} in its February 2026 baseline. These outlays are the subsidy cost of federal direct loans, not the amount lent, and the change is not a CBO estimate of the law's effect or of lending moving to private lenders. No public share changes. |
+| Student-loan reform | P.L. 119-21, approved July 4, 2025: no Federal Direct PLUS loans for graduate and professional students for periods from July 1, 2026, subject to the statute's transition exception ("Subject to paragraph (8)"); new limits; a Repayment Assistance Plan. | Budget-side proxy only (Eleonora, card cbo-repo-55 (b), 2026-11-11; section below). CBO's projected outlays of the Direct Loan program account over FY{SP['fy_first']}–FY{SP['fy_last']} fell from {bn(SP['sum_before_musd'])} in its January 2025 baseline to {bn(SP['sum_after_musd'])} in its February 2026 baseline. These outlays are what the account pays out for the cost of federal direct loans, not the amount lent, and the change is not a CBO estimate of the law's effect or of lending moving to private lenders. No public share changes. |
 
 - **No transfer.** Neither range applies a CRT or mortgage-insurance transfer. With A2's cover as an input, the public figures would be lower.
 - **Two kinds of bound.** The two recession ends differ in horizon as well as severity: nine quarters of stressed bank loss rates against five years of realised bank charge-offs. The upper end is probably an upper bound for the public book (`research/b3_scenarios/README.md`).
@@ -63,9 +63,9 @@ Total losses do not change with the share: {bn(D[0]['total_musd'])} under the DF
 
 > **Claude draft.** Eleonora chose (2026-11-11) to add CBO's data repository as a source for budget-side context only, and to use the Direct Loan account's outlays as a labelled proxy here. Method: `METHOD.md` section 3b. Sources, commit and hashes: [`sources.md`](sources.md).
 
-**What the number is.** CBO's baseline projections of spending by budget account, for the "Federal Direct Student Loan Program Account" (TIN 091-0243-0-1-502). Under the Federal Credit Reform Act, a credit program account receives "an appropriation to cover the cost" of the loans, and that cost is their net present value to the government (2 U.S.C. 661a). So these outlays measure the **subsidy cost** of federal direct loans. They are not the amount lent: loans are paid out through a separate financing account that is not in this file.
+**What the number is.** CBO's baseline projections of spending by budget account, for the "Federal Direct Student Loan Program Account" (TIN 091-0243-0-1-502). Under the Federal Credit Reform Act, a credit program account receives "an appropriation to cover the cost" of the loans, where cost is their net present value to the government (2 U.S.C. 661a). Reestimates of that cost are shown in a subaccount of the same account, and administrative funding may be too (2 U.S.C. 661c). So these outlays are what this account pays out for the **cost** of federal direct loans. They are not the amount lent: loans are paid out through a financing account, which is not in CBO's file. They are not a complete net subsidy cost either: the sources fetched here do not establish where a negative subsidy is recorded.
 
-**PROXY.** Projected outlays, January 2025 baseline (the last before P.L. 119-21) against February 2026 baseline (the first after), FY{SP['fy_first']}–FY{SP['fy_last']}:
+**PROXY.** Projected outlays in the January 2025 baseline against the February 2026 baseline (the repository's file labels; P.L. 119-21 was approved between them, on July 4, 2025), FY{SP['fy_first']}–FY{SP['fy_last']}:
 
 | Fiscal year | January 2025 baseline | February 2026 baseline |
 |---|---|---|
@@ -76,9 +76,11 @@ The total fell by {bn(-SP['change_musd'])}, or {pc(-SP['change_share'])}.
 
 **What this does not show.**
 - **Not the law's effect alone.** A change between two baselines also carries every economic and technical revision CBO made in the thirteen months between them. The repository does not separate them.
+- **Too early to be the Grad PLUS change.** The FY2026 figure already shows most of the fall (table), but the end of Grad PLUS applies to periods from July 1, 2026, late in FY2026. So the drop cannot be read as that provision's effect.
 - **Not a shift to private lending.** Neither the CBO repository nor this proxy says how much graduate borrowing moves to private lenders. ED's final rule estimates the fall in federal disbursements (`sources.md`), not where the borrowing goes.
 - **Not a loss.** The B3 loss engine is not run for this scenario, so no public share of losses changes. Whether and how this proxy should feed the engine is open (proposed card to Eleonora, `METHOD.md` 3b).
-- **Projections, not outturns.** Both baselines are forecasts. Program-account outlays also move with reestimates and loan modifications, which can be large in a single year.
+- **Projections, not outturns.** Both baselines are forecasts.
+- **One account only.** Related accounts in the same files are left out: Student aid administration, the TEACH Grant program account, the Federal family education loan liquidating account and the Federal student loan reserve fund.
 
 ## Reproduce
 
@@ -159,7 +161,9 @@ add("b4_gse_total_replay", f"B4 GSE release: total losses under the replay proxy
 CV = "cbo:2026-06-12"
 SPC = "research/b4_policy_scenarios/student_proxy.py -> student_proxy.json "
 SPS = "CBO cbo-data spending_detail 091-0243-0-1-502"
-SPN = "PROXY (card cbo-repo-55 (b)): Direct Loan program-account outlays are subsidy cost, not loan volume; a change between baselines is not a CBO estimate of P.L. 119-21's effect."
+SPN = ("PROXY (card cbo-repo-55 (b)): Direct Loan program-account outlays pay for the loans' cost, not loan volume; a change "
+       "between baselines is not a CBO estimate of P.L. 119-21's effect. Vintage = the repository commit (2026-06-12); the "
+       "baseline is named in the claim (file labels 2025-01, 2026-02).")
 
 
 def add_sp(cid, claim, display, value, unit, comp, period, start, note=SPN):
