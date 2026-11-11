@@ -1,0 +1,23 @@
+# Verbatim text layer (pdftotext -layout) of 91 FR 23855, Table 3.1, from https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf
+# (PDF SHA-256 21ef3bab376f85734582ebd3e10e7c89133c00c99e6be5d2c1aec671483f56ac, retrieved 2026-11-11 00:57 UTC; sources.md). Runs of dots and spaces
+# are collapsed; '¥' is the PDF's minus glyph. Hand-checked against the rendered page (test_ed_volume.py).
+TABLE 3.1—ESTIMATED CHANGES IN TOTAL FEDERAL STUDENT LOAN DISBURSEMENTS PRE- AND POST-WORKING
+FAMILIES TAX CUTS ACT, 2026–2035
+Loans  Disbursed
+(millions)  (millions)
+
+Pre  Post  Pre  Post
+
+Undergrad ..  94.5  93.4  $355,842  $352,085
+Grad Stafford & PLUS ..  22.2  13.9  436,437  265,542
+Parent PLUS ..  7.9  7.3  154,140  104,881
+
+Non-Consolidated Loan Difference ..  ..  ¥9.9  ..  ¥223,911
+
+Consolidation ..  12.8  8.4  454,638  338,687
+Note: Borrower counts projected by the Department are not unduplicated across cohorts, and loan counts were used to provide a sense of the
+effect of the Working Families Tax Cuts Act loan limit provisions. The relationship between the number of loans and borrowers varies somewhat
+by loan type, risk group, and cohort but is approximately 1.67 loans annually per undergraduate borrower, 1.28 loans annually for Parent PLUS,
+and 1.3 loans annually for graduate students.
+Source: Student Loan Model volume assumption for PB2026 and Working Families Tax Cuts Act cost estimates.
+

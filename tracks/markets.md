@@ -8,6 +8,21 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## B4 volume side: ED's estimate (2026-11-11, docket 56 b4-student-proxy-map (b))
+
+- Source check: the GovInfo PDF of 91 FR 23768 (free, official, hashed); Table 3.1, FR 23855. www.federalregister.gov is refused by the proxy and was not used. The table was transcribed from the text layer and hand-checked against the rendered page.
+- What was built:
+  - `fixtures/ed_rule_table_3_1.txt` and `ed_volume.py` → `ed_volume.json`, with `test_ed_volume.py` (including a planted typo).
+  - A README subsection (Claude draft) beside the CBO proxy, METHOD 3c and `sources.md`.
+  - 15 UNVERIFIED rows in claims/tracks/markets.csv.
+- B3 engine unchanged, per her ruling.
+- Skeptic mkt-s65–s68 (1 major), all addressed. Next ids: mkt-s69, mkt-q49, mkt-e33.
+- **Errors:**
+  - The student-loan row dropped "non-consolidated" (s65). Caught by the skeptic.
+  - Loan-count rows sum to −10.0 against ED's printed −9.9 (rounding of three rows). Caught by the identity check; the tolerance was set to the rounding bound.
+  - After the header was renamed, the generator's table lookup failed (StopIteration). Caught on the run.
+  - The HTML copy of the rule hashes differently on every fetch (Cloudflare email tokens). Caught by Claude on re-fetch; the PDF is the hashed copy.
+
 ## B4 student-loan proxy (2026-11-11, card cbo-repo-55 (b), relayed by the coordinator)
 
 - Built on claude/track-markets, re-cut from sweet-gates 1397d94. Commit 8bec074, plus the skeptic fixes.
