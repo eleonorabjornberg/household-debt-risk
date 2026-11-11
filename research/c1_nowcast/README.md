@@ -2,7 +2,7 @@
 
 > **Claude draft, not the author's text.** The evaluation design is Eleonora's (her Q-C1 decisions of 2026-11-04, recorded in PLAN.md). The implementation details Claude added are marked in `EVALUATION.md`.
 
-**PLAN task C1. Status: development-sample evaluation done; holdout pending the coordinator.** The acceptance criteria are a point-in-time panel, in which each input is read at the value public at the nowcast instant, and a release-lag table per input. The panel is `pit.panel(t)`. The table is [`release_lags.csv`](release_lags.csv). The Z.1 release calendar is [`z1_calendar.csv`](z1_calendar.csv). Candidate inputs are listed in [`inputs.yaml`](inputs.yaml), and the sources with their hashes in [`sources.md`](sources.md).
+**PLAN task C1. Status: development-sample evaluation done; holdout run once on 2026-11-05 (see the joint holdout write-up).** The acceptance criteria are a point-in-time panel, in which each input is read at the value public at the nowcast instant, and a release-lag table per input. The panel is `pit.panel(t)`. The table is [`release_lags.csv`](release_lags.csv). The Z.1 release calendar is [`z1_calendar.csv`](z1_calendar.csv). Candidate inputs are listed in [`inputs.yaml`](inputs.yaml), and the sources with their hashes in [`sources.md`](sources.md).
 
 ## Results: development sample only (targets to 2023Q2; holdout not run)
 
