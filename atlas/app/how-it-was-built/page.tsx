@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { build } from "@/content/build";
 import { Sourced } from "@/components/claims/SourceRef";
+import { BuildSchema } from "@/components/pages/BuildSchema";
 
 // Moved from web/app/how-it-was-built (site-visible (b), 2026-11-07: one site). Copy in content/build.ts.
 export const metadata: Metadata = {
@@ -36,6 +37,14 @@ export default function HowItWasBuiltPage() {
         <h1>Built with Claude Code</h1>
         <p className="pg-lede"><Sourced text={build.lede} /></p>
       </header>
+
+      <section className="pg-section" aria-labelledby="schema">
+        <div className="pg-col">
+          <h2 id="schema">How it works</h2>
+          <p>{build.schema.lede}</p>
+          <BuildSchema workflow={build.schema.workflow} build={build.schema.build} />
+        </div>
+      </section>
 
       <section className="pg-section" aria-labelledby="flow">
         <div className="pg-col">

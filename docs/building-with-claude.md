@@ -767,3 +767,7 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - The track also caught that lib/research.test.ts had been failing since the PLAN B4 row changed on 2026-11-11 (the coordinator's edit), and re-synced the /research quote.
 - Sent to Eleonora: review card rv-b4-cbo-35 and docket card b4-student-proxy-map (whether the proxy feeds the loss engine).
 - Checks after the merge: hook rc 0, B4 6/6, atlas 176/176. Model tier: main model only. Tokens and cost: not measured.
+
+### 2026-11-11: workflow and build schema on /how-it-was-built (coordinator)
+- Eleonora asked for a schema of the workflow and build process under "how it works". Added a "How it works" section at the top of /how-it-was-built with two flows: plan → coordinator → tracks → review subagents → checks (gate) → her decision, and sources → pipeline → warehouse → analysis → preview (gate) → production (her OK). Each flow ends with its loop back. Copy in atlas/content/build.ts (Claude draft, under the page's draft banner); component atlas/components/pages/BuildSchema.tsx; flat fills only, no gradients (gradients-55 (a)). No numbers, so no register rows.
+- Checked: tsc clean, atlas 176/176, next build OK, screenshots at 1280 px and 390 px with no sideways scroll and no console errors. Branch only; production waits on her review-queue OK.

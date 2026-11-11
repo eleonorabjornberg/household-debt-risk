@@ -46,6 +46,37 @@ export const build = {
     { name: "Evaluations", body: "A question-to-SQL benchmark comparing Haiku, Sonnet and Opus (E1), a planted-error test for the review subagents (E2) and a red-team of Ask Hot Potato (E4); E1 and E2 were pre-registered, and Eleonora capped the spend before any paid run." },
   ],
 
+  // Schema of the workflow and the build process (added 2026-11-11 at Eleonora's request). Every step names a real
+  // file, session or check; sources are CLAUDE.md, PLAN.md and docs/building-with-claude.md.
+  schema: {
+    lede:
+      "Two loops run side by side. The workflow loop is how a task moves from the plan to Eleonora's sign-off. The build loop is how the data moves from the Federal Reserve to this page. Steps marked as gates stop the work until they pass.",
+    workflow: {
+      title: "Workflow: from the plan to a decision",
+      loop: "Her answers go back into the plan, and the coordinator starts the next task.",
+      steps: [
+        { who: "Eleonora", name: "Plan", body: "Sets the research design in PLAN.md: phases, tasks, dependencies and acceptance criteria." },
+        { who: "Claude", name: "Coordinator", body: "Hands each task to a track, merges the track branches and keeps the plan status and the build log in sync." },
+        { who: "Claude", name: "Tracks", body: "Markets, analysis and infrastructure sessions, each on its own branch, build one task at a time." },
+        { who: "Claude", name: "Review", body: "skeptic, quant-reviewer and editor subagents raise objections in claims/review-log.md; the track answers each one before the merge." },
+        { who: "Gate", name: "Checks", body: "Before every commit a hook runs the claims-register check and the offline tests, and blocks the commit if either fails. CI runs again on every push." },
+        { who: "Eleonora", name: "Decide", body: "Rules on the decision docket and signs off finished work on the review queue. Her choices are recorded in PLAN.md as hers." },
+      ],
+    },
+    build: {
+      title: "Build: from the Fed to this page",
+      loop: "After each quarterly Z.1 release a workflow reruns the chain and opens a pull request with a note on what moved.",
+      steps: [
+        { who: "Data", name: "Sources", body: "Z.1 Financial Accounts, FRED and the New York Fed's household debt report, each checked for availability and cost first." },
+        { who: "Code", name: "Pipeline", body: "The hhdebt package runs extract, transform, load and export-snapshot, and checks that every holder adds up to its published total." },
+        { who: "Data", name: "Warehouse", body: "Supabase Postgres: raw keeps every vintage, core the latest values, mart the analysis tables." },
+        { who: "Code", name: "Analysis", body: "Research scripts read mart, follow their pre-registrations, and give each published number a row in claims/register.csv." },
+        { who: "Gate", name: "Preview", body: "Every branch push builds a Vercel preview of this site, which Claude checks and puts on the review queue." },
+        { who: "Eleonora", name: "Production", body: "The live site changes only after Eleonora's explicit OK on the review queue." },
+      ],
+    },
+  },
+
   human: [
     "Chose the topic, the angle and the tools, and set the research design in the plan's phases and acceptance criteria.",
     "Decided every open question on the decision docket and approved or returned every finished piece on the review queue, including the pre-registration choices, spend caps for paid model runs and each production release since November.",

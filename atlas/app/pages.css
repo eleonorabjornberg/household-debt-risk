@@ -264,3 +264,36 @@ ul.sc-caveats li strong:first-child { font-size: 1rem; color: var(--accent); }
   .dash-filters { position: static; }
   .pg table.dash-mini th, .pg table.dash-mini td { padding-left: 12px; }
 }
+
+/* ---------- /how-it-was-built schema (2026-11-11). Flat fills only: no gradients (gradients-55 (a)). ---------- */
+.schema-wrap { margin-top: 20px; }
+.schema { margin: 0 0 32px; }
+.schema-title { font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+.schema-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 34px; }
+.schema-step { margin: 0; position: relative; display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 2px solid var(--ink); background: var(--paper); box-shadow: 4px 4px 0 var(--ink); border-top-width: 8px; }
+.schema-step:not(:last-child)::after { content: "→"; position: absolute; right: -27px; top: 50%; transform: translateY(-50%); font-weight: 700; font-size: 20px; color: var(--ink); }
+.schema-step:nth-child(3n)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -27px; transform: translateX(-50%); }
+.schema-step:nth-child(4) { grid-row: 2; grid-column: 3; }
+.schema-step:nth-child(5) { grid-row: 2; grid-column: 2; }
+.schema-step:nth-child(6) { grid-row: 2; grid-column: 1; }
+.schema-step:nth-child(4)::after, .schema-step:nth-child(5)::after { content: "←"; right: auto; left: -27px; }
+.schema-who { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.schema-name { font-size: 17px; }
+.schema-body { font-size: 14px; line-height: 1.45; }
+.schema-who-human { border-top-color: var(--accent); }
+.schema-who-claude { border-top-color: var(--pile-1); }
+.schema-who-gate { border-top-color: var(--pile-5); }
+.schema-who-data { border-top-color: var(--pile-2); }
+.schema-loop { margin: 14px 0 0; padding: 8px 12px; border: 2px dashed var(--ink); font-size: 14px; }
+.schema-key { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; }
+.schema-key li { display: flex; align-items: center; gap: 6px; border: 0; }
+.schema-key li::before { content: ""; width: 14px; height: 14px; border: 2px solid var(--ink); background: var(--paper); }
+.schema-key .schema-who-human::before { background: var(--accent); }
+.schema-key .schema-who-claude::before { background: var(--pile-1); }
+.schema-key .schema-who-gate::before { background: var(--pile-5); }
+.schema-key .schema-who-data::before { background: var(--pile-2); }
+@media (max-width: 760px) {
+  .schema-steps { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .schema-step:nth-child(n) { grid-row: auto; grid-column: auto; }
+  .schema-step:not(:last-child)::after, .schema-step:nth-child(n):not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -27px; transform: translateX(-50%); }
+}
