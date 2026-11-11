@@ -775,3 +775,6 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 ### 2026-11-11: clipped halftone discs removed from the home hero (coordinator)
 - Eleonora sent a screenshot of the live home header with "i don't like this". It showed production (6ec789d): the gradient logo and gradient bar, which the branch already makes flat (rv-gradients-35), plus a block of blue halftone dots clipped into a ragged square at the top left. That block was `.hero__disc--a`, a large dotted disc set mostly off-screen; its orange twin `--b` clipped the same way at the bottom right. Both are removed from atlas/app/page.tsx and globals.css; the flat pink disc stays.
 - Checked: tsc clean, atlas 176/176, next build OK, screenshots at 1280 px and 390 px. Branch only; production waits on her review-queue OK.
+
+### 2026-11-11: home header and gradient-free build released (coordinator)
+- Eleonora said "release it to production". Production was redeployed from the READY preview of 034e16d (dpl_5tZmWDzS8UwyR2XtK6qhaHK6UShZ → production dpl_EHxjDM6nKYrfGn95obaYD2hn7pVp). The release carries everything on the branch since 6ec789d: the flat header (gradients-55 (a)), the removed halftone discs, the workflow and build schema on /how-it-was-built, and the B4 CBO proxy README (UNVERIFIED, Claude draft). Rollback target: dpl_HmveLFPi7yeVaENkfYp8TXq1UFJY (6ec789d).

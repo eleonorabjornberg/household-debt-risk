@@ -264,6 +264,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-11 | Review queue round 34 (rv-dashboard-34): **ok-prod**, release the /dashboard tab and the site fixes since 853747e to production. | Eleonora |
 | 2026-11-11 | Docket 55 cbo-repo-55: **(b)**, add github.com/US-CBO/cbo-data as a source (catalog entry and provenance record) for budget-side context only, and use the Direct Loan account outlays as a labelled proxy in B4's student-loan scenario. This reopens B4 (iii). | Eleonora |
 | 2026-11-11 | Docket 55 gradients-55: **(a)**, make every gradient a flat colour. Her note: "dots, stripes and other patterns and solid colors are fine, gradients are not". | Eleonora |
+| 2026-11-11 | Home header (rv-header-36): of the live header she said "i don't like this"; after the clipped halftone discs were removed on the branch, she said "release it to production". Released 034e16d (with the gradient-free build, the workflow schema and the B4 CBO proxy README already on the branch). | Eleonora |
 
 ## Environment prerequisites
 
