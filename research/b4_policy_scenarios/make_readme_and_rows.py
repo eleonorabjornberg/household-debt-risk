@@ -32,7 +32,7 @@ txt = f"""# B4: Policy-regime scenarios
 |---|---|---|
 | Recession | — | Losses from {bn(REC['total_musd'][0])} to {bn(REC['total_musd'][1])} on 2026Q2 balances. The public share of losses is {pc(REC['public_share_of_losses'][0])} to {pc(REC['public_share_of_losses'][1])} (federal student loans excluded: no loss rate in either preset). The range runs from B3's DFAST proxy to its 2008–12 replay; both are proxies. |
 | GSEs released from conservatorship | FHFA's conservatorship page, retrieved 2026-11-04, says "Fannie Mae and Freddie Mac continue to operate under conservatorship, as they have since 2008". The page carries no date of its own and cites the 2025 Scorecard, so it may lag. Only the first page of FHFA news releases (10 items) was checked, and none concerned an exit. So the status is **unconfirmed beyond those two pages**. | Public share of mortgage and other consumer-credit losses (federal student loans excluded) from {pc(lo)} to {pc(hi)} across both recession proxies and 0–100% of the Fannie and Freddie book turning private (below). |
-| Student-loan reform | P.L. 119-21, approved July 4, 2025: no Federal Direct PLUS loans for graduate and professional students for periods from July 1, 2026, subject to the statute's transition exception ("Subject to paragraph (8)"); new limits; a Repayment Assistance Plan. | Budget-side proxy only (Eleonora, card cbo-repo-55 (b), 2026-11-11; section below). CBO's projected outlays of the Direct Loan program account over FY{SP['fy_first']}–FY{SP['fy_last']} fell from {bn(SP['sum_before_musd'])} in its January 2025 baseline to {bn(SP['sum_after_musd'])} in its February 2026 baseline. These outlays are what the account pays out for the cost of federal direct loans, not the amount lent, and the change is not a CBO estimate of the law's effect or of lending moving to private lenders. ED's final rule estimates that federal student-loan disbursements over 2026–2035 fall by {bn1(EV['noncons_fall_musd'])} (volume side, section below). No public share changes. |
+| Student-loan reform | P.L. 119-21, approved July 4, 2025: no Federal Direct PLUS loans for graduate and professional students for periods from July 1, 2026, subject to the statute's transition exception ("Subject to paragraph (8)"); new limits; a Repayment Assistance Plan. | Budget-side proxy only (Eleonora, card cbo-repo-55 (b), 2026-11-11; section below). CBO's projected outlays of the Direct Loan program account over FY{SP['fy_first']}–FY{SP['fy_last']} fell from {bn(SP['sum_before_musd'])} in its January 2025 baseline to {bn(SP['sum_after_musd'])} in its February 2026 baseline. These outlays are what the account pays out for the cost of federal direct loans, not the amount lent, and the change is not a CBO estimate of the law's effect or of lending moving to private lenders. ED's final rule estimates that federal non-consolidated student-loan disbursements over 2026–2035 fall by {bn1(EV['noncons_fall_musd'])} (volume side, section below). No public share changes. |
 
 - **No transfer.** Neither range applies a CRT or mortgage-insurance transfer. With A2's cover as an input, the public figures would be lower.
 - **Two kinds of bound.** The two recession ends differ in horizon as well as severity: nine quarters of stressed bank loss rates against five years of realised bank charge-offs. The upper end is probably an upper bound for the public book (`research/b3_scenarios/README.md`).
@@ -88,13 +88,13 @@ The total fell by {bn(-SP['change_musd'])}, or {pc(-SP['change_share'])}.
 
 > **Claude draft.** Eleonora chose (2026-11-11) to add the Education Department's loan-volume estimate beside the CBO proxy, after a source check, with no change to the loss engine until she reviews it. Method: `METHOD.md` section 3c. Source, hash and quotes: [`sources.md`](sources.md).
 
-ED's final rule (91 FR 23768, Regulatory Impact Analysis, Table 3.1) estimates federal student-loan disbursements over 2026–2035 before and after the Working Families Tax Cuts Act (P.L. 119-21). This is an **ED projection of federal lending**, as printed:
+ED's final rule (91 FR 23768, Regulatory Impact Analysis, Table 3.1) estimates federal student-loan disbursements over 2026–2035 "Pre" and "Post" the Working Families Tax Cuts Act (P.L. 119-21), as ED labels its columns. The table's source line names ED's "Student Loan Model volume assumption for PB2026" and its cost estimates for the Act; the rule's text credits the fall to "the final regulations". This is an **ED projection of federal lending**, as printed:
 
-| Loan type | Before the Act | After the Act |
+| Loan type | ED "Pre" | ED "Post" |
 |---|---|---|
 {"\n".join(f"| {lab} | {bn1(EV['table'][k]['disbursed_pre_musd'])} | {bn1(EV['table'][k]['disbursed_post_musd'])} |" for k, lab in ED_ROWS)}
 | Non-consolidated total | {bn1(EV['noncons_pre_musd'])} | {bn1(EV['noncons_post_musd'])} |
-| Consolidation (not in the total) | {bn1(EV['table']['consolidation']['disbursed_pre_musd'])} | {bn1(EV['table']['consolidation']['disbursed_post_musd'])} |
+| Consolidation (not in the total; see below) | {bn1(EV['table']['consolidation']['disbursed_pre_musd'])} | {bn1(EV['table']['consolidation']['disbursed_post_musd'])} |
 
 Non-consolidated disbursements fall by {bn1(EV['noncons_fall_musd'])}, or {pc(EV['noncons_fall_share'])}, almost all of it in graduate loans ({bn1(EV['fall_musd']['grad_stafford_plus'])}) and Parent PLUS loans ({bn1(EV['fall_musd']['parent_plus'])}).
 
@@ -102,7 +102,8 @@ Non-consolidated disbursements fall by {bn1(EV['noncons_fall_musd'])}, or {pc(EV
 - **Different quantities.** CBO's figure above is the projected outlays of a program account (what it pays for the loans' cost), compared across two baselines. ED's is projected loan volume from its own model. They are shown side by side, not combined, and no ratio between them is computed.
 - **Federal lending only.** ED estimates how much less the government lends. Neither source says how much of that moves to private lenders, so the private side of the scenario is still unestimated.
 - **No loss, no share.** Neither figure enters the B3 loss engine (her ruling), so no public share of losses changes.
-- **Years as printed.** The table says "2026–2035" without saying fiscal or award years.
+- **Years: probably loan cohorts.** Table 3.1 says only "2026–2035". The same RIA states its budget estimates by loan cohort, and "A cohort reflects all loans originated in a given fiscal year", so these are probably cohort years. CBO's figures are outlays by fiscal year, which time the same loans differently.
+- **Consolidation is a different flow.** Consolidation refinances existing loans rather than lending anew. ED keeps it out of its difference, and its Table 3.3 splits it into consolidation from default and not from default. Its fall is shown for completeness and not interpreted here.
 
 ## Reproduce
 
@@ -223,7 +224,9 @@ add_sp("b4_student_cbo_fall_share", f"B4 student-loan proxy: fall in projected o
 EDV = "edrule:2026-05-01"
 EDC = "research/b4_policy_scenarios/ed_volume.py -> ed_volume.json "
 EDS = "ED final rule 91 FR 23768, RIA Table 3.1 (FR 23855)"
-EDN = "ED projection of federal student-loan disbursements, 2026-2035 as printed; not a shift to private lending, not a loss (docket 56 b4-student-proxy-map (b))."
+EDN = ("ED projection of federal student-loan disbursements, 2026-2035 as printed (probably loan cohorts); Pre = ED's PB2026 "
+       "volume assumption, Post = ED's estimate with the Act (as its source line says); vintage = the rule's publication date. "
+       "Not a shift to private lending, not a loss (docket 56 b4-student-proxy-map (b)).")
 
 
 def add_ed(cid, claim, display, value, comp, start):
@@ -235,11 +238,11 @@ def add_ed(cid, claim, display, value, comp, start):
 
 add_ed("b4_student_ed_fall_row", f"B4 student-loan volume side: ED's estimated fall in federal non-consolidated disbursements, 2026-2035, {bn1(EV['noncons_fall_musd'])}.",
        bn1(EV["noncons_fall_musd"]), EV["noncons_fall_musd"], "noncons_fall_musd", stu)
-edt = next(i for i, l in enumerate(lines) if l.startswith("| Loan type | Before the Act"))
+edt = next(i for i, l in enumerate(lines) if l.startswith("| Loan type | ED \"Pre\""))
 for k, lab in ED_ROWS + [("consolidation", "Consolidation")]:
     for side in ("pre", "post"):
         v = EV["table"][k][f"disbursed_{side}_musd"]
-        add_ed(f"b4_student_ed_{k}_{side}", f"B4 student-loan volume side: ED Table 3.1, {lab}, disbursed {side}-Act, 2026-2035, {bn1(v)}.",
+        add_ed(f"b4_student_ed_{k}_{side}", f"B4 student-loan volume side: ED Table 3.1, {lab}, disbursed, ED '{side.capitalize()}' column, 2026-2035, {bn1(v)}.",
                bn1(v), v, f"table.{k}.disbursed_{side}_musd", edt)
 for key, cid in (("noncons_pre_musd", "total_pre"), ("noncons_post_musd", "total_post")):
     add_ed(f"b4_student_ed_{cid}", f"B4 student-loan volume side: ED non-consolidated total ({key}), {bn1(EV[key])}.",
