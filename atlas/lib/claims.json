@@ -100,9 +100,7 @@
    "checkId": "A2",
    "notes": "",
    "register": "claims/register.csv",
-   "anchors": [
-    "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
-   ],
+   "anchors": [],
    "exact": []
   },
   {
@@ -860,92 +858,7 @@
    "checkId": "A1",
    "notes": "",
    "register": "claims/register.csv",
-   "anchors": [
-    "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
-   ],
-   "exact": []
-  },
-  {
-   "id": "nyfed_mortgage_change",
-   "claim": "NY Fed mortgage balances fell $74B in 2026Q2.",
-   "display": [
-    "−$74B",
-    "$74B"
-   ],
-   "value": "-74",
-   "unit": "usd_bn",
-   "period": "2026Q2",
-   "locations": [
-    "atlas/content/methods.ts:29"
-   ],
-   "computation": "mart.nyfed_by_type: balance_busd(mortgage, 2026-06-30) - balance_busd(mortgage, 2026-03-31) = 13,117 - 13,191",
-   "series": [
-    "NYFED_HHDC"
-   ],
-   "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "",
-   "register": "claims/register.csv",
-   "anchors": [
-    "NY Fed and Z.1 can disagree",
-    "NY Fed: a 5% sample of credit files, mortgages down $74B in 2026 Q2. Z.1: lenders' balance sheets, up $150B before seasonal adjustment."
-   ],
-   "exact": []
-  },
-  {
-   "id": "nyfed_sample_share",
-   "claim": "The NY Fed series comes from a 5% sample of credit reports.",
-   "display": [
-    "5% sample"
-   ],
-   "value": "0.05",
-   "unit": "share",
-   "period": "n/a",
-   "locations": [
-    "atlas/content/methods.ts:29"
-   ],
-   "computation": "external description of the NY Fed Consumer Credit Panel (not computed in this repo)",
-   "series": [
-    "NYFED_HHDC"
-   ],
-   "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "Source: NY Fed Household Debt and Credit Report methodology; add the citation URL when this is checked.",
-   "register": "claims/register.csv",
-   "anchors": [
-    "NY Fed and Z.1 can disagree",
-    "NY Fed: a 5% sample of credit files, mortgages down $74B in 2026 Q2. Z.1: lenders' balance sheets, up $150B before seasonal adjustment."
-   ],
-   "exact": []
-  },
-  {
-   "id": "out_of_scope_share",
-   "claim": "About 13% of household liabilities are out of scope.",
-   "display": [
-    "13%"
-   ],
-   "value": "0.1272",
-   "unit": "share",
-   "period": "2026Q2",
-   "locations": [
-    "atlas/content/methods.ts:23"
-   ],
-   "computation": "derived: 1 - analysis/results.json now.scope_of_total_liab",
-   "series": [
-    "FL154104015",
-    "FL154190005"
-   ],
-   "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "12.7% rounds to 13%.",
-   "register": "claims/register.csv",
-   "anchors": [
-    "About 13% of liabilities are out of scope",
-    "Mainly nonprofit commercial mortgages and other loans."
-   ],
+   "anchors": [],
    "exact": []
   },
   {
@@ -1499,7 +1412,7 @@
    "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "Crisis test: no detectable rise in the public share after recession peaks (placebo p ≈ 0.30, low power)."
+    "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
    ],
    "exact": []
   },
@@ -1526,9 +1439,7 @@
    "checkId": "",
    "notes": "Findings.md intro (outside the Headline findings section) prints 87.3%.",
    "register": "claims/register.csv",
-   "anchors": [
-    "Home mortgages on 1–4 family properties plus consumer credit: about 87% of household liabilities. The Fed's household sector includes nonprofits."
-   ],
+   "anchors": [],
    "exact": []
   },
   {
@@ -1747,92 +1658,6 @@
    "anchors": [
     "Wall Street securitization takes share from the agencies. The public share falls to",
     "; the private pile swells to about $4.6T."
-   ],
-   "exact": []
-  },
-  {
-   "id": "uncoll_break_2005q4",
-   "claim": "Uncollateralized debt was 7.6% of in-scope household debt in 2005Q4, counting revolving credit only (no student-loan imputation).",
-   "display": [
-    "7.6%"
-   ],
-   "value": "0.0763",
-   "unit": "share",
-   "period": "2005Q4",
-   "locations": [
-    "atlas/content/methods.ts:24"
-   ],
-   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2005Q4_rev_only (0.0763)",
-   "series": [
-    "FL153166100",
-    "FL153166220",
-    "FL153166205"
-   ],
-   "vintage": "z1:2026-09-11",
-   "validation": "ESTIMATE",
-   "checkId": "",
-   "notes": "Pre-2006 student loans are imputed by a linear ramp, so the 'without imputation' framing depends on an estimate. The 2006Q1 value is row uncoll_share_2006q1 (split 2026-11-04, D3 claim-check finding).",
-   "register": "claims/register.csv",
-   "anchors": [
-    "Student loans before 2006 are imputed",
-    "A linear ramp from 1965, flagged as estimated. Without it, uncollateralized debt jumps from 7.6% to 11.5% in 2006 Q1."
-   ],
-   "exact": []
-  },
-  {
-   "id": "uncoll_share_2006q1",
-   "claim": "Uncollateralized debt was 11.5% of in-scope household debt in 2006Q1, the first quarter with reported student loans.",
-   "display": [
-    "11.5%"
-   ],
-   "value": "0.1146",
-   "unit": "share",
-   "period": "2006Q1",
-   "locations": [
-    "atlas/content/methods.ts:24"
-   ],
-   "computation": "analysis/notebook.py:q5_collateral -> analysis/results.json collateral.uncoll_share_2006Q1 (0.1146)",
-   "series": [
-    "FL153166100",
-    "FL153166220",
-    "FL153166205"
-   ],
-   "vintage": "z1:2026-09-11",
-   "validation": "ESTIMATE",
-   "checkId": "",
-   "notes": "Split from uncoll_break_2005q4 (D3 claim-check finding, infra track).",
-   "register": "claims/register.csv",
-   "anchors": [
-    "Student loans before 2006 are imputed",
-    "A linear ramp from 1965, flagged as estimated. Without it, uncollateralized debt jumps from 7.6% to 11.5% in 2006 Q1."
-   ],
-   "exact": []
-  },
-  {
-   "id": "z1_mortgage_change",
-   "claim": "Z.1 household mortgages rose $150B in 2026Q2 (not seasonally adjusted).",
-   "display": [
-    "+$150B",
-    "$150B"
-   ],
-   "value": "150.4",
-   "unit": "usd_bn",
-   "period": "2026Q2",
-   "locations": [
-    "atlas/content/methods.ts:29"
-   ],
-   "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.d_mort_qoq_busd (150.4)",
-   "series": [
-    "FL153165105"
-   ],
-   "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "",
-   "register": "claims/register.csv",
-   "anchors": [
-    "NY Fed and Z.1 can disagree",
-    "NY Fed: a 5% sample of credit files, mortgages down $74B in 2026 Q2. Z.1: lenders' balance sheets, up $150B before seasonal adjustment."
    ],
    "exact": []
   },

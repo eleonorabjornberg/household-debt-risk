@@ -1,3 +1,5 @@
+import { SHARED_LIMITS } from "@/lib/ask/shared-limits.generated";
+// Limits live in claims/limits.json (one place for the site, the Ask API and the MCP; Eleonora, 2026-11-11).
 // Copy for /methods, moved from web/content/story.ts (Eleonora's site-visible (b), 2026-11-07: one site).
 // Cut to short form on 2026-11-11 (Eleonora: "10 times too much text"; review list P1).
 // Numbers in this file are scanned by claims/check_register.py; each has a register row located here.
@@ -18,18 +20,6 @@ export const methods = {
     "Public means the federal government, GSEs and agency pools (the mortgages in those pools included), and state and local governments. Private means banks and credit unions, private securitization and REITs, and finance companies and other lenders.",
     "Crisis test: no detectable rise in the public share after recession peaks (placebo p ≈ 0.30, low power).",
   ],
-  limits: [
-    { title: "Holding is not bearing", body: "Bank-held FFEL, FHA and VA loans count as private, so public risk is understated; GSE risk transfer pushes the other way." },
-    { title: "About 13% of liabilities are out of scope", body: "Mainly nonprofit commercial mortgages and other loans." },
-    { title: "Student loans before 2006 are imputed", body: "A linear ramp from 1965, flagged as estimated. Without it, uncollateralized debt jumps from 7.6% to 11.5% in 2006 Q1." },
-    { title: "Durables proxy", body: "Vehicle collateral is proxied by all consumer durables, so auto coverage is overstated." },
-    { title: "Buy-now-pay-later is missing", body: "Mostly unreported to credit bureaus and absent from Z.1." },
-    { title: "2010 accounting break", body: "FAS 166 and 167 moved agency pools onto GSE balance sheets. The public share is unaffected." },
-    { title: "Fed MBS is rate risk", body: "It sits inside agency pools and is never added on top; the agencies keep the credit risk." },
-    { title: "NY Fed and Z.1 can disagree", body: "NY Fed: a 5% sample of credit files, mortgages down $74B in 2026 Q2. Z.1: lenders' balance sheets, up $150B before seasonal adjustment." },
-    { title: "Student-loan delinquency", body: "Defaulted loans returned to credit reports in May 2025; the jump is partly re-reporting." },
-    { title: "Z.1 revises history", body: "Every vintage is kept; this site shows the latest." },
-    { title: "Scenario presets are proxies", body: "Bank loss rates from the stress test and the crisis replay, applied to every holder. The replay likely overstates the public share; leaving out federal student loans lowers it. Today’s balances in today’s dollars, not a forecast of defaults." },
-  ],
+  limits: SHARED_LIMITS,
   catalogIntro: "Every series the pipeline loads, from pipeline/series_catalog.yaml.",
 };

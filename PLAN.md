@@ -269,6 +269,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-11 | Docket 56 b4-student-proxy-map: **(b)**, pair the CBO proxy with the Education Department's loan-volume estimate in its rule (91 FR 23768) as the volume side, after a source check. Still no loss-engine change until she reviews it. | Eleonora |
 | 2026-11-11 | Review queue 37: rv-b4-ed-37 **ok**, keep the ED loan-volume side of the B4 student-loan scenario on the branch as a labelled UNVERIFIED Claude draft. Not released to production; no loss-engine change. | Eleonora |
 | 2026-11-11 | In chat: "caveats belong in one place only: limits". The /methods Caveats section is now **Limits** (`/methods#limits`) and is the only place caveats appear. The scenarios caveat list, the dashboard student-loan note and the scenario tool's holder-vs-bearer line were folded into it, and each spot now links to `/methods#limits`. |
+| 2026-11-11 | AskUserQuestion on the Ask API and MCP: **"Rename to limits"**. The `caveats` field is now `limits` in both, built from one shared file, `claims/limits.json`, which /methods#limits also reads (13 items: the 11 site items plus 2 API-only items). |
+| 2026-11-11 | In chat, on the write-ups getting only a light pass: **"sure, as long as the mcp/api has it"**. A hard cut of the research pages on the site is OK, provided the full write-ups stay available through the MCP and the Ask API. |
 
 ## Environment prerequisites
 

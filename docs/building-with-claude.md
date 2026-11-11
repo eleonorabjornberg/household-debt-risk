@@ -865,3 +865,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Parity fixtures regenerated with `atlas/scripts/ask_parity_fixtures.py`. Docs and tests updated (MCP README, server text, analyst agents, test assertions). Historical records (evals calls.jsonl, prompts/) untouched; transcripts.md got a one-line note.
 - `atlas/content/methods.ts` is not touched; the coordinator points it at the shared file later.
 - Errors: the worktree started on an older commit than the brief named (no `methods.ts`); caught by the subagent and moved to a81696f before any change.
+
+## 2026-11-11 (coordinator): one limits file, wired into /methods
+- Eleonora chose "Rename to limits" for the Ask API and MCP. The Sonnet subagent's commit (one `claims/limits.json`, `caveats` -> `limits`) was cherry-picked; the coordinator then pointed `atlas/content/methods.ts` at the generated `SHARED_LIMITS`, so the wording lives in one file. /methods#limits now also shows the two API-only items.
+- Register: the rows for 13%, 7.6%/11.5% and 5%/$74B/$150B now point at `claims/limits.json` lines. Error: the two new header lines in methods.ts shifted four scope rows by two; caught by the register test (`claims/test_register.py`) and fixed in the same task.
+- Eleonora OK'd a hard cut of the site write-ups ("sure, as long as the mcp/api has it"); next task, full text served by the MCP and Ask API first.
+- Checks: atlas tsc, vitest 176/176, build; checks.sh rc 0; claims 16 passed; MCP 37 passed, 1 skipped; site sync up to date.
