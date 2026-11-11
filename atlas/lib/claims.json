@@ -3,7 +3,8 @@
  "generatedFrom": [
   "claims/register.csv",
   "claims/tracks/analysis.csv",
-  "claims/tracks/infra.csv"
+  "claims/tracks/infra.csv",
+  "claims/tracks/markets.csv"
  ],
  "claims": [
   {

@@ -335,5 +335,23 @@
       "role": "nyfed",
       "desc": "NY Fed CCP tables, quarterly 2003Q1+"
     }
+  ],
+  "context_sources": [
+    {
+      "id": "cbo_spending_detail",
+      "publisher": "Congressional Budget Office",
+      "title": "Spending Projections by Budget Account (publication 51142)",
+      "repository": "https://github.com/US-CBO/cbo-data",
+      "commit": "284a95665f9f2f74ed1f482feb629b43fce323da",
+      "files": "data/budget/spending_detail/annual_fy_{2024-06,2025-01,2026-02}.csv",
+      "accounts": [
+        "091-0243-0-1-502 Federal Direct Student Loan Program Account (Mandatory)"
+      ],
+      "units": "USD millions, outlays and budget authority by federal fiscal year",
+      "used_by": "B4 student-loan scenario, as a labelled budget-side proxy (research/b4_policy_scenarios/, METHOD.md 3b)",
+      "decision": "cbo-repo-55 (b), Eleonora, 2026-11-11: budget-side context only",
+      "provenance": "research/b4_policy_scenarios/sources.md",
+      "note": "Program-account outlays are subsidy cost (2 U.S.C. 661a), not loan volume. No fair-value estimates (A6)."
+    }
   ]
 }

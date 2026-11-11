@@ -20,3 +20,21 @@ Checked with the `source-provenance` skill by Claude. The pages are not committe
 - www.ed.gov and studentaid.gov (000): Education Department implementation of P.L. 119-21.
 - www.federalregister.gov (000): rules implementing either.
 - www.congress.gov: answers 403 itself (GovInfo used instead).
+
+## CBO budget data for the student-loan proxy (card cbo-repo-55 (b), 2026-11-11)
+
+Checked with the `source-provenance` skill by Claude. Host github.com (git clone, sparse; the coordinator found api.github.com answers 403, so it is not used). Free; no account. Repository https://github.com/US-CBO/cbo-data at commit `284a95665f9f2f74ed1f482feb629b43fce323da` (committed 2026-06-12T15:14:18-04:00). The files are not committed; `cbo_extract.py` re-fetches this commit and checks every SHA-256 below before reading. Budget-side context only (her option text); the repository has no fair-value estimates (A6) and no estimate of lending moving to private lenders.
+
+| Supports | Source | File (in the repository) | Retrieved (UTC) | Bytes | SHA-256 | Quote |
+|---|---|---|---|---|---|---|
+| Dataset definition and units | CBO, "Spending Projections by Budget Account" (publication 51142), dataset schema | `data/budget/spending_detail/schema.json` | 2026-11-11 00:12 | 2308 | `ec69463df65fdce069aded93136d8ef165534dda852c7ef9ebd8b9e7f26c6ea0` | "Budget authority and outlays in millions of dollars." "Each row represents one budget account for one fiscal year." |
+| Direct Loan program account, June 2024 baseline (context only) | CBO, same dataset | `data/budget/spending_detail/annual_fy_2024-06.csv` | 2026-11-11 00:12 | 3728771 | `e3ba6b8ab26036fde23b0c0e0234930dfecb001669f3806c83680b9ca51b5559` | Rows with tin "091-0243-0-1-502", title "Federal Direct Student Loan Program Account", "Mandatory", FY2024–FY2034 |
+| Direct Loan program account, January 2025 baseline (before P.L. 119-21) | CBO, same dataset | `data/budget/spending_detail/annual_fy_2025-01.csv` | 2026-11-11 00:12 | 3636656 | `a56b2b37b38f7345cce6a2c173d86ed7fd3534d9742e130236178a52ec63fcac` | Same account, FY2025–FY2035 |
+| Direct Loan program account, February 2026 baseline (after P.L. 119-21) | CBO, same dataset | `data/budget/spending_detail/annual_fy_2026-02.csv` | 2026-11-11 00:12 | 3659443 | `161e2432d955fe37815a761454299a0b61de06298aff9bf4fcd89bb88939e1db` | Same account, FY2026–FY2036 |
+
+| Supports | Source | URL | Retrieved (UTC) | Bytes | SHA-256 | Quote |
+|---|---|---|---|---|---|---|
+| What a credit program account's outlays are: subsidy cost, not loan volume | 2 U.S.C. 661a (Federal Credit Reform Act, definitions), U.S. Code 2024 edition, GovInfo | https://www.govinfo.gov/content/pkg/USCODE-2024-title2/html/USCODE-2024-title2-chap17A-subchapIII-sec661a.htm | 2026-11-11 00:14 | 11405 | `37f4244fc1c593690d4d95da1af201329be914902deb55b32e2a9cf75b3b9650` | "The term \"credit program account\" means the budget account into which an appropriation to cover the cost of a direct loan or loan guarantee program is made and from which such cost is disbursed to the financing account." "The term \"cost\" means the estimated long-term cost to the Government of a direct loan or loan guarantee or modification thereof, calculated on a net present value basis" |
+
+Two GovInfo URLs for the subchapter IV path returned GovInfo's "page cannot be found" body with status 200; they were discarded, and the link service `https://www.govinfo.gov/link/uscode/2/661a?link-type=html` resolved to the subchapter III page above.
+
