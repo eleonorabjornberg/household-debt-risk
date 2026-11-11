@@ -9,10 +9,10 @@ from household_credit_mcp.backends import repo_file
 
 def assert_envelope(r, backend="snapshot"):
     assert r["ok"] is True and r["backend"] == backend
-    for k in ("units", "series_ids", "vintage", "caveats", "data"):
+    for k in ("units", "series_ids", "vintage", "limits", "data"):
         assert k in r
     assert r["vintage"]["source_vintage"]
-    assert r["caveats"]
+    assert r["limits"]
 
 
 def test_list_and_describe(be):
@@ -21,7 +21,7 @@ def test_list_and_describe(be):
     assert {s["id"] for s in r["data"]} == {"FL153166100", "FL153166220", "FL153166400", "FL153166205"}
     d = core.describe_series(be, "fl153166400")
     assert_envelope(d)
-    assert d["data"]["desc"] == "Auto loans" and any("holder" in c for c in d["caveats"])
+    assert d["data"]["desc"] == "Auto loans" and any("holder" in c for c in d["limits"])
     bad = core.describe_series(be, "NOPE")
     assert bad["refused"] and bad["reason_code"] == "unknown_series"
 
@@ -30,7 +30,7 @@ def test_public_share_latest_and_measures(be):
     r = core.public_share(be)
     assert_envelope(r)
     assert r["data"][0]["quarter"] == "2026Q2" and r["vintage"]["source_vintage"] == "2026-09-11"
-    assert any("not a guarantee" in c for c in r["caveats"])
+    assert any("Holding is not bearing" in c for c in r["limits"])
     m = core.public_share(be, "2026Q2", "2026Q2", "mortgage")
     c = core.public_share(be, "2026Q2", "2026Q2", "consumer_credit")
     assert m["data"][0]["public_share_display"] == "65.6%" and c["data"][0]["public_share_display"] == "31.3%"
@@ -66,14 +66,14 @@ def test_collateral_coverage(be):
     r = core.collateral_coverage(be, "2026Q2", "2026Q2")
     assert_envelope(r)
     assert {x["collateral_class"] for x in r["data"]} == {"home_backed", "vehicle_backed", "uncollateralized", "other_nonrevolving"}
-    assert any("durable" in c for c in r["caveats"])
+    assert any("durable" in c for c in r["limits"])
 
 
 def test_nyfed_labelled(be):
     r = core.nyfed_by_type(be, "2003Q1", "2003Q2")
     assert_envelope(r)
     assert r["source"] == "nyfed" and r["vintage"]["source_vintage"] == "2026-10-27"
-    assert "NEW YORK FED" in r["caveats"][0] and "NOT FEDERAL RESERVE Z.1" in r["caveats"][0]
+    assert "NEW YORK FED" in r["limits"][0] and "NOT FEDERAL RESERVE Z.1" in r["limits"][0]
     assert core.nyfed_by_type(be, "2002Q4", "2003Q1")["reason_code"] == "before_coverage"
 
 

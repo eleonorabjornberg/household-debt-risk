@@ -8,7 +8,7 @@ from .backends import get_backend
 
 mcp = FastMCP("household-credit-mcp", instructions=(
     "Read-only data about who holds US household mortgage + consumer credit (Fed Z.1) and NY Fed CCP delinquency "
-    "by type. Quote only numbers returned by tools, with their vintage and caveats. If a tool returns refused=true, "
+    "by type. Quote only numbers returned by tools, with their vintage and limits. If a tool returns refused=true, "
     "say so and offer the nearest_answerable alternative; never fill the gap with an estimate."))
 
 _backend = None
@@ -29,7 +29,7 @@ def list_series(role: str | None = None, source: str | None = None) -> dict:
 
 @mcp.tool()
 def describe_series(id: str) -> dict:
-    """Describe one catalogued series by ID (e.g. FL153166400): role, risk bucket, units, caveats."""
+    """Describe one catalogued series by ID (e.g. FL153166400): role, risk bucket, units, limits."""
     return core.describe_series(backend(), id)
 
 

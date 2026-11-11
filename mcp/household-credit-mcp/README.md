@@ -2,7 +2,7 @@
 
 Read-only MCP server over the household-debt-risk warehouse: who holds America's household mortgage and consumer credit (Fed Z.1) and how NY Fed CCP delinquency splits by loan type. Built to back "Ask Hot Potato" (D6), the question-to-SQL benchmark (E1) and the Cowork plugin (D7).
 
-Every result carries values, units, series IDs, source vintage, the backend used, and caveats. Questions the data cannot answer return a structured refusal (`ok: false, refused: true, reason_code, reason, nearest_answerable`) with no numbers.
+Every result carries values, units, series IDs, source vintage, the backend used, and limits (the shared texts come from `claims/limits.json`; `limits_url` points to /methods#limits). Questions the data cannot answer return a structured refusal (`ok: false, refused: true, reason_code, reason, nearest_answerable`) with no numbers.
 
 ## Tools
 

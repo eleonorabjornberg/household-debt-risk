@@ -1,5 +1,7 @@
 # Recorded tool calls
 
+Recorded before 2026-11-11, when the `caveats` field was renamed `limits`.
+
 Real calls made through an MCP stdio client against the snapshot backend (`web/public/data`, Z.1 vintage 2026-09-11). Output is verbatim JSON from the server. Regenerate with `uv run python examples/record_transcripts.py`.
 
 ## Public share, 2026Q2

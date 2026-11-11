@@ -23,7 +23,7 @@ def payload(res):
     return sc.get("result", sc) if sc else json.loads(res.content[0].text)
 
 def trim(o):
-    # keep transcripts readable: only truncate long caveat prose, never numbers
+    # keep transcripts readable: only truncate long limits prose, never numbers
     return o
 
 async def main():

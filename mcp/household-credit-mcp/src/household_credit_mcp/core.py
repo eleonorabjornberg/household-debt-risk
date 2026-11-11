@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import json
 import re
 from functools import lru_cache
 from typing import Any
@@ -11,15 +12,22 @@ import yaml
 from .backends import repo_file
 
 Z1_UNITS = "USD millions, end of quarter, not seasonally adjusted (Z.1 levels)"
-COMMON_Z1 = [
-    "Z.1 levels are end-of-quarter and not seasonally adjusted.",
-    "Holding is not a guarantee: a public holder owning a loan is not the same as the public guaranteeing it, "
-    "and a private holder may be protected by a guarantee.",
-    "Mortgage holders are reported for ALL 1-4 family mortgages (incl. business borrowers) and apportioned to "
-    "households by each holder's share; this is a method, not a published Z.1 holder split for households.",
-    "Scope = household and nonprofit 1-4 family mortgages + consumer credit (FL154104015), about 87% of total "
-    "household liabilities; it excludes HELOCs-as-separate-line, business debt and other liabilities.",
-]
+LIMITS_URL = "/methods#limits"
+
+
+@lru_cache(maxsize=1)
+def _shared_limits() -> dict[str, str]:
+    """Shared limit texts from claims/limits.json (one source, also behind the site and the Ask API), as 'title: body'."""
+    with open(repo_file("claims", "limits.json"), encoding="utf-8") as f:
+        return {x["id"]: f"{x['title']}: {x['body']}" for x in json.load(f)}
+
+
+def shared(*ids: str) -> list[str]:
+    texts = _shared_limits()
+    return [texts[i] for i in ids]
+
+
+COMMON_Z1 = shared("z1-levels-nsa", "holding-not-bearing", "mortgage-holders-apportioned", "out-of-scope-liabilities")
 PUBLIC_BUCKETS = ["federal_direct", "gse_agency", "state_local"]
 TOOLS = {  # nearest-answerable pointers
     "public_share": "public_share(start, end, measure)",
@@ -31,13 +39,13 @@ TOOLS = {  # nearest-answerable pointers
 
 # ------------------------------------------------------------------ envelope helpers
 def ok(backend, tool: str, data: Any, *, units: dict | str, series_ids: list[str], source: str,
-       caveats: list[str], extra: dict | None = None) -> dict:
+       limits: list[str], extra: dict | None = None) -> dict:
     v = backend.vintages()
     out = {
         "ok": True, "tool": tool, "backend": backend.name,
         "source": source,
         "vintage": {"source_vintage": v.get(source if source in v else "z1"), "all": v},
-        "units": units, "series_ids": series_ids, "caveats": caveats, "data": data,
+        "units": units, "series_ids": series_ids, "limits": limits, "limits_url": LIMITS_URL, "data": data,
     }
     if getattr(backend, "note", None):
         out["backend_note"] = backend.note
@@ -121,7 +129,7 @@ def list_series(backend, role: str | None = None, source: str | None = None) -> 
              "risk_bucket": s.get("risk_bucket"), "debt_type": s.get("debt_type")} for s in rows]
     roles = sorted({s["role"] for s in catalog()["series"]})
     return ok(backend, "list_series", data, units="n/a (catalog listing)", series_ids=[s["id"] for s in rows],
-              source="z1", caveats=[f"Available roles: {', '.join(roles)}.",
+              source="z1", limits=[f"Available roles: {', '.join(roles)}.",
                                     "Catalog is pipeline/series_catalog.yaml; it lists what is loaded, not every Z.1 series."])
 
 
@@ -132,19 +140,19 @@ def describe_series(backend, id: str) -> dict:
         return refusal(backend, "describe_series", "unknown_series",
                        f"{id!r} is not in the series catalog (the data holds only catalogued series).",
                        [{"tool": "list_series", "args": {}}])
-    cav = []
+    lim = []
     if hit["role"] == "mortgage_holder":
-        cav.append("Holder of ALL 1-4 family mortgages (asset side); apportioned to households in the mart.")
+        lim.append("Holder of ALL 1-4 family mortgages (asset side); apportioned to households in the mart.")
     if hit["role"] == "cc_holder":
-        cav.append("Holder of consumer credit (asset side); one dimension only, not split by loan type.")
+        lim.append("Holder of consumer credit (asset side); one dimension only, not split by loan type.")
     if hit["role"] == "cc_type":
-        cav.append("Loan type (liability side); Z.1 does not split these by holder.")
+        lim.append("Loan type (liability side); Z.1 does not split these by holder.")
     if hit["id"] == "FL155111005":
-        cav.append("Consumer durable goods used as a proxy for vehicle collateral; it overstates vehicles.")
+        lim.extend(shared("durables-proxy") + ["The proxy series is FL155111005."])
     if hit["source"] == "fred":
-        cav.append("Context series; not part of the holder shares.")
+        lim.append("Context series; not part of the holder shares.")
     return ok(backend, "describe_series", _series_row(hit), units=_series_row(hit)["units"],
-              series_ids=[hit["id"]], source=hit["source"], caveats=cav or ["See catalog header for methods."])
+              series_ids=[hit["id"]], source=hit["source"], limits=lim or ["See catalog header for methods."])
 
 
 # ------------------------------------------------------------------ data tools
@@ -179,10 +187,10 @@ def public_share(backend, start=None, end=None, measure="total") -> dict:
     ids = {"total": ["FL154104015", "FL153165105", "FL153166000"] + _ids(PUBLIC_BUCKETS),
            "mortgage": ["FL153165105", "FL893065105"] + _ids(PUBLIC_BUCKETS, ("mortgage_holder",)),
            "consumer_credit": ["FL153166000"] + _ids(PUBLIC_BUCKETS, ("cc_holder",))}[measure]
-    cav = COMMON_Z1 + ["Public = federal government (direct) + GSEs & agency pools + state & local governments. "
+    lim = COMMON_Z1 + ["Public = federal government (direct) + GSEs & agency pools + state & local governments. "
                        "Dollars are nominal.",
-                       "fed_mbs_musd (Fed MBS, WSHOMCB) is a QE overlay already inside agency pools; never add it."]
-    return ok(backend, tool, rows, source="z1", series_ids=ids, caveats=cav,
+                       "fed_mbs_musd is Fed MBS (WSHOMCB)."] + shared("fed-mbs-rate-risk")
+    return ok(backend, tool, rows, source="z1", series_ids=ids, limits=lim,
               units={"public_share": "fraction 0-1 (display as %)", "public_musd": Z1_UNITS,
                      "scope_total_musd": Z1_UNITS, "measure": measure})
 
@@ -231,7 +239,7 @@ def holdings_by_bucket(backend, quarter=None) -> dict:
               units={"nominal_musd": Z1_UNITS, "real_musd": "USD millions, constant dollars of the latest CPI "
                      "quarter (CPIAUCSL, FRED); an estimate",
                      "share_of_scope": "fraction 0-1 of mortgages + consumer credit"},
-              caveats=COMMON_Z1 + ["Six risk buckets are this project's grouping of Z.1 holder sectors (catalog).",
+              limits=COMMON_Z1 + ["Six risk buckets are this project's grouping of Z.1 holder sectors (catalog).",
                                    "real_musd uses a CPI deflator and is not a published Z.1 number."],
               extra={"summary": summary})
 
@@ -267,7 +275,7 @@ def crisis_windows(backend, crisis_id=None, metric="public_share") -> dict:
               units={"value_at_t0": "ratio (collateral/debt)" if ratio else "fraction 0-1",
                      "delta_qN": "change vs t0, in ratio units" if ratio else "percentage points vs t0 (computed here as delta*100)",
                      "window": "q_offset -8..+16 quarters around t0 (crisis start quarter)"},
-              caveats=COMMON_Z1 + ["Event windows are descriptive; a change after a crisis start is not shown to be caused by it.",
+              limits=COMMON_Z1 + ["Event windows are descriptive; a change after a crisis start is not shown to be caused by it.",
                                    "Recent crises have truncated windows (see max_offset_available); missing deltas are null, not zero."],
               extra={"metric": metric})
 
@@ -289,9 +297,9 @@ def collateral_coverage(backend, start=None, end=None) -> dict:
               units={"debt_musd": Z1_UNITS, "collateral_value_musd": Z1_UNITS,
                      "coverage_ratio": "aggregate collateral value / aggregate debt (a ratio, not per-loan LTV)",
                      "share_of_scope": "fraction 0-1"},
-              caveats=COMMON_Z1 + [
+              limits=COMMON_Z1 + [
                   "Coverage is a sector-level aggregate; it says nothing about any individual borrower's equity.",
-                  "Vehicle collateral is proxied by consumer durable goods (FL155111005) and overstates vehicles.",
+                  *shared("durables-proxy"), "The durables series is FL155111005.",
                   "Uncollateralized and other non-revolving classes have no collateral value (null ratio).",
                   "Rows with is_estimated=true use an imputed loan-type split (early years); treat as estimates."])
 
@@ -308,7 +316,7 @@ def nyfed_by_type(backend, start=None, end=None) -> dict:
     return ok(backend, tool, data, source="nyfed", series_ids=["NYFED_HHDC"],
               units={"balance_busd": "USD billions as published", "transition_into_serious_delinquency_pct":
                      "% of balance newly 90+ days delinquent, annualized, as published"},
-              caveats=["SOURCE IS THE NEW YORK FED CONSUMER CREDIT PANEL (credit bureau data), NOT FEDERAL RESERVE Z.1.",
+              limits=["SOURCE IS THE NEW YORK FED CONSUMER CREDIT PANEL (credit bureau data), NOT FEDERAL RESERVE Z.1.",
                        "Balances use a different definition from Z.1 and do not reconcile to Z.1 totals; do not mix them.",
                        "This table splits by loan TYPE only. It has no holder dimension, so it cannot say who holds the debt.",
                        "Student-loan delinquency transition is null in early years (not reported).",
@@ -350,7 +358,7 @@ def lookup_claim(backend, text_or_id: str, limit: int = 5) -> dict:
              "vintage": c["vintage"], "validation": c["validation"], "computation": c["computation"],
              "notes": c["notes"], "quotable_as_verified": c["validation"] == "PASS"} for c in hits]
     return ok(backend, "lookup_claim", data, units="as stated per claim", series_ids=sorted({s for d in data for s in d["series_ids"]}),
-              source="z1", caveats=[
+              source="z1", limits=[
                   "Source is claims/register.csv (read from the repository, not the database).",
                   "Only validation=PASS rows are verified. UNVERIFIED rows are registered but not yet checked; "
                   "ESTIMATE rows are labelled estimates. Do not present non-PASS rows as fact.",
@@ -386,7 +394,7 @@ def data_coverage(backend) -> dict:
                      "series_in_catalog": len(cat["series"])},
     }
     return ok(backend, "data_coverage", data, units="n/a", series_ids=[], source="z1",
-              caveats=["Coverage dates come from the backend in use; vintages are in the vintage field."])
+              limits=["Coverage dates come from the backend in use; vintages are in the vintage field."])
 
 
 def backend_meta(backend):
@@ -440,4 +448,4 @@ def check_answerable(backend, question: str) -> dict:
                            f"Latest quarter is {label(hi)}.", [{"tool": "public_share", "args": {"end": label(hi)}}])
     return ok(backend, tool, {"answerable": True, "note": "No refusal pattern matched. Use the data tools; they "
                               "still refuse out-of-coverage quarters."}, units="n/a", series_ids=[], source="z1",
-              caveats=["Heuristic check only."])
+              limits=["Heuristic check only."])
