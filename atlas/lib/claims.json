@@ -19,7 +19,7 @@
    "period": "n/a",
    "locations": [
     "atlas/content/story.ts:44",
-    "atlas/app/page.tsx:28",
+    "atlas/app/page.tsx:26",
     "atlas/content/story.ts:11",
     "atlas/components/Experience.tsx:211"
    ],
@@ -1213,7 +1213,7 @@
    "period": "1952Q1",
    "locations": [
     "atlas/content/story.ts:46",
-    "atlas/app/page.tsx:26"
+    "atlas/app/page.tsx:24"
    ],
    "computation": "C1",
    "series": [
@@ -1394,7 +1394,7 @@
    "locations": [
     "atlas/content/story.ts:95",
     "atlas/content/story.ts:112",
-    "atlas/app/page.tsx:27",
+    "atlas/app/page.tsx:25",
     "atlas/components/dashboard/Dashboard.tsx:144"
    ],
    "computation": "C2",
