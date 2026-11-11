@@ -778,3 +778,6 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 
 ### 2026-11-11: home header and gradient-free build released (coordinator)
 - Eleonora said "release it to production". Production was redeployed from the READY preview of 034e16d (dpl_5tZmWDzS8UwyR2XtK6qhaHK6UShZ → production dpl_EHxjDM6nKYrfGn95obaYD2hn7pVp). The release carries everything on the branch since 6ec789d: the flat header (gradients-55 (a)), the removed halftone discs, the workflow and build schema on /how-it-was-built, and the B4 CBO proxy README (UNVERIFIED, Claude draft). Rollback target: dpl_HmveLFPi7yeVaENkfYp8TXq1UFJY (6ec789d).
+
+### 2026-11-11: review queue 35/36 and docket 56 answers recorded (coordinator)
+- Eleonora's answers: rv-gradients-35, rv-schema-35 and rv-header-36 ok-prod (already live in the 034e16d release); rv-b4-cbo-35 ok as a labelled draft; docket 56 b4-student-proxy-map (b), add the Education Department's loan-volume estimate (91 FR 23768) as the volume side after a source check, with no loss-engine change until she reviews it. Recorded in PLAN.md "Decisions taken" and the B4 status; (b) relayed to the markets track.
