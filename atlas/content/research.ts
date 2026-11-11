@@ -37,7 +37,7 @@ export const research: ResearchEntry[] = [
     status: ["done", "accepted by Eleonora 2026-11-04"] },
   { id: "A5", slug: "a5",
     question: "**Distribution**: geographic and by income/wealth; who borrows vs who carries the risk",
-    method: "Who borrows (by income, wealth and state) set beside who holds the loans, with a labelled estimate linking the two.",
+    method: "Who borrows (by income, wealth and state) set beside who holds the loans, with a labeled estimate linking the two.",
     status: ["done", "accepted by Eleonora 2026-11-04"] },
   { id: "A6", slug: null,
     question: "**Hidden subsidy**: CBO-style fair-value estimate of the subsidy in government-held household credit risk",

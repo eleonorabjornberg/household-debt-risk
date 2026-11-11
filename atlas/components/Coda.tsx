@@ -3,6 +3,7 @@ import { BUCKETS, type Series } from "@/lib/types";
 import { coda, meaning, PILE_LONG, site } from "@/content/story";
 import { ClaimRef, Sourced } from "./claims/SourceRef";
 import { PotatoPerson } from "./Potato";
+import { DraftBanner } from "./pages/DraftBanner";
 
 export default function Coda({ series }: { series: Series }) {
   const firstYear = Number(series.dates[0].slice(0, 4)) + 1;
@@ -33,6 +34,7 @@ export default function Coda({ series }: { series: Series }) {
   return (
     <section className="coda" aria-labelledby="coda-title">
       <div className="coda__inner">
+        <DraftBanner testId="home-draft-banner" />
         <h2 id="coda-title">{meaning.title}</h2>
         <ol className="meaning">
           {meaning.points.map((p, i) => (

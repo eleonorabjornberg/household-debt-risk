@@ -6,6 +6,7 @@ import catalog from "@/content/series_catalog.json";
 import { methods } from "@/content/methods";
 import { getSeries } from "@/lib/data";
 import { Sourced } from "@/components/claims/SourceRef";
+import { DraftBanner } from "@/components/pages/DraftBanner";
 
 // Moved from web/app/methods (site-visible (b), 2026-11-07: one site). Copy in content/methods.ts.
 // Statically built and refreshed daily, like the home page.
@@ -71,6 +72,7 @@ export default async function MethodsPage() {
 
   return (
     <main className="pg">
+      <DraftBanner testId="methods-draft-banner" />
       <header className="pg-col">
         <p className="tag">Methods</p>
         <h1>How this was made</h1>

@@ -92,7 +92,7 @@ export const steps: Step[] = [
     kicker: "Today",
     title: "Most of it is public now",
     body:
-      "{public} of {total}, or {share}, sits with the public sector. Mostly slowly; one crisis made it permanent.",
+      "{public} of {total}, or {share}, sits with the public sector. Most of the shift was gradual; one crisis made it permanent.",
   },
   {
     date: "2026-06-30",
@@ -110,8 +110,8 @@ export const meaning = {
   points: [
     {
       stat: "{share}",
-      title: "Taxpayers are the backstop, not the first loss",
-      body: "Holding a loan is not losing on it: homes are worth 3.56× the mortgages against them.",
+      title: "Taxpayers are the backstop; collateral takes the first loss",
+      body: "A holder loses only what the collateral fails to cover, and homes are worth 3.56× the mortgages against them.",
     },
     {
       stat: "13.1 pp",
@@ -126,7 +126,7 @@ export const meaning = {
     {
       stat: "2025",
       title: "What to watch",
-      body: "Student-loan collections restarted in 2025, the first real test of the unsecured public book.",
+      body: "Student-loan collections restarted in 2025: the first test of the unsecured public book.",
     },
   ],
 };

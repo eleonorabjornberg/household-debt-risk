@@ -46,7 +46,6 @@ export default async function ResearchPage({ params }: { params: Promise<{ slug:
             <li key={r.id}><strong>{r.id}.</strong> <MarkdownInline c={parseInline(r.question)} /></li>
           ))}
           {entries.map((r) => <li key={`${r.id}-m`}>{r.method}</li>)}
-          <li>The full write-up follows.</li>
         </ul>
       </aside>
       <article className="pg-col findings research-doc">
