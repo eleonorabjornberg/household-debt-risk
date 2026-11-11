@@ -154,8 +154,7 @@ function Tool({ testCase }: { testCase: Case | null }) {
             {transferOn && <div><dt>Moved by transfer</dt><dd data-testid="b3-transferred">{usdFromMillions(r.sum.transferred)}</dd></div>}
           </dl>
           <p className={styles.hint}>
-            Estimates under the chosen scenario, in today’s dollars, not discounted. Public and private refer to who holds
-            the loans, not who finally bears the loss.
+            Estimates under the chosen scenario, not discounted. <a href="/methods#limits">Limits</a>.
           </p>
           {n > 0 && r.sum.total > 0 && (
             <figure className={`figure chart ${styles.figure}`}>

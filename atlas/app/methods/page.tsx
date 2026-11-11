@@ -13,7 +13,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Methods · Hot Potato",
-  description: "Data lineage, the series catalog and caveats behind Hot Potato.",
+  description: "Data lineage, the series catalog and the limits behind Hot Potato.",
 };
 
 interface SnapshotMeta { cpi_base_quarter?: string; vintages?: Record<string, string> }
@@ -101,11 +101,11 @@ export default async function MethodsPage() {
         </div>
       </section>
 
-      <section className="pg-section" aria-labelledby="caveats">
+      <section className="pg-section" aria-labelledby="limits">
         <div className="pg-col">
-          <h2 id="caveats">Caveats</h2>
-          <dl className="caveats">
-            {methods.caveats.map((c) => (
+          <h2 id="limits">Limits</h2>
+          <dl className="limits">
+            {methods.limits.map((c) => (
               <div key={c.title}>
                 <dt><Sourced text={c.title} /></dt>
                 <dd><Sourced text={c.body} context={c.title} /></dd>

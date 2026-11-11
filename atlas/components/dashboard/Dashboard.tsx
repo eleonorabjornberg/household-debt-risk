@@ -155,7 +155,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
           <p className="dash-tile__label">Into serious delinquency (90+ days), % of balance, annualized</p>
           <TransitionRows moves={tiles.transitions} only={focus ? [focus] : [...LOAN_TYPES]} />
           <p className="dash-tile__note">
-            NY Fed, {fmtQuarter(tiles.transitions.mortgage.date)}, pp. Student loans: partly re-reporting since May 2025.
+            NY Fed, {fmtQuarter(tiles.transitions.mortgage.date)}, pp. <a href="/methods#limits">Limits</a>.
           </p>
         </div>
       </section>

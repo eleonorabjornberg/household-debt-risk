@@ -18,7 +18,7 @@ export const methods = {
     "Public means federal government, GSEs and agency pools, and state and local governments.",
     "Crisis test: no detectable rise in the public share after recession peaks (placebo p ≈ 0.30, low power).",
   ],
-  caveats: [
+  limits: [
     { title: "Holding is not bearing", body: "Bank-held FFEL, FHA and VA loans count as private, so public risk is understated; GSE risk transfer pushes the other way." },
     { title: "About 13% of liabilities are out of scope", body: "Mainly nonprofit commercial mortgages and other loans." },
     { title: "Student loans before 2006 are imputed", body: "A linear ramp from 1965, flagged as estimated. Without it, uncollateralized debt jumps from 7.6% to 11.5% in 2006 Q1." },
@@ -29,6 +29,7 @@ export const methods = {
     { title: "NY Fed and Z.1 can disagree", body: "NY Fed: a 5% sample of credit files, mortgages down $74B in 2026 Q2. Z.1: lenders' balance sheets, up $150B before seasonal adjustment." },
     { title: "Student-loan delinquency", body: "Defaulted loans returned to credit reports in May 2025; the jump is partly re-reporting." },
     { title: "Z.1 revises history", body: "Every vintage is kept; this site shows the latest." },
+    { title: "Scenario presets are proxies", body: "Bank loss rates from the stress test and the crisis replay, applied to every holder. The replay likely overstates the public share; leaving out federal student loans lowers it. Today’s balances in today’s dollars, not a forecast of defaults." },
   ],
   catalogIntro: "Every series the pipeline loads, from pipeline/series_catalog.yaml.",
 };

@@ -825,3 +825,15 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Top bar: Methods and Sources merged into one entry, "Methods & sources", which is highlighted on both pages. Both routes remain, and each page links to the other.
 - Not changed: the how-it-was-built tiles still link to `tree/main`. Pointing them at the working branch would break once it merges.
 - Checked: tsc clean, atlas 176/176, next build OK, hook rc 0. Screenshots at 1440 px and 390 px (methods, research, a write-up, sources): no horizontal overflow. The Methods filter shows 10 of 63 rows. Branch only; production waits on her OK. No errors caught this round.
+
+### 2026-11-11: caveats in one place, "Limits" (coordinator)
+- Eleonora's ruling in chat: "caveats belong in one place only: limits".
+- /methods: the Caveats section is renamed **Limits** (anchor `#limits`; key `limits` in `content/methods.ts`). One item was added, "Scenario presets are proxies", folded in from /scenarios. It has no numbers, so it needs no new register rows.
+- Removed duplicates, each replaced with a link to `/methods#limits`:
+  - the /scenarios "Before you quote a number" list;
+  - the dashboard's student-loan re-reporting note;
+  - the scenario tool's "holds, not bears" sentence.
+- The Coda now says "limits" instead of "caveats".
+- Not changed: research write-ups keep their own method sections, and the Ask tool's `caveats` API field is left as is.
+- Checked: tsc clean, atlas 176/176, build OK, hook rc 0. Registered line numbers in methods.ts are unchanged, because the new item is appended.
+- Errors: none.

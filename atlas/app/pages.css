@@ -49,10 +49,10 @@
 .lineage li { display: grid; grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr); gap: 4px 18px; padding: 10px 0; border-bottom: 1px solid var(--muted-line); }
 .lineage li + li { margin-top: 0; }
 .lineage strong { font-weight: 700; }
-.caveats { margin: 0; }
-.caveats div { padding: 12px 0; border-bottom: 1px solid var(--muted-line); }
-.caveats dt { font-weight: 700; }
-.caveats dd { margin: 4px 0 0; }
+.limits { margin: 0; }
+.limits div { padding: 12px 0; border-bottom: 1px solid var(--muted-line); }
+.limits dt { font-weight: 700; }
+.limits dd { margin: 4px 0 0; }
 .status { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 12px; margin: 0; }
 .status div { border-top: 2px solid var(--ink); padding-top: 6px; }
 .status dt { color: var(--muted); font-size: 13px; }
@@ -228,13 +228,6 @@ main.pg::before {
 .sc-def { margin-top: 0.75rem; }
 .sc-def summary { cursor: pointer; font-weight: 700; color: var(--accent); }
 .sc-def p { margin: 0.5rem 0 0; font-size: 0.95rem; }
-ul.sc-caveats { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
-ul.sc-caveats li { border: 2px solid var(--ink); padding: 0.8rem 1rem; font-size: 0.92rem; background: #fff; box-shadow: 4px 4px 0 var(--pile-1); }
-ul.sc-caveats li:nth-child(2) { box-shadow: 4px 4px 0 var(--pile-3); }
-ul.sc-caveats li:nth-child(3) { box-shadow: 4px 4px 0 var(--pile-0); }
-ul.sc-caveats li:nth-child(4) { box-shadow: 4px 4px 0 var(--pile-2); }
-ul.sc-caveats li:nth-child(5) { box-shadow: 4px 4px 0 var(--pile-5); }
-ul.sc-caveats li strong:first-child { font-size: 1rem; color: var(--accent); }
 
 /* /dashboard (F7, docket 54): filters, tiles and panels above the findings */
 .dash { margin-top: 28px; }
