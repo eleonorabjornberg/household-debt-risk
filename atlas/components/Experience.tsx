@@ -3,6 +3,7 @@
 // The scrollytelling shell: sticky stage (canvas + HUD + scrubber) with story steps scrolling over it. Scrolling to a
 // step sets the target quarter; the scrubber and play button set it directly. The canvas reports the quarter it shows; the HUD follows.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { PotatoPerson } from "./Potato";
 import DotStage, { type PileLabel } from "./DotStage";
 import { buildTimeline, DOLLAR_UNIT_MUSD, SHARE_DOTS, type Lens } from "@/lib/timeline";
 import { fmtPct, fmtQuarter, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
@@ -267,6 +268,12 @@ export default function Experience({ series }: { series: Series }) {
                 <p className="step__kicker tag">{s.kicker}</p>
                 <h2>{s.title}</h2>
                 <p><Sourced text={fill(s.body, stepIndex[i])} /></p>
+                {s.title === "The hot potato" && (
+                  <div className="step__fig" aria-hidden="true">
+                    <PotatoPerson potatoes={4} tone="private" pose="toss" width={110} />
+                    <PotatoPerson potatoes={5} tone="public" pose="sweat" width={80} />
+                  </div>
+                )}
               </div>
             </article>
           ))}

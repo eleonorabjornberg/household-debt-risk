@@ -2,6 +2,7 @@ import { fmtPct, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
 import { BUCKETS, type Series } from "@/lib/types";
 import { coda, meaning, PILE_LONG, site } from "@/content/story";
 import { ClaimRef, Sourced } from "./claims/SourceRef";
+import { PotatoPerson } from "./Potato";
 
 export default function Coda({ series }: { series: Series }) {
   const firstYear = Number(series.dates[0].slice(0, 4)) + 1;
@@ -15,12 +16,26 @@ export default function Coda({ series }: { series: Series }) {
       .replaceAll("{share}", fmtPct(series.publicShare[latest]))
       .replaceAll("{pls}", fmtTrillions(series.real[latest][BUCKETS.indexOf("private_securitization")].reduce((a, b) => a + b, 0)));
 
+  // Point 1: ten potatoes split by the latest public share (registered: public_share_2026q2). Others are decorative.
+  const pubN = Math.round(series.publicShare[latest] * 10);
+  const figure = (i: number) => {
+    if (i === 0) return (
+      <>
+        <PotatoPerson potatoes={pubN} tone="public" label="Public" width={96} />
+        <PotatoPerson potatoes={10 - pubN} tone="private" label="Private" width={96} />
+      </>
+    );
+    if (i === 1) return <PotatoPerson potatoes={3} tone="private" pose="toss" width={130} />;
+    if (i === 2) return <PotatoPerson potatoes={6} tone="public" pose="sweat" width={96} />;
+    return <PotatoPerson potatoes={1} tone="neutral" width={80} />;
+  };
+
   return (
     <section className="coda" aria-labelledby="coda-title">
       <div className="coda__inner">
         <h2 id="coda-title">{meaning.title}</h2>
         <ol className="meaning">
-          {meaning.points.map((p) => (
+          {meaning.points.map((p, i) => (
             <li key={p.title}>
               <span className="meaning__n">
                 {/* The {share} tile is the latest public share; other stats are literals the register cites. */}
@@ -30,6 +45,7 @@ export default function Coda({ series }: { series: Series }) {
                   <Sourced text={fill(p.stat)} context={p.body} />
                 )}
               </span>
+              <div className="meaning__fig">{figure(i)}</div>
               <h3>{p.title}</h3>
               <p><Sourced text={fill(p.body)} /></p>
             </li>

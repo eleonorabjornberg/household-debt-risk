@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DraftBanner } from "@/components/pages/DraftBanner";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { Dashboard } from "@/components/dashboard/Dashboard";
@@ -8,11 +9,12 @@ import { parseMarkdown, plain } from "@/lib/markdown";
 
 // PLAN F7, docket 54 (Eleonora, 2026-11-10): a Dashboard tab for a market reader, merged with Findings.
 // Core tiles and panels on top, computed from the mart snapshots in public/data (the vintage the register
-// cites); below them analysis/findings.md, shown whole and unedited (docket 48), with a contents list.
+// cites); below them analysis/findings.md, shown whole and unedited (docket 48), folded closed by default
+// (site review 2026-11-11: too much text on first view).
 // /findings redirects here (next.config.ts).
 export const metadata: Metadata = {
   title: "Dashboard · Hot Potato",
-  description: "Household debt now: who holds it, how much collateral backs it, and where delinquency is moving, with the full findings below.",
+  description: "Household debt now: who holds it, how much collateral backs it, and where delinquency is moving, with the full findings folded below.",
 };
 
 async function json<T>(name: string): Promise<T> {
@@ -34,35 +36,26 @@ export default async function DashboardPage() {
 
   return (
     <main className="pg">
-      <div className="pg-banner" role="note" data-testid="dash-draft-banner">
-        <p style={{ margin: 0 }}>
-          <strong>Claude draft</strong>
-          <span>The dashboard layout and its labels were drafted by Claude for Eleonora to review. The findings below are analysis/findings.md as it stands in the repository.</span>
-        </p>
-      </div>
+      <DraftBanner testId="dash-draft-banner" />
       <header>
         <div className="pg-col">
           <p className="tag">Dashboard</p>
           <h1>Household debt now</h1>
-          <p className="pg-lede">
-            Four numbers to watch each quarter, the holders behind them and delinquency by loan type. Filter by loan type and date
-            range. The full findings follow below.
-          </p>
+          <p className="pg-lede">Four numbers to watch each quarter.</p>
         </div>
       </header>
       <Dashboard tiles={tiles} mix={holderMix(holders, dim)} loans={loanPanel(nyfed)} />
-      <section className="pg-section" aria-labelledby="dash-findings">
-        <h2 id="dash-findings">The findings</h2>
-        <p className="pg-caption">analysis/findings.md as it stands. Jump to a section:</p>
+      <details className="pg-col findings-fold" id="findings">
+        <summary>The full findings ({contents.length} sections)</summary>
         <nav aria-label="Findings contents">
           <ol className="dash-toc">
             {contents.map((c) => <li key={c.id}><a href={`#${c.id}`}>{c.text}</a></li>)}
           </ol>
         </nav>
-      </section>
-      <article className="pg-col findings" id="findings">
-        <Markdown blocks={blocks} />
-      </article>
+        <article className="findings">
+          <Markdown blocks={blocks} />
+        </article>
+      </details>
     </main>
   );
 }

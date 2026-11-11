@@ -3,6 +3,7 @@
 // Every number on a tile is wrapped in a ClaimRef to its claims/register.csv row (dash_* and the
 // headline rows); lib/dashboard.test.ts checks the computed values against the register.
 import { useMemo, useState } from "react";
+import { PotatoPerson } from "@/components/Potato";
 import { ClaimRef } from "@/components/claims/SourceRef";
 import { TimeSeriesChart } from "@/components/pages/charts/TimeSeriesChart";
 import { DataTable, Legend, Segmented } from "@/components/pages/charts/parts";
@@ -139,23 +140,22 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
           value={<ClaimRef id="scope_usd_2026q2">{fmtUsd(scope.value)}</ClaimRef>}
           dq={<Delta id="z1_scope_change" v={scope.dq}>{fmtUsdDelta(scope.dq ?? 0)}</Delta>}
           dy={<Delta id="dash_scope_dy" v={scope.dy}>{fmtUsdDelta(scope.dy ?? 0)}</Delta>}
-          note="Home mortgages plus consumer credit, nominal dollars, Fed Z.1. Not seasonally adjusted." />
+          note="Mortgages plus consumer credit. Fed Z.1, nominal." />
         <Tile label="Public share"
           value={<ClaimRef id="public_share_2026q2">{pct(ps.value, 1)}</ClaimRef>}
           dq={<Delta id="dash_public_share_dq" v={ps.dq}>{fmtPp(ps.dq ?? 0)}</Delta>}
           dy={<Delta id="dash_public_share_dy" v={ps.dy}>{fmtPp(ps.dy ?? 0)}</Delta>}
-          note="Held by federal government, GSEs and agency pools, and state and local governments." />
+          note="Federal, GSEs, agency pools, state and local." />
         <Tile label="Home collateral coverage"
           value={<ClaimRef id="home_coverage_2026q2">{fmtTimes(hc.value)}</ClaimRef>}
           dq={<Delta id="dash_home_cov_dq" v={hc.dq}>{fmtTimesDelta(hc.dq ?? 0)}</Delta>}
           dy={<Delta id="dash_home_cov_dy" v={hc.dy}>{fmtTimesDelta(hc.dy ?? 0)}</Delta>}
-          note="Household real estate value divided by home mortgage debt. Higher means more cushion." />
+          note="Home value ÷ mortgage debt. Higher is more cushion." />
         <div className="dash-tile dash-tile--wide">
           <p className="dash-tile__label">Into serious delinquency (90+ days), % of balance, annualized</p>
           <TransitionRows moves={tiles.transitions} only={focus ? [focus] : [...LOAN_TYPES]} />
           <p className="dash-tile__note">
-            NY Fed Household Debt and Credit, {fmtQuarter(tiles.transitions.mortgage.date)}. Changes are in percentage points.
-            Student loans: the jump and fall since 2025 reflect re-reporting after collections resumed in May 2025, not only new distress.
+            NY Fed, {fmtQuarter(tiles.transitions.mortgage.date)}, pp. Student loans: partly re-reporting since May 2025.
           </p>
         </div>
       </section>
@@ -166,8 +166,24 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
         <p className="pg-caption">
           Public share of {debtLabel}: {pct(firstPub, 1)} in {fmtQuarter(holder.dates[0])}, {pct(lastPub, 1)} in{" "}
           {fmtQuarter(holder.dates[holder.dates.length - 1])}.
-          {loan !== "all" && " The Fed’s holder data split only mortgages and consumer credit, so a single loan type shows the holders of its category (mortgage and home equity line under mortgages)."}
+          {loan !== "all" && " Holders shown for its category (mortgages or consumer credit)."}
         </p>
+        <div className="holder-cast" role="img"
+          aria-label={`Each holder drawn holding potatoes, one potato for about 5% of ${debtLabel} in ${fmtQuarter(mix.dates[mix.dates.length - 1])}.`}>
+          {mix.buckets.map((b, bi) => {
+            const raw = mix.values[debtView];
+            const q = mix.dates.length - 1;
+            const tot = raw.reduce((t, x) => t + x[q], 0);
+            const n = tot ? Math.round((raw[bi][q] / tot) * 20) : 0;
+            return (
+              <figure key={b.key}>
+                <PotatoPerson potatoes={n} tone={b.isPublic ? "public" : "private"} width={70} hot={n > 0} />
+                <figcaption>{b.label}</figcaption>
+              </figure>
+            );
+          })}
+        </div>
+        <p className="pg-caption">One potato ≈ 5% of the total, latest quarter.</p>
         <Segmented id="dash-units" label="Show" value={units} onChange={setUnits}
           options={[{ value: "share", label: "Share of total" }, { value: "usd", label: "Dollars" }]} />
         <div className="chart">
@@ -197,7 +213,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
               const qi = mix.dates.indexOf(d);
               return [fmtQuarter(d), ...mix.buckets.map((_, bi) => usdFromMillions(mix.values[debtView][bi][qi])), pct(holder.pub[k], 1)];
             })}
-            note="Last eight quarters shown. Fed Z.1 Financial Accounts, nominal dollars."
+            note="Last eight quarters. Fed Z.1, nominal."
           />
         </div>
       </section>
@@ -205,7 +221,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
       <section className="pg-section dash-panel" aria-labelledby="dash-loans">
         <h2 id="dash-loans">Delinquency and balances by loan type</h2>
         <p className="pg-caption">
-          NY Fed Household Debt and Credit, from 2003. {focus ? `${LOAN_LABEL[focus]} is highlighted; the other types are gray.` : "Pick a loan type above to highlight it."}
+          NY Fed, from 2003. {focus ? `${LOAN_LABEL[focus]} highlighted.` : "Pick a loan type to highlight it."}
         </p>
         <div className="dash-two">
           <div className="chart">

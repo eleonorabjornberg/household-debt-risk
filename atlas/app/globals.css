@@ -276,3 +276,7 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* Hot-potato figures on the home page (Eleonora's idea, 2026-11-11). */
+.meaning__fig { display: flex; gap: 14px; align-items: flex-end; min-height: 120px; margin-top: 14px; }
+.step__fig { display: flex; gap: 10px; align-items: flex-end; margin-top: 12px; }

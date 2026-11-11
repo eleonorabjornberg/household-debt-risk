@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { DraftBanner } from "@/components/pages/DraftBanner";
+import { PotatoPerson } from "@/components/Potato";
 import { Suspense } from "react";
 import exposures from "@/lib/b3/exposures.json";
 import { ScenarioTool } from "@/components/scenarios/ScenarioTool";
@@ -23,29 +25,22 @@ export const metadata: Metadata = {
 export default function ScenariosPage() {
   return (
     <main className="pg">
-      <div className="pg-banner" role="note" data-testid="b3-draft-banner">
-        <p style={{ margin: 0 }}>
-          <strong>Claude draft</strong>
-          <span>This page and its text were drafted by Claude for Eleonora to review and rewrite. It is not her text yet.</span>
-        </p>
-      </div>
+      <DraftBanner testId="b3-draft-banner" />
       <header>
         <div className="pg-col">
           <p className="tag">Scenarios</p>
           <h1>If loans go bad, which lenders’ books record the losses?</h1>
-          <p className="pg-lede">
-            Pick a scenario. The tool applies it to today’s household debt (Fed Z.1, data as of {exposures.as_of}, released{" "}
-            {exposures.z1_release}) and shows how the losses split between public and private books.
-          </p>
-          <details className="sc-def">
-            <summary>Who counts as public, who as private</summary>
-            <p>
-              <strong>Public:</strong> the federal government, Fannie Mae and Freddie Mac (the GSEs), the mortgage pools
-              guaranteed by them and by Ginnie Mae (agency pools), and state and local governments.{" "}
-              <strong>Private:</strong> banks, finance companies and private securitization (loans packaged into bonds without a
-              government guarantee).
-            </p>
-          </details>
+          <p className="pg-lede">Pick a scenario and see whose books take the losses. Fed Z.1 balances as of {exposures.as_of}.</p>
+          <div className="sc-sides" aria-label="Who counts as public, who as private">
+            <figure>
+              <PotatoPerson potatoes={6} tone="public" width={84} />
+              <figcaption><strong>Public</strong> Federal government, Fannie Mae, Freddie Mac, agency pools, state and local.</figcaption>
+            </figure>
+            <figure>
+              <PotatoPerson potatoes={4} tone="private" pose="sweat" width={84} />
+              <figcaption><strong>Private</strong> Banks, finance companies, private securitization.</figcaption>
+            </figure>
+          </div>
         </div>
       </header>
       <section style={{ marginTop: 32 }}>
@@ -57,46 +52,15 @@ export default function ScenariosPage() {
       </section>
       <section className="pg-section">
         <div>
-          <h2>Read this before quoting a number</h2>
+          <h2>Before you quote a number</h2>
           <ul className="sc-caveats">
-            <li>
-              <strong>Who holds is not who bears.</strong> Losses are assigned to whoever holds the loan. Mortgage insurance,
-              credit-risk transfer (deals in which the GSEs pay private investors to absorb part of their mortgage losses) and
-              federal guarantees on privately held loans move some of the risk elsewhere. The optional transfer above stands for
-              the first two, and only on mortgages held by the GSEs and in agency pools.
-            </li>
-            <li>
-              <strong>The presets are proxies</strong>, that is, stand-ins: loss rates measured for banks, applied to every
-              holder, including the GSEs and federal books, whose losses would differ. The stress-test presets use the Fed’s
-              {" "}{stressYear} stress test: projected losses for the largest banks in a hypothetical severe recession (the
-              “severely adverse” scenario). That is a test, not a forecast. The replay uses the share of their loans that banks
-              actually wrote off, net of recoveries, quarter by quarter in {replayYears}. The stress-test presets cover {stressQ}
-              {" "}quarters and the replay {replayQ}, so they differ in length as well as severity.
-            </li>
-            <li>
-              <strong>Known biases in the presets</strong> (details in the method notes). The replay applies the banks’ losses
-              of {replayYears}, which included loans the GSEs did not guarantee, so its public share of losses is probably an
-              upper bound. Its cumulative rate adds up the quarterly write-off rates and applies the total to today’s balances,
-              an approximation. In the stress-test presets, using the first-lien rate for all mortgages understates losses on
-              second mortgages and home-equity lines, which banks mostly hold; that pushes the public share up. Federally
-              guaranteed student loans held by private lenders count as private, which pushes it down. No preset applies
-              credit-risk transfer or mortgage insurance.
-            </li>
-            <li>
-              <strong>Federal student loans</strong> have no bank loss series, so the main presets leave them out. The federal
-              government holds them, so leaving them out lowers the public share of losses. One variant gives them the stress
-              test’s rate for other consumer loans, a weak stand-in.
-            </li>
-            <li>
-              <strong>Today’s balances, today’s dollars.</strong> Every scenario is applied to current balances, in dollars
-              that are neither discounted nor adjusted for inflation. Nothing here forecasts defaults.
-            </li>
+            <li><strong>Who holds is not who bears.</strong> Insurance, credit-risk transfer and guarantees move some risk.</li>
+            <li><strong>The presets are proxies.</strong> Bank loss rates ({stressYear} stress test, {replayYears} replay; {stressQ} and {replayQ} quarters) applied to every holder.</li>
+            <li><strong>Known biases.</strong> The replay likely overstates the public share; some stress-test choices push it up, others down.</li>
+            <li><strong>Federal student loans</strong> are left out of the main presets, which lowers the public share.</li>
+            <li><strong>Today’s balances, today’s dollars.</strong> Not a forecast of defaults.</li>
           </ul>
-          <p>
-            Method, sources and checks are in the folder <code>research/b3_scenarios/</code> of the project’s code repository.
-            The engine on this page is a copy of the code tested there; on fixed test cases it matches the Python version up to
-            computer rounding.
-          </p>
+          <p><a href="/research/b3">Method, biases and checks →</a></p>
         </div>
       </section>
     </main>
