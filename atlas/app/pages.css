@@ -139,7 +139,7 @@
    Orange and pink lead, the other risograph inks rotate through sections. Text stays ink on light washes
    (contrast holds); colour carries rules, stickers, highlights and shadows, never body text. */
 :root {
-  --hot: linear-gradient(90deg, var(--pile-3) 0%, var(--pile-4) 55%, var(--pile-0) 100%);
+  --hot: var(--pile-4); /* flat: no gradients anywhere (Eleonora, gradients-55 (a), 2026-11-10) */
   --peach: #fff1e8;
   --blush: #ffe8f1;
   --lilac: #f4eafa;
@@ -149,8 +149,8 @@
 }
 .topbar { border-bottom: 0; }
 .topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; background: var(--hot); }
-.topbar__brand { background: var(--hot); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.topbar__brand:hover { background: var(--hot); color: var(--paper); -webkit-background-clip: border-box; background-clip: border-box; }
+.topbar__brand { color: var(--pile-3); }
+.topbar__brand:hover { background: var(--hot); color: var(--paper); }
 .topbar__nav a { border-radius: 999px; }
 .topbar__nav a[aria-current="page"] { background: var(--accent); color: var(--paper); border-color: var(--ink); transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--ink); }
 .topbar__nav a:nth-child(5n+1):hover { background: var(--pile-3); }
@@ -159,19 +159,16 @@
 .topbar__nav a:nth-child(5n+4):hover { background: var(--pile-1); }
 .topbar__nav a:nth-child(5n+5):hover { background: var(--pile-2); }
 
-/* page backdrop: a halftone wash of pink dots fading out under the header */
+/* page backdrop: a band of pink halftone dots on flat peach under the header */
 main.pg { position: relative; }
 main.pg::before {
   content: ""; position: absolute; inset: 0 calc(50% - 50vw) auto; /* exactly to the viewport edges; -50vw made every page scroll sideways */ height: 340px; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(circle, rgba(229, 38, 122, 0.22) 1.4px, transparent 1.6px) 0 0 / 14px 14px,
-    linear-gradient(180deg, var(--peach), rgba(255, 255, 255, 0));
-  -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent);
-  mask-image: linear-gradient(180deg, #000 30%, transparent);
+  /* the dots are a pattern (radial-gradient is only how CSS draws a dot); the fill is flat */
+  background: radial-gradient(circle, rgba(229, 38, 122, 0.22) 1.4px, transparent 1.6px) 0 0 / 14px 14px, var(--peach);
 }
 .pg .tag { background: var(--accent); color: var(--paper); transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--ink); }
 .pg h1 {
-  background: linear-gradient(transparent 64%, rgba(255, 196, 0, 0.75) 64%, rgba(255, 196, 0, 0.75) 92%, transparent 92%);
+  box-shadow: inset 0 -0.42em 0 rgba(255, 196, 0, 0.75); /* flat highlighter */
   -webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline;
 }
 .pg h1 + * { margin-top: 22px; }
@@ -187,10 +184,10 @@ main.pg::before {
 
 /* section headings rotate through the inks */
 .findings h2 { border-top: 0; position: relative; }
-.findings h2:nth-of-type(5n+2)::before { background: linear-gradient(90deg, var(--pile-4), var(--pile-0)); }
-.findings h2:nth-of-type(5n+3)::before { background: linear-gradient(90deg, var(--pile-0), var(--pile-1)); }
-.findings h2:nth-of-type(5n+4)::before { background: linear-gradient(90deg, var(--pile-1), var(--pile-2)); }
-.findings h2:nth-of-type(5n+5)::before { background: linear-gradient(90deg, var(--pile-5), var(--pile-3)); }
+.findings h2:nth-of-type(5n+2)::before { background: var(--pile-0); }
+.findings h2:nth-of-type(5n+3)::before { background: var(--pile-1); }
+.findings h2:nth-of-type(5n+4)::before { background: var(--pile-2); }
+.findings h2:nth-of-type(5n+5)::before { background: var(--pile-3); }
 .findings h3 { color: var(--accent); }
 
 /* tables: ink header rule over a peach band, soft zebra, a pink row highlight on hover */

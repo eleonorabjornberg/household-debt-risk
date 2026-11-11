@@ -744,3 +744,11 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Model tier: main model only. Tokens and cost: not measured.
 - Review queue round 34 (version 37): rv-dashboard-34, the dashboard and the site fixes since 853747e, for Eleonora's production OK.
 - Eleonora sent github.com/US-CBO/cbo-data for CBO data. Claude checked it: a shallow clone at 284a956 works (the GitHub API answered 403 through the proxy; git did not). It holds budget and economic datasets by vintage, including per-account outlays (spending_detail). It does not hold the fair-value subsidy estimates A6 needs or the student-lending shift B4 needs. How to use it is her call, so it went to the docket as round 55 (version 64), card cbo-repo-55, along with gradients-55 for the gradients already on the site.
+
+### 2026-11-11: docket 55 and review queue round 34 answered (coordinator)
+- Eleonora's answers: rv-dashboard-34 **ok-prod**; cbo-repo-55 **(b)** (cbo-data as a budget-side source, Direct Loan account outlays as a labelled proxy in B4's student-loan scenario, reopening B4 (iii)); gradients-55 **(a)** (flat colours; "dots, stripes and other patterns and solid colors are fine, gradients are not"). Recorded in PLAN "Decisions taken"; F7 and B4 statuses updated; a source row for US-CBO/cbo-data added.
+- Gradients flattened in `atlas/app/pages.css`: the `--hot` accent, the wordmark, the header band (now pink dots on flat peach with a hard edge, no fade masks), the h1 highlighter and the findings section markers. The dot patterns stay, as she allowed. `web/` had none.
+- Eleonora caught that the GitHub repo's About/Website field still points to the old web URL; Claude cannot edit repo settings and told her how to change it to hot-potato-credit.vercel.app.
+- cbo-repo-55 (b) relayed to the markets track (catalog entry, provenance record, B4 proxy; every number UNVERIFIED in the register).
+- The gradient change came after the round 34 review; Claude asked her before shipping it to production.
+- Checks: hook rc 0, atlas 176/176, atlas build OK. Model tier: main model only. Tokens and cost: not measured.
