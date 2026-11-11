@@ -365,6 +365,53 @@ def lookup_claim(backend, text_or_id: str, limit: int = 5) -> dict:
                   "Vintage shown is each claim's own vintage."])
 
 
+# ------------------------------------------------------------------ research write-ups
+GITHUB = "https://github.com/eleonorabjornberg/household-debt-risk"
+WRITEUP_LIMITS = [
+    "Every write-up is a Claude draft for Eleonora to replace with her own text; the text is returned as committed "
+    "in research/<task>/README.md, banner included.",
+    "Numbers in a write-up are published numbers only if they have a row in claims/register.csv; check them with "
+    "lookup_claim. Only validation=PASS rows are verified.",
+    "Relative links inside the Markdown point at repository paths (see github_url); they are not rewritten here.",
+]
+
+
+@lru_cache(maxsize=1)
+def _writeups() -> list[dict]:
+    """research/writeups.json (slug, folder, task ids) joined with each README's text and title."""
+    out = []
+    for w in json.loads(repo_file("research", "writeups.json").read_text(encoding="utf-8")):
+        path = f"research/{w['dir']}/README.md"
+        md = repo_file(*path.split("/")).read_text(encoding="utf-8")
+        lines = md.split("\n")
+        title = next((ln[2:].strip() for ln in lines if ln.startswith("# ")), w["slug"])
+        out.append({"slug": w["slug"], "ids": w["ids"], "title": title, "source_path": path,
+                    "site_url": f"/research/{w['slug']}", "github_url": f"{GITHUB}/blob/main/{path}",
+                    "line_count": len(lines) - (1 if md.endswith("\n") else 0), "markdown": md})
+    return out
+
+
+def list_research(backend) -> dict:
+    rows = [{k: w[k] for k in ("ids", "slug", "title", "source_path", "site_url", "github_url", "line_count")}
+            for w in _writeups()]
+    return ok(backend, "list_research", rows, units="n/a (listing of write-ups)", series_ids=[], source="z1",
+              limits=["Lists the write-ups that exist; a task with none (A6 is blocked) is absent.", *WRITEUP_LIMITS[:2]])
+
+
+def get_research_writeup(backend, task: str) -> dict:
+    tool = "get_research_writeup"
+    key = (task or "").strip().lower()
+    hit = next((w for w in _writeups()
+                if key and (key == w["slug"] or key == w["source_path"].split("/")[1].lower()
+                            or key in [i.lower() for i in w["ids"]])), None)
+    if hit is None:
+        return refusal(backend, tool, "unknown_writeup",
+                       f"'{task or ''}' is not a research task id or slug with a write-up. list_research gives the ids.",
+                       [{"tool": "list_research", "args": {}}])
+    return ok(backend, tool, {"task_ids": hit["ids"], **hit}, units="n/a (Markdown text)", series_ids=[], source="z1",
+              limits=WRITEUP_LIMITS)
+
+
 # ------------------------------------------------------------------ coverage & refusals
 def data_coverage(backend) -> dict:
     lo, hi = backend.mart_range()

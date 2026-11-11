@@ -7,8 +7,9 @@ import { parseInline, parseMarkdown, plain } from "@/lib/markdown";
 import { Markdown, MarkdownInline } from "@/components/Markdown";
 import { research } from "@/content/research";
 
-// One research write-up, research/<task>/README.md as it stands (copied to content/research/<slug>.md by
-// scripts/sync-research.mjs, which only rewrites relative links). Like the findings on /dashboard, rendered without raw HTML.
+// The short version of one research write-up (content/research/<slug>.md, made from research/<task>/README.md by
+// scripts/sync-research.mjs: whole sections cut, relative links rewritten; the full text is in the MCP and Ask API).
+// Like the findings on /dashboard, rendered without raw HTML.
 const SLUGS = [...new Set(research.map((r) => r.slug).filter((s): s is string => Boolean(s)))];
 
 export const dynamicParams = false;

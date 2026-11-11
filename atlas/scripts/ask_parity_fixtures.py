@@ -38,6 +38,9 @@ CALLS = [
     ("data_coverage", {}),
     ("list_series", {}), ("list_series", {"role": "mortgage_holder"}), ("list_series", {"source": "nyfed"}),
     ("describe_series", {"id": "FL153166400"}), ("describe_series", {"id": "fl155111005"}), ("describe_series", {"id": "XYZ"}),
+    ("list_research", {}), ("get_research_writeup", {"task": "A1"}), ("get_research_writeup", {"task": "c1b"}),
+    ("get_research_writeup", {"task": "b4_policy_scenarios"}), ("get_research_writeup", {"task": "A6"}),
+    ("get_research_writeup", {"task": ""}),
 ] + [("check_answerable", {"question": q}) for q in [
     "What was the public share in 2026Q2?", "What will the public share be in 2027Q4?",
     "How many auto loans did banks hold in 2026Q2?", "Which state had the highest debt?",

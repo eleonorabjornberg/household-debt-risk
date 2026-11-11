@@ -1,0 +1,16 @@
+[
+ {"slug": "a1", "dir": "a1_gfc_decomposition", "ids": ["A1"]},
+ {"slug": "a2", "dir": "a2_net_exposure", "ids": ["A2"]},
+ {"slug": "a3", "dir": "a3_pre1952", "ids": ["A3"]},
+ {"slug": "a4", "dir": "a4_breaks", "ids": ["A4"]},
+ {"slug": "a5", "dir": "a5_distribution", "ids": ["A5"]},
+ {"slug": "a7", "dir": "a7_causal", "ids": ["A7"]},
+ {"slug": "a8", "dir": "a8_international", "ids": ["A8"]},
+ {"slug": "b1", "dir": "b1_market_pricing", "ids": ["B1"]},
+ {"slug": "b2", "dir": "b2_crt_pricing", "ids": ["B2"]},
+ {"slug": "b3", "dir": "b3_scenarios", "ids": ["B3"]},
+ {"slug": "b4", "dir": "b4_policy_scenarios", "ids": ["B4"]},
+ {"slug": "c1", "dir": "c1_nowcast", "ids": ["C1"]},
+ {"slug": "c3", "dir": "c3_accuracy", "ids": ["C3"]},
+ {"slug": "joint-holdout", "dir": "joint_holdout", "ids": ["C1b", "C2", "Joint holdout"]}
+]

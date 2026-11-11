@@ -150,3 +150,35 @@ def test_c2_c3_match_validation_results(be):
     # and the register agrees
     reg = core.lookup_claim(be, "public_usd_2026q2")["data"][0]
     assert reg["display"] == row["public_usd_display"]
+
+
+def test_research_writeups(be):
+    r = core.list_research(be)
+    assert_envelope(r)
+    assert len(r["data"]) == 14
+    assert {i for w in r["data"] for i in w["ids"]} >= {"A1", "B4", "C3", "C1b", "C2", "Joint holdout"}
+    assert all(w["site_url"] == f"/research/{w['slug']}" for w in r["data"])
+    assert r["limits_url"] == "/methods#limits"
+    # the full text, identical to the committed README (the register's line references point into it)
+    for key, slug in (("A1", "a1"), ("c2", "joint-holdout"), ("a1", "a1"), ("b4_policy_scenarios", "b4"), ("C3", "c3")):
+        g = core.get_research_writeup(be, key)
+        assert_envelope(g)
+        d = g["data"]
+        assert d["slug"] == slug and d["markdown"] == repo_file(*d["source_path"].split("/")).read_text(encoding="utf-8")
+        assert d["markdown"].startswith("# ") and "Claude draft" in d["markdown"]
+        assert d["title"] == d["markdown"].split("\n")[0][2:] and d["line_count"] == d["markdown"].count("\n")
+        assert d["github_url"].endswith(f"/blob/main/{d['source_path']}")
+        assert any("Claude draft" in c for c in g["limits"]) and g["limits_url"] == "/methods#limits"
+    for bad in ("", "A6", "zz9", None):
+        g = core.get_research_writeup(be, bad)
+        assert g["refused"] and g["reason_code"] == "unknown_writeup" and g["nearest_answerable"][0]["tool"] == "list_research"
+        assert "markdown" not in json.dumps(g)
+
+
+def test_writeups_json_matches_the_sites_slugs():
+    # atlas/scripts/sync-research.mjs PAGES and research/writeups.json name the same slugs and folders
+    src = repo_file("atlas", "scripts", "sync-research.mjs").read_text(encoding="utf-8")
+    pages = re.search(r"export const PAGES = \{(.*?)\};", src, re.S).group(1)
+    got = dict(re.findall(r'"?([\w-]+)"?: "(\w+)"', pages))
+    want = {w["slug"]: w["dir"] for w in json.loads(repo_file("research", "writeups.json").read_text(encoding="utf-8"))}
+    assert got == want

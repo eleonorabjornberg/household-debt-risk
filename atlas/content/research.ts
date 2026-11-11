@@ -2,7 +2,8 @@
 // question: the task's description in PLAN.md, verbatim. status: verbatim fragments of the task's PLAN.md status cell
 // (statusRow names the row when it is another task's). method: one line, a Claude draft, with no figures.
 // lib/research.test.ts checks the question and every status fragment against PLAN.md, and the slugs against
-// scripts/sync-research.mjs. The write-ups themselves are research/<task>/README.md, copied unedited (links aside).
+// scripts/sync-research.mjs. The write-ups themselves are research/<task>/README.md; the site shows a short version (whole
+// sections cut, links aside; Eleonora 2026-11-11), the MCP server and the Ask API return them in full (get_research_writeup).
 
 export interface ResearchEntry {
   id: string;

@@ -41,6 +41,10 @@ export const TOOL_DEFS: Anthropic.Tool[] = [
     input_schema: { type: "object", properties: { text_or_id: { type: "string" } }, required: ["text_or_id"] } },
   { name: "data_coverage", description: "What the data can and cannot answer, with covered quarters.",
     input_schema: { type: "object", properties: {} } },
+  { name: "list_research", description: "List the project's research write-ups (task ids, title, slug, repository path, site page, length). Use get_research_writeup for the full text.",
+    input_schema: { type: "object", properties: {} } },
+  { name: "get_research_writeup", description: "The full write-up (Markdown, every table and check) for one research task: a task id like A1, B2 or C3, or a slug like a1 or joint-holdout. The site's /research pages show only a short version; this is the complete README. A Claude draft until Eleonora replaces it. Long: ask for it only when the question needs the method or a table.",
+    input_schema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] } },
 ];
 
 export type Source = { tool: string; args: Row; ok: boolean; refused?: boolean; series_ids: string[];

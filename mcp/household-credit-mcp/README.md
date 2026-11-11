@@ -17,6 +17,8 @@ Every result carries values, units, series IDs, source vintage, the backend used
 | `lookup_claim(text_or_id)` | `claims/register.csv` with validation status |
 | `data_coverage()` | What the data can and cannot answer |
 | `check_answerable(question)` | Pre-check; refuses holder-by-type, forecasts, borrower-level, geography, monthly, out-of-range |
+| `list_research()` | The research write-ups: task ids, title, slug, repository path, site page, length |
+| `get_research_writeup(task)` | The full write-up (README Markdown, every table and check) for a task id (A1, B2, C3 ...) or slug; a Claude draft. The site shows only a short version, so this is where the full text lives (also in the Ask API) |
 
 Quarters are written `2026Q2`. Tools also refuse future and pre-coverage quarters rather than clamping.
 
@@ -26,7 +28,7 @@ Quarters are written `2026Q2`. Tools also refuse future and pre-coverage quarter
 * Postgres: set `DATABASE_URL_READONLY` (the `research_reader` login). The server sets the transaction read-only, `statement_timeout` 15 s, and runs only the parameterised SELECTs in `backends.ALLOWED_SQL`; no SQL ever comes from the client. `research_reader` cannot read raw/core vintages, so vintages still come from `meta.json` and the result says so.
 * Unreachable database: the server probes the database once, at the first tool call. If it cannot connect (an unresolvable host, a refused connection or a timeout, as with the Supabase pooler from this project's cloud sandbox), it answers from the snapshots, with `backend: snapshot` and a `backend_note` giving the reason. Set `HOUSEHOLD_CREDIT_REQUIRE_DB=1` to fail instead. Tests: `tests/test_fallback.py`.
 
-`lookup_claim` and the series catalog always read the repository files (`claims/register.csv`, `pipeline/series_catalog.yaml`), on either backend.
+`lookup_claim`, the series catalog and the research write-ups always read the repository files (`claims/register.csv`, `pipeline/series_catalog.yaml`, `research/*/README.md` named in `research/writeups.json`), on either backend.
 
 ## Install (Claude Code)
 

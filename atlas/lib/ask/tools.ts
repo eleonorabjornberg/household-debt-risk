@@ -3,6 +3,7 @@
 // Snapshot backend only (the JSON tables the site ships). Every function returns the same envelope as the
 // Python tool; parity.test.ts checks the outputs against Python fixtures. Nothing here invents numbers.
 
+import { RESEARCH_WRITEUPS, type ResearchWriteup } from "./research.generated";
 import { SHARED_LIMITS } from "./shared-limits.generated";
 
 export type Row = Record<string, any>;
@@ -315,6 +316,38 @@ export function lookup_claim(env: Env, a: { text_or_id?: string; limit?: number 
       "Vintage shown is each claim's own vintage."] });
 }
 
+// ------------------------------------------------------------------ research write-ups
+// The full README of each research task (the site's /research pages show only a short version, Eleonora 2026-11-11).
+// Texts come from ./research.generated.ts (scripts/sync-research.mjs), so the route needs nothing outside atlas/.
+const GITHUB = "https://github.com/eleonorabjornberg/household-debt-risk";
+const WRITEUP_LIMITS = [
+  "Every write-up is a Claude draft for Eleonora to replace with her own text; the text is returned as committed " +
+    "in research/<task>/README.md, banner included.",
+  "Numbers in a write-up are published numbers only if they have a row in claims/register.csv; check them with " +
+    "lookup_claim. Only validation=PASS rows are verified.",
+  "Relative links inside the Markdown point at repository paths (see github_url); they are not rewritten here.",
+];
+const writeupBase = (w: ResearchWriteup) => ({ ids: w.ids, slug: w.slug, title: w.title, source_path: w.source_path,
+  site_url: `/research/${w.slug}`, github_url: `${GITHUB}/blob/main/${w.source_path}`, line_count: w.line_count });
+
+export function list_research(env: Env): Row {
+  const rows = RESEARCH_WRITEUPS.map(writeupBase);
+  return ok(env, "list_research", rows, { units: "n/a (listing of write-ups)", series_ids: [], source: "z1",
+    limits: ["Lists the write-ups that exist; a task with none (A6 is blocked) is absent.", ...WRITEUP_LIMITS.slice(0, 2)] });
+}
+
+export function get_research_writeup(env: Env, a: { task?: string }): Row {
+  const tool = "get_research_writeup";
+  const key = (a.task ?? "").trim().toLowerCase();
+  const hit = key ? RESEARCH_WRITEUPS.find((w) => key === w.slug || key === w.source_path.split("/")[1].toLowerCase() ||
+    w.ids.some((i) => i.toLowerCase() === key)) : undefined;
+  if (!hit) return refusal(tool, "unknown_writeup",
+    `'${a.task ?? ""}' is not a research task id or slug with a write-up. list_research gives the ids.`,
+    [{ tool: "list_research", args: {} }]);
+  return ok(env, tool, { task_ids: hit.ids, ...writeupBase(hit), markdown: hit.markdown }, { units: "n/a (Markdown text)",
+    series_ids: [], source: "z1", limits: WRITEUP_LIMITS });
+}
+
 // ------------------------------------------------------------------ coverage & refusals
 export function data_coverage(env: Env): Row {
   const [lo, hi] = martRange(env);
@@ -392,4 +425,5 @@ export function check_answerable(env: Env, a: { question?: string }): Row {
 export const TOOLS: Record<string, (env: Env, args: any) => Row> = {
   list_series, describe_series, public_share, holdings_by_bucket, crisis_windows, collateral_coverage, nyfed_by_type,
   lookup_claim, data_coverage: (env) => data_coverage(env), check_answerable,
+  list_research: (env) => list_research(env), get_research_writeup,
 };

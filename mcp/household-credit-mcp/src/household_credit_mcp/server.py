@@ -70,6 +70,18 @@ def lookup_claim(text_or_id: str) -> dict:
 
 
 @mcp.tool()
+def list_research() -> dict:
+    """List the project's research write-ups (task ids, title, slug, repository path, site page, length). Use get_research_writeup for the full text."""
+    return core.list_research(backend())
+
+
+@mcp.tool()
+def get_research_writeup(task: str) -> dict:
+    """The full write-up (Markdown, every table and check) for one research task: a task id like A1, B2 or C3, or a slug like a1 or joint-holdout. The site's /research pages show only a short version; this is the complete README. A Claude draft until Eleonora replaces it."""
+    return core.get_research_writeup(backend(), task)
+
+
+@mcp.tool()
 def data_coverage() -> dict:
     """What the data can and cannot answer, with covered quarters."""
     return core.data_coverage(backend())

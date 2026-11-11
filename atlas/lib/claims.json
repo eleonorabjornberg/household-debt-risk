@@ -80,7 +80,7 @@
    "unit": "count",
    "period": "1952Q1-2026Q2",
    "locations": [
-    "atlas/content/methods.ts:17"
+    "atlas/content/methods.ts:19"
    ],
    "computation": "A2",
    "series": [
@@ -100,7 +100,9 @@
    "checkId": "A2",
    "notes": "",
    "register": "claims/register.csv",
-   "anchors": [],
+   "anchors": [
+    "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
+   ],
    "exact": []
   },
   {
@@ -837,7 +839,7 @@
    "unit": "count",
    "period": "1952Q1-2026Q2",
    "locations": [
-    "atlas/content/methods.ts:17"
+    "atlas/content/methods.ts:19"
    ],
    "computation": "A1",
    "series": [
@@ -858,7 +860,9 @@
    "checkId": "A1",
    "notes": "",
    "register": "claims/register.csv",
-   "anchors": [],
+   "anchors": [
+    "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
+   ],
    "exact": []
   },
   {
@@ -1392,7 +1396,7 @@
    "unit": "pvalue",
    "period": "1953Q2-2019Q4",
    "locations": [
-    "atlas/content/methods.ts:19"
+    "atlas/content/methods.ts:21"
    ],
    "computation": "analysis/notebook.py:q1_ratchet -> analysis/results.json ratchet.all_nber_1953_2019.p_random_dates (0.3025); circular-shift p = 0.306",
    "series": [
@@ -1412,7 +1416,7 @@
    "notes": "Findings prints it as '30%' (share of placebo sets); README, web and atlas print p ≈ 0.30. Randomised test: depends on the notebook's seed. Check H6: separate Monte Carlo (400,000 draws, own seed) over the 282 windows 1952Q1-2022Q2 gives 0.300, 99% interval 0.299-0.302, inside the band that displays as 0.30. The notebook's 0.3025 (20,000 draws, SE 0.003) is 0.7 SE from it; on its own it did not settle the second decimal (ana-70). Drawing only start quarters up to 2019Q4 gives 0.34 (ana-71). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
-    "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
+    "Crisis test: no detectable rise in the public share after recession peaks (placebo p ≈ 0.30, low power)."
    ],
    "exact": []
   },
@@ -1427,7 +1431,7 @@
    "unit": "share",
    "period": "2026Q2",
    "locations": [
-    "atlas/content/methods.ts:16"
+    "atlas/content/methods.ts:18"
    ],
    "computation": "analysis/notebook.py:q7_now -> analysis/results.json now.scope_of_total_liab",
    "series": [
@@ -1439,7 +1443,9 @@
    "checkId": "",
    "notes": "Findings.md intro (outside the Headline findings section) prints 87.3%.",
    "register": "claims/register.csv",
-   "anchors": [],
+   "anchors": [
+    "Home mortgages on 1–4 family properties plus consumer credit: about 87% of household liabilities. The Fed's household sector includes nonprofits."
+   ],
    "exact": []
   },
   {
