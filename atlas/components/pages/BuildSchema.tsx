@@ -1,5 +1,7 @@
 // Schema of the workflow and build process on /how-it-was-built (2026-11-11). Plain HTML boxes and arrows, not a chart,
 // so it wraps to a single column on a phone. Flat colours only: no gradients (Eleonora, gradients-55 (a)).
+import { Sourced } from "@/components/claims/SourceRef";
+
 type Step = { who: string; name: string; body: string };
 type Lane = { title: string; loop: string; steps: Step[] };
 
@@ -20,7 +22,7 @@ function SchemaLane({ lane, id }: { lane: Lane; id: string }) {
           <li key={s.name} className={`schema-step ${whoClass[s.who] ?? ""}`}>
             <span className="schema-who">{s.who}</span>
             <strong className="schema-name">{s.name}</strong>
-            <span className="schema-body">{s.body}</span>
+            <span className="schema-body"><Sourced text={s.body} /></span>
           </li>
         ))}
       </ol>

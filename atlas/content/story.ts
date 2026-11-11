@@ -134,9 +134,7 @@ export const meaning = {
 export const coda = {
   sourcesTitle: "About the data",
   sources: [
-    "Federal Reserve Z.1 Financial Accounts: holders of 1–4 family mortgages and consumer credit. Mortgage holders are apportioned to the household sector.",
     "Converted to 2026Q3 dollars with CPI (base: the 2026Q3 average of CPIAUCSL). The public share is computed in nominal dollars.",
-    "“Public” means the federal government, GSEs and agency pools, and state and local governments. Mortgages in GSE and agency pools count as public.",
     "Dots are rounded with the largest-remainder method, so each quarter's dots match its total to within one dot. Between quarters only the difference moves.",
   ],
 };

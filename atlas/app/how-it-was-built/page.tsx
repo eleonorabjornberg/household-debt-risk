@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DraftBanner } from "@/components/pages/DraftBanner";
 import { build } from "@/content/build";
-import { Sourced } from "@/components/claims/SourceRef";
 import { BuildSchema } from "@/components/pages/BuildSchema";
 import { PotatoPerson } from "@/components/Potato";
 
@@ -37,17 +36,7 @@ export default function HowItWasBuiltPage() {
           <h2 id="schema">How it works</h2>
           <p>{build.schema.lede}</p>
           <BuildSchema workflow={build.schema.workflow} build={build.schema.build} />
-        </div>
-      </section>
-
-      <section className="pg-section" aria-labelledby="flow">
-        <div className="pg-col">
-          <h2 id="flow">From the Fed to this page</h2>
-          <ol className="build-steps">
-            {build.flow.map((f) => (
-              <li key={f.step}><strong>{f.step}</strong> <Sourced text={f.text} /></li>
-            ))}
-          </ol>
+          <p className="pg-caption"><a href="/methods#lineage">Each data step in detail: Methods →</a></p>
         </div>
       </section>
 

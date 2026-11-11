@@ -24,13 +24,14 @@ export default function ScenariosPage() {
           <div className="sc-sides" aria-label="Who counts as public, who as private">
             <figure>
               <PotatoPerson potatoes={6} tone="public" width={84} />
-              <figcaption><strong>Public</strong> Federal government, Fannie Mae, Freddie Mac, agency pools, state and local.</figcaption>
+              <figcaption><strong>Public</strong></figcaption>
             </figure>
             <figure>
               <PotatoPerson potatoes={4} tone="private" pose="sweat" width={84} />
-              <figcaption><strong>Private</strong> Banks, finance companies, private securitization.</figcaption>
+              <figcaption><strong>Private</strong></figcaption>
             </figure>
           </div>
+          <p className="pg-caption"><a href="/methods#scope">Who counts as public and who as private →</a></p>
         </div>
       </header>
       <section style={{ marginTop: 32 }}>

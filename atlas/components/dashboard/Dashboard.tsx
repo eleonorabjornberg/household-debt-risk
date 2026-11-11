@@ -49,7 +49,7 @@ function Delta({ id, children, v }: { id: string; children: string; v: number | 
   );
 }
 
-function Tile({ label, value, dq, dy, note }: { label: string; value: React.ReactNode; dq: React.ReactNode; dy: React.ReactNode; note: string }) {
+function Tile({ label, value, dq, dy, note }: { label: string; value: React.ReactNode; dq: React.ReactNode; dy: React.ReactNode; note: React.ReactNode }) {
   return (
     <div className="dash-tile">
       <p className="dash-tile__label">{label}</p>
@@ -145,7 +145,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
           value={<ClaimRef id="public_share_2026q2">{pct(ps.value, 1)}</ClaimRef>}
           dq={<Delta id="dash_public_share_dq" v={ps.dq}>{fmtPp(ps.dq ?? 0)}</Delta>}
           dy={<Delta id="dash_public_share_dy" v={ps.dy}>{fmtPp(ps.dy ?? 0)}</Delta>}
-          note="Federal, GSEs, agency pools, state and local." />
+          note={<a href="/methods#scope">Who counts as public</a>} />
         <Tile label="Home collateral coverage"
           value={<ClaimRef id="home_coverage_2026q2">{fmtTimes(hc.value)}</ClaimRef>}
           dq={<Delta id="dash_home_cov_dq" v={hc.dq}>{fmtTimesDelta(hc.dq ?? 0)}</Delta>}

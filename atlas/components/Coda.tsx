@@ -90,6 +90,7 @@ export default function Coda({ series }: { series: Series }) {
         </details>
 
         <p className="coda__more">
+          Sources, scope and who counts as public: <a href="/methods#scope">Methods</a>.{" "}
           The code, the data pipeline and the full analysis (methods, limits and the crisis-by-crisis test) are on{" "}
           <a href={site.repo}>GitHub</a>. Every number on this page links to its row in the{" "}
           <a href="/sources">claims register</a>.{" "}

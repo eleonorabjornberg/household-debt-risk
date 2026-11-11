@@ -15,7 +15,7 @@ export const methods = {
   scope: [
     "Home mortgages on 1–4 family properties plus consumer credit: about 87% of household liabilities. The Fed's household sector includes nonprofits.",
     "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals.",
-    "Public means federal government, GSEs and agency pools, and state and local governments.",
+    "Public means the federal government, GSEs and agency pools (the mortgages in those pools included), and state and local governments. Private means banks and credit unions, private securitization and REITs, and finance companies and other lenders.",
     "Crisis test: no detectable rise in the public share after recession peaks (placebo p ≈ 0.30, low power).",
   ],
   limits: [
