@@ -64,7 +64,7 @@
 .pg td.desc { min-width: 16rem; }
 .tablewrap { overflow-x: auto; max-width: 100%; }
 /* Markdown tables (/research, /findings): size to content, numbers right-aligned on tabular figures (2026-11-10) */
-.pg table.md-table { width: auto; min-width: 0; font-variant-numeric: tabular-nums lining-nums; }
+.pg table.md-table { width: 100%; min-width: 0; font-variant-numeric: tabular-nums lining-nums; }
 .pg table.md-table th, .pg table.md-table td { padding: 7px 0 7px 28px; }
 .pg table.md-table th:first-child, .pg table.md-table td:first-child { padding-left: 0; }
 .pg table.md-table td.al-left:last-child { min-width: 14rem; }
@@ -191,7 +191,7 @@ main.pg::before {
 .findings h3 { color: var(--accent); }
 
 /* tables: ink header rule over a peach band, soft zebra, a pink row highlight on hover */
-.pg table.md-table { border-top: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--blush); background: var(--paper); }
+.pg table.md-table { border-top: 3px solid var(--ink); background: var(--paper); }
 .pg table.md-table thead th { background: var(--peach); border-bottom: 3px solid var(--accent); padding-top: 10px; padding-bottom: 10px; }
 .pg table.md-table thead th:first-child, .pg table.md-table td:first-child { padding-left: 12px; }
 .pg table.md-table th:last-child, .pg table.md-table td:last-child { padding-right: 12px; }

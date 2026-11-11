@@ -59,7 +59,7 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
   overflow: hidden;
   border-bottom: 3px solid var(--ink);
 }
-.hero__inner { position: relative; max-width: 1100px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.hero__inner { position: relative; max-width: 1100px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
 .hero__kicker { margin: 0; }
 .hero h1 {
   font-size: clamp(76px, 17vw, 232px);
@@ -73,16 +73,32 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 .hero h1 .riso-2 { color: var(--ink); text-shadow: -5px 4px 0 rgba(242, 99, 28, 0.8); }
 .hero__lede {
   font-family: var(--font-display), serif; font-weight: 500;
-  font-size: clamp(20px, 2.6vw, 30px); line-height: 1.3; max-width: 32ch; margin: 0 auto;
+  font-size: clamp(20px, 2.6vw, 30px); line-height: 1.3; max-width: 32ch; margin: 0;
 }
 .hero__lede b { font-weight: 800; padding: 0 0.15em; }
 .hero__lede .pub { background: var(--public); color: var(--paper-2); }
 .hero__lede .old { background: var(--sun); color: var(--ink); }
 .hero__cue { margin-top: 40px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 13px; }
-/* One flat disc (the halftone discs were cut 2026-11-11: they clipped into ragged blocks). */
+/* Polka-dot discs plus one flat disc. The dotted discs sit fully inside the hero
+   (cutting them off at the edge is what made the ragged blocks on 2026-11-11), and a
+   circular mask gives them a clean round edge. The dots are a pattern, not a gradient fill. */
 .hero__disc {
   position: absolute; pointer-events: none; mix-blend-mode: multiply;
   border-radius: 50%;
+}
+.hero__disc--a {
+  width: 46vmin; height: 46vmin; right: 5vw; top: 30%;
+  background: radial-gradient(circle, var(--pile-1) 3.5px, transparent 4px) 0 0 / 13px 13px;
+  -webkit-mask: radial-gradient(circle closest-side, #000 98%, transparent 100%);
+  mask: radial-gradient(circle closest-side, #000 98%, transparent 100%);
+  opacity: 0.6;
+}
+.hero__disc--b {
+  width: 28vmin; height: 28vmin; right: 30vw; bottom: 7%;
+  background: radial-gradient(circle, var(--pile-3) 3px, transparent 3.5px) 0 0 / 11px 11px;
+  -webkit-mask: radial-gradient(circle closest-side, #000 98%, transparent 100%);
+  mask: radial-gradient(circle closest-side, #000 98%, transparent 100%);
+  opacity: 0.65;
 }
 .hero__disc--c {
   width: 18vmin; height: 18vmin; right: 9vmin; top: 12vmin;

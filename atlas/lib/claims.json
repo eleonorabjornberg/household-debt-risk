@@ -34,7 +34,7 @@
    "register": "claims/register.csv",
    "anchors": [
     "Every dot is $50 billion of debt",
-    "atlas_dot_unit",
+    "public_share_1952q1",
     "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
     "1 dot = $50B (2026 $)",
     "1 dot = 0.1% of all debt"
@@ -1233,8 +1233,7 @@
    "notes": "Public = federal direct + GSE/agency pools + state & local. The atlas copy gets this through the {share} token at step 1952-03-31 (fmtPct of the snapshot value); web copy reads facts.publicShareFirst.",
    "register": "claims/register.csv",
    "anchors": [
-    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026Q3 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held",
-    "public_share_1952q1"
+    "These dots are American households' mortgages (solid) and consumer loans (rings), in 2026Q3 dollars. Each one sits with whoever holds the loan, because whoever holds it takes the loss if it goes bad. In 1952 nearly all of it was with banks and finance companies. The public side held"
    ],
    "exact": []
   },

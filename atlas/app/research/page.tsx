@@ -6,7 +6,7 @@ import { MarkdownInline } from "@/components/Markdown";
 
 export const metadata: Metadata = {
   title: "Research · Hot Potato",
-  description: "Every research task behind Hot Potato: the question, the method, its status and the full write-up.",
+  description: "Every research task behind Hot Potato: the question, the method and the write-up.",
 };
 
 export default function ResearchIndex() {
@@ -15,14 +15,8 @@ export default function ResearchIndex() {
       <header className="pg-col">
         <p className="tag">Research</p>
         <h1>The quantitative work behind the site</h1>
-        <p className="pg-lede">
-          One entry per research task: the question it set out to answer, the method in one line, its status as recorded
-          in the project plan, and the full write-up. Inconclusive and failed results are listed with the rest.
-        </p>
-        <p className="pg-caption">
-          Questions and statuses are quoted from the project plan. The one-line methods are Claude’s summaries. Each
-          write-up is shown as it stands in the repository, including its own “Claude draft” banner.
-        </p>
+        <p className="pg-lede">Each question, its method and the write-up, failed and inconclusive ones included.</p>
+        <p className="pg-caption">Methods are Claude’s one-line summaries. Write-ups keep their “Claude draft” banners.</p>
       </header>
       <ol className="research-list">
         {research.map((r) => (
@@ -31,13 +25,6 @@ export default function ResearchIndex() {
             <dl>
               <div><dt>Question</dt><dd><MarkdownInline c={parseInline(r.question)} /></dd></div>
               <div><dt>Method</dt><dd>{r.method}</dd></div>
-              <div>
-                <dt>Status{r.statusRow ? ` (plan, ${r.statusRow} row)` : ""}</dt>
-                <dd>
-                  {r.status.join("; ")}
-                  {r.blocked && <>: <MarkdownInline c={parseInline(r.blocked)} /></>}
-                </dd>
-              </div>
             </dl>
             <p className="research-links">
               {r.slug ? <Link href={`/research/${r.slug}`}>Read the write-up</Link> : <span>No write-up: the task is blocked.</span>}
