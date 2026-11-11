@@ -39,3 +39,15 @@ Checked with the `source-provenance` skill by Claude. Host github.com (git clone
 
 Two GovInfo URLs for the subchapter IV path returned GovInfo's "page cannot be found" body with status 200; they were discarded, and the link service `https://www.govinfo.gov/link/uscode/2/661a?link-type=html` resolved to the subchapter III page above.
 
+## ED's loan-volume estimate, source check (docket 56 b4-student-proxy-map (b), 2026-11-11)
+
+Checked again with the `source-provenance` skill by Claude, for her option (b): the volume side beside the CBO proxy. Free; host www.govinfo.gov (already approved). www.federalregister.gov is refused by the proxy (403) and was not used. The document is the official Federal Register text.
+
+| Supports | Source | URL | Retrieved (UTC) | Bytes | SHA-256 | Quote |
+|---|---|---|---|---|---|---|
+| ED's estimated federal student-loan disbursements before and after the Working Families Tax Cuts Act, 2026–2035, by loan type (the B4 volume side) | ED, "Reimagining and Improving Student Education–Federal Student Loan Program Final Regulations", 91 FR 23768 (2026-05-01), Regulatory Impact Analysis, Table 3.1, FR page 23855. GovInfo PDF (134 pages, created 2026-05-01) | https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf | 2026-11-11 00:57 | 1447385 | `21ef3bab376f85734582ebd3e10e7c89133c00c99e6be5d2c1aec671483f56ac` | Table title: "ESTIMATED CHANGES IN TOTAL FEDERAL STUDENT LOAN DISBURSEMENTS PRE- AND POST-WORKING FAMILIES TAX CUTS ACT, 2026–2035", columns "Disbursed (millions)", "Pre", "Post". Text: "a total reduction in non-consolidated Federal student loan disbursements by $223.9 billion (Table 3.1). This decline is driven by the reduction in loan disbursements in Graduate Stafford and Graduate PLUS Loans ($171 billion) and Parent PLUS Loans ($49 billion)." Table source line: "Student Loan Model volume assumption for PB2026 and Working Families Tax Cuts Act cost estimates." |
+
+- The PDF gave the same SHA-256 on two fetches. The table's text layer is kept verbatim in `fixtures/ed_rule_table_3_1.txt`, and its values were hand-checked against the rendered page (`test_ed_volume.py`).
+- The HTML version recorded above (2026-11-04) now gives a different SHA-256 on every fetch, at the same byte count (959,524). Two fetches on 2026-11-11 differ in 144 bytes, all inside Cloudflare's per-request email-protection tokens; the text is the same. So the PDF is the hashed copy.
+- What the table does not hold: an estimate of how much of the lost federal lending moves to private lenders (as found on 2026-11-04, METHOD 3).
+

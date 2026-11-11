@@ -1,0 +1,46 @@
+{
+ "label": "ED estimate (projection) of the reduction in FEDERAL student-loan disbursements under P.L. 119-21; not an estimate of lending moving to private lenders, not a loss",
+ "source": "ED final rule, 91 FR 23768 (2026-05-01), RIA Table 3.1, FR page 23855",
+ "period": "2026-2035 (as printed; the table does not say fiscal or award years)",
+ "units": "loans in millions, disbursements in USD millions",
+ "table": {
+  "undergrad": {
+   "loans_pre_m": 94.5,
+   "loans_post_m": 93.4,
+   "disbursed_pre_musd": 355842.0,
+   "disbursed_post_musd": 352085.0
+  },
+  "grad_stafford_plus": {
+   "loans_pre_m": 22.2,
+   "loans_post_m": 13.9,
+   "disbursed_pre_musd": 436437.0,
+   "disbursed_post_musd": 265542.0
+  },
+  "parent_plus": {
+   "loans_pre_m": 7.9,
+   "loans_post_m": 7.3,
+   "disbursed_pre_musd": 154140.0,
+   "disbursed_post_musd": 104881.0
+  },
+  "noncons_difference": {
+   "loans_m": -9.9,
+   "disbursed_musd": -223911.0
+  },
+  "consolidation": {
+   "loans_pre_m": 12.8,
+   "loans_post_m": 8.4,
+   "disbursed_pre_musd": 454638.0,
+   "disbursed_post_musd": 338687.0
+  }
+ },
+ "noncons_pre_musd": 946419.0,
+ "noncons_post_musd": 722508.0,
+ "noncons_fall_musd": 223911.0,
+ "noncons_fall_share": 0.2365876002066738,
+ "fall_musd": {
+  "undergrad": 3757.0,
+  "grad_stafford_plus": 170895.0,
+  "parent_plus": 49259.0,
+  "consolidation": 115951.0
+ }
+}

@@ -37,5 +37,14 @@ PLAN task B4: "Policy-regime scenarios: GSEs released from conservatorship, stud
 - **Labelled a proxy, and what it is not.** It is not a CBO estimate of the law's effect: a change between baselines also carries every economic and technical revision CBO made in between. It is not an estimate of lending moving to private lenders, which the CBO repository does not contain. It does not enter the B3 loss engine, and it changes no public share in this task.
 - **Open choice for Eleonora (proposed card).** Whether and how this proxy should feed the engine. Options: (a) budget-side context only, as built here; (b) pair it with ED's estimate of the reduction in federal disbursements (91 FR 23768, already in `sources.md`) as the volume side; (c) a hypothetical shift of part of the federal stock, labelled as such.
 
+### 3c. Volume side: ED's estimate of federal disbursements (Eleonora, docket 56 b4-student-proxy-map (b), 2026-11-11)
+
+> **Claude draft.** Her option text: "Pair it with ED's disbursement estimate: Add the Education Department's loan-volume estimate in its rule (91 FR 23768) as the volume side, after a source check. Still no loss-engine change until you review it."
+
+- **Source check (2026-11-11, `sources.md`).** Free, reachable on www.govinfo.gov, the official Federal Register text (PDF, hashed). It holds a volume estimate: the RIA's Table 3.1 (FR page 23855), federal student-loan disbursements before and after the Act over 2026–2035, by loan type, in $ millions. The table does not say whether those are fiscal or award years; the README quotes "2026–2035" as printed.
+- **What is shown.** Table 3.1's disbursement columns as printed, the non-consolidated total before and after, and the fall. `ed_volume.py` reads the table's verbatim text layer (`fixtures/ed_rule_table_3_1.txt`). It checks that the three non-consolidated rows reproduce ED's printed difference, and that the graduate and Parent PLUS falls match the rule's own text ($171 billion, $49 billion). Consolidation loans are shown on their own line and kept out of the total, as ED does.
+- **Labels.** An ED projection of the fall in **federal** lending, not an estimate of lending moving to private lenders and not a loss. It is set beside the CBO proxy (3b), but the two are not combined: one is projected program-account outlays (what the account pays for the loans' cost) across two CBO baselines, the other projected loan volume from ED's model. No ratio between them is computed, because that would be a new method choice.
+- **No loss-engine change** (her ruling). Neither figure enters B3, and no public share changes.
+
 ## Results
 The recession range and the GSE-release range are computed (`results.json`, `b4.py`; README by `make_readme_and_rows.py`). Section 3 is left out until a reachable CBO estimate exists (card b4-student-2 (iii)).
