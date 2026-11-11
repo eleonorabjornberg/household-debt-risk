@@ -759,3 +759,11 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Claude first said the sandbox's network couldn't reach vercel.app. Eleonora caught that it is on the proxy allowlist now. Claude then checked the live site: /dashboard returned 200 with the tiles, filters and delinquency table, no console errors and no sideways scroll at 1280 px or 390 px; /findings returned 307 to /dashboard#findings; household-debt-risk.vercel.app also returned 200.
 - Review queue round 35 asks for her production OK on the gradient-free build, and whether the radial-gradient dots count as gradients.
 - Model tier: main model only. Tokens and cost: not measured.
+
+### 2026-11-11: markets track's CBO student-loan proxy merged (coordinator)
+- Merged claude/track-markets (8bec074, 9cd576b), the B4 work for cbo-repo-55 (b). The track extracts the Direct Loan program account (TIN 091-0243-0-1-502) from US-CBO/cbo-data at a pinned commit, hashes every file into sources.md, and builds a PROXY on projected FY2026–35 outlays across the January 2025 and February 2026 CBO baselines. The proxy is a Claude draft, UNVERIFIED, and stays out of the B3 loss engine.
+- Folded the track's 26 register rows into claims/register.csv and deleted claims/tracks/markets.csv. Register check OK.
+- The track's skeptic (R-20261111-mkt-s60 to s64: 2 major, 3 minor) caught definitional overreach, and the track fixed it before the merge. The README now says the proxy is not the amount lent, not a full subsidy cost, and not the law's effect, since most of the fall lands before the Grad PLUS end.
+- The track also caught that lib/research.test.ts had been failing since the PLAN B4 row changed on 2026-11-11 (the coordinator's edit), and re-synced the /research quote.
+- Sent to Eleonora: review card rv-b4-cbo-35 and docket card b4-student-proxy-map (whether the proxy feeds the loss engine).
+- Checks after the merge: hook rc 0, B4 6/6, atlas 176/176. Model tier: main model only. Tokens and cost: not measured.

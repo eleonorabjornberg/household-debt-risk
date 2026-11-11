@@ -1,0 +1,56 @@
+{
+ "label": "PROXY: change in CBO's projected subsidy-cost outlays of the Direct Loan program account between baselines; not a CBO estimate of P.L. 119-21's effect, not lending volume, not a shift to private lenders",
+ "account": "091-0243-0-1-502 Federal Direct Student Loan Program Account (Mandatory)",
+ "units": "USD millions, federal fiscal years",
+ "baseline_before": "2025-01",
+ "baseline_after": "2026-02",
+ "baseline_context": "2024-06",
+ "fy_first": 2026,
+ "fy_last": 2035,
+ "n_years": 10,
+ "sum_before_musd": 188574.0,
+ "sum_after_musd": 35303.0,
+ "change_musd": -153271.0,
+ "change_share": -0.812789674080202,
+ "path_musd": {
+  "2024-06": {
+   "2024": 149312.0,
+   "2025": 16689.0,
+   "2026": 16737.0,
+   "2027": 17610.0,
+   "2028": 18432.0,
+   "2029": 19028.0,
+   "2030": 19715.0,
+   "2031": 20464.0,
+   "2032": 21078.0,
+   "2033": 21532.0,
+   "2034": 21792.0
+  },
+  "2025-01": {
+   "2025": 16261.0,
+   "2026": 16682.0,
+   "2027": 17612.0,
+   "2028": 18119.0,
+   "2029": 18436.0,
+   "2030": 18750.0,
+   "2031": 19067.0,
+   "2032": 19452.0,
+   "2033": 19917.0,
+   "2034": 20192.0,
+   "2035": 20347.0
+  },
+  "2026-02": {
+   "2026": 3875.0,
+   "2027": 3673.0,
+   "2028": 3059.0,
+   "2029": 2849.0,
+   "2030": 3025.0,
+   "2031": 3255.0,
+   "2032": 3517.0,
+   "2033": 3832.0,
+   "2034": 4031.0,
+   "2035": 4187.0,
+   "2036": 4336.0
+  }
+ }
+}

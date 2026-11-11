@@ -67,7 +67,7 @@ export const research: ResearchEntry[] = [
   { id: "B4", slug: "b4",
     question: "**Policy-regime scenarios**: GSEs released from conservatorship, student-loan reform, recession",
     method: "Policy cases mapped onto the B3 engine, with each debate's status looked up from primary sources.",
-    status: ["recession range accepted", "accepted by Eleonora 2026-11-05", "student-loan scenario left out until a reachable CBO estimate exists"] },
+    status: ["recession range accepted", "accepted by Eleonora 2026-11-05", "student-loan scenario reopened 2026-11-11 (cbo-repo-55 (b)): Direct Loan account outlays from US-CBO/cbo-data as a labelled proxy"] },
   { id: "C1", slug: "c1",
     question: "**Nowcast** the public share between Z.1 releases from higher-frequency data",
     method: "A point-in-time panel of the inputs public at each nowcast instant, scored against benchmarks on a development sample, then once on a sealed holdout.",

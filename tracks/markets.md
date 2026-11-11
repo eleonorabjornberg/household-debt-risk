@@ -8,6 +8,24 @@ Branch: `claude/track-markets` · Tasks, in order: B1, C1 · Rules: PLAN.md "Par
 - **C3** has not started. It needs the C2 holdout run, which needs her rulings.
 - Nothing touched production or the database. Blocked hosts are listed under Q-B2, not worked around.
 
+## B4 student-loan proxy (2026-11-11, card cbo-repo-55 (b), relayed by the coordinator)
+
+- Built on claude/track-markets, re-cut from sweet-gates 1397d94. Commit 8bec074, plus the skeptic fixes.
+- What was built:
+  - `cbo_extract.py`: a CBO repo clone at commit 284a956 in data/, SHA-256 checked, one account extracted to `cbo_direct_loan_outlays.csv`.
+  - `student_proxy.py` → `student_proxy.json`.
+  - A README row and section (Claude draft), METHOD 3b, `sources.md` (three files, schema, commit, 2 U.S.C. 661a and 661c).
+  - 26 UNVERIFIED rows in claims/tracks/markets.csv.
+  - A `context_sources` entry in pipeline/series_catalog.yaml (the pipeline reads only `series`; its tests pass).
+- What the proxy is: Direct Loan program-account outlays over FY2026–FY2035, January 2025 baseline against February 2026 baseline. It is labelled a proxy and does not enter the B3 engine.
+- Open for her (proposed card): whether and how the proxy should feed the engine. Options: (a) context only; (b) pair it with ED's disbursement estimate; (c) a hypothetical stock shift.
+- Also fixed: atlas/content/research.ts's B4 status quote, after PLAN's B4 row changed. The index test was failing on main.
+- Review: skeptic mkt-s60–s64 (2 major), all addressed. The main points were that outlays are not the full subsidy cost and that most of the fall is already in FY2026, before the Grad PLUS change. Next ids: mkt-s65, mkt-q49, mkt-e33.
+- **Errors:**
+  - "Subsidy cost", "last before / first after" and "modifications and reestimates as recorded" overclaimed. Caught by the skeptic.
+  - Two GovInfo URLs returned a not-found page with status 200. Caught by Claude on reading the page.
+  - The research index test already failed on main after the PLAN edit. Caught by atlas npm test.
+
 ## /research on Hot Potato (2026-11-09, Eleonora's request in chat; PLAN Decisions taken at faddf48)
 
 - The branch was re-cut from origin/claude/sweet-gates-avwrcs at faddf48 (rewritten history; no old SHAs).
