@@ -271,6 +271,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-11 | In chat: "caveats belong in one place only: limits". The /methods Caveats section is now **Limits** (`/methods#limits`) and is the only place caveats appear. The scenarios caveat list, the dashboard student-loan note and the scenario tool's holder-vs-bearer line were folded into it, and each spot now links to `/methods#limits`. |
 | 2026-11-11 | AskUserQuestion on the Ask API and MCP: **"Rename to limits"**. The `caveats` field is now `limits` in both, built from one shared file, `claims/limits.json`, which /methods#limits also reads (13 items: the 11 site items plus 2 API-only items). |
 | 2026-11-11 | In chat, on the write-ups getting only a light pass: **"sure, as long as the mcp/api has it"**. A hard cut of the research pages on the site is OK, provided the full write-ups stay available through the MCP and the Ask API. |
+| 2026-11-12 | Review queue 39/40: rv-potato-38, rv-review-39, rv-limits-40, rv-voice-40, rv-api-40, rv-cut-40 all **ok-prod** ("OK: release this to production"). Held before deploy: the branch head also carries the B4 ED loan-volume draft, which rv-b4-ed-37 kept off production and which no card offered for release; review card rv-release-41 asks her. | Eleonora |
 
 ## Environment prerequisites
 

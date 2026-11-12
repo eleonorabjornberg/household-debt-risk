@@ -886,3 +886,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Merged the Sonnet subagent's commit: `get_research_writeup` and `list_research` in the MCP and the Ask API (full README text), and the site research pages cut to a short version via a per-slug cut table in `atlas/scripts/sync-research.mjs`. The READMEs are unchanged, so no register row moved. Checked by the coordinator: atlas 189/189, build, checks.sh rc 0, MCP 39 passed, 1 skipped.
 - Error caught by Claude (coordinator): the C1 write-up still said "holdout pending the coordinator", though the joint holdout ran on 2026-11-05. Line 5 of `research/c1_nowcast/README.md` now says so; no register row on that line.
 - Open for Eleonora: the cut removed each page's Limits, Reproduce and Files sections (A5's estimate label and B3's proxy note went with them); the c3 short page refers to sections that are now only in the full text.
+
+## 2026-11-12 (coordinator): review rounds 39/40 answered, release held on B4 ED
+- Eleonora answered review rounds 38–40: rv-potato-38, rv-review-39, rv-limits-40, rv-voice-40, rv-api-40 and rv-cut-40, all ok-prod. Recorded in PLAN "Decisions taken". The docket had no new answers.
+- Caught by Claude (coordinator) before deploying: the branch head (802b12d) also carries the B4 student-loan ED loan-volume side (b754b8b), on the /research/b4 page and in the full write-up the Ask API serves. Her rv-b4-ed-37 kept that draft off production, and none of the six cards offered it for release. Production was not touched (still dpl_EHxjDM6nKYrfGn95obaYD2hn7pVp). Review card rv-release-41 asks whether to release with the ED draft, release without it, or hold.
+- Model tier: main model only. Tokens and cost: not measured.
