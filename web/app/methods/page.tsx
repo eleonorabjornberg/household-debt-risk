@@ -5,6 +5,7 @@ import { getSnapshotMeta, getStoryData, supabaseConfigured } from "@/lib/data";
 import { quarterLabel } from "@/lib/format";
 import type { DataSource, TableName } from "@/lib/types";
 import { Sourced } from "@/components/claims/SourceRef";
+import { DraftBanner } from "@/components/DraftBanner";
 
 export const metadata: Metadata = {
   title: "Methods",
@@ -52,6 +53,7 @@ export default async function MethodsPage() {
 
   return (
     <main>
+      <DraftBanner />
       <header className="page-head wrap">
         <div className="col">
           <p className="kicker">Methods</p>

@@ -477,7 +477,8 @@
    "display": [
     "98th percentile",
     "98th",
-    "98% of all four-year windows"
+    "98% of all four-year windows",
+    "98% of four-year windows"
    ],
    "value": "98.2",
    "unit": "pct_rank",
@@ -1455,7 +1456,7 @@
     "web/content/story.ts:121",
     "web/content/story.ts:275",
     "web/content/story.ts:281",
-    "web/app/page.tsx:66"
+    "web/app/page.tsx:68"
    ],
    "computation": "C2",
    "series": [

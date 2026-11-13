@@ -34,7 +34,9 @@ def test_status_never_run_then_up_to_date_then_rerun(tmp_path, monkeypatch):
     assert state() == "UP TO DATE"
     (root / ".claude/agents/skeptic.md").write_text("---\nmodel: opus\n---\nchanged\n")
     assert state() == "RERUN NEEDED"
-    assert next(s for s in reg.status(root) if s["eval"] == "E1")["state"] == "NOT BUILT"
+    monkeypatch.setitem(reg.EVALS, "E1", {"results": root / "e1.jsonl", "inputs": [".claude/agents/skeptic.md"], "run": "x"})
+    (root / "e1.jsonl").write_text(json.dumps({"run": "r", "scored_at": "2026-11-05", "fingerprint": None}) + "\n")
+    assert next(s for s in reg.status(root) if s["eval"] == "E1")["state"] == "RUN, UNFINGERPRINTED"
 
 
 def test_chart_without_results_says_so(tmp_path, monkeypatch):

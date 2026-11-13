@@ -1,6 +1,6 @@
 # Who Holds the Debt?
 
-[![ci](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/ci.yml)
+[![ci](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/ci.yml/badge.svg?branch=claude%2Fsweet-gates-avwrcs)](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/ci.yml)
 [![refresh-data](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/refresh.yml/badge.svg)](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/refresh.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](opendata/README.md) [![Code: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
 
@@ -10,6 +10,8 @@ How US household debt has been reshaped by economic crises since the 1950s. The 
 2. **What the debt is backed by.** Debt is split into home-backed (an appreciating asset), vehicle-backed (a depreciating asset), and debt with no collateral at all, such as cards and student loans. For each class we track how well its collateral covers it through each crisis.
 
 **What we found** (full write-up in [`analysis/findings.md`](analysis/findings.md)):
+
+> **Claude draft.** The findings summary below was written by Claude for Eleonora to review and rewrite. It is not her text yet.
 
 - **Most US household debt now sits on public balance sheets.** The public share of household mortgages and consumer credit rose from 3.2% in 1952 to **56.4% in 2026Q2** ($10.77T of $19.10T). "Public" means the federal government, GSEs and agency pools, and state & local governments.
 - **But crises mostly didn't put it there.** We started from the thesis that each crisis ratchets the share up. The data does not support that as a general pattern: a placebo test finds no detectable excess in shifts after crises over ordinary periods (p ≈ 0.30, low power), drawing from the 282 overlapping 16-quarter windows, 1952Q1–2022Q2. The long climb is a slow structural build-out of the GSEs, +18.8 pp in the 1980s alone.

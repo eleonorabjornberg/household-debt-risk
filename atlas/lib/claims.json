@@ -768,7 +768,8 @@
    "display": [
     "98th percentile",
     "98th",
-    "98% of all four-year windows"
+    "98% of all four-year windows",
+    "98% of four-year windows"
    ],
    "value": "98.2",
    "unit": "pct_rank",
@@ -974,65 +975,6 @@
    "validation": "PASS",
    "checkId": "H17",
    "notes": "Check H17: consumer-credit ABS is $0.07T here, after a $0.79T fall in 2010Q1 (skeptic ana-58). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
-   "register": "claims/register.csv",
-   "anchors": [
-    "The private pile drops from $4.5T to $1.7T. The public share jumps from 36.1% to",
-    ", bigger than 98% of four-year windows. It never came back."
-   ],
-   "exact": []
-  },
-  {
-   "id": "private_label_2026q2_real",
-   "claim": "Private securitization and REITs, incl. card ABS, hold $681B today (2026Q3 dollars).",
-   "display": [
-    "$681B"
-   ],
-   "value": "0.681",
-   "unit": "usd_tn",
-   "period": "2026Q2",
-   "locations": [
-    "atlas/content/story.ts:106"
-   ],
-   "computation": "atlas/components/Coda.tsx:fill -> fmtTrillions(sum of real[latest][private_securitization]); web/public/data/debt_by_risk_holder.json",
-   "series": [
-    "FL673065105",
-    "FL643065173",
-    "FL673066000",
-    "CPIAUCSL"
-   ],
-   "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "PASS",
-   "checkId": "H19",
-   "notes": "Token {pls} (set in atlas/components/Coda.tsx:15). Renders '$681B' because fmtTrillions switches to $B below $1T. The pile is not an exposure measure: it excludes private-label risk held in 'banks' or 'other'. Check H19: includes $0.02T consumer-credit ABS and $0.13T mortgage REITs; the 2006-to-today comparison crosses the 2010Q1 break (skeptic ana-59). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
-   "register": "claims/register.csv",
-   "anchors": [
-    "What does this mean?"
-   ],
-   "exact": []
-  },
-  {
-   "id": "private_label_loss_2007_2011",
-   "claim": "The pile of private securitization and REITs, incl. card ABS, lost almost two-thirds of its value between 2007 and 2011.",
-   "display": [
-    "almost two-thirds"
-   ],
-   "value": "0.63",
-   "unit": "share",
-   "period": "2007Q4-2011Q4",
-   "locations": [
-    "atlas/content/story.ts:81"
-   ],
-   "computation": "derived: 1 - 1.666 / 4.508 from debt_by_risk_holder.json (real 2026 dollars)",
-   "series": [
-    "FL673065105",
-    "FL643065173",
-    "FL673066000",
-    "CPIAUCSL"
-   ],
-   "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "PASS",
-   "checkId": "H18",
-   "notes": "62.9%; 'almost two-thirds' is generous rounding of 63%. Check H18 verifies 0.6305 for the bucket as defined. Most of the card-ABS part fell in one quarter, 2010Q1 ($0.88T to $0.09T real), which coincides with FAS 166/167 consolidation (cause not verified here); without consumer-credit ABS the fall is 54% (ABS-issuer mortgages alone 53%) (skeptic ana-58, open for Eleonora). Claim text reworded 2026-11-07 per Eleonora's round-45 decisions (copy-privlabel c, copy-2026-dollars a, copy-all-uncoll a, copy-placebo a; placebo-stored b keeps 0.3025).",
    "register": "claims/register.csv",
    "anchors": [
     "The private pile drops from $4.5T to $1.7T. The public share jumps from 36.1% to",

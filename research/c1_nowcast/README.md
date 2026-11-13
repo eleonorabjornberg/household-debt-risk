@@ -4,7 +4,7 @@
 
 **PLAN task C1. Status: development-sample evaluation done; holdout run once on 2026-11-05 (see the joint holdout write-up).** The acceptance criteria are a point-in-time panel, in which each input is read at the value public at the nowcast instant, and a release-lag table per input. The panel is `pit.panel(t)`. The table is [`release_lags.csv`](release_lags.csv). The Z.1 release calendar is [`z1_calendar.csv`](z1_calendar.csv). Candidate inputs are listed in [`inputs.yaml`](inputs.yaml), and the sources with their hashes in [`sources.md`](sources.md).
 
-## Results: development sample only (targets to 2023Q2; holdout not run)
+## Results: development sample only (targets to 2023Q2; the holdout result is in the joint holdout write-up)
 
 > **Claude draft, not the author's text.** The scores below follow [`EVALUATION.md`](EVALUATION.md), which was committed before any score existed (7ae4afb). Changes made after the first scores, in response to the quant-reviewer and skeptic, are listed there under "Deviations"; the first scores are in commit 58a93d8. The holdout (2023Q3–2026Q2, as frozen in C2) is untouched. So under C2's wording rule, nothing here can yet be called "beats".
 
@@ -30,7 +30,7 @@
 **Pseudo-real-time comparisons** use latest-vintage Z.1, cut at each release's last quarter, so they are *not real-time* for Z.1. Their bridge regression also trains on revised targets. The indicators are still point-in-time. With indicator set 2b, targets 2015Q1–2023Q2, the bridge's relative RMSE is 0.77. With set 2a (G.19 federal and total only), targets 2010Q2–2023Q2, it is 0.76. All scores are in `scores_dev.csv`, all tests in `tests_dev.csv`, and every nowcast in `nowcasts_dev.csv`.
 
 **What this does not show.**
-- It does not show accuracy on unseen data: the holdout has not been run.
+- It does not show accuracy on unseen data. The holdout was run once on 2026-11-05; its result is in the joint holdout write-up, not here.
 - The samples are small (about 20–28 targets per k in RT). All p-values are descriptive.
 - C2's placebo and outcome leakage checks are not implemented for C1 (see Deviations).
 - The bias finding suggests adding the agency monthly summaries (indicator set 2c), but that would be a new, separately pre-registered run and never a change to this one.

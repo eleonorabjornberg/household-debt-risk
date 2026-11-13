@@ -4,6 +4,7 @@ import exposures from "@/lib/b3/exposures.json";
 import { ScenarioTool } from "@/components/scenarios/ScenarioTool";
 import dfast from "@/lib/b3/preset_dfast2026.json";
 import replay from "@/lib/b3/preset_replay_2008_2012.json";
+import { DraftBanner } from "@/components/DraftBanner";
 
 // Horizons and years come from the preset files, not from the copy (editor mkt-e28).
 const stressQ = dfast.presets.dfast2026_proxy.classes.mortgage.timing.length;
@@ -23,12 +24,7 @@ export const metadata: Metadata = {
 export default function ScenariosPage() {
   return (
     <main>
-      <div className="banner wrap" role="note" data-testid="b3-draft-banner">
-        <p className="banner__inner col-wide">
-          <strong>Claude draft</strong>
-          <span>This page and its text were drafted by Claude for Eleonora to review and rewrite. It is not her text yet.</span>
-        </p>
-      </div>
+      <DraftBanner testId="b3-draft-banner" />
       <header className="page-head wrap">
         <div className="col">
           <p className="kicker">Scenarios</p>

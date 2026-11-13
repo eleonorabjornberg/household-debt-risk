@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { cacheLife } from "next/cache";
 import dict from "@/lib/opendata.json";
 import { getSnapshotMeta } from "@/lib/data";
+import { DraftBanner } from "@/components/DraftBanner";
 
 const V1 = "/downloads/v1";
 
@@ -46,6 +47,7 @@ export default async function DataPage() {
   const cc = d.licences["cc-by-4.0"];
   return (
     <main>
+      <DraftBanner />
       <header className="page-head wrap">
         <div className="col">
           <p className="kicker">Data</p>

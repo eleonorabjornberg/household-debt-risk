@@ -29,8 +29,12 @@ EVALS = {
                    "evals/e2_planted_errors/score.py", "docs/decisions/e2-prereg.md"],
         "run": "see evals/e2_planted_errors/README.md (plant -> reviewers -> score.py match -> human -> summarise)",
     },
-    "E1": {"results": ROOT / "evals" / "e1_question_sql" / "results" / "results.jsonl", "inputs": [],
-           "run": "not built: needs the approved cost estimate (tracks/infra.md) and ANTHROPIC_API_KEY"},
+    "E1": {"results": ROOT / "evals" / "e1_sql_benchmark" / "results.jsonl",
+           "inputs": [".claude/agents/analyst.md", "docs/decisions/e1-prereg.md",
+                      "evals/e1_sql_benchmark/questions.yaml", "evals/e1_sql_benchmark/gold.json",
+                      "evals/e1_sql_benchmark/run_e1.py", "evals/e1_sql_benchmark/verify.py",
+                      "evals/e1_sql_benchmark/spec.py", "evals/e1_sql_benchmark/analyze_e1.py"],
+           "run": "see evals/e1_sql_benchmark/RESULTS.md (run_e1.py needs an e1-spend approval and ANTHROPIC_API_KEY)"},
 }
 
 
@@ -65,6 +69,10 @@ def status(root: Path = ROOT) -> list[dict]:
         last = last_result(ev["results"])
         if last is None:
             state, why = "NEVER RUN", ev["run"]
+        elif not last.get("fingerprint"):
+            state = "RUN, UNFINGERPRINTED"
+            why = (f"last run {last.get('scored_at')} ({last.get('run')}) predates input fingerprinting; "
+                   "the next run records one")
         elif last.get("fingerprint", {}).get("digest") != fp["digest"]:
             old = last.get("fingerprint", {}).get("files", {})
             changed = [f for f, h in fp["files"].items() if old.get(f) != h]

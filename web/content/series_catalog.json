@@ -352,6 +352,18 @@
       "decision": "cbo-repo-55 (b), Eleonora, 2026-11-11: budget-side context only",
       "provenance": "research/b4_policy_scenarios/sources.md",
       "note": "Program-account outlays are subsidy cost (2 U.S.C. 661a), not loan volume. No fair-value estimates (A6)."
+    },
+    {
+      "id": "ed_rule_91fr23768_table_3_1",
+      "publisher": "U.S. Department of Education",
+      "title": "Reimagining and Improving Student Education - Federal Student Loan Program Final Regulations, 91 FR 23768, RIA Table 3.1 (FR 23855)",
+      "url": "https://www.govinfo.gov/content/pkg/FR-2026-05-01/pdf/2026-08556.pdf",
+      "sha256": "21ef3bab376f85734582ebd3e10e7c89133c00c99e6be5d2c1aec671483f56ac",
+      "units": "USD millions, federal student-loan disbursements 2026-2035 by loan type, ED 'Pre' and 'Post' columns",
+      "used_by": "B4 student-loan scenario, volume side beside the CBO proxy (research/b4_policy_scenarios/, METHOD.md 3c)",
+      "decision": "docket 56 (b), Eleonora, 2026-11-11: add ED's loan-volume estimate after a source check; no loss-engine change until she reviews it",
+      "provenance": "research/b4_policy_scenarios/sources.md",
+      "note": "Federal lending only; the private side is not estimated. Not combined with the CBO proxy."
     }
   ]
 }

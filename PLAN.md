@@ -17,7 +17,7 @@
 
 **Status values:** `done` · `in progress` · `next` · `todo` · `blocked (reason)` · `needs-approval` · `dropped (reason)`
 
-**Current position:** Phase A, run as three parallel tracks (below) since 2026-11-04. A1 done. D1, D2, D4, D5 done early. Coordinator next: pre-registration options for A4, A7 and C2 (for Eleonora to choose), D3, skeptic review of A1. Open from Phase 0: D2 and the `research_reader` test need the Supabase pooler host reachable from the sandbox. Proposed for Eleonora: revise recommendation and site copy that frame the 2008 ratchet as GSE-driven, in light of A1.
+**Current position (2026-11-13):** Phases 0, A, B, C, D and F mostly done; submission branch `claude/sweet-gates-avwrcs`, not yet merged to `main`. Open and Eleonora's to finish before submitting (her open-tasks-56): F6 (paper), A6 (blocked: `cbo.gov` 403), D6 (needs her production OK), B3, F5. In progress: E2 rerun on a fresh seed in isolated worktrees (her e2-rerun-56), E3, E4. Waiting on her: the second-person E2 rescore, E4 labels, her text in place of the Claude drafts, and the merge to `main`.
 
 ## Parallel tracks (from 2026-11-04)
 
@@ -174,7 +174,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-04 | API pilot plan (card pilot-plan): **go**. E1 only: build and verify 10 questions (no API cost), then 10 questions × 3 models × 1 run = 30 runs, estimate $1.99, hard cap $2.98; stop if any model's cost per run exceeds 1.5× its estimate; re-check live prices first. | Eleonora |
 | 2026-11-04 | Q7 scope (card q7-promo): **(iii)**, look for a primary source on whether promotional banks (1.1%, e.g. KfW) carry a state guarantee before deciding whether they belong in "publicly owned, not guaranteed"; the question then comes back to her. | Eleonora |
 | 2026-11-04 | Q7 promotional banks (card q7-promo-2): **(c)**, leave the 1.1% (Bundesbank category of banks with special, development and other central support tasks) unclassified until the Länder promotional-bank statutes can be reached. KfW's funding-side guarantee (KfW law Art. 1a) is on file. Reaching the statute hosts (EUR-Lex, gesetze-im-internet.de, Länder law sites) needs her separate OK; none is added. | Eleonora |
-| 2026-11-04 | Review round 5: E2 pre-registration as frozen at 5986353 (with infra's [implementation] choices) and the 10 E1 pilot questions, both accepted. | Eleonora |
+| 2026-11-04 | Review round 5: E2 pre-registration as frozen at 5986353 (d65afd3 after the 2026-11-09 history rewrite; with infra's [implementation] choices) and the 10 E1 pilot questions, both accepted. | Eleonora |
 | 2026-11-04 | Review queue round 4 (17:31 UTC): A8 Q7 (c) application (Germany's third category, 30.3%) accepted as is. | Eleonora |
 | 2026-11-05 | C1b joint holdout (card c1b-unseal, 05:18 UTC): **go**, "unseal and run the joint holdout once". This row is her approval to unseal the sealed holdout and run the joint C2 forecast + C1b nowcast holdout one time, against the C2 prereg `192d60c` and C1b frozen at `8c46906`. | Eleonora |
 | 2026-11-05 | B4 student loans (card b4-student-2): **(iii)**, wait for a reachable CBO estimate; the student-loan scenario stays out of B4 for now. | Eleonora |

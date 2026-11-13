@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { build } from "@/content/build";
 import { Sourced } from "@/components/claims/SourceRef";
+import { DraftBanner } from "@/components/DraftBanner";
 
 export const metadata: Metadata = {
   title: "How it was built",
@@ -23,6 +24,7 @@ function DefinitionList({ items }: { items: { name: string; body: string }[] }) 
 export default function HowItWasBuiltPage() {
   return (
     <main>
+      <DraftBanner />
       <header className="page-head wrap">
         <div className="col">
           <p className="kicker">How it was built</p>

@@ -1,5 +1,7 @@
 # Who Holds the Debt? Findings
 
+> **Claude draft.** Written by Claude from the analysis notebook and results files for Eleonora to review and rewrite; the design and conclusions are hers to state. It is not her text yet.
+
 **Data:** Fed Z.1 Financial Accounts, latest vintage through 2026Q2, plus FRED context series downloaded 2026-10-27. **Scope:** household and nonprofit 1-4 family mortgages (FL153165105) plus consumer credit (FL153166000). That was $19.10T in 2026Q2, 87.3% of total household liabilities. **Public** means the federal government (direct), GSEs and agency pools, and state and local governments. Mortgage holders are apportioned to the household liability. Every number below comes from `analysis/notebook.py` (see `results.json` and `tables/`). Unless marked "pp" (percentage points), shares are shares of the scope total.
 
 Headline figures were cross-checked against the pipeline's `mart` tables (`data/out/`) and match: the 58.6% peak in 2021Q1, 56.4% and $10.77T in 2026Q2, the +$198.5B quarterly change in scope debt, Fed MBS at 16.4% → 10.3%, and home coverage of 3.56× with a low of 1.85×.

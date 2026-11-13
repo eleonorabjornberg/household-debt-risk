@@ -871,3 +871,35 @@ Code: `validation/run.py` section (h), tests `validation/test_run.py`; first com
 ### R-20261107-ana-73 · quant-reviewer · low · test_run.py
 - **Objection:** the tie convention in rounds_to differs from Python's format and JS toFixed at exact binary ties; the enumeration test covers one tail only.
 - **Status:** accepted. The convention is documented in rounds_to (no H value sits at a tie). A test was added that the argpartition draw is uniform over all 2-of-5 sets.
+
+## 2026-11-13: control findings from the E2 planted-error run (fix-batch-56)
+
+The E2 run of 2026-11-13 (`evals/e2_planted_errors/run-20261113/`) gave the agents two unaltered control documents: a copy of `research/c1_nowcast/README.md` (doc-0252ccbc) and of `research/a1_gfc_decomposition/README.md` (doc-cc89f643). The reviewers raised 7 blocker/major objections on them, and all 7 were scored as real problems in the original files. They are logged here against the originals, as Eleonora decided on 2026-11-13 (fix-batch-56). The full text of each is in `run-20261113/objections.csv` under the id given.
+
+### R-20261113-ctrl-1 · quant-reviewer · high · research/c1_nowcast/README.md:5,7,33 (E2 id R-20261113-1)
+- **Objection:** The README says two different things about the holdout. Line 5 says it was run once on 2026-11-05; the results heading and "What this does not show" say it has not been run.
+- **Status:** resolved 2026-11-13. The heading and the bullet now say the holdout was run once and point to the joint holdout write-up.
+
+### R-20261113-ctrl-2 · quant-reviewer · medium · research/c1_nowcast/README.md:13-17 (E2 id R-20261113-2)
+- **Objection:** The pre-registered Holm family has 12 tests, against both no-change and AR(1). The table shows only the no-change half; against AR(1), nothing is significant after Holm.
+- **Status:** open, for Eleonora's write-up.
+
+### R-20261113-ctrl-3 · quant-reviewer · medium · research/c1_nowcast/README.md:20 (E2 id R-20261113-4)
+- **Objection:** The bias splits by period and by k are not in EVALUATION.md. The period boundaries were picked after the errors were seen, and no standard errors are given.
+- **Status:** open. Label the splits post hoc and add the HAC(1) standard errors.
+
+### R-20261113-ctrl-4 · quant-reviewer · medium · research/c1_nowcast/README.md:23 (E2 id R-20261113-5)
+- **Objection:** The bridge regression's gain rests on 16 targets (10 at k = 3) that overlap the 2020–21 bias episode, so the intercept may only be correcting a regime-specific bias.
+- **Status:** open, for Eleonora's write-up.
+
+### R-20261113-ctrl-5 · skeptic · major · research/a1_gfc_decomposition/README.md:3,5 (E2 id R-20261113-47)
+- **Objection:** "The numbers are checked and registered", but 23 of the 26 register rows citing the page are UNVERIFIED.
+- **Status:** resolved 2026-11-13. The banner now says that 3 of the 26 have passed a validation check and 23 are unverified.
+
+### R-20261113-ctrl-6 · skeptic · major · research/a1_gfc_decomposition/README.md:23,49 (E2 id R-20261113-48)
+- **Objection:** "Part of that is accounting" gives no size. About 30% of the $1.71T / 5.7 pp private-label figure is the FAS 166/167 move in 2010Q1, and 2.0 pp of it is consumer-credit ABS, not mortgage private-label securities. The fresh-seed rerun's skeptic raised the same point independently.
+- **Status:** open, for Eleonora's write-up.
+
+### R-20261113-ctrl-7 · skeptic · major · research/a1_gfc_decomposition/README.md:48 (E2 id R-20261113-49)
+- **Objection:** "Most FFEL loans ... carried a federal guarantee" should say essentially all; they were federally reinsured. The private side's 6.9 pp also includes guaranteed FFEL loans leaving private lines, so "private retreat" overstates it.
+- **Status:** open, for Eleonora's write-up.

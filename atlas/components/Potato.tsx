@@ -59,6 +59,8 @@ export function PotatoPerson({
   return (
     <svg viewBox={vb} width={width} role={label ? "img" : undefined} aria-hidden={label ? undefined : true}
       aria-label={label} className="potato-person" style={{ overflow: "visible" }}>
+      {label && <title>{`${label} holders`}</title>}
+      {label && <desc>{`${label} holders carry ${potatoes} of 10 potatoes: their share of household debt, to the nearest tenth.`}</desc>}
       {/* legs */}
       <path d="M-8 -34 L-14 -2 M8 -34 L14 -2" stroke="var(--ink)" strokeWidth={3} strokeLinecap="round" fill="none" />
       {/* body */}

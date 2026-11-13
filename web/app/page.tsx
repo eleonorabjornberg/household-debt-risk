@@ -14,6 +14,7 @@ import {
 import { getStoryData, overallSource } from "@/lib/data";
 import { fill, pct, quarterLabel, usdFromBillions } from "@/lib/format";
 import { collateralData, crises, crisisSteps, crisisWindows, headline, nyfedData, publicSeries, ratchetData } from "@/lib/shape";
+import { DraftBanner } from "@/components/DraftBanner";
 export default async function Home() {
   const data = await getStoryData();
   const h = headline(data);
@@ -43,6 +44,7 @@ export default async function Home() {
 
   return (
     <main>
+      <DraftBanner />
       {overallSource(data.sources) === "fixture" && <FixtureBanner />}
 
       <header className="hero wrap">

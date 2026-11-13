@@ -1,0 +1,1 @@
+{"run": "run-2026-11-05b", "scored_at": "2026-11-05", "fingerprint": null, "results": "evals/e1_sql_benchmark/run-2026-11-05b/results.jsonl", "analysis": "evals/e1_sql_benchmark/run-2026-11-05b/analysis.json", "note": "index entry added 2026-11-13 (fix-batch-56); the run predates E3 input fingerprinting"}

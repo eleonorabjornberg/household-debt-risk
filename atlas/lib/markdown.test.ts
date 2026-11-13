@@ -9,11 +9,13 @@ const SOURCE = path.join(__dirname, "..", "..", "analysis", "findings.md");
 function words(blocks: Block[]): string[] {
   const out: string[] = [];
   const list = (b: ListBlock) => b.items.forEach((it) => { out.push(plain(it.body)); it.children.forEach(list); });
-  for (const b of blocks) {
-    if (b.t === "heading" || b.t === "para") out.push(plain(b.c));
+  const walk = (bs: Block[]): void => bs.forEach((b) => {
+    if (b.t === "quote") walk(b.blocks);
+    else if (b.t === "heading" || b.t === "para") out.push(plain(b.c));
     else if (b.t === "list") list(b);
     else if (b.t === "table") { b.head.forEach((c) => out.push(plain(c))); b.rows.forEach((r) => r.forEach((c) => out.push(plain(c)))); }
-  }
+  });
+  walk(blocks);
   return out.join(" ").split(/\s+/).filter(Boolean);
 }
 
@@ -21,7 +23,7 @@ function words(blocks: Block[]): string[] {
 function sourceWords(src: string): string[] {
   return src.split("\n")
     .filter((l) => !/^\s*\|?\s*:?-{3,}/.test(l))
-    .map((l) => l.replace(/^\s*(#{1,6}|[-*]|\d+\.)\s+/, "").replace(/\|/g, " ").replace(/\*\*|`/g, "").replace(/\*([^*\s][^*]*?)\*/g, "$1"))
+    .map((l) => l.replace(/^\s*>\s?/, "").replace(/^\s*(#{1,6}|[-*]|\d+\.)\s+/, "").replace(/\|/g, " ").replace(/\*\*|`/g, "").replace(/\*([^*\s][^*]*?)\*/g, "$1"))
     .join(" ").split(/\s+/).filter(Boolean);
 }
 
