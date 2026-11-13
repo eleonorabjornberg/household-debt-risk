@@ -32,4 +32,4 @@ This run cannot tell reviewer prompts apart: several plants were conspicuous (an
 
 ## Still open
 - Second-person rescore of `doc-5bca86fe.md#0`, `#1` and `doc-4af129f3.md#1`, and of the 7 control objections; agreement to be reported here.
-- Eleonora's decision on a rerun in isolated worktrees on a fresh seed.
+- Eleonora chose a rerun (e2-rerun-56, 2026-11-13): `run-20261113r`, seed 20261114, isolated folders. This run stays as disclosed history; the rerun is the one to report once scored.

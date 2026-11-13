@@ -276,6 +276,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-13 | E2 run (e2-run-54, chosen 16:39 UTC): **run** E2 as pre-registered and write the Claude-draft results note. No recommendation was given on this card. | Eleonora |
 | 2026-11-13 | E1 status (e1-status-54, chosen 16:39 UTC): **(a) done-draft**: E1 counts as done for E3; its results stay UNVERIFIED and off the sites until her text replaces the Claude draft. No recommendation was given on this card. | Eleonora |
 | 2026-11-13 | Review queue 42 (answered 16:55–16:56 UTC): e2-sevmap-55 **high-medium** (quant-reviewer high and medium both count as blocker/major for R4); e2-rescorer-55 **me-plus-second** (she scores; a second person rescores the 3 drawn errors). She scored all 14 reviewer matches and all 8 baseline data matches **same fix**, and all 7 blocker/major control objections **real** (0 false alarms). | Eleonora |
+| 2026-11-13 | Review queue 43 (Fable 5.2 judge findings): e2-rerun-56 **rerun** (fresh seed in isolated worktrees); e2-rescore-ctrl-56 **yes** (the second person also rescores the control objections); fix-batch-56 **all** (fix all six on the branch only); banners-56 **add** (Claude draft banner on every listed page); open-tasks-56 **finish** (she finishes F6, A6, D6, B3 and F5 before submitting). No recommendation was given on these cards. | Eleonora |
 
 ## Environment prerequisites
 

@@ -1,0 +1,60 @@
+> **Claude draft.** Written by Claude from the project's claims register for Eleonora to review and rewrite; not her text. Numbers: Fed Z.1 vintage 2026-09-11; NY Fed credit-report data vintage 2026-10-27; FHFA Credit Risk Transfer (CRT) reports, vintage 2026-11-04.
+
+# Who holds household credit risk: what banks' balance sheets are up against
+**Audience:** `bank_treasury`, a bank treasury and credit-risk team · **Date:** 2026-11-04 · **Data:** Fed Z.1 Financial Accounts 2026-09-11; NY Fed household credit data 2026-10-27; FHFA CRT reports
+
+## Bottom line
+In the Fed's Z.1 accounts, public holders (the federal government, mostly through student loans; Fannie Mae, Freddie Mac and the agency pools, Ginnie Mae's included; and state and local governments) held 56.4% of household mortgages and consumer credit in 2026Q2. Private lenders, banks included, hold the rest, and that remainder is where retention-versus-sale choices bind. Public holders also hold about half of uncollateralized household debt, mostly student loans. Holdings are not guarantees, so this describes where balances sit, not who absorbs losses.
+
+## What the data show
+- **Scale (Z.1).** Household one-to-four family mortgages plus consumer credit totalled $19.10T in 2026Q2. Public holders held $10.77T of it, which is the 56.4% above.
+- **Mortgages versus consumer credit (NY Fed credit-report).** The public share of household mortgages alone was 65.6% in 2026Q2. The public share of consumer credit was 31.3%, almost all federal student loans.
+- **Student loans.** The public sector holds 86% of student loans. Before 2010, FFEL student loans held by banks and ABS carried a 97-98% federal guarantee, so even the bank-held part of that book carried little private credit risk (holding is not bearing risk).
+- **Unsecured credit (Z.1).** Uncollateralized debt (cards plus student loans) is 16.6% of in-scope debt. The public sector holds 51% of all uncollateralized household debt, up from 7% in 2007Q4. The student-loan split inside this series is an imputation, so treat it as a proxy.
+- **Collateral coverage (Z.1).** Home collateral coverage (real estate value divided by mortgage debt) was 3.56x in 2026Q2. It bottomed at 1.85x in 2012Q1.
+- **After 2008.** The public share was 36.1% at the 2007Q4 NBER peak and 49.2% in 2011Q4. Private-label securitization and mortgage REITs held $1.71T less household debt in 2011Q4 than in 2007Q4.
+- **Credit risk transfer.** Net of all issued CRT only (mortgage insurance not netted), the public share was at least 56.2% at end 2025. Credit risk transfer alone lowers the public share by at most 1.2 pp. With only Freddie Mac outstanding CRT netted (Fannie not netted), it was 56.2% at end 2025, the upper end of the net-of-CRT range. Freddie Mac CRT cover still in force was $40.0B at end 2025, and its mortgage insurance in force was $181.5B (maximum coverage).
+
+## What it means for you
+For a treasury or credit-risk team, the data are context for retention and sale decisions, not a signal. Most household mortgage balances sit with public holders, so the origination pipeline that matters is the one that feeds agency pools: a bank that sells conforming loans is moving balances into the public share, and one that retains them is among the private holders left. The collateral picture is favourable on the mortgage side at the aggregate level, since coverage is well above its 2012Q1 low, but that is a national average and says nothing about any one book.
+
+On the unsecured side the public sector holds about half, because of student loans, so the private appetite for unsecured consumer credit is a narrower market than the headline consumer-credit total suggests. The gap between gross and net-of-CRT public share is small, which means risk transfer has so far removed little from the measured public exposure; it does not tell you how much of the expected loss on those pools investors carry.
+
+## Caveats
+- **Holdings are not guarantees.** "The public sector holds" does not mean taxpayers bear the loss. Agency pools carry credit guarantees, CRT moves part of the loss to investors, and mortgage insurance sits ahead of both; none of that is netted here except where stated.
+- **Z.1 versus NY Fed.** Z.1 totals above are from the Fed's Financial Accounts. The NY Fed credit-report data, a different source with a different scope, show total household debt of $18.77T in 2026Q2. The two should not be set side by side as if they measured the same thing. It is built from sampled credit reports.
+- **Estimates and proxies.** The student-loan split inside consumer credit is imputed (a proxy). The net-of-CRT figures use FHFA risk-in-force against principal, which is a bound, not a measure of risk transferred; Fannie Mae outstanding cover is not yet included.
+- **Banks' own share is not shown.** The register has no row for banks' share of household debt, so this memo does not state one.
+- **Revisions.** Z.1 revises history each quarter; these figures are the 2026-09-11 vintage.
+
+## What to watch
+- The next Z.1 release (expected December) for any change in the public share and in collateral coverage.
+- Fannie Mae filings: once outstanding CRT cover can be read, the net-of-CRT range should narrow from above.
+- Fed agency MBS runoff: the Fed-held agency MBS were $1.90T on 2026-10-21; the pace of runoff bears on how much agency paper private holders have to absorb.
+- Any change to mortgage insurance treatment in the net exposure series, which is currently reported as a separate line.
+
+## Sources
+| Register row | Claim | Period | Status | Vintage |
+|---|---|---|---|---|
+| `public_share_2026q2` | Public share of household mortgages and consumer credit | 2026Q2 | PASS | z1:2026-09-11 |
+| `scope_usd_2026q2` | Mortgages plus consumer credit total | 2026Q2 | PASS | z1:2026-09-11 |
+| `public_usd_2026q2` | Public holders' dollars | 2026Q2 | PASS | z1:2026-09-11 |
+| `public_share_mortgage_2026q2` | Public share of mortgages | 2026Q2 | PASS | z1:2026-09-11 |
+| `public_share_cc_2026q2` | Public share of consumer credit | 2026Q2 | PASS | z1:2026-09-11 |
+| `public_share_of_student_loans` | Public share of student loans | 2026Q2 | UNVERIFIED | z1:2026-09-11 |
+| `ffel_guarantee` | FFEL federal guarantee before 2010 | pre-2010 | UNVERIFIED | n/a |
+| `uncollateralized_share` | Uncollateralized share of in-scope debt | 2026Q2 | UNVERIFIED | z1:2026-09-11 |
+| `public_share_of_uncoll_2026q2` | Public share of uncollateralized debt | 2026Q2 | UNVERIFIED | z1:2026-09-11 |
+| `public_share_of_uncoll_2007q4` | Public share of uncollateralized debt | 2007Q4 | UNVERIFIED | z1:2026-09-11 |
+| `home_coverage_2026q2` | Home collateral coverage | 2026Q2 | UNVERIFIED | z1:2026-09-11 |
+| `home_coverage_low` | Coverage low | 2012Q1 | UNVERIFIED | z1:2026-09-11 |
+| `public_share_2007q4` | Public share at NBER peak | 2007Q4 | PASS | z1:2026-09-11 |
+| `public_share_2011q4` | Public share four years later | 2011Q4 | PASS | z1:2026-09-11 |
+| `a1_pls_change_usd` | Private-label and mortgage REIT change | 2007Q4-2011Q4 | UNVERIFIED | z1:2026-09-11 |
+| `a2_public_share_net_lower_2025q4` | Public share net of all issued CRT | 2025Q4 | UNVERIFIED | z1:2026-09-11, fhfa:2026-11-04 |
+| `a2_public_share_gap_pp` | CRT effect on public share | 2025Q4 | UNVERIFIED | z1:2026-09-11, fhfa:2026-11-04 |
+| `a2_share_net_freddie_crt_2025` | Public share net of Freddie CRT | 2025Q4 | UNVERIFIED | z1:2026-09-11, freddie10k:2026-02-12 |
+| `a2_fre_crt_out_2025` | Freddie CRT cover in force | 2025Q4 | UNVERIFIED | freddie10k:2026-02-12 |
+| `a2_fre_pmi_out_2025` | Freddie mortgage insurance in force | 2025Q4 | UNVERIFIED | freddie10k:2026-02-12 |
+| `nyfed_total_2026q2` | NY Fed total household debt | 2026Q2 | UNVERIFIED | nyfed:2026-10-27 |
+| `fed_mbs_weekly_usd` | Fed-held agency MBS | 2026-10-21 | UNVERIFIED | fred:2026-10-27 |
