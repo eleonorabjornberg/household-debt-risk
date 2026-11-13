@@ -138,9 +138,11 @@ def summarise(run: Path) -> dict:
         k = sum(r["caught"] for r in sub)
         res["by_category"][cat] = {"caught": k, "planted": len(sub)}
     objs = list(csv.DictReader((run / "objections.csv").open(encoding="utf-8")))
-    ctrl = [o for o in objs if o["control"] == "yes" and o["severity"] in ("blocker", "major")]
+    # R4 counts blocker/major. The quant-reviewer grades high/medium/low; Eleonora's decision
+    # e2-sevmap-55 (2026-11-13): high and medium both count as blocker/major.
+    ctrl = [o for o in objs if o["control"] == "yes" and o["severity"] in ("blocker", "major", "high", "medium")]
     if any(o["real_problem"].strip().lower() not in ("yes", "no") for o in ctrl):
-        raise SystemExit("objections.csv: every blocker/major objection on a control needs real_problem yes/no")
+        raise SystemExit("objections.csv: every blocker/major (or high/medium) objection on a control needs real_problem yes/no")
     fa = sum(o["real_problem"].strip().lower() == "no" for o in ctrl)
     res["false_alarms"] = {"false": fa, "objections_on_controls": len(ctrl), "wilson95": wilson(fa, len(ctrl))}
     res["misses"] = [r["error"] for r in rows if not r["caught"]]

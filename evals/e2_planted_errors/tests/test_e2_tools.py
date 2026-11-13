@@ -112,6 +112,8 @@ def test_key_commitment_and_controls(tmp_path):
 
 
 def test_match_and_summarise(tmp_path):
+    jsonl = HERE / "results" / "results.jsonl"
+    before = jsonl.read_bytes() if jsonl.exists() else None
     run, key = _rehearse(tmp_path)
     v = next(v for v in key["variants"] if v["errors"])
     e = v["errors"][0]
@@ -140,7 +142,7 @@ def test_match_and_summarise(tmp_path):
         w.writerows(objs)
     res = score.summarise(run)
     assert res["rehearsal"] and (run / "rehearsal_summary.json").exists()
-    assert not (HERE / "results" / "results.jsonl").exists()  # rehearsals never reach results/
+    assert (jsonl.read_bytes() if jsonl.exists() else None) == before  # rehearsals never reach results/
     assert res["false_alarms"]["objections_on_controls"] == 1
     lo, hi = res["by_agent"][e["agent"]]["wilson95"]
     assert 0 <= lo <= hi <= 1
