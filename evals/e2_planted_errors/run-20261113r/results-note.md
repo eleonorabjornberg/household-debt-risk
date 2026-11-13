@@ -1,4 +1,4 @@
-> **Claude draft.** Written by Claude (coordinator) for Eleonora to replace with her own text. No results yet: they wait on her same_fix and real_problem judgments and the second-person rescore. Not published.
+> **Claude draft.** Written by Claude (coordinator) for Eleonora to replace with her own text. No results yet: they wait on three same_fix judgments (round 45). Not published.
 
 # E2 planted-error test, rerun 2026-11-13 (`run-20261113r`)
 
@@ -23,7 +23,17 @@ The 14 reports were assembled into `review-log.md` (48 entries) and `baseline/re
 
 "Located" means an objection points at the planted line. Whether it proposes the same fix is Eleonora's call (`same_fix`); recall is computed only after that.
 
+## Judgments so far (Eleonora, review queue 44)
+- `same_fix`: **yes** on 11 of 14 reviewer matches and 8 of 8 baseline matches. Three reviewer cards (doc-67be578b #0, #1; doc-7326b106 #0) had no saved answer and are re-asked in round 45.
+- `real_problem`: **yes** on the 3 reviewer control objections that count for R4 (R-20261113r-1, -16, -17) and on all 5 baseline control objections (descriptive only: the baseline gives no severity, so none counts for R4).
+
+## Second rater (Fable 5.2 model, per Eleonora's rescore-pack-57 note)
+Blind to her scores: it saw `rescore-pack.md` and the four documents only. Its answers are in `second-rater.json`.
+- Drawn errors (doc-ed3e7abc #0, #1; doc-7326b106 #1): located and same fix on all 3. Agreement with Eleonora: **3 of 3**.
+- Reviewer control objections (R-1, -16, -17): real problem on all 3. Agreement: **3 of 3**.
+- Baseline control objections (descriptive): real problem on B1 and B4, not on B2, B3, B5. Agreement: **2 of 5**.
+- The second rater is a model, not a second human as the prereg says (Deviations, rescore-pack-57). It says its R-16, R-17, B1 and B3 answers rest partly on files outside the pack that it could not check.
+
 ## Still open
-- Eleonora: `same_fix` for 14 reviewer and 8 baseline matches; `real_problem` for 3 reviewer control objections (R-20261113r-1, -16, -17) and, descriptively, 5 baseline ones.
-- Second person: rescore of `rescore-sample.json` (doc-ed3e7abc #0, #1; doc-7326b106 #1) and the reviewer control objections (e2-rescore-ctrl-56).
-- Then `score.py summarise` on both folders.
+- Eleonora: `same_fix` for the three round-45 cards.
+- Then `score.py summarise` on the reviewer folder (the baseline is read from `baseline/scoring.csv`, as in run-20261113). Results stay UNVERIFIED until she replaces this draft.

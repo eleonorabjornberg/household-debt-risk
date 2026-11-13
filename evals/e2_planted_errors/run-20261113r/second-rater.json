@@ -1,0 +1,17 @@
+{"rater": "Fable 5.2 (model, second rater)",
+ "errors": {
+  "doc-ed3e7abc.md#1": {"located": "yes", "same_fix": "yes", "objection": "R-20261113r-42", "reason": "The objection cites line 11 exactly and says the 65.6% and 31.3% shares are Z.1 figures mislabelled as NY Fed credit-report data, proposing the relabel to Z.1, which is the planted source swap and its fix."},
+  "doc-ed3e7abc.md#0": {"located": "yes", "same_fix": "yes", "objection": "R-20261113r-41", "reason": "The objection cites line 16 and says 'at least 56.2%' should be 55.2%, which the line itself supports (56.2% is also given as the upper end and the gap is 1.2 pp), so it names the changed number and the same correction."},
+  "doc-7326b106.md#1": {"located": "yes", "same_fix": "yes", "objection": "R-20261113r-36", "reason": "The objection cites line 5 and says the Z1.csv date 2025-12-11 contradicts the 2026-09-11 vintage stated on lines 54-55 of the same document, proposing the change to 2026-09-11, which is the planted vintage label and its fix."}
+ },
+ "controls": {
+  "R-20261113r-1": {"real_problem": "yes", "reason": "Line 5 says the holdout was run once on 2026-11-05 while lines 7, 9 and 33 say it is not run, untouched and has not been run, a contradiction visible in the document itself (the holdout scores quoted could not be checked from the pack)."},
+  "R-20261113r-16": {"real_problem": "yes", "reason": "Line 23 reports the private-label $1.71T and 5.7 pp and says only that 'part of that is accounting' without any size, so the split between private-label and banks cannot be read as shrinkage; the document's own line 49 confirms the 2010Q1 jump, though the 2.10 pp magnitude could not be checked from the pack and 'uninterpretable' is stronger than warranted."},
+  "R-20261113r-17": {"real_problem": "yes", "reason": "Lines 3 and 5 say the numbers are checked while the document cites only one validation check (C5, line 9) for some two dozen figures, so 'checked' overstates validation if the register statuses are as quoted; the register counts themselves could not be checked from the pack."},
+  "R-20261113r-B1": {"real_problem": "yes", "reason": "Same issue as R-17: the banner on line 3 says the numbers are checked, yet the document shows a validation check only for the headline jump; the register statuses quoted could not be checked from the pack."},
+  "R-20261113r-B2": {"real_problem": "no", "reason": "Line 54 already says the series match exactly inside A1's window, and 'A1 should stay inside 1987 onwards with these cells' reads as a sensible guard against extending the analysis backwards, so the sentence is coherent and the missing coordinator credit is not an error."},
+  "R-20261113r-B3": {"real_problem": "no", "reason": "Where keys sit in results.json could not be checked from the pack, and as written the parenthetical is at most a loose pointer to the sensitivity block that holds the alternative methods, with no number or conclusion affected."},
+  "R-20261113r-B4": {"real_problem": "yes", "reason": "Line 49 says card ABS moved onto bank balance sheets 'so the private-label line jumps and the bank line falls', which is the opposite of what holdings do and is only true of contribution lines the sentence does not name, so it misleads as written."},
+  "R-20261113r-B5": {"real_problem": "no", "reason": "On line 9 the C5 reference sits directly after the +13.1 pp jump, which the objection agrees C5 covers, so the citation is accurate as placed and adding C4 for the levels would be a refinement, not a correction."}
+ }
+}

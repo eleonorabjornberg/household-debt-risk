@@ -920,3 +920,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Caught by Claude (coordinator): the atlas findings test dropped words inside block quotes once findings.md gained its banner; `words()` now walks quote blocks. atlas 189/189, pipeline 25 passed (25 data tests skipped), hook checks pass.
 - E2 rerun (`run-20261113r`, seed 20261114, Opus-tier subagents, no API spend): 14 runs, each in a folder holding only its variant and allowed data. Audit by Claude (coordinator): no run read outside its folder. Disclosed: the allowed register copy still carries the original values, and baseline reports give no severity. Match: reviewers located 14 of 14, baseline 8 of 8 on data documents. Results wait on her `same_fix` and `real_problem` cards (review queue 44) and the second-person rescore (sample: doc-ed3e7abc #0, #1; doc-7326b106 #1).
 - Model tier: main model; Opus-tier subagents for E2. Tokens and cost: not measured.
+
+## 2026-11-13 (coordinator): review round 44 answered, second rater
+- Eleonora answered review queue 44: yes on 11 of 14 reviewer same-fix cards, all 8 baseline same-fix cards, the 3 reviewer control objections and the 5 baseline ones; rescore-pack-57 **sent**, with her note "make fable 5.2 the second person". Recorded in PLAN "Decisions taken" and written into the run-20261113r CSVs.
+- Caught by Claude (coordinator): three reviewer same-fix cards (doc-67be578b #0, #1; doc-7326b106 #0) came back with no saved answer. Re-asked as review queue round 45 rather than filled in.
+- Second rater (Fable 5.2 subagent, blind pack, no first-rater scores): agrees with Eleonora on 3 of 3 drawn errors and 3 of 3 reviewer controls; on the descriptive baseline controls 2 of 5 (it says no on B2, B3, B5). Model instead of a second human recorded as a prereg deviation credited to her note.
+- Model tier: main model; Fable 5.2 subagent for the rescore (about 97k tokens). Cost not measured.
