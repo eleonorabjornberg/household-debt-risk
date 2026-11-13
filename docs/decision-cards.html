@@ -77,20 +77,20 @@ footer { margin-top: 28px; font-size: 12.5px; color: var(--muted); }
   <header class="top">
     <div>
       <h1>Decisions waiting for you</h1>
-      <p class="sub">Round 52: the history rewrite and main.</p>
+      <p class="sub">Round 54: the E2 run and E1&#x27;s status.</p>
     </div>
     <div class="progress"><span id="count">0 of 0 decided</span><div class="bar"><i id="barfill"></i></div></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by group"></div>
     <p class="notice" id="notice" hidden></p>
   </header>
   <main id="list"></main>
-  <footer>No recommendation on this card. A choice authorizes only what its option text says. Nothing has been force-pushed yet; all tracks are paused. Production still runs daf6522.</footer>
+  <footer>No recommendations on these cards. &#x27;Open&#x27; shows the file on GitHub. A choice authorizes only what its option says.</footer>
 </div>
 
 <script>
-const DECISIONS = [{"id": "rewrite-main", "group": "Public", "tag": "production", "title": "Rewriting main would redeploy production with older content. How should main be handled?", "ctx": "Your round 51 (b) authorizes force-pushing all branches. But Vercel builds production on every push to main, and main (02515b2, PR #1) is 68 files behind what production runs (daf6522). A rewritten main pushed now would replace the live site with that older version. Separately, GitHub keeps PR #1's commits under its own ref, which a force push cannot change. Once the repo is public, the old commits (with your address) stay reachable through PR #1 until GitHub Support purges them. Only you can ask GitHub for that.", "opts": [["a", "You first pause production builds from main in Vercel (Project Settings, Git, Ignored Build Step). Then Claude force-pushes all branches including main, and you turn builds back on"], ["b", "Force-push every branch except main now; main is rewritten later, when it next gets a reviewed merge that matches production"], ["c", "Force-push all branches including main now and accept the production rebuild from main's older content"], ["d", "Stop: no force push for now"]], "where": "GitHub branches, Vercel production"}];
+const DECISIONS = [{"id": "e2-run-54", "group": "Evals", "tag": "E2", "title": "Run the planted-error test (E2) now?", "ctx": "The prereg is frozen at 5986353 with your round-5 design (Wilson intervals primary). The run is 9 reviewer-agent runs (skeptic and quant-reviewer) plus 5 baseline runs on planted-error and control documents. They run as subagents in a Claude Code session, with no API key and no API spend. Results get a Claude-draft note with every miss analysed.", "opts": [["run", "Run E2 as pre-registered and write the Claude-draft results note."], ["hold", "Hold E2 for now."]], "where": "docs/decisions/e2-prereg.md", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/docs/decisions/e2-prereg.md"}, {"id": "e1-status-54", "group": "Evals", "tag": "E1", "title": "E1 has finished running. Does it count as done so E3 can start?", "ctx": "The main run finished 720/720 and the Opus baseline 240/240, for $20.05 of the $31 cap. You approved the results note as a Claude draft on 2026-11-06. It has 39 UNVERIFIED rows and stays off the sites until your text replaces it. E3, the regression suite, waits on E1 and E2. Nothing is rerun either way.", "flag": "With (a), E3 builds on E1 results that are still UNVERIFIED Claude draft numbers.", "opts": [["done-draft", "(a) Mark E1 done for E3. The results stay UNVERIFIED and off the sites until my text."], ["wait-text", "(b) Keep E1 open until my text replaces the Claude draft."], ["hold", "(c) Hold; decide later."]], "where": "docs/decisions/e1-prereg.md (the results note is linked from PLAN.md E1)", "link": "https://github.com/eleonorabjornberg/household-debt-risk/blob/claude/sweet-gates-avwrcs/PLAN.md"}];
 
-const GROUPS = ["Public"];
+const GROUPS = ["Evals"];
 const answers = {};          // id -> {choice, note}
 let filter = "All";
 let db = null;
