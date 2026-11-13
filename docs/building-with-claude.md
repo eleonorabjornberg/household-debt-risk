@@ -905,3 +905,11 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Caught by Claude (coordinator): the 0/7 false-alarm interval reaches 0.35, above the 25% reference; the note says 7 objections are too few to place the rate below it.
 - Still open: the second-person rescore of 3 errors. At Eleonora's request, a Fable 5.2 judge pass on the E2 results before submission.
 - Model tier: main model. Tokens and cost: not measured.
+
+## 2026-11-13 (coordinator): Fable 5.2 judge pass before submission
+- At Eleonora's request, a Fable 5.2 subagent judged the branch read-only (1eab121). Verdict: ready after listed fixes; 15 findings (2 blocker, 9 major, 4 minor). No fabricated data found.
+- Caught by the Fable judge, missed by Claude (coordinator): E2 isolation (CHOICE-5 (b)) was not enforced; the reviewer worktrees held the whole repository and the skeptic diffed variants against the originals for 4 of 8 catches. Disclosed as a dated prereg deviation and at the top of the results note; rerun is her decision.
+- Caught by the Fable judge: the e2-sevmap-55 mapping was decided after the objections were visible; recorded as a deviation, with the unmapped R4 (0 of 3) beside the mapped one.
+- Caught by the Fable judge: `make ci` failed on the E1 gate tests, which cited pre-rewrite SHAs (4b0fd66, e0ae2d6, a43e37e). Repointed to 6172f48, 01c9ffc, eeede17; `evals` tests 86/86 pass.
+- Fixed stale PLAN status cells for D4, E1 and E3. Remaining judge findings (atlas register links and chart titles, missing banners on web pages and analysis/findings.md, A1/C1 README claims, SHA map, E1 in E3, PLAN position line, open tasks) go to Eleonora on the review queue.
+- Model tier: Fable 5.2 subagent for the judge; main model for fixes. Tokens: judge about 163k. Cost not measured.

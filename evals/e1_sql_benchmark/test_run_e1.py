@@ -134,10 +134,10 @@ def test_approval_must_postdate_the_freeze():
 
 
 def test_approval_commit_and_an_earlier_commit():
-    assert "chosen 20:59 UTC" in run_e1.check_spend_approval("4b0fd66")            # her e1-spend (a)
-    assert "chosen 20:59 UTC" in run_e1.check_spend_approval("4b0fd66", baseline=True)
+    assert "chosen 20:59 UTC" in run_e1.check_spend_approval("6172f48")            # her e1-spend (a); 6172f48 is 4b0fd66 after the 2026-11-09 history rewrite
+    assert "chosen 20:59 UTC" in run_e1.check_spend_approval("6172f48", baseline=True)
     with pytest.raises(SystemExit, match="no Eleonora row"):
-        run_e1.check_spend_approval("a43e37e")  # after the freeze, before her answer
+        run_e1.check_spend_approval("eeede17")  # after the freeze, before her answer (post-rewrite SHA)
 
 
 OPT_A = "| 2026-11-05 | E1 spend (e1-spend, chosen 19:40 UTC): **OK** (a): the main run and the Opus baseline, within $31. | Eleonora |"

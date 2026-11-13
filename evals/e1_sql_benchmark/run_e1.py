@@ -36,7 +36,7 @@ sys.path.insert(0, str(HERE))
 import pilot  # noqa: E402
 
 PREREG = ROOT / "docs" / "decisions" / "e1-prereg.md"
-FREEZE_COMMIT = "e0ae2d6"  # "prereg: E1 (frozen)", 2026-11-05
+FREEZE_COMMIT = "01c9ffc"  # "prereg: E1 (frozen)", 2026-11-05 (was e0ae2d6 before the 2026-11-09 history rewrite)
 GOLD = HERE / "gold.json"
 HASHES = HERE / "snapshot_hashes.json"
 SEED = 20261104
