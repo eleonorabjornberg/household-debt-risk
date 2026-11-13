@@ -1,0 +1,24 @@
+{
+ "rule": "docs/decisions/e2-prereg.md line 74: random.Random(20261104).sample(error ids in scoring.csv order, 3)",
+ "population": [
+  "doc-bf1acdf1.md#0",
+  "doc-bf1acdf1.md#1",
+  "doc-4af129f3.md#0",
+  "doc-4af129f3.md#1",
+  "doc-432a89ed.md#0",
+  "doc-432a89ed.md#1",
+  "doc-91a96e1d.md#0",
+  "doc-91a96e1d.md#1",
+  "doc-01bab658.md#0",
+  "doc-01bab658.md#1",
+  "doc-5bca86fe.md#0",
+  "doc-5bca86fe.md#1",
+  "doc-2677667e.md#0",
+  "doc-2677667e.md#1"
+ ],
+ "sample": [
+  "doc-5bca86fe.md#1",
+  "doc-5bca86fe.md#0",
+  "doc-4af129f3.md#1"
+ ]
+}

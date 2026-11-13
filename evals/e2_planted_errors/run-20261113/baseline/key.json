@@ -1,0 +1,205 @@
+{
+ "seed": 20261104,
+ "rehearsal": false,
+ "stratified": true,
+ "errors_per_doc": 2,
+ "variants": [
+  {
+   "doc": "doc-bf1acdf1.md",
+   "source": "research/c2_forecast/SPECS.md",
+   "control": false,
+   "agent": "quant-reviewer",
+   "errors": [
+    {
+     "category": "multiple_testing",
+     "agent": "quant-reviewer",
+     "kind": "insert",
+     "line": 86,
+     "original": "",
+     "planted": "Of the twenty specifications tried, the best has p = 0.03, so the effect is statistically significant.",
+     "fix": "selection among many tests; correct for multiplicity or report all"
+    },
+    {
+     "category": "wrong_se",
+     "agent": "quant-reviewer",
+     "kind": "insert",
+     "line": 83,
+     "original": "",
+     "planted": "Standard errors are plain OLS; the quarterly errors are treated as independent.",
+     "fix": "serially correlated errors need HAC (or similar) standard errors"
+    }
+   ]
+  },
+  {
+   "doc": "doc-4af129f3.md",
+   "source": "research/a2_net_exposure/README.md",
+   "control": false,
+   "agent": "skeptic",
+   "errors": [
+    {
+     "category": "holds_to_bears",
+     "agent": "skeptic",
+     "kind": "replace",
+     "line": 23,
+     "original": "- **Measured as loss capacity against principal, CRT alone lowers the public share by at most 1.2 pp.** The bound holds in every year 2013–2025 (`net_exposure.csv`); net ≤ gross is asserted in the script. Mortgage insurance is a separate line and is left out of this bound.",
+     "planted": "- **Measured as loss capacity against principal, CRT alone lowers the public share by at most 1.2 pp.** The bound bears the losses on in every year 2013–2025 (`net_exposure.csv`); net ≤ gross is asserted in the script. Mortgage insurance is a separate line and is left out of this bound.",
+     "fix": "holding is not bearing credit risk (guarantees, insurance, CRT)"
+    },
+    {
+     "category": "number_change",
+     "agent": "skeptic",
+     "kind": "replace",
+     "line": 44,
+     "original": "- **Public share net of CRT, end 2025: between 55.2% and 56.2%.** The lower end nets every CRT dollar ever issued by both Enterprises (FHFA); the upper end nets Freddie's outstanding STACR and ACIS cover only, so it stays an upper bound whatever part of \"Other\" is counted as CRT.",
+     "planted": "- **Public share net of CRT, end 2025: between 56.2% and 56.2%.** The lower end nets every CRT dollar ever issued by both Enterprises (FHFA); the upper end nets Freddie's outstanding STACR and ACIS cover only, so it stays an upper bound whatever part of \"Other\" is counted as CRT.",
+     "fix": "the number does not match the register / recompute"
+    }
+   ]
+  },
+  {
+   "doc": "doc-cc89f643.md",
+   "source": "research/a1_gfc_decomposition/README.md",
+   "control": true,
+   "agent": "skeptic",
+   "errors": []
+  },
+  {
+   "doc": "doc-432a89ed.md",
+   "source": "research/a1_gfc_decomposition/README.md",
+   "control": false,
+   "agent": "skeptic",
+   "errors": [
+    {
+     "category": "causal_word",
+     "agent": "skeptic",
+     "kind": "insert",
+     "line": 31,
+     "original": "",
+     "planted": "The 2008 rescues caused this shift directly.",
+     "fix": "causal claim without an identification strategy (only A7 may claim cause)"
+    },
+    {
+     "category": "definition_shift",
+     "agent": "skeptic",
+     "kind": "insert",
+     "line": 10,
+     "original": "",
+     "planted": "Here the public share leaves out state and local governments, unlike elsewhere in the project.",
+     "fix": "the definition of public changes between compared numbers"
+    }
+   ]
+  },
+  {
+   "doc": "doc-91a96e1d.md",
+   "source": "research/c1_nowcast/README.md",
+   "control": false,
+   "agent": "quant-reviewer",
+   "errors": [
+    {
+     "category": "ci_as_pi",
+     "agent": "quant-reviewer",
+     "kind": "insert",
+     "line": 42,
+     "original": "",
+     "planted": "The 95% confidence interval of the mean forecast shows where the next quarter's value will fall 95% of the time.",
+     "fix": "a confidence interval of the mean is not a prediction interval"
+    },
+    {
+     "category": "tuned_on_holdout",
+     "agent": "quant-reviewer",
+     "kind": "insert",
+     "line": 34,
+     "original": "",
+     "planted": "The model's settings were chosen by comparing errors over the holdout period, then the holdout errors are reported as out-of-sample.",
+     "fix": "the holdout was used for tuning; its errors are not out-of-sample"
+    }
+   ]
+  },
+  {
+   "doc": "doc-0252ccbc.md",
+   "source": "research/c1_nowcast/README.md",
+   "control": true,
+   "agent": "quant-reviewer",
+   "errors": []
+  },
+  {
+   "doc": "doc-01bab658.md",
+   "source": "analysis/findings.md",
+   "control": false,
+   "agent": "skeptic",
+   "errors": [
+    {
+     "category": "double_count",
+     "agent": "skeptic",
+     "kind": "insert",
+     "line": 21,
+     "original": "",
+     "planted": "Adding the Fed's own agency MBS holdings on top of the agency pools gives the full public book.",
+     "fix": "Fed MBS are inside the agency pools; adding them double counts"
+    },
+    {
+     "category": "source_swap",
+     "agent": "skeptic",
+     "kind": "replace",
+     "line": 3,
+     "original": "**Data:** Fed Z.1 Financial Accounts, latest vintage through 2026Q2, plus FRED context series downloaded 2026-10-27. **Scope:** household and nonprofit 1-4 family mortgages (FL153165105) plus consumer credit (FL153166000). That was $19.10T in 2026Q2, 87.3% of total household liabilities. **Public** means the federal government (direct), GSEs and agency pools, and state and local governments. Mortgage holders are apportioned to the household liability. Every number below comes from `analysis/notebook.py` (see `results.json` and `tables/`). Unless marked \"pp\" (percentage points), shares are shares of the scope total.",
+     "planted": "**Data:** Fed NY Fed credit-report Financial Accounts, latest vintage through 2026Q2, plus FRED context series downloaded 2026-10-27. **Scope:** household and nonprofit 1-4 family mortgages (FL153165105) plus consumer credit (FL153166000). That was $19.10T in 2026Q2, 87.3% of total household liabilities. **Public** means the federal government (direct), GSEs and agency pools, and state and local governments. Mortgage holders are apportioned to the household liability. Every number below comes from `analysis/notebook.py` (see `results.json` and `tables/`). Unless marked \"pp\" (percentage points), shares are shares of the scope total.",
+     "fix": "the figure is Z.1, not NY Fed CCP; sources must not be mixed or mislabelled"
+    }
+   ]
+  },
+  {
+   "doc": "doc-5bca86fe.md",
+   "source": "research/c1_nowcast/EVALUATION.md",
+   "control": false,
+   "agent": "quant-reviewer",
+   "errors": [
+    {
+     "category": "benchmark_dropped",
+     "agent": "quant-reviewer",
+     "kind": "insert",
+     "line": 92,
+     "original": "",
+     "planted": "No naive or AR benchmark is needed here because the errors are small in absolute terms.",
+     "fix": "every model must be compared to naive and AR benchmarks"
+    },
+    {
+     "category": "lookahead",
+     "agent": "quant-reviewer",
+     "kind": "insert",
+     "line": 13,
+     "original": "",
+     "planted": "Inputs are taken from the latest vintage for every past nowcast date.",
+     "fix": "look-ahead; past nowcasts must use the vintage public at the time (ALFRED)"
+    }
+   ]
+  },
+  {
+   "doc": "doc-2677667e.md",
+   "source": ".claude/skills/research-memo/examples/bank_treasury.md",
+   "control": false,
+   "agent": "skeptic",
+   "errors": [
+    {
+     "category": "period_shift",
+     "agent": "skeptic",
+     "kind": "replace",
+     "line": 10,
+     "original": "- **Scale (Z.1).** Household one-to-four family mortgages plus consumer credit totalled $19.10T in 2026Q2. Public holders held $10.77T of it, which is the 56.4% above.",
+     "planted": "- **Scale (Z.1).** Household one-to-four family mortgages plus consumer credit totalled $19.10T in 2027Q2. Public holders held $10.77T of it, which is the 56.4% above.",
+     "fix": "the quarter does not match the number's period"
+    },
+    {
+     "category": "vintage_label",
+     "agent": "skeptic",
+     "kind": "replace",
+     "line": 28,
+     "original": "- **Revisions.** Z.1 revises history each quarter; these figures are the 2026-09-11 vintage.",
+     "planted": "- **Revisions.** Z.1 revises history each quarter; these figures are the 2025-12-11 vintage.",
+     "fix": "the vintage cited does not match the data used (meta.json / register vintage)"
+    }
+   ]
+  }
+ ],
+ "source_commit": "3ef142f94ca9b58ef0b6e775606184f353b1fe0b"
+}
