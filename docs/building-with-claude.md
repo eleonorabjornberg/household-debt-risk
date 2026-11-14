@@ -926,3 +926,8 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Caught by Claude (coordinator): three reviewer same-fix cards (doc-67be578b #0, #1; doc-7326b106 #0) came back with no saved answer. Re-asked as review queue round 45 rather than filled in.
 - Second rater (Fable 5.2 subagent, blind pack, no first-rater scores): agrees with Eleonora on 3 of 3 drawn errors and 3 of 3 reviewer controls; on the descriptive baseline controls 2 of 5 (it says no on B2, B3, B5). Model instead of a second human recorded as a prereg deviation credited to her note.
 - Model tier: main model; Fable 5.2 subagent for the rescore (about 97k tokens). Cost not measured.
+
+## 2026-11-14 (coordinator): review round 45 answered, E2 rerun scored
+- Eleonora answered review queue 45: same_fix **yes** on doc-67be578b #0, #1 and doc-7326b106 #0. Recorded in PLAN "Decisions taken" and written into `run-20261113r/scoring.csv`.
+- Ran `score.py summarise` on the reviewer folder only (baseline read from `baseline/scoring.csv`, as in run-20261113): skeptic 8/8 (Wilson 95% 68–100%), quant-reviewer 6/6 (61–100%), false alarms 0/3 (0–56%), no misses. Baseline 8/8. Results note filled as a Claude draft, UNVERIFIED; it says the baseline matched the agents, so this run shows no added recall from the skeptic prompt, and that both hit the ceiling. `regression.py status` reads E2 as up to date.
+- Model tier: main model. Cost not measured.

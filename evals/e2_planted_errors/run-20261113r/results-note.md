@@ -1,4 +1,4 @@
-> **Claude draft.** Written by Claude (coordinator) for Eleonora to replace with her own text. No results yet: they wait on three same_fix judgments (round 45). Not published.
+> **Claude draft.** Written by Claude (coordinator) for Eleonora to replace with her own text. Results below are UNVERIFIED until she replaces this draft. Not published.
 
 # E2 planted-error test, rerun 2026-11-13 (`run-20261113r`)
 
@@ -23,8 +23,8 @@ The 14 reports were assembled into `review-log.md` (48 entries) and `baseline/re
 
 "Located" means an objection points at the planted line. Whether it proposes the same fix is Eleonora's call (`same_fix`); recall is computed only after that.
 
-## Judgments so far (Eleonora, review queue 44)
-- `same_fix`: **yes** on 11 of 14 reviewer matches and 8 of 8 baseline matches. Three reviewer cards (doc-67be578b #0, #1; doc-7326b106 #0) had no saved answer and are re-asked in round 45.
+## Judgments (Eleonora, review queues 44 and 45)
+- `same_fix`: **yes** on all 14 reviewer matches (11 in round 44; doc-67be578b #0, #1 and doc-7326b106 #0 in round 45, after round 44 saved no answer for them) and on all 8 baseline matches.
 - `real_problem`: **yes** on the 3 reviewer control objections that count for R4 (R-20261113r-1, -16, -17) and on all 5 baseline control objections (descriptive only: the baseline gives no severity, so none counts for R4).
 
 ## Second rater (Fable 5.2 model, per Eleonora's rescore-pack-57 note)
@@ -34,6 +34,21 @@ Blind to her scores: it saw `rescore-pack.md` and the four documents only. Its a
 - Baseline control objections (descriptive): real problem on B1 and B4, not on B2, B3, B5. Agreement: **2 of 5**.
 - The second rater is a model, not a second human as the prereg says (Deviations, rescore-pack-57). It says its R-16, R-17, B1 and B3 answers rest partly on files outside the pack that it could not check.
 
-## Still open
-- Eleonora: `same_fix` for the three round-45 cards.
-- Then `score.py summarise` on the reviewer folder (the baseline is read from `baseline/scoring.csv`, as in run-20261113). Results stay UNVERIFIED until she replaces this draft.
+## Results (UNVERIFIED, descriptive pilot per CHOICE-12)
+From `score.py summarise` (`results/results.jsonl`, line scored 2026-11-14T19:33 UTC). Counts with Wilson 95% intervals beside the prereg references (70% recall, 25% false alarms); no verdict is drawn.
+
+| | Caught | Of | Recall | Wilson 95% |
+|---|---|---|---|---|
+| `skeptic` | 8 | 8 | 100% | 68%–100% |
+| `quant-reviewer` | 6 | 6 | 100% | 61%–100% |
+| Baseline, data documents (from `baseline/scoring.csv`) | 8 | 8 | 100% | 68%–100% |
+
+- Every one of the 14 categories was caught once; there are no misses to analyse.
+- **R4 false alarms:** 0 of 3 counted control objections (Wilson 95% 0%–56%). All 3 are high/medium quant-reviewer objections counted under e2-sevmap-55; Eleonora judged each a real problem. No skeptic objection on the data control was blocker or major, so under the unmapped rule R4 has 0 counted objections.
+- The cluster bootstrap (secondary) is 100%–100% for both agents: with every error caught it carries no information. Errors are clustered 2 per document, so the Wilson intervals overstate the effective sample.
+- **Baseline comparison:** the plain model with no agent prompt also caught all 8 data errors. This run gives no evidence that the `skeptic` prompt adds recall on these categories. The baseline also raised 5 objections on the data control, all judged real problems (descriptive; the second rater agreed on 2 of 5).
+- **What it does not show:** a recall precise enough to compare with 70% (the lower bounds sit at 61% and 68%), recall on unplanted errors, or stability across models. The register channel noted under Isolation audit means a changed number could be spotted by comparison with `claims/register.csv`.
+
+## Next
+- Eleonora: replace this draft with her own text.
+- A confirmatory run needs its own pre-registration with more errors per category (prereg Decision rules), and harder planted errors, since both the agents and the baseline hit the ceiling here.
