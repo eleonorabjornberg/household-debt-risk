@@ -17,7 +17,7 @@ bp = R['bridge_mean_error_by_period_pp']['RT']; span = R['regression_target_span
 sig_reg = [k for k in "123" if pt[(int(k), 'bridge_reg', 'no_change')]['p_holm'] < 0.05]
 txt = f"""## Results: development sample only (targets to 2023Q2; holdout not run)
 
-> **Claude draft, not the author's text.** The scores below follow [`EVALUATION.md`](EVALUATION.md), which was committed before any score existed (7ae4afb). Changes made after the first scores, in response to the quant-reviewer and skeptic, are listed there under "Deviations"; the first scores are in commit 58a93d8. The holdout (2023Q3–2026Q2, as frozen in C2) is untouched. So under C2's wording rule, nothing here can yet be called "beats".
+> The scores below follow [`EVALUATION.md`](EVALUATION.md), which was committed before any score existed (7ae4afb). Changes made after the first scores, in response to the quant-reviewer and skeptic, are listed there under "Deviations"; the first scores are in commit 58a93d8. The holdout (2023Q3–2026Q2, as frozen in C2) is untouched. So under C2's wording rule, nothing here can yet be called "beats".
 
 **Real time (RT)** means: the Z.1 base comes from the Fed's release archive (all 41 releases from 2016-09-16), the indicators from ALFRED as of each instant, and the target is the first release. Monthly instants run from October 2016; targets run 2016Q3–2023Q2. Each target is scored once per instant index k (k = 1 is the first monthly instant after a Z.1 release). A rare fourth instant before the next release is kept but not scored. RMSE relative to no-change (below 1 is better):
 
@@ -50,8 +50,8 @@ s = re.sub(r"## Results: development sample only.*?(?=## How \"what was public)"
 s = s.replace("## How \"what was public on day t\" is answered", txt + "## How \"what was public on day t\" is answered", 1)
 s = s.replace("# C1: Nowcasting the public share between Z.1 releases (data plumbing)", "# C1: Nowcasting the public share between Z.1 releases")
 s = s.replace("**PLAN task C1. Status: plumbing built; evaluation blocked on Eleonora's design choice.**", "**PLAN task C1. Status: development-sample evaluation done; holdout pending the coordinator.**")
-s = s.replace("> **Claude draft, not the author's text.** This describes the plumbing only. The evaluation design is Eleonora's choice: which indicators, the vintage rule, the benchmarks and the metrics. The options, with a recommendation, are in [`tracks/markets.md`](../../tracks/markets.md) under \"Questions for Eleonora\". No nowcast has been computed or evaluated.",
- "> **Claude draft, not the author's text.** The evaluation design is Eleonora's (her Q-C1 decisions of 2026-11-04, recorded in PLAN.md). The implementation details Claude added are marked in `EVALUATION.md`.")
+s = s.replace("> This describes the plumbing only. The evaluation design is Eleonora's choice: which indicators, the vintage rule, the benchmarks and the metrics. The options, with a recommendation, are in [`tracks/markets.md`](../../tracks/markets.md) under \"Questions for Eleonora\". No nowcast has been computed or evaluated.",
+ "> The evaluation design is Eleonora's (her Q-C1 decisions of 2026-11-04, recorded in PLAN.md). The implementation details Claude added are marked in `EVALUATION.md`.")
 open(p, 'w').write(s)
 
 # ---- register rows for every number in the README, from the same values

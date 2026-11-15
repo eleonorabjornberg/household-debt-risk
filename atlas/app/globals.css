@@ -1,7 +1,9 @@
 /* Risograph-style print on white: six inks, hard ink rules, square corners, one hard offset shadow.
    Pile inks were run through the dataviz palette validator against white (re-run 2026-11-15 for R1:
    all checks pass; CVD separation of the blue/purple pair sits in the 6–8 band, legal because every
-   pile is direct-labelled; the yellow ink never carries text). One light theme on purpose.
+   pile is direct-labelled; the yellow ink never carries text). One light theme on purpose. Rerun 2026-11-15 with
+   --pile-4 sienna (#a0522d): adjacent pairs pass; on all pairs the only failure is orange/yellow (ΔE 14.6), which
+   predates the change and is relieved by direct labels.
 
    R1 design system (Eleonora, 2026-11-15). Each colour has one job, on every page:
    - --pile-0 … --pile-5: the six holders (dots, pile labels, cards, charts). A holder never changes colour.
@@ -21,7 +23,7 @@
   --pile-1: #1f6fe0;
   --pile-2: #00a35c;
   --pile-3: #f2631c;
-  --pile-4: #e5267a;
+  --pile-4: #a0522d; /* Private sec. & REITs: sienna, so no holder shares the clickable pink (Eleonora, r1-ink-overlap, 2026-11-15) */
   --pile-5: #eda400;
   --sun: #ffc400;
   --build: #1f6fe0; /* Built with Claude band: the trailer's royal blue (Eleonora, 2026-11-15) */
@@ -127,7 +129,7 @@ h3, h4 { font-family: var(--font-text), system-ui, sans-serif; }
 }
 /* Misregistered overprint: two ink passes offset from the black plate. */
 .hero h1 span { display: inline-block; position: relative; }
-.hero h1 .riso { color: var(--pile-4); mix-blend-mode: multiply; text-shadow: 6px 4px 0 rgba(31, 111, 224, 0.85); font-style: italic; }
+.hero h1 .riso { color: var(--accent); mix-blend-mode: multiply; text-shadow: 6px 4px 0 rgba(31, 111, 224, 0.85); font-style: italic; }
 .hero h1 .riso-2 { color: var(--ink); text-shadow: -4px 3px 0 rgba(242, 99, 28, 0.8); }
 .hero__lede { font-size: 22px; line-height: 1.4; max-width: 46ch; margin: 0 0 var(--s1); }
 .hero__for { font-size: 17px; color: var(--muted); max-width: 62ch; margin: 0 0 var(--s3); }
@@ -148,7 +150,7 @@ h3, h4 { font-family: var(--font-text), system-ui, sans-serif; }
   mask: radial-gradient(circle closest-side, #000 98%, transparent 100%);
   opacity: 0.6;
 }
-.hero__disc--c { width: 11vmin; height: 11vmin; right: max(24px, calc(50vw - 520px)); top: 8%; background: var(--pile-4); opacity: 0.85; }
+.hero__disc--c { width: 11vmin; height: 11vmin; right: max(24px, calc(50vw - 520px)); top: 8%; background: var(--accent); opacity: 0.85; }
 @media (max-width: 1100px) { .hero__disc--a, .hero__disc--b { display: none; } }
 @media (max-width: 720px) {
   .hero { max-height: none; padding-top: var(--s4); padding-bottom: var(--s4); }

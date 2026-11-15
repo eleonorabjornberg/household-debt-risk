@@ -24,7 +24,7 @@ grid_rows = "\n".join(
 
 txt = f"""# B4: Policy-regime scenarios
 
-> **Claude draft, not the author's text.** The status of each policy debate was looked up from primary sources on 2026-11-04 ([`sources.md`](sources.md)). How each scenario maps onto the B3 engine is Eleonora's choice: the recession range follows her Q-B3 decision, the GSE range her card b4-gse (a). The student-loan scenario is left out for now (card b4-student-2 (iii)). Method: [`METHOD.md`](METHOD.md).
+> The status of each policy debate was looked up from primary sources on 2026-11-04 ([`sources.md`](sources.md)). How each scenario maps onto the B3 engine is Eleonora's choice: the recession range follows her Q-B3 decision, the GSE range her card b4-gse (a). The student-loan scenario is left out for now (card b4-student-2 (iii)). Method: [`METHOD.md`](METHOD.md).
 
 **PLAN task B4. Status: recession range and GSE-release range done; the student-loan scenario has a CBO budget-side proxy (card cbo-repo-55 (b)) and, beside it, ED's estimate of the fall in federal lending (docket 56 (b)), both 2026-11-11; no loss-engine change until Eleonora reviews them.**
 
@@ -63,7 +63,7 @@ Total losses do not change with the share: {bn(D[0]['total_musd'])} under the DF
 
 ## Student-loan reform: a CBO budget-side proxy (card cbo-repo-55 (b))
 
-> **Claude draft.** Eleonora chose (2026-11-11) to add CBO's data repository as a source for budget-side context only, and to use the Direct Loan account's outlays as a labeled proxy here. Method: `METHOD.md` section 3b. Sources, commit and hashes: [`sources.md`](sources.md).
+> Eleonora chose (2026-11-11) to add CBO's data repository as a source for budget-side context only, and to use the Direct Loan account's outlays as a labeled proxy here. Method: `METHOD.md` section 3b. Sources, commit and hashes: [`sources.md`](sources.md).
 
 **What the number is.** CBO's baseline projections of spending by budget account, for the "Federal Direct Student Loan Program Account" (TIN 091-0243-0-1-502). Under the Federal Credit Reform Act, a credit program account receives "an appropriation to cover the cost" of the loans, where cost is their net present value to the government (2 U.S.C. 661a). Reestimates of that cost are shown in a subaccount of the same account, and administrative funding may be too (2 U.S.C. 661c). So these outlays are what this account pays out for the **cost** of federal direct loans. They are not the amount lent: loans are paid out through a financing account, which is not in CBO's file. They are not a complete net subsidy cost either: the sources fetched here do not establish where a negative subsidy is recorded.
 
@@ -86,7 +86,7 @@ The total fell by {bn(-SP['change_musd'])}, or {pc(-SP['change_share'])}.
 
 ### Volume side: ED's estimate of federal lending (docket 56 b4-student-proxy-map (b))
 
-> **Claude draft.** Eleonora chose (2026-11-11) to add the Education Department's loan-volume estimate beside the CBO proxy, after a source check, with no change to the loss engine until she reviews it. Method: `METHOD.md` section 3c. Source, hash and quotes: [`sources.md`](sources.md).
+> Eleonora chose (2026-11-11) to add the Education Department's loan-volume estimate beside the CBO proxy, after a source check, with no change to the loss engine until she reviews it. Method: `METHOD.md` section 3c. Source, hash and quotes: [`sources.md`](sources.md).
 
 ED's final rule (91 FR 23768, Regulatory Impact Analysis, Table 3.1) estimates federal student-loan disbursements over 2026–2035 "Pre" and "Post" the Working Families Tax Cuts Act (P.L. 119-21), as ED labels its columns. The table's source line names ED's "Student Loan Model volume assumption for PB2026" and its cost estimates for the Act; the rule's text credits the fall to "the final regulations". This is an **ED projection of federal lending**, as printed:
 

@@ -21,7 +21,7 @@ sec2 = f"""## 2008–12 replay preset (Q-B3 (c), second family): labeled a proxy
 |---|---|---|---|---|
 | 2008–12 replay, bank charge-offs (proxy) | {B(rr['total_musd'])} | {B(rr['public_musd'])} | {B(rr['private_musd'])} | {pc(rr['public_share_of_losses'])} |
 
-**Limits (Claude draft).**
+**Limits.**
 - **Horizon.** The cumulative figure sums twenty quarterly loss rates, each a share of that quarter's average balance, and applies the sum to today's balances. It is an approximation, and it covers five years where DFAST covers nine quarters, so the two presets differ in horizon as well as severity.
 - **Upper bound.** The public bucket includes Ginnie (FHA, VA) pools and the GSEs. Bank loss rates on those books likely overstate their losses, so the 42% public share is probably an upper bound.
 - **Whose crisis.** This replays the banks' crisis. Bank mortgage books in 2008–12 included subprime and option-ARM loans that the GSEs did not guarantee, so applying bank charge-offs to the GSE book likely overstates public losses. The GSEs' own realized losses (from their 10-Ks) would be the better source for that book, and are a possible refinement. The figures apply one historical path to today's balances, so they are ESTIMATES.
@@ -39,7 +39,7 @@ sec = f"""## DFAST preset (Q-B3, decided by Eleonora 2026-11-04): a recession ca
 | DFAST proxy (federal student loans absent) | {B(m['total_musd'])} | {B(m['public_musd'])} | {B(m['private_musd'])} | {pc(m['public_share_of_losses'])} |
 | DFAST proxy, federal student loans at 7.3% (weak proxy) | {B(w['total_musd'])} | {B(w['public_musd'])} | {B(w['private_musd'])} | {pc(w['public_share_of_losses'])} |
 
-**Reading (Claude draft).** In this proxy recession the public sector bears {pc(m['public_share_of_losses'])} of losses.
+**Reading.** In this proxy recession the public sector bears {pc(m['public_share_of_losses'])} of losses.
 - **Like for like,** that compares with a public share of holdings of {100*R['public_share_of_holdings_ex_federal_student']:.1f}% once federal student loans are excluded, as they are from the losses ({100*R['public_share_of_holdings']:.1f}% with them).
 - **Why the gap:** the public book is mostly mortgages, which have low stressed loss rates, while the high-loss consumer credit is privately held.
 - **With federal student loans** at the weak proxy rate, the public share of losses rises to {pc(w['public_share_of_losses'])}.

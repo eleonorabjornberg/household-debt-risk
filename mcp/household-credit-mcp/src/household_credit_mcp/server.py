@@ -77,7 +77,7 @@ def list_research() -> dict:
 
 @mcp.tool()
 def get_research_writeup(task: str) -> dict:
-    """The full write-up (Markdown, every table and check) for one research task: a task id like A1, B2 or C3, or a slug like a1 or joint-holdout. The site's /research pages show only a short version; this is the complete README. A Claude draft until Eleonora replaces it."""
+    """The full write-up (Markdown, every table and check) for one research task: a task id like A1, B2 or C3, or a slug like a1 or joint-holdout. The site's /research pages show only a short version; this is the complete README."""
     return core.get_research_writeup(backend(), task)
 
 

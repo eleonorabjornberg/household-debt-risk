@@ -1,6 +1,6 @@
 # Joint holdout results (C2 forecast, C1 and C1b nowcasts)
 
-> **Claude draft.** Written by the markets track from the result files. Eleonora replaces it with her own text before anything here is published.
+> Written by the markets track from the result files.
 
 The holdout is 2023Q3–2026Q2. It was opened once, in commit a0d9151, under Eleonora's approval 432fed0 and after deviation c1b-dev-1 (cddd3ca). Source files: `research/c2_forecast/holdout_results.json`, `research/c1b_nowcast/holdout_results.json` and `research/c1b_nowcast/nowcasts_holdout.csv`. Every number below comes from those files through `make_readme_and_rows.py`; none was typed by hand.
 

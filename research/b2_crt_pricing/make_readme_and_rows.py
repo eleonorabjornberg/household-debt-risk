@@ -24,9 +24,9 @@ rnd = FN['cas_cirt_per_rif_rounding_pp'].max()
 EL = R['zero_attach_el_bp']; CR = R['credit_cost_bp_range_zero_attach']
 txt = f"""# B2: What the market charges for the credit risk the GSEs pass back
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write. The method is Claude's proposal ([`METHOD.md`](METHOD.md), committed before any number), listed for her decision under Q-B2 in `tracks/markets.md`.
+> The numbers are checked and registered. The method is Claude's proposal ([`METHOD.md`](METHOD.md), committed before any number), listed for her decision under Q-B2 in `tracks/markets.md`.
 
-**PLAN task B2. Status: ready for review; the write-up is a Claude draft.** Sources and hashes are in [`sources.md`](sources.md). The code is `b2.py`; its tests in `test_b2.py` check transcription against the rendered PDF, include a planted typo, and test the loss engine. Every number in this file has a row in `claims/tracks/markets.csv`.
+**PLAN task B2. Status: ready for review.** Sources and hashes are in [`sources.md`](sources.md). The code is `b2.py`; its tests in `test_b2.py` check transcription against the rendered PDF, include a planted typo, and test the loss engine. Every number in this file has a row in `claims/tracks/markets.csv`.
 
 ## What could be priced
 

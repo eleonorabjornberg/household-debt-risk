@@ -1,6 +1,6 @@
 # B3: Scenario engine, who bears the losses
 
-> **Claude draft, not the author's text.** The engine and its tests are built and checked. Its scenario presets follow Eleonora's Q-B3 decision (2026-11-04). The DFAST preset and the 2008–12 replay are built, both labeled proxies. The design is Claude's proposal ([`METHOD.md`](METHOD.md)).
+> The engine and its tests are built and checked. Its scenario presets follow Eleonora's Q-B3 decision (2026-11-04). The DFAST preset and the 2008–12 replay are built, both labeled proxies. The design is Claude's proposal ([`METHOD.md`](METHOD.md)).
 
 **PLAN task B3. Status: engine, tests and both preset families done (proxies); browser page at /scenarios; page and copy approved by Eleonora as Claude drafts 2026-11-05 (rv-b3-page).**
 
@@ -26,7 +26,7 @@
 | DFAST proxy (federal student loans absent) | $595B | $137B | $457B | 23% |
 | DFAST proxy, federal student loans at 7.3% (weak proxy) | $712B | $255B | $457B | 36% |
 
-**Reading (Claude draft).** In this proxy recession the public sector bears 23% of losses.
+**Reading.** In this proxy recession the public sector bears 23% of losses.
 - **Like for like,** that compares with a public share of holdings of 52.4% once federal student loans are excluded, as they are from the losses (56.4% with them).
 - **Why the gap:** the public book is mostly mortgages, which have low stressed loss rates, while the high-loss consumer credit is privately held.
 - **With federal student loans** at the weak proxy rate, the public share of losses rises to 36%.
@@ -47,7 +47,7 @@ These are ESTIMATES under a proxy, and three biases are known:
 |---|---|---|---|---|
 | 2008–12 replay, bank charge-offs (proxy) | $1,886B | $801B | $1,085B | 42% |
 
-**Limits (Claude draft).**
+**Limits.**
 - **Horizon.** The cumulative figure sums twenty quarterly loss rates, each a share of that quarter's average balance, and applies the sum to today's balances. It is an approximation, and it covers five years where DFAST covers nine quarters, so the two presets differ in horizon as well as severity.
 - **Upper bound.** The public bucket includes Ginnie (FHA, VA) pools and the GSEs. Bank loss rates on those books likely overstate their losses, so the 42% public share is probably an upper bound.
 - **Whose crisis.** This replays the banks' crisis. Bank mortgage books in 2008–12 included subprime and option-ARM loans that the GSEs did not guarantee, so applying bank charge-offs to the GSE book likely overstates public losses. The GSEs' own realized losses (from their 10-Ks) would be the better source for that book, and are a possible refinement. The figures apply one historical path to today's balances, so they are ESTIMATES.
@@ -63,9 +63,9 @@ uv run --project pipeline python research/b3_scenarios/engine.py --params my.jso
 uv run --project pipeline pytest -q research/b3_scenarios
 ```
 
-## In the browser (`web/` route `/scenarios`, Claude draft)
+## In the browser (`web/` route `/scenarios`)
 
-> **Claude draft, not the author's text.** The page's copy is Claude's, for Eleonora to rewrite; the page shows the same banner.
+
 
 - **Same engine.** `web/scripts/sync-b3.mjs` copies `engine.mjs`, the fixed cases, `exposures.json`, both presets and their results into `web/lib/b3/` before every build, with SHA-256s in `manifest.json`. `web/lib/b3/sync.test.ts` fails if a copy differs from its source.
 - **Checks.** `web/lib/b3/engine.test.ts` (vitest) runs every fixed case and every preset against the Python core's outputs. `test_browser.mjs` builds nothing and deploys nothing (it needs `npm run build` first): it serves the built site on localhost and drives the page in Chromium. It checks every fixed case through the `?case=` hook, every preset button, the form path (inputs typed into the controls, compared with `engine.py` run on the same inputs, and the displayed rounding), the in-page identities, the refusal of invalid input, the draft banner, and no horizontal scroll at phone width.

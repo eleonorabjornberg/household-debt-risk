@@ -1,6 +1,6 @@
 # A3: The public share before 1952
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> The numbers are checked and registered.
 
 **PLAN task A3. Status: done (accepted by Eleonora 2026-11-04).** The project's series, which started in 1952Q1, now runs from 1925: Z.1 annual levels for 1945–1951, and *Historical Statistics of the United States* (1975) for 1925–1944. Sources, hashes and quotes: [`sources.md`](sources.md). Table: [`public_share_1925_1952.csv`](public_share_1925_1952.csv), with a source and reliability label on every year.
 

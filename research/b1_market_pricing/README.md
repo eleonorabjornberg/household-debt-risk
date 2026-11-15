@@ -1,8 +1,8 @@
 # B1: Did the public takeover compress the price of household credit risk?
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> The numbers are checked and registered.
 
-**PLAN task B1. Status: done, inconclusive (accepted by Eleonora 2026-11-04); the write-up is a Claude draft.** The specification was fixed in [`METHOD.md`](METHOD.md) before any result existed. Checks added after the reviews are declared there and marked post-hoc. Sources and hashes are in [`sources.md`](sources.md). The code is `b1.py`; its tests are in `test_b1.py`, and the HAC errors are checked against statsmodels. The reviews are in `claims/review-log.md` (R-20261104-mkt-q1 to q5, s1 to s8).
+**PLAN task B1. Status: done, inconclusive (accepted by Eleonora 2026-11-04).** The specification was fixed in [`METHOD.md`](METHOD.md) before any result existed. Checks added after the reviews are declared there and marked post-hoc. Sources and hashes are in [`sources.md`](sources.md). The code is `b1.py`; its tests are in `test_b1.py`, and the HAC errors are checked against statsmodels. The reviews are in `claims/review-log.md` (R-20261104-mkt-q1 to q5, s1 to s8).
 
 Data: Fed Z.1 dated 2026-09-11; FRED retrieved 2026-11-04. Sample 1986Q1–2026Q2, quarterly. Every number in this file has a row in `claims/tracks/markets.csv`.
 

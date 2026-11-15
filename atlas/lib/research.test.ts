@@ -1,5 +1,5 @@
 // /research index (2026-11-09): questions and status fragments are verbatim from PLAN.md; slugs match the sync script;
-// every write-up copy exists; method lines (Claude draft) carry no figures; the README banners survive the copy.
+// every write-up copy exists; method lines (Claude draft) carry no figures; the README authorship notes stay out of the copy.
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -41,10 +41,12 @@ describe("index entries", () => {
 });
 
 describe("write-up copies", () => {
-  it("keep each README's Claude-draft banner", () => {
+  // The README authorship notes came off on 2026-11-15 (Eleonora, review round 47 r1-research-notes: "remove them
+  // everywhere"); the copies must not bring one back.
+  it("carry no Claude-draft authorship note", () => {
     for (const s of Object.keys(PAGES)) {
       const md = readFileSync(path.join(__dirname, "..", "content", "research", `${s}.md`), "utf8");
-      expect(md, s).toMatch(/Claude draft/);
+      expect(md, s).not.toMatch(/Claude draft, not the author's text|^> \*\*Claude draft/m);
       const blocks = parseMarkdown(md);
       expect(blocks.some((b) => b.t === "quote" || (b.t === "para")), s).toBe(true);
     }

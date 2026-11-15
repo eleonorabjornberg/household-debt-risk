@@ -218,8 +218,8 @@ ALPHAS = (0.01, 0.05, 0.10, "kupiec 0.05")   # last: reading (iv) on card c3-b-l
 
 def banner(d: Doc) -> None:
     d.text("# C3: how accurate are the share forecasts and nowcasts?", "",
-           "> **Claude draft.** Written by the markets track from committed result files by `make_report.py`. "
-           "Eleonora replaces it with her own text before anything here is published. No model was rerun and the "
+           "> Written by the markets track from committed result files by `make_report.py`. "
+           "No model was rerun and the "
            "holdout was not reopened. Most numbers are copied from the committed results. The script itself computes "
            "only these: the C1 verdicts (section 2), the holdout bias table (with C1b's own `mean_hac1`), the "
            "ten-largest-error lists, the regime splits and the chance counts in the headline, each from committed "

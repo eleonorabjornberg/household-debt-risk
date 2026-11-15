@@ -1,6 +1,6 @@
 # A7: Did the 2008 conservatorship and the 2010 student-loan takeover change who bears the risk, or its price?
 
-> **Claude draft, not the author's text.** Results of the pre-registered tests and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> The numbers are checked and registered.
 
 **PLAN task A7. Status: run to the pre-registration ([`docs/decisions/a7-causal-prereg.md`](../../docs/decisions/a7-causal-prereg.md), frozen `206e126`) and its two addenda (`0f9aaff`, `8b09d7c`, both committed before any A7 data was fetched), with Eleonora's Q8 decisions; the code was committed (`98a8d7a`) before the first run. Quant review done (`R-20261104-ana-42` to `-47`); the corrections it asked for are in. The second addendum's header says 16:55 UTC; it was committed at 16:47 UTC, before any A7 data was fetched (16:50).** Results: [`results.json`](results.json).
 

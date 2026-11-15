@@ -53,7 +53,7 @@ def section() -> tuple[list[str], list[dict]]:
     years = f"{YC['year'].min()}–{YC['year'].max()}"
     lib = YC[YC["libor_tranches"] > 0]["year"]
     s.text("## STACR 2017+: issuance spread and baseline-loss multiple, by tranche class", "",
-           "> **Claude draft, not the author's text.** Built to Eleonora's choices of 2026-11-05: on cards b2-1723 "
+           "> Built to Eleonora's choices of 2026-11-05: on cards b2-1723 "
            "(15:55 UTC) measure (ii), tranches (b), indicative (b) and LIBOR→SOFR (b); on cards b2-sofr-src (a), "
            "b2-upb (a) and b2-empty (a) (18:54 UTC). Method: `METHOD.md`, \"STACR 2017+\". Code: `stacr_2017.py`; "
            "data: `stacr_2017_tranches.csv`, `stacr_2017_by_year_class.csv`.", "")

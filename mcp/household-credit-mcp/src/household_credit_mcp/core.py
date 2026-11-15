@@ -368,8 +368,7 @@ def lookup_claim(backend, text_or_id: str, limit: int = 5) -> dict:
 # ------------------------------------------------------------------ research write-ups
 GITHUB = "https://github.com/eleonorabjornberg/household-debt-risk"
 WRITEUP_LIMITS = [
-    "Every write-up is a Claude draft for Eleonora to replace with her own text; the text is returned as committed "
-    "in research/<task>/README.md, banner included.",
+    "The text is returned as committed in research/<task>/README.md.",
     "Numbers in a write-up are published numbers only if they have a row in claims/register.csv; check them with "
     "lookup_claim. Only validation=PASS rows are verified.",
     "Relative links inside the Markdown point at repository paths (see github_url); they are not rewritten here.",

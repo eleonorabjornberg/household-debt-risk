@@ -1,6 +1,6 @@
 # A8: Who bears household credit risk, US vs Canada, Denmark, UK, Germany
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> The numbers are checked and registered.
 
 **PLAN task A8. Status: partial.** Eleonora chose (2026-11-04) to show both measures, with the risk bearer as the headline. Only the US has a computable headline (b) share, and only Germany a computable holder (a) share; every other cell lacks one national figure and is recorded as missing ([`AVAILABILITY.md`](AVAILABILITY.md)). Definitions by country, checked against the sources where they could be reached: [`CROSSWALK.md`](CROSSWALK.md). Sources, hashes and quotes: [`sources.md`](sources.md), [`national_figures.csv`](national_figures.csv).
 

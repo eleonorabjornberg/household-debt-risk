@@ -23,11 +23,12 @@ describe("get_research_writeup", () => {
       expect(r.ok, key).toBe(true);
       expect(r.data.slug, key).toBe(slug);
       expect(r.data.markdown, key).toBe(RESEARCH_WRITEUPS.find((w) => w.slug === slug)!.markdown);
-      expect(r.data.markdown).toMatch(/^# .*\n\n> \*\*Claude draft/);
+      expect(r.data.markdown).toMatch(/^# /);
+      expect(r.data.markdown).not.toMatch(/Claude draft, not the author|^> \*\*Claude draft/m); // notes removed 2026-11-15 (r1-research-notes)
       expect(r.data.site_url).toBe(`/research/${slug}`);
       expect(r.data.github_url).toMatch(new RegExp(`/blob/main/${r.data.source_path}$`));
       for (const k of ["units", "series_ids", "vintage", "limits", "limits_url", "data"]) expect(r, k).toHaveProperty(k);
-      expect(r.limits.some((l: string) => /Claude draft/.test(l))).toBe(true);
+      expect(r.limits.some((l: string) => /Claude draft/.test(l))).toBe(false);
     }
   });
   it("refuses unknown tasks (A6 has no write-up) and points to list_research", async () => {
@@ -62,13 +63,13 @@ describe.skipIf(!haveRepo)("generated texts and the site cut", () => {
       expect(RESEARCH_WRITEUPS.find((w) => w.slug === slug)!.markdown, slug)
         .toBe(readFileSync(path.join(root, "research", dir as string, "README.md"), "utf8"));
   });
-  it("cuts every page to a short version that keeps the draft banner and points to the full write-up", () => {
+  it("cuts every page to a short version that points to the full write-up", () => {
     for (const [slug, dir] of Object.entries(PAGES)) {
       const full = readFileSync(path.join(root, "research", dir as string, "README.md"), "utf8");
       const site = readFileSync(path.join(__dirname, "..", "..", "content", "research", `${slug}.md`), "utf8");
       expect(CUTS[slug as keyof typeof CUTS], slug).toBeTruthy();
       expect(site.split("\n").length, slug).toBeLessThan(full.split("\n").length);
-      expect(site, slug).toMatch(/Claude draft/);
+      expect(site, slug).not.toMatch(/Claude draft, not the author|^> \*\*Claude draft/m);
       expect(site, slug).toContain("get_research_writeup");
       expect(site, slug).toContain(`/blob/main/research/${dir}/README.md`);
       // only whole lines are cut: every kept line (the closing notice aside) is a line of the README

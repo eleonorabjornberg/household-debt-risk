@@ -1,6 +1,6 @@
 # A4: Structural breaks in the public share
 
-> **Claude draft, not the author's text.** Results of the pre-registered tests and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> The numbers are checked and registered.
 
 **PLAN task A4. Status: run to the frozen pre-registration ([`docs/decisions/breaks.md`](../../docs/decisions/breaks.md), commit `02cc47f`); accepted by Eleonora 2026-11-04.** The code was committed (`eed0ce7`) before the first run on the target series. Two deviations, both listed in `breaks.md`: critical values are simulated, because the Bai-Perron tables are not available offline; and the break-date interval was corrected after the first run (a sign error, caught by the quant reviewer; `breaks.py`, docstring). The R `strucchange` cross-check agrees within the pre-registered tolerance on every part R implements (`rcheck/comparison.json`).
 

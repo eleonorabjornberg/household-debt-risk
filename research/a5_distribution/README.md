@@ -1,6 +1,6 @@
 # A5: Who borrows, and who holds the loans
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> The numbers are checked and registered.
 
 **PLAN task A5. Status: borrower side, state view and the borrower-to-holder estimate (Eleonora's choice of 2026-11-04: option c, with b beside it) done.** What exists and what does not: [`AVAILABILITY.md`](AVAILABILITY.md). Sources and hashes: [`sources.md`](sources.md).
 

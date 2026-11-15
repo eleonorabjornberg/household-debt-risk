@@ -165,10 +165,10 @@ def test_research_writeups(be):
         assert_envelope(g)
         d = g["data"]
         assert d["slug"] == slug and d["markdown"] == repo_file(*d["source_path"].split("/")).read_text(encoding="utf-8")
-        assert d["markdown"].startswith("# ") and "Claude draft" in d["markdown"]
+        assert d["markdown"].startswith("# ") and "Claude draft, not the author" not in d["markdown"]  # notes removed 2026-11-15
         assert d["title"] == d["markdown"].split("\n")[0][2:] and d["line_count"] == d["markdown"].count("\n")
         assert d["github_url"].endswith(f"/blob/main/{d['source_path']}")
-        assert any("Claude draft" in c for c in g["limits"]) and g["limits_url"] == "/methods#limits"
+        assert not any("Claude draft" in c for c in g["limits"]) and g["limits_url"] == "/methods#limits"
     for bad in ("", "A6", "zz9", None):
         g = core.get_research_writeup(be, bad)
         assert g["refused"] and g["reason_code"] == "unknown_writeup" and g["nearest_answerable"][0]["tool"] == "list_research"

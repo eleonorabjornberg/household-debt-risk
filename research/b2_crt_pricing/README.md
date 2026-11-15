@@ -1,8 +1,8 @@
 # B2: What the market charges for the credit risk the GSEs pass back
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write. The method is Claude's proposal ([`METHOD.md`](METHOD.md), committed before any number), listed for her decision under Q-B2 in `tracks/markets.md`.
+> The numbers are checked and registered. The method is Claude's proposal ([`METHOD.md`](METHOD.md), committed before any number), listed for her decision under Q-B2 in `tracks/markets.md`.
 
-**PLAN task B2. Status: done (accepted by Eleonora 2026-11-04; all parts approved as Claude drafts); the write-up is a Claude draft.** Sources and hashes are in [`sources.md`](sources.md). The code is `b2.py`; its tests in `test_b2.py` check transcription against the rendered PDF, include a planted typo, and test the loss engine. Every number in this file has a row in `claims/tracks/markets.csv`.
+**PLAN task B2. Status: done (accepted by Eleonora 2026-11-04; all parts approved as Claude drafts).** Sources and hashes are in [`sources.md`](sources.md). The code is `b2.py`; its tests in `test_b2.py` check transcription against the rendered PDF, include a planted typo, and test the loss engine. Every number in this file has a row in `claims/tracks/markets.csv`.
 
 ## What could be priced
 
@@ -84,7 +84,7 @@ Eleonora's choice (card b2-1723, option (i), 2026-11-05). After 2016 FHFA no lon
 
 ## STACR 2017+: issuance spread and baseline-loss multiple, by tranche class
 
-> **Claude draft, not the author's text.** Built to Eleonora's choices of 2026-11-05: on cards b2-1723 (15:55 UTC) measure (ii), tranches (b), indicative (b) and LIBOR→SOFR (b); on cards b2-sofr-src (a), b2-upb (a) and b2-empty (a) (18:54 UTC). Method: `METHOD.md`, "STACR 2017+". Code: `stacr_2017.py`; data: `stacr_2017_tranches.csv`, `stacr_2017_by_year_class.csv`.
+> Built to Eleonora's choices of 2026-11-05: on cards b2-1723 (15:55 UTC) measure (ii), tranches (b), indicative (b) and LIBOR→SOFR (b); on cards b2-sofr-src (a), b2-upb (a) and b2-empty (a) (18:54 UTC). Method: `METHOD.md`, "STACR 2017+". Code: `stacr_2017.py`; data: `stacr_2017_tranches.csv`, `stacr_2017_by_year_class.csv`.
 
 Freddie Mac's STACR pricing workbook prints, for each deal, the spread at issuance and the credit enhancement of every tranche it lists (sold, and a few retained). From 2017 it covers 78 deals and 289 tranches. 274 are in her three classes (M-1, including M-1A and M-1B; M-2; B, including B-1 and B-2); the other 15 (13 A-1, 2 M-3) are kept in the tranche file but not summarized. Fannie Mae's CAS deals are not covered: its host is not reachable (`sources.md`).
 

@@ -321,8 +321,7 @@ export function lookup_claim(env: Env, a: { text_or_id?: string; limit?: number 
 // Texts come from ./research.generated.ts (scripts/sync-research.mjs), so the route needs nothing outside atlas/.
 const GITHUB = "https://github.com/eleonorabjornberg/household-debt-risk";
 const WRITEUP_LIMITS = [
-  "Every write-up is a Claude draft for Eleonora to replace with her own text; the text is returned as committed " +
-    "in research/<task>/README.md, banner included.",
+  "The text is returned as committed in research/<task>/README.md.",
   "Numbers in a write-up are published numbers only if they have a row in claims/register.csv; check them with " +
     "lookup_claim. Only validation=PASS rows are verified.",
   "Relative links inside the Markdown point at repository paths (see github_url); they are not rewritten here.",
