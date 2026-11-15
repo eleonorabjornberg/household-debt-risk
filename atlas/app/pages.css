@@ -317,6 +317,11 @@ a.build-tile:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var
 .potato-person { display: block; height: auto; max-width: 100%; }
 .holder-cast, .sc-sides, .build-cast { display: flex; flex-wrap: wrap; gap: 18px 22px; align-items: flex-end; margin: 18px 0 6px; }
 .holder-cast figure, .sc-sides figure, .build-cast figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+/* Dashboard: every holder stands on one line, labels hang below from one top line (Eleonora, 2026-11-15). */
+.holder-cast { align-items: flex-start; }
+.holder-cast figure { display: grid; grid-template-rows: minmax(110px, auto) auto; justify-items: center; }
+.holder-cast figure > svg { align-self: end; }
+.holder-cast figcaption { align-self: start; }
 .holder-cast figcaption { font-size: 13px; font-weight: 700; max-width: 90px; text-align: left; line-height: 1.2; }
 .sc-sides figure { flex-direction: row; align-items: flex-end; gap: 12px; max-width: 320px; }
 .sc-sides figcaption { font-size: 15px; line-height: 1.35; }
