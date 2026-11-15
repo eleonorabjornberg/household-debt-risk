@@ -976,3 +976,9 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - **Dashboard legend.** Not changed: one potato is 5% of the total, as the legend says. The $50B dot belongs to the home page's dot flow, a different view.
 - **Error: atlas CI red since before today's fixes.** Claude found it in the CI run for daf335e (atlas `npm test` failed; register, tests, validation and web passed). Causes: the Ask parity fixture was stale after a register row gained check I1 (regenerated with `atlas/scripts/ask_parity_fixtures.py`), and `npx eslint .` had 29 errors that CI never reached: 28 `no-explicit-any` in the Ask code, which reads untyped JSON at the API boundary (rule turned off for those files only, with a comment), and one `<a>` that should be `<Link>` on /scenarios (fixed).
 - **Model tier.** Opus 5.5 coordinator. No API spend.
+
+### 2026-11-15, coordinator: CI still red on 7c2d84b; home cards layout
+
+- **CI (found by Claude, checking the run for 7c2d84b):** two jobs failed. (1) register + tests: the `claims.test.ts` fix had gone into the generated atlas copy, not its source `claims/site/claims.test.ts`, so the stale-copy check failed. Fixed at the source and re-synced. (2) atlas `npm test`: `lib/dashboard.test.ts` reads `atlas/public/data/*.json`, which is gitignored and only copied by `prebuild`/`predev`, so a fresh CI checkout had none. It passed locally only because the files were already there. Added a `pretest` step that runs `scripts/copy-data.mjs`; checked by running the tests with `public/data` removed (193 pass).
+- **Home "What does this mean?" cards (Eleonora's request):** the figures now sit centered in the empty space beside each big number, with headline and text full width below. On screens under 640px they stay under the number, since side by side they overlapped "56.4%". Checked with screenshots at 1280px and 390px.
+- Opus 5.5, no spend.

@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "pretest": "node scripts/copy-data.mjs",
     "test": "vitest run",
     "test:b3-browser": "node ../research/b3_scenarios/test_browser.mjs --site atlas"
   },

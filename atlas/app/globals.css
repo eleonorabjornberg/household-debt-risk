@@ -279,6 +279,13 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 
 /* Hot-potato figures on the home page (Eleonora's idea, 2026-11-11). */
 .meaning__fig { display: flex; gap: 14px; align-items: flex-end; min-height: 120px; margin-top: 14px; }
+/* Figure sits in the empty space beside the big number, centered (Eleonora, 2026-11-15). */
+.meaning li { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "n fig" "h h" "p p"; column-gap: 16px; align-items: center; }
+.meaning__n { grid-area: n; align-self: start; }
+.meaning__fig { grid-area: fig; justify-content: center; margin-top: 0; }
+.meaning li h3 { grid-area: h; }
+.meaning li > p { grid-area: p; }
+@media (max-width: 640px) { .meaning li { grid-template-columns: minmax(0, 1fr); grid-template-areas: "n" "fig" "h" "p"; } .meaning__fig { margin-top: 14px; } }
 .step__fig { display: flex; gap: 10px; align-items: flex-end; margin-top: 12px; }
 
 /* How it was built: E1 results table */

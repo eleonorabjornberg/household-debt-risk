@@ -53,7 +53,10 @@ describe("lib/claims.json", () => {
   it("has no display spelling shared by two claims on this site", () => {
     // Dashboard rows (atlas, PLAN F7) are exempt: its table repeats small deltas ("0.00 pp", "+0.03 pp") across
     // loan types by nature, and each is linked by id through <ClaimRef>, never matched from prose by <Sourced>.
-    const idOnly = (c: { locations: string[] }) => c.locations.every((l) => l.startsWith("atlas/components/dashboard/"));
+    // The E1 table on /how-it-was-built is the same case: Opus scores 91.7% on both hypotheses, each cell a <ClaimRef> by id.
+    const idOnly = (c: { id: string; locations: string[] }) =>
+      c.locations.every((l) => l.startsWith("atlas/components/dashboard/")) ||
+      (c.id.startsWith("e1_") && c.locations.every((l) => l.startsWith("atlas/content/build.ts:")));
     const seen = new Map<string, string>();
     for (const c of file.claims.filter((x) => !idOnly(x)))
       for (const d of c.display) {
