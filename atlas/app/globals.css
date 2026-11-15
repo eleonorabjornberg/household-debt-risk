@@ -273,9 +273,9 @@ h3, h4 { font-family: var(--font-text), system-ui, sans-serif; }
 .ask__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
 .ask__off { margin: 0; color: var(--muted); font-size: 15px; }
 .ask__answer { background: var(--paper); border: 2px solid var(--line); border-left-width: 8px; padding: var(--s2) var(--s3); }
-.ask__answer > p { margin: 0 0 var(--s2); white-space: pre-wrap; }
+.ask__answer > p { margin: 0 0 var(--s2); }
 .ask__answer details summary { cursor: pointer; font-weight: 700; font-size: 15px; }
-.ask__answer ul { margin: var(--s1) 0 0; padding-left: 1.2em; font-size: 14px; }
+.ask__answer details ul { margin: var(--s1) 0 0; padding-left: 1.2em; font-size: 14px; }
 .ask__answer li { overflow-wrap: anywhere; }
 .ask__answer code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
 .ask__error { margin: 0; background: var(--paper); border: 2px solid var(--line); border-left-width: 8px; padding: 12px var(--s2); }
@@ -404,3 +404,13 @@ h3, h4 { font-family: var(--font-text), system-ui, sans-serif; }
 .btn--ask, .topbar__nav a.nav--ask { box-shadow: 4px 4px 0 var(--sun); }
 .topbar__nav a.nav--ask { box-shadow: 3px 3px 0 var(--sun); }
 .btn--ask:active { box-shadow: none; }
+/* Ask answers render their Markdown (2026-11-15: raw ** showed on the live site). */
+.ask__md > :first-child { margin-top: 0; }
+.ask__md p, .ask__md ul, .ask__md ol { margin: 0 0 var(--s2); }
+.ask__md ul, .ask__md ol { padding-left: 1.2em; }
+.ask__md li + li { margin-top: 4px; }
+.ask__md h1, .ask__md h2, .ask__md h3 { font-family: var(--font-text), system-ui, sans-serif; font-size: 17px; margin: var(--s2) 0 var(--s1); }
+.ask__md strong { font-weight: 700; }
+.ask__md .tablewrap { overflow-x: auto; margin-bottom: var(--s2); }
+.ask__md table { border-collapse: collapse; font-size: 14px; }
+.ask__md th, .ask__md td { padding: 4px 10px 4px 0; border-bottom: 1px solid var(--line); text-align: left; }

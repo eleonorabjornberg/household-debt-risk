@@ -99,3 +99,17 @@ describe("fences and blockquotes (/research, 2026-11-09)", () => {
     expect(isNumericCell("1999Q4–2007Q4")).toBe(false);
   });
 });
+
+describe("Ask answers (rendered with Markdown since 2026-11-15)", () => {
+  it("turns **bold** and a dash list into strong text and a list, with no raw asterisks", () => {
+    const b = parseMarkdown("Banks held **33.6%**.\n\n- **Mortgages:** $3.63T\n- **Consumer credit:** $2.79T");
+    expect(b[0].t).toBe("para");
+    const p = b[0] as Extract<Block, { t: "para" }>;
+    expect(p.c.some((x) => x.t === "strong" && plain(x.c) === "33.6%")).toBe(true);
+    expect(b[1].t).toBe("list");
+    const l = b[1] as ListBlock;
+    expect(l.items).toHaveLength(2);
+    expect(l.items[0].body[0].t).toBe("strong");
+    expect(JSON.stringify(b)).not.toContain("**");
+  });
+});
