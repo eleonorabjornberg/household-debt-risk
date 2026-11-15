@@ -2,7 +2,7 @@
 
 # Challenge readiness check: "Be a Master in Claude" (ieNYC × DataCamp)
 
-**Deadline:** project submission 12 Nov 2026, 23:59 ET. Test window 9–15 Nov.
+**Deadline:** per Eleonora on 2026-11-15, submission is due that day. (The 12 Nov date first written here is out of date.)
 **To submit:** (1) a 2–3 page write-up (problem, approach, how Claude was used, results and limits); (2) the artifacts (GitHub link or ZIP); (3) a 3–5 minute demo video. Items 1 and 3 are yours and are not started in the repo.
 
 ## Criterion 1: business relevance and clarity of the problem
@@ -24,13 +24,13 @@
 | Skills (7) | chart-from-sql, claim-check, decision-cards, preregister, research-memo, source-provenance, z1-release-update | `.claude/skills/` |
 | Subagents (6) | analyst, editor, prompt-archivist, quant-reviewer, register-keeper, skeptic | `.claude/agents/` |
 | MCP server | household-credit MCP (read-only DB tools) | `mcp/household-credit-mcp/` |
-| API app | "Ask Hot Potato" (D6): tool use against the database, cited queries | `atlas/app/api/ask/route.ts`, `atlas/lib/ask/`; **off in production** |
+| API app | "Ask Hot Potato" (D6): tool use against the database, cited queries | `atlas/app/api/ask/route.ts`, `atlas/lib/ask/`; production allowed since 2026-11-15, **off until its Vercel variables are set** |
 | API benchmark | E1 question-to-SQL, Haiku vs Sonnet vs Opus | `evals/e1_sql_benchmark/` |
 | Hooks | pre-commit register check + offline tests; block hand edits to `results.json` | `.claude/settings.json`, `.claude/hooks/` |
 | Multi-session orchestration | coordinator + infra/markets/analysis track sessions, decision docket and review queue artifacts | `tracks/`, `docs/decision-cards.html`, `docs/review-queue.html` |
 | Prompt archive | three session archives | `prompts/` |
 
-**Gaps.** Ask is off in production (D6 env vars wait on your call), so a live Ask demo needs a preview deployment or a local run. E4 P2 (infra commit `a84377192`) is not yet verified or merged.
+**Gaps (updated 2026-11-15).** Ask runs in production only once Eleonora sets its Vercel variables and redeploys; until then a live Ask demo needs a local run. E4 P1 and P2 are run and labelled by models (UNVERIFIED); see `evals/e4_redteam/README.md`.
 
 ## Criterion 3: rigor (validation, verification, honest limits)
 
@@ -68,12 +68,12 @@
 7. The pre-commit hook blocking a commit with an untraced number.
 8. The decision docket / review queue as the human-in-the-loop.
 
-## Open items before 12 Nov (owner)
+## Open items before submission (owner; updated 2026-11-15)
 
 - Write-up, 2–3 pages (Eleonora).
 - Demo video, 3–5 min (Eleonora).
 - Confirm the production site loads (Eleonora).
-- Decide whether Ask is shown live (D6 env vars; Eleonora).
-- E4 P2: run verified and merged 2026-11-07 (coordinator). Still needed: hand labels for the flagged and sampled answers (infra track, offline), then her review of them.
+- Ask live: production OK given 2026-11-15; set the Vercel variables and redeploy (Eleonora).
+- E4 P2: run and model-labelled (P2 labels by Claude at her instruction, 2026-11-15); her review of the labels is open.
 - Check the E1 UNVERIFIED rows (Eleonora).
 - Artifacts: Eleonora chose a GitHub link (2026-11-07). The repository is **private** as of 2026-11-07, so the judges cannot open the link until she makes it public or gives them access (Eleonora).

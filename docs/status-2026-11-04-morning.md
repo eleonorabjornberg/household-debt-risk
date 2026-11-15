@@ -1,5 +1,7 @@
 # Morning status, 2026-11-04
 
+> **Superseded.** A point-in-time snapshot from 2026-11-04, kept as history. For the current state see `PLAN.md` and `docs/challenge-readiness.md`.
+
 > Written by Claude (coordinator) for Eleonora. This is a status report, not analysis text. Every decision below is open and waits for you; nothing here has been decided on your behalf.
 
 Coordinator branch `claude/sweet-gates-avwrcs`, HEAD `aba93f0` at the time of writing. The three tracks are merged up to their last pushes and are idle. Register: 352 rows, and the hook checks pass. Production (Vercel, Supabase) was not touched. The C2 holdout (2023Q3–2026Q2) is still sealed.

@@ -7,6 +7,16 @@
     "vercel": {
       "type": "http",
       "url": "https://mcp.vercel.com"
+    },
+    "household-credit": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "mcp/household-credit-mcp",
+        "run",
+        "household-credit-mcp"
+      ]
     }
   }
 }

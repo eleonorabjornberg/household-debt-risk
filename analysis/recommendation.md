@@ -1,6 +1,6 @@
 # So what? Recommendation v1
 
-> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. The numbers are checked and registered; the wording, framing and conclusions are hers to write.
+> **Claude draft, not the author's text.** Evidence and a proposed reading for Eleonora's own write-up. Every number has a row in `claims/register.csv`, but most rows are still UNVERIFIED (checked by the register check that the number appears where cited, not yet independently validated); the wording, framing and conclusions are hers to write.
 
 **PLAN.md Phase 0 recommendation. Status: Claude draft; Eleonora writes the final text.** Data: Fed Z.1 vintage 2026-09-11 (latest quarter 2026Q2) plus the NY Fed Household Debt and Credit Report for 2026Q2. Every number below has a row in [`claims/register.csv`](../claims/register.csv); the id is in brackets. Rows with status `PASS` are reproduced independently by `validation/run.py`. Rows marked `UNVERIFIED` are traced to `analysis/notebook.py` and its results files but not yet checked independently; most numbers here are in that state, which is itself a limit on how hard to lean on them.
 

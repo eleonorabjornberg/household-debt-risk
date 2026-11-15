@@ -4,6 +4,8 @@
 [![refresh-data](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/refresh.yml/badge.svg)](https://github.com/eleonorabjornberg/household-debt-risk/actions/workflows/refresh.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey.svg)](opendata/README.md) [![Code: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
 
+**Live site: [Hot Potato](https://hot-potato-credit.vercel.app)** (also at household-debt-risk.vercel.app). The repository holds the pipeline, the checks, the evals and the Claude tooling behind it.
+
 How US household debt has been reshaped by economic crises since the 1950s. The project looks at two things most analyses skip:
 
 1. **Who bears the credit risk.** Household debt is split by *holder*, not just by loan type: the federal government, the GSEs and agency pools, banks, private securitization, and others. Did crises ratchet it onto public balance sheets?
@@ -40,21 +42,37 @@ Status of each part is in [`PLAN.md`](PLAN.md); how it was built, with which mod
 | [`validation/`](validation/) | One-command validation suite, independent of the pipeline code. Latest run: [`validation/REPORT.md`](validation/REPORT.md) |
 | [`claims/`](claims/) | [`register.csv`](claims/register.csv): every published number with its source, series, vintage and validation status; a test fails if a site number has no row |
 | [`analysis/`](analysis/) | Notebook, [`findings.md`](analysis/findings.md), [`recommendation.md`](analysis/recommendation.md) (the "so what", with limits), tables and figures |
-| [`atlas/`](atlas/) | Hot Potato, the dot-flow site (Next.js + Canvas) |
-| [`web/`](web/) | The long-form story site (Next.js, hand-drawn SVG charts) |
-| [`.claude/skills/z1-release-update/`](.claude/skills/z1-release-update/) | Skill that runs a new Z.1 release end to end and stops for approval; trigger examples and a June → September 2026 replay in `examples/` |
+| [`atlas/`](atlas/) | Hot Potato, the public site (Next.js + Canvas): the dot flow, dashboard, research pages, scenarios, methods, sources and "Ask Hot Potato". Live at [hot-potato-credit.vercel.app](https://hot-potato-credit.vercel.app) |
+| [`web/`](web/) | The first long-form story site (Next.js, hand-drawn SVG charts). Its scenarios, methods and build pages moved into Hot Potato (decision of 2026-11-07, one site) |
+| [`.claude/skills/`](.claude/skills/) | Seven project skills, each with scripts and tests: `z1-release-update` (runs a new Z.1 release end to end and stops for approval), `claim-check` (recomputes any published number from its register row), `chart-from-sql`, `research-memo`, `preregister`, `source-provenance`, `decision-cards` |
 | [`prompts/`](prompts/) | The prompts that built the project, one dated file per session |
 | [`docs/`](docs/) | [`building-with-claude.md`](docs/building-with-claude.md), the session log |
-| [`research/`](research/) | Phase A–C analyses (A1, A2, A5, A8, B1, C1 so far), one folder per task, each with a README and method notes |
+| [`research/`](research/) | Phase A–C analyses, one folder per task, each with a README and method notes: decompositions (A1, A2), pre-1952 history (A3), structural breaks (A4), distribution (A5), causal tests (A7), international comparison (A8), market and CRT pricing (B1, B2), scenarios (B3, B4), nowcasts, forecasts and their accuracy (C1, C1b, C2, C3) |
 | [`docs/decisions/`](docs/decisions/) | Method decisions and frozen pre-registrations (A4, A7, C2) |
 | [`.claude/agents/`](.claude/agents/) | Review and helper subagents (skeptic, quant-reviewer, editor, register-keeper, analyst, prompt-archivist) |
 | [`mcp/household-credit-mcp/`](mcp/household-credit-mcp/) | Read-only MCP server over the project's data |
+| [`plugin/fed-data-desk/`](plugin/fed-data-desk/) | The skills, agents and MCP server packaged as one Claude Code plugin |
+| [`evals/`](evals/) | Evaluations of the Claude tooling: E1 question-to-SQL benchmark, E2 planted-error test, E3 regression suite, E4 red-team of Ask Hot Potato. Index: [`evals/README.md`](evals/README.md) |
 | [`opendata/`](opendata/) | Downloads, data dictionary, licences and the API plan |
 | [`tools/`](tools/) | Reproduction check and chart-text checks |
 | [`claims/site/`](claims/site/) | Source references shared by both sites (F1) and the link check |
 | [`.github/workflows/`](.github/workflows/) | CI and the quarterly pipeline refresh |
 
-Planned and not built yet (see PLAN.md): `plugin/fed-data-desk/`, `evals/`, `paper/`.
+Not built yet (see PLAN.md): `paper/`, the working paper (F6).
+
+## How Claude was used
+
+| What | Where | What it does |
+|---|---|---|
+| Multi-session build | [`docs/building-with-claude.md`](docs/building-with-claude.md), [`prompts/`](prompts/) | A coordinator session and parallel track sessions (infra, markets, analysis); every session logged with model tier, cost and each error with who caught it |
+| Skills | [`.claude/skills/`](.claude/skills/) | Seven repeatable workflows, from a quarterly data release to recomputing a single published number |
+| Subagents | [`.claude/agents/`](.claude/agents/) | Adversarial reviewers (`skeptic` for data, `quant-reviewer` for statistics, `editor` for prose) that log objections to [`claims/review-log.md`](claims/review-log.md), plus helpers |
+| Hooks | [`.claude/settings.json`](.claude/settings.json), [`.claude/hooks/`](.claude/hooks/) | Every commit must pass the claims-register check and the offline tests; hand edits to results files are blocked |
+| MCP server | [`mcp/household-credit-mcp/`](mcp/household-credit-mcp/) | Read-only tools over the warehouse that refuse questions the data cannot answer (forecasts, holder-by-type splits) |
+| API app | [`atlas/app/api/ask/`](atlas/app/api/ask/), [`atlas/lib/ask/`](atlas/lib/ask/) | "Ask Hot Potato": Claude with tool use over the data, every answer citing its query and vintage, with rate limits and a daily cost stop |
+| Evals | [`evals/README.md`](evals/README.md) | Benchmarks of the tooling itself, with pre-registrations frozen before any result ([`docs/decisions/`](docs/decisions/)) |
+
+Analysis text Claude wrote carries a "Claude draft" banner. The design, the decisions (listed in `PLAN.md`, "Decisions taken") and the final write-up are Eleonora's.
 
 ## How to reproduce the numbers
 
@@ -91,12 +109,12 @@ Check D2 (database vs recomputation) runs only when `DATABASE_URL_READONLY` is s
 |---|---|---|
 | Ingest + transform | Python (uv), pandas, psycopg | `pipeline/` |
 | Warehouse | Supabase Postgres (`raw` → `core` → `mart`) | `supabase/migrations/` |
-| Story site | Next.js on Vercel, hand-drawn SVG charts | `web/` |
+| First story site (pages since moved into Hot Potato) | Next.js, hand-drawn SVG charts | `web/` |
 | Notebooks / findings | Python | `analysis/` |
 | Hot Potato (dot-flow site) | Next.js + Canvas on Vercel, reads the same `mart` views | `atlas/` |
 
 ## Hot Potato (`atlas/`)
-A second, standalone site that tells the same story as an animated dot flow. Each dot is $50B of debt in 2026 dollars, and dots move between six holder piles as you scroll. A Shares lens shows 1,000 dots, 0.1% each. Dots keep their identity from quarter to quarter: each quarter is rounded with the largest-remainder method, and only the difference moves, by the fewest dots possible (`atlas/lib/timeline.ts`, tested in `timeline.test.ts`). It deploys as its own Vercel project with **Root Directory `atlas`** and the same two `NEXT_PUBLIC_SUPABASE_*` variables. Without them it falls back to the `web/public/data` snapshots.
+The public site tells the story as an animated dot flow. Each dot is $50B of debt in 2026 dollars, and dots move between six holder piles as you scroll. A Shares lens shows 1,000 dots, 0.1% each. Dots keep their identity from quarter to quarter: each quarter is rounded with the largest-remainder method, and only the difference moves, by the fewest dots possible (`atlas/lib/timeline.ts`, tested in `timeline.test.ts`). It deploys as its own Vercel project with **Root Directory `atlas`** and the same two `NEXT_PUBLIC_SUPABASE_*` variables. Without them it falls back to the `web/public/data` snapshots.
 
 ```bash
 cd atlas && npm install && npm test && npm run dev
@@ -130,7 +148,7 @@ Local database:
 ```bash
 service postgresql start
 sudo -u postgres createdb hhdebt
-sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql
+sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql -f supabase/migrations/20261027010000_mart_dim_views.sql -f supabase/migrations/20261103000000_research_reader.sql
 export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/hhdebt
 ```
 `.github/workflows/refresh.yml` runs the pipeline and tests quarterly (the 20th of Mar/Jun/Sep/Dec, after each Z.1 release) and on demand, and uploads the snapshots as a build artifact. It needs the `DATABASE_URL` secret (and optionally `FRED_API_KEY`).

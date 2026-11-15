@@ -233,6 +233,10 @@ def apply_unit(iv: Iv, name: str, row_unit: str) -> Iv:
 OBS_RE = re.compile(r"(?<![\w.])([+\-−])?(\$)?(\d[\d,]*(?:\.\d+)?)\s?(%|pp\b|pts\b|T\b|B\b|M\b|×|x\b)?")
 
 
+CONF_LEVEL_RE = re.compile(r"\s*(?:\w+\s+)?(?:interval|CI\b|confidence|credible)", re.I)
+PVAL_OBS_RE = re.compile(r"\bp\s*(?:=|≈|<|>|<=|>=)\s*(0?\.\d+|[01](?:\.\d+)?)\b")
+
+
 def parse_observed(obs: str):
     out = []
     for m in OBS_RE.finditer(obs):
@@ -269,9 +273,15 @@ def from_check(row, ctx: Ctx):
     obs = chk.get("observed", "")
     cands = []
     for kind, num, s, e in parse_observed(obs):
+        if kind == "pct" and CONF_LEVEL_RE.match(obs, e):
+            continue  # "MC 99% interval", "95% CI": a confidence level, never the value
         iv = obs_to_row_unit(kind, Iv.printed(num), row["unit"])
         if iv is not None:
             cands.append((iv, s, e, num, kind))
+    if row["unit"] == "pvalue":
+        for m in PVAL_OBS_RE.finditer(obs):
+            cands.append((Iv.printed(m.group(1)), m.start(1), m.end(1), m.group(1), "pval"))
+        cands.sort(key=lambda c: c[1])
     if not cands:
         raise NoPath(f"check {cid} observed {obs!r} has no number in a unit comparable to {row['unit']}")
     how = "the only comparable number"

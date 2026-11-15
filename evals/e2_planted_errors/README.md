@@ -1,7 +1,11 @@
-# E2: planted-error test (tooling only; **not run**)
+# E2: planted-error test
 
-Design: `docs/decisions/e2-prereg.md`, a **draft** with Eleonora's choices open. `plant.py` refuses to run unless that
-file says it is frozen. Only `--rehearsal` dry runs are possible before then, and they never write to `results/`.
+Design: `docs/decisions/e2-prereg.md`, frozen 2026-11-04 (commit `5986353`) with Eleonora's choices; later changes are dated deviations in that file. `plant.py` refuses to run unless the pre-registration is frozen.
+
+Runs:
+- `run-20261113/`: first run. Disclosed isolation breach (the reviewers could read the whole repository, including the unplanted originals), found by a Fable 5.2 judge; kept for the record, not used for the headline.
+- `run-20261113r/`: rerun with a fresh seed and isolated folders, chosen by Eleonora. Results and caveats: [`run-20261113r/results-note.md`](run-20261113r/results-note.md) (Claude draft, UNVERIFIED). Register rows `e2_r13r_*`.
+
 
 | File | What |
 |---|---|
