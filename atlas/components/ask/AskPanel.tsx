@@ -44,7 +44,7 @@ export default function AskPanel({ examples = [], disabledMessage }: { examples?
           </div>
         )}
         <div className="ask__actions">
-          <button type="submit" className="btn btn--primary" disabled={busy || !q.trim() || !!disabledMessage}>
+          <button type="submit" className="btn btn--ask" disabled={busy || !q.trim() || !!disabledMessage}>
             {busy ? "Thinking…" : "Ask"}
           </button>
           {disabledMessage && <p role="status" className="ask__off">{disabledMessage}</p>}

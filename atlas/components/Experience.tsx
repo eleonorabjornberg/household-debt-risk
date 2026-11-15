@@ -22,12 +22,12 @@ function useReducedMotion(): boolean {
   return rm;
 }
 
-/** Legend key: the stage's potato, filled (mortgage) or outlined (consumer credit), in navy. */
+/** Legend key: the stage's potato, filled (mortgage) or outlined (consumer credit). */
 function LegendPotato({ filled }: { filled: boolean }) {
   return (
     <svg className="legend__potato" viewBox="-12 -10 25 20" width={18} height={14} aria-hidden>
       <path d="M-10 0 C-10 -8 -2 -7.5 3 -7 C11 -6.5 11.5 1 9 4.5 C6 8.5 -7 8 -10 0 Z"
-        fill={filled ? "var(--ink)" : "var(--paper)"} stroke="var(--ink)" strokeWidth={filled ? 1.5 : 3} strokeLinejoin="round" />
+        fill={filled ? "var(--solid)" : "var(--paper)"} stroke="var(--solid)" strokeWidth={filled ? 1.5 : 3} strokeLinejoin="round" />
     </svg>
   );
 }

@@ -4,9 +4,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const LINKS: { href: string; label: string }[] = [
-  { href: "/ask", label: "Ask" },
-  { href: "/how-it-was-built", label: "Built with Claude" },
+// Each link wears the colour of the page it opens (Eleonora, 2026-11-15).
+const LINKS: { href: string; label: string; tone: string }[] = [
+  { href: "/ask", label: "Ask", tone: "ask" },
+  { href: "/how-it-was-built", label: "Built with Claude", tone: "build" },
 ];
 
 export function TopBar() {
@@ -17,7 +18,7 @@ export function TopBar() {
         <Link href="/" className="topbar__brand" aria-current={path === "/" ? "page" : undefined}>Hot Potato</Link>
         <div className="topbar__nav">
           {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} aria-current={path === l.href || path.startsWith(`${l.href}/`) ? "page" : undefined}>{l.label}</Link>
+            <Link key={l.href} href={l.href} className={`nav--${l.tone}`} aria-current={path === l.href || path.startsWith(`${l.href}/`) ? "page" : undefined}>{l.label}</Link>
           ))}
         </div>
       </div>

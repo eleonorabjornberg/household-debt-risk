@@ -56,7 +56,7 @@ function hash01(n: number): number {
 }
 
 // R1 Stage 2 (Eleonora, 2026-11-15): each unit is drawn as a small potato in its holder's ink. One sprite per holder
-// ink, type (0 mortgage: ink fill and navy outline; 1 consumer credit: outlined in the ink) and rotation, pre-rendered to
+// ink, type (0 mortgage: ink fill with a darker edge of the same ink; 1 consumer credit: outlined in the ink) and rotation, pre-rendered to
 // an offscreen canvas and stamped with drawImage. The outline is PotatoShape's path (components/Potato.tsx), scaled to r.
 const ROTATIONS = 4;
 const SPRITE_SCALE = 0.95; // a potato is wider than a dot (about 2.15r): shrink a touch so neighbours barely touch
@@ -95,7 +95,8 @@ function buildSprites(theme: Theme, r: number, dpr: number): Sprites {
         if (type === 0) {
           g.fillStyle = ink;
           g.fill(path);
-          g.strokeStyle = theme.ink;
+          // A darker shade of the potato's own ink, not black (Eleonora, 2026-11-15: "I hate black").
+          g.strokeStyle = "rgba(27, 26, 51, 0.42)";
           g.lineWidth = Math.max(0.6, pr * 0.2);
           g.stroke(path);
         } else {
@@ -310,7 +311,7 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
       if (hoverPile >= 0 && frame >= 0) {
         const c = layout.centers[hoverPile];
         const rr = layout.spacing * Math.sqrt(tl.counts[frame][hoverPile] + 0.5) + r + 6;
-        ctx.strokeStyle = theme.ink;
+        ctx.strokeStyle = theme.rule;
         ctx.globalAlpha = 1;
         ctx.lineWidth = 2;
         ctx.setLineDash([4, 4]);

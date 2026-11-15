@@ -19,8 +19,8 @@ export function HeroButtons() {
       >
         {hero.buttons.play}
       </a>
-      <a href="#ask" className="btn">{hero.buttons.ask}</a>
-      <Link href="/how-it-was-built" className="btn">{hero.buttons.build}</Link>
+      <a href="#ask" className="btn btn--ask">{hero.buttons.ask}</a>
+      <Link href="/how-it-was-built" className="btn btn--build">{hero.buttons.build}</Link>
     </div>
   );
 }
