@@ -1,15 +1,13 @@
 "use client";
 
-// The scrollytelling shell: sticky stage (canvas + HUD + scrubber) with story steps scrolling over it. Scrolling to a
-// step sets the target quarter; the scrubber and play button set it directly. The canvas reports the quarter it shows; the HUD follows.
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { PotatoPerson } from "./Potato";
+// The explorer (R1, 2026-11-15): five chapter buttons and Play drive the dot stage; the scrubber sets the quarter
+// directly. The canvas reports the quarter it shows; the readout follows. Chapter captions are Eleonora's approved copy.
+import { useCallback, useEffect, useMemo, useState } from "react";
 import DotStage, { type PileLabel } from "./DotStage";
 import { buildTimeline, DOLLAR_UNIT_MUSD, SHARE_DOTS, type Lens } from "@/lib/timeline";
 import { fmtPct, fmtQuarter, fmtTrillions, nearestIndex, sumReal } from "@/lib/format";
 import type { Series } from "@/lib/types";
-import { PILE_LONG, PILE_NAMES, steps } from "@/content/story";
-import Coda from "./Coda";
+import { chapters, PILE_LONG, PILE_NAMES } from "@/content/story";
 import { Sourced } from "./claims/SourceRef";
 
 function useReducedMotion(): boolean {
@@ -24,42 +22,24 @@ function useReducedMotion(): boolean {
   return rm;
 }
 
+/** Window event the hero's "Play the story" button sends. */
+export const PLAY_EVENT = "hotpotato:play";
+
 export default function Experience({ series }: { series: Series }) {
   const last = series.dates.length - 1;
   const [lens, setLens] = useState<Lens>("dollars");
-  const [target, setTarget] = useState(() => nearestIndex(series.dates, steps[0].date));
+  const chapterIndex = useMemo(() => chapters.map((c) => nearestIndex(series.dates, c.date)), [series.dates]);
+  const [target, setTarget] = useState(() => chapterIndex[0]);
   const [frame, setFrame] = useState(target);
   const [playing, setPlaying] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
   const [hover, setHover] = useState<{ pile: number; x: number; y: number } | null>(null);
   const reducedMotion = useReducedMotion();
-  const stepRefs = useRef<(HTMLElement | null)[]>([]);
 
   const dollars = useMemo(() => buildTimeline(series.real, "dollars"), [series.real]);
   const shares = useMemo(() => (lens === "shares" ? buildTimeline(series.real, "shares") : null), [lens, series.real]);
   const timeline = lens === "shares" && shares ? shares : dollars;
 
-  const stepIndex = useMemo(() => steps.map((s) => nearestIndex(series.dates, s.date)), [series.dates]);
-
-  // Scroll -> target quarter.
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          const i = Number((e.target as HTMLElement).dataset.step);
-          setActiveStep(i);
-          setTarget(stepIndex[i]);
-          setPlaying(false);
-        }
-      },
-      { rootMargin: "-50% 0px -50% 0px" },
-    );
-    stepRefs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
-  }, [stepIndex]);
-
-  // Play: advance one quarter every 90 ms.
+  // Play: advance one quarter every 90 ms, from the start if the story has ended.
   useEffect(() => {
     if (!playing) return;
     const id = window.setInterval(() => {
@@ -74,7 +54,22 @@ export default function Experience({ series }: { series: Series }) {
     return () => window.clearInterval(id);
   }, [playing, last]);
 
-  // Arrow keys step through quarters when focus isn't in a form control.
+  const play = useCallback(() => {
+    setTarget((t) => (t >= last ? 0 : t));
+    setPlaying(true);
+  }, [last]);
+
+  // The hero's "Play the story" button.
+  useEffect(() => {
+    const onPlay = () => {
+      setTarget(0);
+      setPlaying(true);
+    };
+    window.addEventListener(PLAY_EVENT, onPlay);
+    return () => window.removeEventListener(PLAY_EVENT, onPlay);
+  }, []);
+
+  // Arrow keys step through quarters when the stage is on screen and focus isn't in a form control.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
@@ -112,6 +107,11 @@ export default function Experience({ series }: { series: Series }) {
   const share = series.publicShare[frame];
   const recession = series.recessions.find((r) => date >= r.start && date <= r.end) ?? null;
   const settled = frame === target;
+  // The chapter on screen: the last one whose quarter the stage has reached.
+  let active = 0;
+  chapterIndex.forEach((q, i) => {
+    if (frame >= q) active = i;
+  });
 
   const fill = (body: string, q: number) => {
     const t = sumReal(series.real[q]);
@@ -132,7 +132,7 @@ export default function Experience({ series }: { series: Series }) {
     const sharePrev = (prev[b][0] + prev[b][1]) / sumReal(prev);
     const delta = (shareNow - sharePrev) * 100;
     return (
-      <div className="tip" style={{ left: `clamp(130px, ${hover.x}px, calc(100% - 130px))`, top: hover.y }} role="status">
+      <div className="tip" style={{ left: `clamp(130px, ${hover.x}px, calc(100% - 130px))`, top: hover.y, borderTopColor: `var(--pile-${b})` }} role="status">
         <strong>{PILE_LONG[b]}</strong>
         <span>{fmtTrillions(v)} in 2026Q3 dollars · {lens === "dollars" ? Math.round(v / DOLLAR_UNIT_MUSD) : Math.round(shareNow * SHARE_DOTS)} dots</span>
         <span>{fmtPct(shareNow)} of all household debt</span>
@@ -158,20 +158,55 @@ export default function Experience({ series }: { series: Series }) {
   );
 
   return (
-    <>
-      <section className="scrolly" aria-label="The story">
-        <div id="stage" className="stage" data-recession={recession ? "" : undefined}>
-          <div className="hud">
-            <div className="hud__when">
-              <span className="hud__year">{fmtQuarter(date)}</span>
-              <span className={`hud__badge${recession ? " is-on" : ""}`} aria-hidden={!recession}>
+    <section id="explore" className="band band--explore" aria-label="Explorer">
+      <div className="wrap">
+        <div className="chapters" role="group" aria-label="Chapters">
+          <button
+            type="button"
+            className="btn btn--play"
+            onClick={() => (playing ? setPlaying(false) : play())}
+            aria-label={playing ? "Pause" : "Play the story"}
+          >
+            <span aria-hidden>{playing ? "❚❚" : "▶"}</span> {playing ? "Pause" : "Play"}
+          </button>
+          {chapters.map((c, i) => (
+            <button
+              key={c.button}
+              type="button"
+              className="chip"
+              aria-pressed={i === active}
+              onClick={() => {
+                setPlaying(false);
+                setTarget(chapterIndex[i]);
+              }}
+            >
+              {c.button}
+            </button>
+          ))}
+        </div>
+
+        <div id="stage" className="explorer" data-recession={recession ? "" : undefined}>
+          <div className="readout">
+            <div className="readout__when">
+              <span className="readout__year">{fmtQuarter(date)}</span>
+              <span className={`readout__badge${recession ? " is-on" : ""}`} aria-hidden={!recession}>
                 {recession ? recession.name : " "}
               </span>
+            </div>
+            {/* All five captions are in the page (and its prerendered HTML, so every number keeps its register link);
+                only the active chapter's is shown. */}
+            <div className="readout__caption" aria-live="polite">
+              {chapters.map((c, i) => (
+                <div key={c.button} hidden={i !== active}>
+                  <h3><Sourced text={c.title} /></h3>
+                  <p><Sourced text={fill(c.caption, chapterIndex[i])} /></p>
+                </div>
+              ))}
             </div>
             <div className="split">
               <div className="split__labels">
                 <span className="split__pub-label">
-                  <b>{fmtPct(share)}</b> public
+                  <b className="hi">{fmtPct(share)}</b> public
                 </span>
                 <span className="split__priv-label">
                   private <b>{fmtPct(1 - share)}</b>
@@ -181,106 +216,71 @@ export default function Experience({ series }: { series: Series }) {
                 <span className="split__pub" style={{ width: `${share * 100}%` }} />
                 <span className="split__priv" />
               </div>
-              <span className="split__caption">Public vs private share of debt</span>
             </div>
-            <div className="hud__total">
-              <span className="hud__mid">{fmtTrillions(total)}</span>
-              <span className="hud__label">total debt, 2026 $</span>
-            </div>
-            <div className="lens" role="group" aria-label="Lens">
-              <button type="button" aria-pressed={lens === "dollars"} onClick={() => setLens("dollars")}>Dollars</button>
-              <button type="button" aria-pressed={lens === "shares"} onClick={() => setLens("shares")}>Shares</button>
+            <div className="readout__row">
+              <div className="readout__total">
+                <span className="readout__mid">{fmtTrillions(total)}</span>
+                <span className="readout__label">total debt, 2026 $</span>
+              </div>
+              <div className="lens" role="group" aria-label="Lens">
+                <button type="button" aria-pressed={lens === "dollars"} onClick={() => setLens("dollars")}>Dollars</button>
+                <button type="button" aria-pressed={lens === "shares"} onClick={() => setLens("shares")}>Shares</button>
+              </div>
             </div>
           </div>
 
-          <div className="stage__plot">
-            <DotStage
-              timeline={timeline}
-              target={target}
-              reducedMotion={reducedMotion}
-              labels={labels}
-              onFrame={setFrame}
-              onHover={setHover}
-              ariaLabel={`Dot chart of US household debt by holder, ${fmtQuarter(date)}. ${fmtPct(share)} is held by the public sector.`}
-            />
-            {tip}
-          </div>
-
-          <div className="legend claim-up">
-            <span><i className="dot dot--solid" aria-hidden /> Mortgage</span>
-            <span><i className="dot dot--ring" aria-hidden /> Consumer credit</span>
-            <span><Sourced text={lens === "dollars" ? "1 dot = $50B (2026 $)" : "1 dot = 0.1% of all debt"} /></span>
-          </div>
-
-          <div className="scrub">
-            <button
-              type="button"
-              className="scrub__play"
-              onClick={() => {
-                if (!playing && target >= last) setTarget(0);
-                setPlaying((p) => !p);
-              }}
-              aria-label={playing ? "Pause" : "Play from here"}
-            >
-              {playing ? "❚❚" : "▶"}
-            </button>
-            <div className="scrub__track">
-              <svg className="scrub__spark" viewBox={`0 0 ${last} 1`} preserveAspectRatio="none" aria-hidden>
-                <path d={spark} />
-              </svg>
-              {ticks.map((t) => (
-                <span key={t.id} className="scrub__band" style={{ left: `${t.left}%`, width: `${t.width}%` }} title={t.name} />
-              ))}
-              <input
-                type="range"
-                min={0}
-                max={last}
-                value={target}
-                aria-label="Quarter"
-                aria-valuetext={fmtQuarter(series.dates[target])}
-                onChange={(e) => {
-                  setPlaying(false);
-                  setTarget(Number(e.target.value));
-                }}
+          <div className="explorer__main">
+            <div className="stage__plot">
+              <DotStage
+                timeline={timeline}
+                target={target}
+                reducedMotion={reducedMotion}
+                labels={labels}
+                onFrame={setFrame}
+                onHover={setHover}
+                ariaLabel={`Dot chart of US household debt by holder, ${fmtQuarter(date)}. ${fmtPct(share)} is held by the public sector.`}
               />
+              {tip}
             </div>
-            <span className="scrub__ends" aria-hidden>
-              {series.dates[0].slice(0, 4)}–{series.dates[last].slice(0, 4)}
-            </span>
+
+            <div className="legend">
+              <span><i className="dot dot--solid" aria-hidden /> Mortgage</span>
+              <span><i className="dot dot--ring" aria-hidden /> Consumer credit</span>
+              <span><Sourced text={lens === "dollars" ? "1 dot = $50B (2026 $)" : "1 dot = 0.1% of all debt"} /></span>
+            </div>
+
+            <div className="scrub">
+              <div className="scrub__track">
+                <svg className="scrub__spark" viewBox={`0 0 ${last} 1`} preserveAspectRatio="none" aria-hidden>
+                  <path d={spark} />
+                </svg>
+                {ticks.map((t) => (
+                  <span key={t.id} className="scrub__band" style={{ left: `${t.left}%`, width: `${t.width}%` }} title={t.name} />
+                ))}
+                <input
+                  type="range"
+                  min={0}
+                  max={last}
+                  value={target}
+                  aria-label="Quarter"
+                  aria-valuetext={fmtQuarter(series.dates[target])}
+                  onChange={(e) => {
+                    setPlaying(false);
+                    setTarget(Number(e.target.value));
+                  }}
+                />
+              </div>
+              <span className="scrub__ends" aria-hidden>
+                {series.dates[0].slice(0, 4)}–{series.dates[last].slice(0, 4)}
+              </span>
+            </div>
           </div>
 
           <p className="sr-only" aria-live="polite">
             {settled ? `${fmtQuarter(date)}: ${fmtPct(share)} public, ${fmtTrillions(total)} in total.` : ""}
           </p>
         </div>
-
-        <div className="steps">
-          {steps.map((s, i) => (
-            <article
-              key={i}
-              ref={(el) => {
-                stepRefs.current[i] = el;
-              }}
-              data-step={i}
-              className={`step${i === activeStep ? " is-active" : ""}`}
-            >
-              <div className="step__card">
-                <p className="step__kicker tag">{s.kicker}</p>
-                <h2>{s.title}</h2>
-                <p><Sourced text={fill(s.body, stepIndex[i])} /></p>
-                {s.title === "The hot potato" && (
-                  <div className="step__fig" aria-hidden="true">
-                    <PotatoPerson potatoes={4} tone="private" pose="toss" width={110} />
-                    <PotatoPerson potatoes={5} tone="public" pose="sweat" width={80} />
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <Coda series={series} />
-    </>
+      </div>
+    </section>
   );
 }

@@ -7,6 +7,7 @@ import { methods } from "@/content/methods";
 import { getSeries } from "@/lib/data";
 import { Sourced } from "@/components/claims/SourceRef";
 import { DraftBanner } from "@/components/pages/DraftBanner";
+import { DataNotes } from "@/components/pages/DataNotes";
 
 // Moved from web/app/methods (site-visible (b), 2026-11-07: one site). Copy in content/methods.ts.
 // Statically built and refreshed daily, like the home page.
@@ -102,6 +103,8 @@ export default async function MethodsPage() {
           </div>
         </div>
       </section>
+
+      <DataNotes series={series} />
 
       <section className="pg-section" aria-labelledby="limits">
         <div className="pg-col">

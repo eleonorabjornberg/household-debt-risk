@@ -5,6 +5,7 @@ import "./globals.css";
 import "./claims.css";
 import "./pages.css";
 import { TopBar } from "@/components/TopBar";
+import { Footer } from "@/components/Footer";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", axes: ["opsz", "SOFT", "WONK"], style: ["normal", "italic"], display: "swap" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-text", display: "swap" });
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <TopBar />
         {children}
+        <Footer />
       </body>
     </html>
   );

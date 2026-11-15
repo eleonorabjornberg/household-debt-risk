@@ -27,7 +27,7 @@
 .dash { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 1.5rem; align-items: start; }
 .results, .controls { display: grid; gap: 1rem; min-width: 0; }
 .controls { position: sticky; top: 1rem; }
-.answer { border: 2px solid var(--ink); background: #fff1e8; box-shadow: 6px 6px 0 var(--accent); padding: 1rem 1.2rem; }
+.answer { border: 2px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 var(--accent); padding: 1rem 1.2rem; }
 .kicker { margin: 0; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
 .big { margin: 0.3rem 0 0.9rem; font-family: var(--font-display), Georgia, serif; font-size: clamp(1.5rem, 3.2vw, 2.2rem); line-height: 1.15; font-weight: 800; }
 .big strong { background: var(--sun); padding: 0 0.15em; }

@@ -1,26 +1,25 @@
 "use client";
-// The top bar on every Hot Potato page (site-visible (b), 2026-11-07: one site with the pages moved from web/).
+// The top bar on every Hot Potato page. R1 (2026-11-15): three items only; the documentation pages are linked from
+// /appendix, and /appendix and GitHub from the footer.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const LINKS: { href: string; label: string; also?: string[] }[] = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/research", label: "Research" },
-  { href: "/scenarios", label: "Scenarios" },
-  { href: "/how-it-was-built", label: "How it was built" },
-  // Methods and Sources share one entry (review list P2, 2026-11-11); both routes stay, and each page links to the other.
-  { href: "/methods", label: "Methods & sources", also: ["/sources"] },
+const LINKS: { href: string; label: string }[] = [
+  { href: "/ask", label: "Ask" },
+  { href: "/how-it-was-built", label: "Built with Claude" },
 ];
 
 export function TopBar() {
   const path = usePathname();
   return (
     <nav className="topbar" aria-label="Site">
-      <Link href="/" className="topbar__brand" aria-current={path === "/" ? "page" : undefined}>Hot Potato</Link>
-      <div className="topbar__nav">
-        {LINKS.map((l) => (
-          <Link key={l.href} href={l.href} aria-current={[l.href, ...(l.also ?? [])].some((h) => path === h || path.startsWith(`${h}/`)) ? "page" : undefined}>{l.label}</Link>
-        ))}
+      <div className="wrap topbar__row">
+        <Link href="/" className="topbar__brand" aria-current={path === "/" ? "page" : undefined}>Hot Potato</Link>
+        <div className="topbar__nav">
+          {LINKS.map((l) => (
+            <Link key={l.href} href={l.href} aria-current={path === l.href || path.startsWith(`${l.href}/`) ? "page" : undefined}>{l.label}</Link>
+          ))}
+        </div>
       </div>
     </nav>
   );

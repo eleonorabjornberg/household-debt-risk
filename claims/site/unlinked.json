@@ -5,7 +5,6 @@
     "public_share_2005q1": "Defined in web/content/story.ts facts (dotcomTo) but never rendered; same proposal."
   },
   "atlas": {
-    "atlas_share_dots": "Shown only in the Shares lens legend, which renders after the reader switches lens (client state); linked there.",
-    "scope_usd_2026q2_atlas_headline": "In site.description, which is the page's meta description, not body text; a meta tag cannot carry a link."
+    "atlas_share_dots": "Shown only in the Shares lens legend, which renders after the reader switches lens (client state); linked there."
   }
 }

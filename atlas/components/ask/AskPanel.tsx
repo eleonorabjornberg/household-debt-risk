@@ -1,16 +1,18 @@
 "use client";
-// Ask Hot Potato panel (PLAN D6, preview only). Shows the answer and, under it, every tool call it used,
-// with series IDs and the data vintage.
-import { useState } from "react";
+// Ask Hot Potato panel (PLAN D6; restyled in R1, 2026-11-15). Shows the answer and, under it (closed by default),
+// every tool call it used, with series IDs and the data vintage. Example chips fill the box; they do not send.
+import { useId, useRef, useState } from "react";
 
 type Source = { tool: string; args: Record<string, unknown>; ok: boolean; refused?: boolean; series_ids: string[];
                 vintage: string | null; source: string | null };
 type Result = { answer?: string; refused?: boolean; sources?: Source[]; error?: string };
 
-export default function AskPanel() {
+export default function AskPanel({ examples = [], disabledMessage }: { examples?: { label: string; question: string }[]; disabledMessage?: string }) {
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<Result | null>(null);
+  const box = useRef<HTMLTextAreaElement>(null);
+  const id = useId();
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -26,22 +28,34 @@ export default function AskPanel() {
     }
   }
   return (
-    <section className="ask" aria-labelledby="ask-h">
-      <h2 id="ask-h">Ask Hot Potato</h2>
-      <p className="ask__note">Preview. Answers come only from the project&apos;s Z.1 and NY Fed data, with the query and data
-        vintage shown. No forecasts. Five questions per visitor per day.</p>
-      <form onSubmit={submit}>
-        <label htmlFor="ask-q" className="ask__label">Your question</label>
-        <textarea id="ask-q" value={q} maxLength={500} rows={3} onChange={(e) => setQ(e.target.value)}
-                  placeholder="What share of household mortgages and consumer credit did public holders hold in 2007Q4?" />
-        <button type="submit" disabled={busy || !q.trim()}>{busy ? "Thinking…" : "Ask"}</button>
+    <div className="ask">
+      <form className="ask__card" onSubmit={submit}>
+        <label htmlFor={`${id}-q`} className="ask__label sr-only">Your question</label>
+        <textarea id={`${id}-q`} ref={box} value={q} maxLength={500} rows={3} onChange={(e) => setQ(e.target.value)}
+                  disabled={!!disabledMessage} />
+        {examples.length > 0 && (
+          <div className="ask__chips" role="group" aria-label="Example questions">
+            {examples.map((x) => (
+              <button key={x.label} type="button" className="chip chip--q" disabled={!!disabledMessage} title={x.question}
+                      onClick={() => { setQ(x.question); box.current?.focus(); }}>
+                {x.label}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="ask__actions">
+          <button type="submit" className="btn btn--primary" disabled={busy || !q.trim() || !!disabledMessage}>
+            {busy ? "Thinking…" : "Ask"}
+          </button>
+          {disabledMessage && <p role="status" className="ask__off">{disabledMessage}</p>}
+        </div>
       </form>
-      {res?.error && <p role="alert" className="ask__error">{res.error}</p>}
+      {res?.error && <p role="alert" className="ask__error"><strong>Something went wrong.</strong> {res.error}</p>}
       {res?.answer && (
-        <div className="ask__answer" aria-live="polite">
+        <div className={`ask__answer${res.refused ? " is-refused" : ""}`} aria-live="polite">
           <p>{res.answer}</p>
           {!!res.sources?.length && (
-            <details open>
+            <details>
               <summary>Query and sources</summary>
               <ul>
                 {res.sources.map((s, i) => (
@@ -58,6 +72,6 @@ export default function AskPanel() {
           )}
         </div>
       )}
-    </section>
+    </div>
   );
 }

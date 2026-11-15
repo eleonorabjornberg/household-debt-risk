@@ -8,6 +8,7 @@ import { ClaimRef } from "@/components/claims/SourceRef";
 import { TimeSeriesChart } from "@/components/pages/charts/TimeSeriesChart";
 import { DataTable, Legend, Segmented } from "@/components/pages/charts/parts";
 import { fmtQuarter } from "@/lib/format";
+import { BUCKETS } from "@/lib/types";
 import { pct, usdFromMillions } from "@/lib/pages-format";
 import { LOAN_LABEL, LOAN_TYPES, type HolderMix, type LoanPanel, type LoanType, type Move, type Tiles } from "@/lib/dashboard";
 
@@ -15,9 +16,13 @@ type LoanFilter = "all" | LoanType;
 type Range = "all" | "2000" | "10y" | "5y";
 type Units = "share" | "usd";
 
-const BUCKET_COLORS = ["#1d4ed8", "#3b82f6", "#93c5fd", "#c2410c", "#f97316", "#fdba74"];
+// R1 (2026-11-15): each holder wears its pile ink, the same as on the home page's dots.
+const holderInk = (key: string, i: number) => {
+  const k = (BUCKETS as readonly string[]).indexOf(key);
+  return `var(--pile-${k >= 0 ? k : i})`;
+};
 const LOAN_COLORS: Record<LoanType, string> = {
-  mortgage: "#1d4ed8", heloc: "#0891b2", auto: "#7c3aed", credit_card: "#e5267a", student: "#c2410c", other: "#525252",
+  mortgage: "#1d4ed8", heloc: "#0891b2", auto: "#7c3aed", credit_card: "#a16207", student: "#c2410c", other: "#525252",
 };
 
 // Display spellings shared with the register rows (each register location points at a line using one of these).
@@ -100,7 +105,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
     const raw = mix.values[debtView];
     const totals = idx.map((q) => raw.reduce((s, b) => s + b[q], 0));
     const series = mix.buckets.map((b, bi) => ({
-      key: b.key, label: b.label, color: BUCKET_COLORS[bi % BUCKET_COLORS.length],
+      key: b.key, label: b.label, color: holderInk(b.key, bi),
       values: idx.map((q, k) => (units === "share" ? (totals[k] ? raw[bi][q] / totals[k] : null) : raw[bi][q])),
     }));
     const pub = idx.map((q, k) => (totals[k] ? mix.buckets.reduce((s, b, bi) => s + (b.isPublic ? raw[bi][q] : 0), 0) / totals[k] : null));
@@ -177,7 +182,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
             const n = tot ? Math.round((raw[bi][q] / tot) * 20) : 0;
             return (
               <figure key={b.key}>
-                <PotatoPerson potatoes={n} tone={b.isPublic ? "public" : "private"} width={70} hot={n > 0} />
+                <PotatoPerson potatoes={n} ink={holderInk(b.key, bi)} width={70} hot={n > 0} />
                 <figcaption>{b.label}</figcaption>
               </figure>
             );
@@ -187,7 +192,7 @@ export function Dashboard({ tiles, mix, loans }: { tiles: Tiles; mix: HolderMix;
         <Segmented id="dash-units" label="Show" value={units} onChange={setUnits}
           options={[{ value: "share", label: "Share of total" }, { value: "usd", label: "Dollars" }]} />
         <div className="chart">
-          <Legend items={holder.series.map((s) => ({ key: s.key, label: s.label, color: s.color }))} label="Public (blue) · private (orange)" />
+          <Legend items={holder.series.map((s) => ({ key: s.key, label: s.label, color: s.color }))} label="Holder" />
           <TimeSeriesChart
             x={holder.dates.map(yearOf)}
             xLabels={holder.dates.map(fmtQuarter)}

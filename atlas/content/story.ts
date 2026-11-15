@@ -30,107 +30,100 @@ export const PILE_LONG = [
   "Finance companies and other private lenders",
 ];
 
-export interface Step {
+// Home hero copy (Eleonora's approved copy, R1, 2026-11-15). The lede's numbers are wired in app/page.tsx.
+export const hero = {
+  forLine: "For analysts who price household credit, and for anyone who wants to see where the risk went.",
+  buttons: { play: "Play the story", ask: "Ask a question", build: "How it was built" },
+};
+
+// The explorer's five chapters (Eleonora's approved copy, R1, 2026-11-15): date, button, title, caption.
+export interface Chapter {
   date: string;
-  kicker: string;
+  button: string;
   title: string;
-  body: string;
+  caption: string;
 }
 
-export const steps: Step[] = [
+export const chapters: Chapter[] = [
   {
     date: "1952-03-31",
-    kicker: "1952",
+    button: "1952",
     title: "Every dot is $50 billion of debt",
-    body:
-      "Solid dots are mortgages, rings are consumer loans. Each sits with whoever holds the loan and takes the loss. In 1952 the public side held {share}.",
-  },
-  {
-    date: "1979-12-31",
-    kicker: "1950s–1970s",
-    title: "The public side starts to fill",
-    body:
-      "Fannie Mae, Freddie Mac and Ginnie Mae start pooling mortgages. By 1979 the public share is {share}.",
+    caption: "Each dot sits with whoever holds the loan and takes the loss. The public side holds {share}.",
   },
   {
     date: "1989-12-31",
-    kicker: "1980s",
+    button: "1980s",
     title: "No crisis required",
-    body:
-      "Banks sell mortgages into agency pools: about 19 points in one decade, no rescue needed. Public share: {share}.",
+    caption: "Banks sell mortgages into Fannie Mae, Freddie Mac and Ginnie Mae pools. Public share: {share}.",
   },
   {
     date: "2006-12-31",
-    kicker: "2001–2006",
-    title: "The private securitization boom pulls the other way",
-    body:
-      "Wall Street securitization takes share from the agencies. The public share falls to {share}; the private pile swells to about $4.6T.",
-  },
-  {
-    date: "2007-12-31",
-    kicker: "December 2007",
-    title: "The Great Recession begins",
-    body:
-      "Total debt is {total}. The public sector holds {share}. Watch the private pile.",
+    button: "2001–06",
+    title: "Wall Street pulls the other way",
+    caption: "Private securitization takes share from the agencies. The public share falls to {share}.",
   },
   {
     date: "2011-12-31",
-    kicker: "2007–2011",
+    button: "2007–11",
     title: "The hot potato",
-    body:
-      "The private pile drops from $4.5T to $1.7T. The public share jumps from 36.1% to {share}, bigger than 98% of four-year windows. It never came back.",
-  },
-  {
-    date: "2023-12-31",
-    kicker: "2020–2023",
-    title: "COVID barely moves the dots",
-    body:
-      "The sharpest jump in unemployment since the 1930s moves the share from 55.2% to {share}: about one point.",
+    caption:
+      "The private pile drops from $4.5T to $1.7T. The public share jumps from 36.1% to {share}. It never came back.",
   },
   {
     date: "2026-06-30",
-    kicker: "Today",
+    button: "Today",
     title: "Most of it is public now",
-    body:
-      "{public} of {total}, or {share}, sits with the public sector. Most of the shift was gradual; one crisis made it permanent.",
-  },
-  {
-    date: "2026-06-30",
-    kicker: "Your turn",
-    title: "Explore it yourself",
-    body:
-      "Drag the timeline or press play. Tap a pile for its numbers.",
+    caption: "{public} of {total}, or {share}, sits with the public sector.",
   },
 ];
 
-// "What does this mean?" Tokens: {share} latest public share, {pls} private securitization and REITs, incl. card ABS
-// in the latest quarter. Every number has a row in claims/register.csv (analysis/recommendation.md, 0.7).
+// "What it means" (Eleonora's approved copy, R1). Tokens: {share} latest public share. `pile` is the holder each
+// card is about, so its rule and stat wear that holder's ink. Every number has a row in claims/register.csv.
 export const meaning = {
-  title: "What does this mean?",
+  title: "What it means",
   points: [
     {
       stat: "{share}",
-      title: "Taxpayers are the backstop; collateral takes the first loss",
-      body: "A holder loses only what the collateral fails to cover, and homes are worth 3.56× the mortgages against them.",
+      pile: 1,
+      title: "Taxpayers are the backstop",
+      body: "A holder loses only what the collateral fails to cover, and homes are worth 3.56x the mortgages against them.",
     },
     {
       stat: "13.1 pp",
-      title: "Crises rarely move the risk",
-      body: "Across eleven recessions, only 2007–11 moved the share for good: 13.1 points.",
+      pile: 4,
+      title: "One crisis moved the risk for good",
+      body: "Across eleven recessions, only 2007–11 moved the share for good.",
     },
     {
       stat: "51%",
+      pile: 0,
       title: "The public book is going unsecured",
-      body: "The public sector holds 51% of debt with no collateral, up from 7% in 2007. Losses depend on collection.",
-    },
-    {
-      stat: "2025",
-      title: "What to watch",
-      body: "Student-loan collections restarted in 2025: the first test of the unsecured public book.",
+      body: "The public sector holds 51% of debt with no collateral, up from 7% in 2007.",
     },
   ],
 };
 
+// Ask Hot Potato (Eleonora's approved copy, R1). Example questions come from the answerable E1 set
+// (evals/e1_sql_benchmark/questions.yaml q116, q146, q162; none is in the E3 holdout).
+export const ask = {
+  title: "Ask Hot Potato",
+  intro:
+    "Ask in plain English. Claude queries the project's Fed data and shows its query and the data vintage under every answer. No forecasts. Five questions a day.",
+  // label: the chip text; question: what the chip puts in the box (the E1 wording).
+  examples: [
+    { label: "Banks' share, 2026Q2", question: "What share of household mortgages and consumer credit did banks and credit unions hold in 2026Q2?" },
+    { label: "Home collateral coverage, 2026Q2", question: "What was the home-backed collateral coverage ratio (collateral value / debt) in 2026Q2?" },
+    { label: "Student-loan delinquency, 2026Q2", question: "What percentage of student loan balances transitioned into serious delinquency (90+) in 2026Q2, per the NY Fed?" },
+  ],
+};
+
+// Footer (Eleonora's approved copy, R1).
+export const footer = {
+  data: "Data: Federal Reserve Z.1 and FRED. Every number links to its row in the claims register.",
+};
+
+// "About the data" (moved to /methods in R1).
 export const coda = {
   sourcesTitle: "About the data",
   sources: [

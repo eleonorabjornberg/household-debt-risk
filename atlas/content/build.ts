@@ -5,6 +5,8 @@
 
 // Cut to about a fifth on 2026-11-11 after Eleonora said the site had "10 times too much text" (site review).
 
+export const REPO_TREE = "https://github.com/eleonorabjornberg/household-debt-risk/tree/main";
+
 export const build = {
   lede:
     "Eleonora designed and decided; Claude Code built, checked and drafted, across one coordinator and three track sessions.",
@@ -21,7 +23,6 @@ export const build = {
 
   // E1 rates, each linked to its row in claims/tracks/infra.csv (ClaimRef in the page, by id).
   evals: {
-    lede: "The tools were tested against pre-registrations written before any result existed.",
     e1: {
       caption: "E1, question to SQL (2026-11-05): share correct, three runs per question.",
       rows: [
@@ -36,13 +37,6 @@ export const build = {
     ],
   },
 
-  stack: [
-    { name: "GitHub", body: "Code, history, CI and the quarterly refresh." },
-    { name: "Supabase", body: "Postgres warehouse; read-only research login." },
-    { name: "Vercel", body: "Hosting, with a preview for every branch." },
-    { name: "Python and Next.js", body: "Pipeline, analysis and this site: Canvas dots, hand-drawn SVG." },
-    { name: "Claude.ai artifacts", body: "Decision docket and review queue for Eleonora." },
-  ],
 
   schema: {
     lede: "Two loops: how a task reaches Eleonora's sign-off, and how data reaches this page.",

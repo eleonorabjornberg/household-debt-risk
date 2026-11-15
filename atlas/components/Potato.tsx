@@ -48,8 +48,10 @@ function pile(n: number, r: number) {
  * pose "hold": arms around a pile; "toss": one arm up, a potato flying off to the right; "sweat": holding, with sweat drops.
  */
 export function PotatoPerson({
-  potatoes, tone = "neutral", pose = "hold", label, width = 120, hot = true,
-}: { potatoes: number; tone?: Tone; pose?: "hold" | "toss" | "sweat"; label?: string; width?: number; hot?: boolean }) {
+  potatoes, tone = "neutral", pose = "hold", label, width = 120, hot = true, ink,
+}: { potatoes: number; tone?: Tone; pose?: "hold" | "toss" | "sweat"; label?: string; width?: number; hot?: boolean;
+     /** a holder's pile ink (CSS colour) for the body, in place of the tone (R1: holders keep one colour everywhere) */
+     ink?: string }) {
   const r = 9;
   const spots = pile(Math.max(0, Math.round(potatoes)), r);
   const pileH = spots.length ? -Math.min(...spots.map((s) => s.y)) + r * 2 : 0;
@@ -64,7 +66,7 @@ export function PotatoPerson({
       {/* legs */}
       <path d="M-8 -34 L-14 -2 M8 -34 L14 -2" stroke="var(--ink)" strokeWidth={3} strokeLinecap="round" fill="none" />
       {/* body */}
-      <path d="M-15 -36 Q-17 -64 -10 -70 L10 -70 Q17 -64 15 -36 Z" fill={BODY[tone]} stroke="var(--ink)" strokeWidth={2.2} strokeLinejoin="round" />
+      <path d="M-15 -36 Q-17 -64 -10 -70 L10 -70 Q17 -64 15 -36 Z" fill={ink ?? BODY[tone]} stroke="var(--ink)" strokeWidth={2.2} strokeLinejoin="round" />
       {/* head */}
       <circle cx={0} cy={-84} r={12} fill="var(--paper)" stroke="var(--ink)" strokeWidth={2.2} />
       <circle cx={-4} cy={-86} r={1.4} fill="var(--ink)" />

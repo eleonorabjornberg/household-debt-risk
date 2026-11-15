@@ -22,10 +22,18 @@ function SchemaLane({ lane, id }: { lane: Lane; id: string }) {
           <li key={s.name} className={`schema-step ${whoClass[s.who] ?? ""}`}>
             <span className="schema-who">{s.who}</span>
             <strong className="schema-name">{s.name}</strong>
-            <span className="schema-body"><Sourced text={s.body} /></span>
           </li>
         ))}
       </ol>
+      {/* Step details folded (R1: the page stays under 250 words); open for what each step does. */}
+      <details className="schema-more">
+        <summary>What each step does</summary>
+        <dl>
+          {lane.steps.map((s) => (
+            <div key={s.name}><dt>{s.name}</dt><dd><Sourced text={s.body} /></dd></div>
+          ))}
+        </dl>
+      </details>
       <p className="schema-loop">
         <span aria-hidden="true">↺ </span>
         {lane.loop}
@@ -39,12 +47,6 @@ export function BuildSchema({ workflow, build }: { workflow: Lane; build: Lane }
     <div className="schema-wrap" data-testid="build-schema">
       <SchemaLane lane={workflow} id="schema-workflow" />
       <SchemaLane lane={build} id="schema-build" />
-      <ul className="schema-key" aria-label="Key">
-        <li className="schema-who-human">Eleonora</li>
-        <li className="schema-who-claude">Claude or code</li>
-        <li className="schema-who-gate">Gate: work stops until it passes</li>
-        <li className="schema-who-data">Data</li>
-      </ul>
     </div>
   );
 }

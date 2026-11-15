@@ -285,6 +285,8 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-15 | Force-push `main` to the submission branch (`02515b2` → `9aae39a`, with lease), since the 2026-11-09 email scrub left the two with no common history. The old SHAs remain reachable through PR #1 until GitHub Support removes them. | Eleonora |
 | 2026-11-15 | D6 limit store: keep Vercel KV / Upstash (her d6-store (a)), not Supabase; she adds the production variables after the Fable 5.2 judge-lens review. | Eleonora |
 | 2026-11-15 | D6 limit store switched to Supabase (her words: "Fuck this, can we use supabase please", after finding the Upstash store expensive); replaces the KV choice above. Counters live in a private table behind two service-role-only functions (migration `20261115000000_ask_limits.sql`); she applies the migration in the Supabase SQL editor and adds `SUPABASE_SECRET_KEY` in Vercel. | Eleonora |
+| 2026-11-15 | Task R1 (her prompt of 2026-11-15, archived in `prompts/`): redesign the Hot Potato front end (`atlas/`) so a visitor understands it in ten seconds; the explorer and Ask are the product, the documentation is the appendix. R1 takes priority over whatever is marked `next`. Two stages, stop after each: Stage 1 (navigation, home, Ask, build page, design system, banners), Stage 2 (potato units) only after she approves the Stage 1 preview. Design system: keep the risograph palette and tokens; the six pile inks mean the six holders on every page; pink only for things you can click; yellow marks one number per section; navy for text and rules; no beige. Branch `redesign-r1` from `main`, preview deployments only, no production or database changes, no number changes. | Eleonora |
+| 2026-11-15 | R1 approved copy: she read and edited the copy for Home, Ask Hot Potato and Built with Claude (APPROVED COPY block in her R1 prompt; Built with Claude keeps the current lede and six tile texts in `atlas/content/build.ts`). The Claude-draft banners come off those three pages only; every other page keeps its banner. | Eleonora |
 
 ## Environment prerequisites
 
@@ -413,6 +415,13 @@ Goal: a validated, Tableau-free base that any later phase can trust.
 | F5 | **Building-with-Claude log**: models per task, token cost, errors and how they were caught | 0.6 | Kept up to date every session (started in 0.6) | in progress (ongoing by design; updated every session, latest 2026-11-15) |
 | F6 | **Outputs**: working-paper draft (SSRN format); short op-ed | all | Every number passes `claim-check`; `skeptic` and `editor` reviews logged | todo |
 | F7 | **Dashboard tab** (docket 54): one /dashboard tab that replaces /findings, for a market reader, with Core tiles and panels on top and the full findings below | F1, F4 | Tiles for total debt, public share, home coverage and serious-delinquency transitions with change on the quarter and the year; holder-mix and loan-type panels with date-range and loan-type filters; every number has a register row; analysis/findings.md shown whole, with a contents list; /findings redirects to /dashboard | built on the branch (2026-11-10); ok-prod from Eleonora 2026-11-11 (rv-dashboard-34); released to production 2026-11-11 (6ec789d, redeploy dpl_HmveLFPi7yeVaENkfYp8TXq1UFJY); live check by Claude passed (tiles, filters, /findings redirect, no console errors, no sideways scroll); the gradient-free build (1397d94) is in review queue round 35 |
+
+
+## Phase R — Redesign
+
+| ID | Task | Depends | Acceptance criteria | Status |
+|---|---|---|---|---|
+| R1 | **Hot Potato front-end redesign** (her decision of 2026-11-15): top bar of three (Hot Potato, Ask, Built with Claude); `/appendix` for Dashboard, Scenarios, Research, Methods, Sources; home as hero, explorer (five chapter buttons and Play), What it means, Ask, Built with Claude, footer; styled Ask panel; build page under 250 words; risograph design system with one job per colour; Stage 2 draws each $50B unit as a potato | F1, D6 | Stage 1: three items in the top bar; at 1440x900 the hero and the top of the explorer show without scrolling; home at most five viewports and 250 words outside the explorer labels; no draft banner on Home, Ask or Built with Claude; all checks green. Stage 2: potatoes readable at full count, no stutter on a laptop | in progress (Stage 1) |
 
 ---
 

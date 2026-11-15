@@ -8,7 +8,7 @@ const PAGES: { label: string; files: string[] }[] = [
   { label: "Home", files: ["atlas/app/page.tsx", "atlas/content/story.ts", "atlas/components/Experience.tsx"] },
   { label: "Dashboard", files: ["atlas/components/dashboard/"] },
   { label: "Methods", files: ["atlas/content/methods.ts", "atlas/app/methods/"] },
-  { label: "How it was built", files: ["atlas/content/build.ts", "atlas/app/how-it-was-built/"] },
+  { label: "Built with Claude", files: ["atlas/content/build.ts", "atlas/app/how-it-was-built/"] },
 ];
 
 export function pagesFor(locations: string[]): string[] {
