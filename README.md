@@ -42,7 +42,7 @@ Status of each part is in [`PLAN.md`](PLAN.md); how it was built, with which mod
 | [`validation/`](validation/) | One-command validation suite, independent of the pipeline code. Latest run: [`validation/REPORT.md`](validation/REPORT.md) |
 | [`claims/`](claims/) | [`register.csv`](claims/register.csv): every published number with its source, series, vintage and validation status; a test fails if a site number has no row |
 | [`analysis/`](analysis/) | Notebook, [`findings.md`](analysis/findings.md), [`recommendation.md`](analysis/recommendation.md) (the "so what", with limits), tables and figures |
-| [`atlas/`](atlas/) | Hot Potato, the public site (Next.js + Canvas): the dot flow, dashboard, research pages, scenarios, methods, sources and "Ask Hot Potato". Live at [hot-potato-credit.vercel.app](https://hot-potato-credit.vercel.app) |
+| [`atlas/`](atlas/) | Hot Potato, the public site (Next.js + Canvas): the potato flow, dashboard, research pages, scenarios, methods, sources and "Ask Hot Potato". Live at [hot-potato-credit.vercel.app](https://hot-potato-credit.vercel.app) |
 | [`web/`](web/) | The first long-form story site (Next.js, hand-drawn SVG charts). Its scenarios, methods and build pages moved into Hot Potato (decision of 2026-11-07, one site) |
 | [`.claude/skills/`](.claude/skills/) | Seven project skills, each with scripts and tests: `z1-release-update` (runs a new Z.1 release end to end and stops for approval), `claim-check` (recomputes any published number from its register row), `chart-from-sql`, `research-memo`, `preregister`, `source-provenance`, `decision-cards` |
 | [`prompts/`](prompts/) | The prompts that built the project, one dated file per session |
@@ -111,10 +111,10 @@ Check D2 (database vs recomputation) runs only when `DATABASE_URL_READONLY` is s
 | Warehouse | Supabase Postgres (`raw` → `core` → `mart`) | `supabase/migrations/` |
 | First story site (pages since moved into Hot Potato) | Next.js, hand-drawn SVG charts | `web/` |
 | Notebooks / findings | Python | `analysis/` |
-| Hot Potato (dot-flow site) | Next.js + Canvas on Vercel, reads the same `mart` views | `atlas/` |
+| Hot Potato (potato-flow site) | Next.js + Canvas on Vercel, reads the same `mart` views | `atlas/` |
 
 ## Hot Potato (`atlas/`)
-The public site tells the story as an animated dot flow. Each dot is $50B of debt in 2026 dollars, and dots move between six holder piles as you scroll. A Shares lens shows 1,000 dots, 0.1% each. Dots keep their identity from quarter to quarter: each quarter is rounded with the largest-remainder method, and only the difference moves, by the fewest dots possible (`atlas/lib/timeline.ts`, tested in `timeline.test.ts`). It deploys as its own Vercel project with **Root Directory `atlas`** and the same two `NEXT_PUBLIC_SUPABASE_*` variables. Without them it falls back to the `web/public/data` snapshots.
+The public site tells the story as an animated potato flow. Each potato is $50B of debt in 2026 dollars, drawn in the ink of the holder that has it, and potatoes move between six holder piles as the story plays (Play, five chapter buttons, or the timeline). A Shares lens shows 1,000 potatoes, 0.1% each. Potatoes keep their identity from quarter to quarter: each quarter is rounded with the largest-remainder method, and only the difference moves, by the fewest potatoes possible (`atlas/lib/timeline.ts`, tested in `timeline.test.ts`). It deploys as its own Vercel project with **Root Directory `atlas`** and the same two `NEXT_PUBLIC_SUPABASE_*` variables. Without them it falls back to the `web/public/data` snapshots.
 
 ```bash
 cd atlas && npm install && npm test && npm run dev

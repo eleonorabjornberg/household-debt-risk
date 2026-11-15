@@ -17,7 +17,7 @@ This matters to anyone who prices or holds the other side of that risk. An agenc
 - **Claims register.** Every published number has a row in `claims/register.csv` with the code path, series IDs, vintage and a validation status. A pre-commit hook runs the register check and the offline tests and blocks the commit if either fails.
 - **Independent validation.** `validation/run.py` recomputes headline numbers from the raw Fed files without importing the pipeline, so a bug in the pipeline cannot also pass its own check. A number is `PASS` only when that recomputation agrees.
 - **Pre-registration.** Statistical tests (the structural-break and placebo tests, the forecasts, the evals) were written down in `docs/decisions/` before any result existed. Deviations are dated in the same files.
-- **One public site.** Hot Potato (`atlas/`) shows holdings as moving dots, quarter by quarter, with the dashboard, research pages, scenarios and methods; each number opens its register row on `/sources`. The first story site (`web/`) stays in the repository; its pages moved into Hot Potato on 2026-11-07 (Eleonora's decision).
+- **One public site.** Hot Potato (`atlas/`) shows holdings as moving potatoes, one per $50B, quarter by quarter, with Ask Hot Potato, the dashboard, research pages, scenarios, methods and a downloadable Fed Data Desk plugin (`/plugin`); each number opens its register row on `/sources`. The first story site (`web/`) stays in the repository; its pages moved into Hot Potato on 2026-11-07 (Eleonora's decision).
 
 ## 3. How Claude was used
 

@@ -25,7 +25,7 @@ Research platform on who holds America's household credit risk, how it is priced
 | `pipeline/` | Python package `hhdebt` (uv): `extract → transform → load → export-snapshot`. Series catalog: `pipeline/series_catalog.yaml`. Methods: top of `pipeline/src/hhdebt/transform.py` |
 | `supabase/migrations/` | Warehouse schema: `raw` (every vintage) → `core` (latest) → `mart` (analysis). Applied migrations are history: never edit them, add a new one |
 | `analysis/` | Notebook, findings, tables and figures for the original analysis |
-| `atlas/` | Hot Potato, the live dot-flow site (Next.js + Canvas) |
+| `atlas/` | Hot Potato, the live potato-flow site (Next.js + Canvas) |
 | `web/` | Long-form story site (Next.js, hand-drawn SVG charts) |
 | `PLAN.md` | Target layout for the folders still to come (`validation/`, `claims/`, `research/`, `.claude/skills/`, `.claude/agents/`, `mcp/`, `plugin/`, `evals/`, `prompts/`, `paper/`) |
 
