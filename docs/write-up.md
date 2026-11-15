@@ -1,4 +1,4 @@
-> **Claude draft.** Written by Claude in Eleonora's register for her to replace with her own text. The design, the decisions and the validation are hers (`PLAN.md`, "Decisions taken"). Every number below has a row in `claims/register.csv` (eval numbers in `claims/tracks/infra.csv`); numbers marked UNVERIFIED there are traced but not independently recomputed.
+> Every number below has a row in `claims/register.csv` (eval numbers in `claims/tracks/infra.csv`); numbers marked UNVERIFIED there are traced but not independently recomputed.
 
 # Hot Potato: who holds America's household credit risk
 

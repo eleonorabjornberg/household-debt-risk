@@ -296,6 +296,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-15 | In chat: "ship it". Release `redesign-r1` at c6d177b to production (sienna ink, research note removal, Stage 2 potatoes) by fast-forwarding `main`. | Eleonora |
 | 2026-11-15 | In chat, closing the plan: F6 (working paper and op-ed) **kill**: dropped; F5 (building-with-Claude log) **wrap**: done, closed with this session's entry; stale status cells **fix**: D6, F7, B3, B4, C1, C2, C3 and E2 set to done to match what was recorded. A6 stays blocked (cbo.gov 403). | Eleonora |
 | 2026-11-15 | In chat: "ship it". Release the colour pass (navy for text only, green home, fuchsia Ask with yellow shadows, blue build), the new Ask layout, the hero-clipping fix and the research-index status fix to production by fast-forwarding `main`. | Eleonora |
+| 2026-11-15 | In chat: "remove the Claude draft banner from the write-up". `docs/write-up.md` no longer carries the Claude-draft label or the authorship sentences; its sourcing caveat (register rows, UNVERIFIED meaning) stays. | Eleonora |
 
 ## Environment prerequisites
 
