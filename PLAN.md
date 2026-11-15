@@ -283,6 +283,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-15 | In chat: "Wire it, give labels and register rows." (a) Wire E1 into the E3 regression suite (done, no API spend). (b) Claude writes the E4 P2 labels: model labels, not hers, a disclosed deviation from the plan's human labelling; they stay UNVERIFIED until she signs them off. (c) Add register rows for the E2 rerun numbers (4 rows, UNVERIFIED). | Eleonora |
 | 2026-11-15 | Card answers (AskUserQuestion in chat): **merge** `claude/sweet-gates-avwrcs` into `main` and point the README badge back at `main`; **deploy D6 (Ask Hot Potato) to production**; **keep** the Claude-draft banners. | Eleonora |
 | 2026-11-15 | Force-push `main` to the submission branch (`02515b2` → `9aae39a`, with lease), since the 2026-11-09 email scrub left the two with no common history. The old SHAs remain reachable through PR #1 until GitHub Support removes them. | Eleonora |
+| 2026-11-15 | D6 limit store: keep Vercel KV / Upstash (her d6-store (a)), not Supabase; she adds the production variables after the Fable 5.2 judge-lens review. | Eleonora |
 
 ## Environment prerequisites
 
