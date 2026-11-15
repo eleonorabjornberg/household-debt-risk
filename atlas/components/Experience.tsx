@@ -1,6 +1,6 @@
 "use client";
 
-// The explorer (R1, 2026-11-15): five chapter buttons and Play drive the dot stage; the scrubber sets the quarter
+// The explorer (R1, 2026-11-15): five chapter buttons and Play drive the potato stage; the scrubber sets the quarter
 // directly. The canvas reports the quarter it shows; the readout follows. Chapter captions are Eleonora's approved copy.
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DotStage, { type PileLabel } from "./DotStage";
@@ -20,6 +20,16 @@ function useReducedMotion(): boolean {
     return () => mq.removeEventListener("change", update);
   }, []);
   return rm;
+}
+
+/** Legend key: the stage's potato, filled (mortgage) or outlined (consumer credit), in navy. */
+function LegendPotato({ filled }: { filled: boolean }) {
+  return (
+    <svg className="legend__potato" viewBox="-12 -10 25 20" width={18} height={14} aria-hidden>
+      <path d="M-10 0 C-10 -8 -2 -7.5 3 -7 C11 -6.5 11.5 1 9 4.5 C6 8.5 -7 8 -10 0 Z"
+        fill={filled ? "var(--ink)" : "var(--paper)"} stroke="var(--ink)" strokeWidth={filled ? 1.5 : 3} strokeLinejoin="round" />
+    </svg>
+  );
 }
 
 /** Window event the hero's "Play the story" button sends. */
@@ -134,7 +144,7 @@ export default function Experience({ series }: { series: Series }) {
     return (
       <div className="tip" style={{ left: `clamp(130px, ${hover.x}px, calc(100% - 130px))`, top: hover.y, borderTopColor: `var(--pile-${b})` }} role="status">
         <strong>{PILE_LONG[b]}</strong>
-        <span>{fmtTrillions(v)} in 2026Q3 dollars · {lens === "dollars" ? Math.round(v / DOLLAR_UNIT_MUSD) : Math.round(shareNow * SHARE_DOTS)} dots</span>
+        <span>{fmtTrillions(v)} in 2026Q3 dollars · {lens === "dollars" ? Math.round(v / DOLLAR_UNIT_MUSD) : Math.round(shareNow * SHARE_DOTS)} potatoes</span>
         <span>{fmtPct(shareNow)} of all household debt</span>
         <span>
           {delta >= 0 ? "+" : "−"}
@@ -238,15 +248,15 @@ export default function Experience({ series }: { series: Series }) {
                 labels={labels}
                 onFrame={setFrame}
                 onHover={setHover}
-                ariaLabel={`Dot chart of US household debt by holder, ${fmtQuarter(date)}. ${fmtPct(share)} is held by the public sector.`}
+                ariaLabel={`Potato chart of US household debt by holder, ${fmtQuarter(date)}. ${fmtPct(share)} is held by the public sector.`}
               />
               {tip}
             </div>
 
             <div className="legend">
-              <span><i className="dot dot--solid" aria-hidden /> Mortgage</span>
-              <span><i className="dot dot--ring" aria-hidden /> Consumer credit</span>
-              <span><Sourced text={lens === "dollars" ? "1 dot = $50B (2026 $)" : "1 dot = 0.1% of all debt"} /></span>
+              <span><LegendPotato filled /> Mortgage</span>
+              <span><LegendPotato filled={false} /> Consumer credit</span>
+              <span><Sourced text={lens === "dollars" ? "1 potato = $50B (2026 $)" : "1 potato = 0.1% of all debt"} /></span>
             </div>
 
             <div className="scrub">

@@ -20,7 +20,7 @@
    "locations": [
     "atlas/content/story.ts:51",
     "atlas/content/story.ts:11",
-    "atlas/components/Experience.tsx:249"
+    "atlas/components/Experience.tsx:259"
    ],
    "computation": "atlas/lib/timeline.ts:DOLLAR_UNIT_MUSD (50_000 $M)",
    "series": [
@@ -32,10 +32,10 @@
    "notes": "Design constant, not a data claim. Tested for dot conservation in atlas/lib/timeline.test.ts.",
    "register": "claims/register.csv",
    "anchors": [
-    "Every dot is $50 billion of debt",
-    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
-    "1 dot = $50B (2026 $)",
-    "1 dot = 0.1% of all debt"
+    "Every potato is $50 billion of debt",
+    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion potato at a time.",
+    "1 potato = $50B (2026 $)",
+    "1 potato = 0.1% of all debt"
    ],
    "exact": []
   },
@@ -51,7 +51,7 @@
    "unit": "share",
    "period": "n/a",
    "locations": [
-    "atlas/components/Experience.tsx:249"
+    "atlas/components/Experience.tsx:259"
    ],
    "computation": "atlas/lib/timeline.ts:SHARE_DOTS (1000)",
    "series": [
@@ -63,8 +63,8 @@
    "notes": "Design constant, not a data claim.",
    "register": "claims/register.csv",
    "anchors": [
-    "1 dot = $50B (2026 $)",
-    "1 dot = 0.1% of all debt"
+    "1 potato = $50B (2026 $)",
+    "1 potato = 0.1% of all debt"
    ],
    "exact": []
   },
@@ -1043,7 +1043,7 @@
    "notes": "Public = federal direct + GSE/agency pools + state & local. The atlas copy gets this through the {share} token at step 1952-03-31 (fmtPct of the snapshot value); web copy reads facts.publicShareFirst.",
    "register": "claims/register.csv",
    "anchors": [
-    "Each dot sits with whoever holds the loan and takes the loss. The public side holds",
+    "Each potato sits with whoever holds the loan and takes the loss. The public side holds",
     "public_share_1952q1"
    ],
    "exact": []
@@ -1390,7 +1390,7 @@
    "notes": "Rounded from $19.10T nominal ($19.2T in the atlas's 2026-dollar series).",
    "register": "claims/register.csv",
    "anchors": [
-    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
+    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion potato at a time.",
     "scope_usd_2026q2_atlas_headline"
    ],
    "exact": []

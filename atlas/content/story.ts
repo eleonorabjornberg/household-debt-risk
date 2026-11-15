@@ -8,7 +8,7 @@ export const site = {
   title: "Hot Potato",
   kicker: "Who holds America's household debt?",
   description:
-    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion dot at a time.",
+    "Watch $19 trillion of US household debt move between banks, private investors and the public sector, one $50 billion potato at a time.",
   repo: "https://github.com/eleonorabjornberg/household-debt-risk",
 };
 
@@ -48,8 +48,8 @@ export const chapters: Chapter[] = [
   {
     date: "1952-03-31",
     button: "1952",
-    title: "Every dot is $50 billion of debt",
-    caption: "Each dot sits with whoever holds the loan and takes the loss. The public side holds {share}.",
+    title: "Every potato is $50 billion of debt",
+    caption: "Each potato sits with whoever holds the loan and takes the loss. The public side holds {share}.",
   },
   {
     date: "1989-12-31",
@@ -128,6 +128,6 @@ export const coda = {
   sourcesTitle: "About the data",
   sources: [
     "Converted to 2026Q3 dollars with CPI (base: the 2026Q3 average of CPIAUCSL). The public share is computed in nominal dollars.",
-    "Dots are rounded with the largest-remainder method, so each quarter's dots match its total to within one dot. Between quarters only the difference moves.",
+    "Potatoes are rounded with the largest-remainder method, so each quarter's potatoes match its total to within one potato. Between quarters only the difference moves.",
   ],
 };

@@ -33,6 +33,7 @@ interface Theme {
   muted: string;
   rule: string;
   font: string;
+  paper: string;
 }
 
 function readTheme(el: HTMLElement): Theme {
@@ -44,6 +45,7 @@ function readTheme(el: HTMLElement): Theme {
     muted: v("--muted") || "#999",
     rule: v("--rule") || "#444",
     font: cs.fontFamily || "sans-serif",
+    paper: v("--paper") || "#fff",
   };
 }
 
@@ -51,6 +53,63 @@ function readTheme(el: HTMLElement): Theme {
 function hash01(n: number): number {
   const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453;
   return x - Math.floor(x);
+}
+
+// R1 Stage 2 (Eleonora, 2026-11-15): each unit is drawn as a small potato in its holder's ink. One sprite per holder
+// ink, type (0 mortgage: ink fill and navy outline; 1 consumer credit: outlined in the ink) and rotation, pre-rendered to
+// an offscreen canvas and stamped with drawImage. The outline is PotatoShape's path (components/Potato.tsx), scaled to r.
+const ROTATIONS = 4;
+const SPRITE_SCALE = 0.95; // a potato is wider than a dot (about 2.15r): shrink a touch so neighbours barely touch
+
+function potatoPath(r: number): Path2D {
+  return new Path2D(
+    `M${-r} 0 C${-r} ${-r * 0.8} ${-r * 0.2} ${-r * 0.75} ${r * 0.3} ${-r * 0.7} ` +
+      `C${r * 1.1} ${-r * 0.65} ${r * 1.15} ${r * 0.1} ${r * 0.9} ${r * 0.45} ` +
+      `C${r * 0.6} ${r * 0.85} ${-r * 0.7} ${r * 0.8} ${-r} 0 Z`,
+  );
+}
+
+interface Sprites {
+  /** [pile][type][rotation] */
+  img: HTMLCanvasElement[][][];
+  /** half the sprite's size in CSS pixels (the stamp is centred on the unit) */
+  half: number;
+}
+
+function buildSprites(theme: Theme, r: number, dpr: number): Sprites {
+  const pr = r * SPRITE_SCALE;
+  const half = Math.ceil(pr * 1.6 + 2);
+  const px = Math.ceil(half * 2 * dpr);
+  const path = potatoPath(pr);
+  const img = theme.piles.map((ink) =>
+    [0, 1].map((type) =>
+      Array.from({ length: ROTATIONS }, (_, k) => {
+        const c = document.createElement("canvas");
+        c.width = c.height = px;
+        const g = c.getContext("2d")!;
+        g.setTransform(dpr, 0, 0, dpr, 0, 0);
+        g.translate(half, half);
+        g.rotate(((k * 50) / ROTATIONS - 25) * (Math.PI / 180));
+        g.translate(-pr * 0.07, 0); // the path's bulk sits right of its origin
+        g.lineJoin = "round";
+        if (type === 0) {
+          g.fillStyle = ink;
+          g.fill(path);
+          g.strokeStyle = theme.ink;
+          g.lineWidth = Math.max(0.6, pr * 0.2);
+          g.stroke(path);
+        } else {
+          g.fillStyle = theme.paper;
+          g.fill(path);
+          g.strokeStyle = ink;
+          g.lineWidth = Math.max(0.9, pr * 0.42);
+          g.stroke(path);
+        }
+        return c;
+      }),
+    ),
+  );
+  return { img, half };
 }
 
 export default function DotStage({ timeline, target, reducedMotion, labels, onFrame, onHover, ariaLabel }: Props) {
@@ -89,6 +148,16 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
     let raf = 0;
     let last = 0;
     let hoverPile = -1;
+    let sprites: Sprites | null = null;
+    let spriteKey = "";
+    const sprite = () => {
+      const key = `${layout?.dotRadius}|${dpr}|${theme.piles.join()}|${theme.ink}`;
+      if (layout && key !== spriteKey) {
+        sprites = buildSprites(theme, layout.dotRadius, dpr);
+        spriteKey = key;
+      }
+      return sprites!;
+    };
 
     function setTargets(snap: boolean) {
       if (!layout) return;
@@ -270,40 +339,19 @@ export default function DotStage({ timeline, target, reducedMotion, labels, onFr
       }
       ctx.globalAlpha = 1;
 
-      // Dots, batched by colour and type. Fading dots are drawn one by one.
-      for (let b = 0; b < theme.piles.length; b++) {
-        ctx.fillStyle = theme.piles[b];
-        ctx.strokeStyle = theme.piles[b];
-        ctx.beginPath();
-        for (let id = 0; id < n; id++) {
-          if (shown[id] !== b || alpha[id] < 1 || tl.dotType[id] !== 0) continue;
-          ctx.moveTo(x[id] + r, y[id]);
-          ctx.arc(x[id], y[id], r, 0, Math.PI * 2);
-        }
-        ctx.fill();
-        ctx.lineWidth = Math.max(0.8, r * 0.42);
-        const rr = r - ctx.lineWidth / 2;
-        ctx.beginPath();
-        for (let id = 0; id < n; id++) {
-          if (shown[id] !== b || alpha[id] < 1 || tl.dotType[id] !== 1) continue;
-          ctx.moveTo(x[id] + rr, y[id]);
-          ctx.arc(x[id], y[id], rr, 0, Math.PI * 2);
-        }
-        ctx.stroke();
-      }
+      // Potatoes: one stamp each from the pre-rendered sprites. Fading ones shrink and fade as the dots did.
+      const sp = sprite();
+      const h = sp.half;
       for (let id = 0; id < n; id++) {
-        if (alpha[id] <= 0 || alpha[id] >= 1 || shown[id] < 0) continue;
-        ctx.globalAlpha = alpha[id];
-        const scale = 0.5 + 0.5 * alpha[id];
-        ctx.fillStyle = ctx.strokeStyle = theme.piles[shown[id]];
-        ctx.beginPath();
-        if (tl.dotType[id] === 0) {
-          ctx.arc(x[id], y[id], r * scale, 0, Math.PI * 2);
-          ctx.fill();
+        if (alpha[id] <= 0 || shown[id] < 0) continue;
+        const im = sp.img[shown[id]][tl.dotType[id]][id % ROTATIONS];
+        if (alpha[id] >= 1) {
+          ctx.globalAlpha = 1;
+          ctx.drawImage(im, x[id] - h, y[id] - h, h * 2, h * 2);
         } else {
-          ctx.lineWidth = Math.max(0.8, r * 0.42);
-          ctx.arc(x[id], y[id], (r - ctx.lineWidth / 2) * scale, 0, Math.PI * 2);
-          ctx.stroke();
+          ctx.globalAlpha = alpha[id];
+          const hs = h * (0.5 + 0.5 * alpha[id]);
+          ctx.drawImage(im, x[id] - hs, y[id] - hs, hs * 2, hs * 2);
         }
       }
       ctx.globalAlpha = 1;
