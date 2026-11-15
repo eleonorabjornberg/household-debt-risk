@@ -931,3 +931,7 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 - Eleonora answered review queue 45: same_fix **yes** on doc-67be578b #0, #1 and doc-7326b106 #0. Recorded in PLAN "Decisions taken" and written into `run-20261113r/scoring.csv`.
 - Ran `score.py summarise` on the reviewer folder only (baseline read from `baseline/scoring.csv`, as in run-20261113): skeptic 8/8 (Wilson 95% 68–100%), quant-reviewer 6/6 (61–100%), false alarms 0/3 (0–56%), no misses. Baseline 8/8. Results note filled as a Claude draft, UNVERIFIED; it says the baseline matched the agents, so this run shows no added recall from the skeptic prompt, and that both hit the ceiling. `regression.py status` reads E2 as up to date.
 - Model tier: main model. Cost not measured.
+
+## 2026-11-15 (coordinator): approval recorded
+- Eleonora in chat: "Everything is reviewed and approved." Recorded in PLAN "Decisions taken" as approval of all work sent for review, including the scored E2 rerun. The merge to `main`, the D6 production change and the Claude-draft banners are asked separately, since a general approval does not name them.
+- Model tier: main model. Cost not measured.

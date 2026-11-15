@@ -279,6 +279,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-13 | Review queue 43 (Fable 5.2 judge findings): e2-rerun-56 **rerun** (fresh seed in isolated worktrees); e2-rescore-ctrl-56 **yes** (the second person also rescores the control objections); fix-batch-56 **all** (fix all six on the branch only); banners-56 **add** (Claude draft banner on every listed page); open-tasks-56 **finish** (she finishes F6, A6, D6, B3 and F5 before submitting). No recommendation was given on these cards. | Eleonora |
 | 2026-11-13 | Review queue 44 (answered 20:14–20:15 UTC): same_fix **yes** on 11 of 14 reviewer and 8 of 8 baseline matches (3 reviewer cards unsaved, re-asked in round 45); real_problem **yes** on reviewer controls R-1, R-16, R-17 and baseline B1–B5; rescore-pack-57 **sent**, "make fable 5.2 the second person" (second rater is a Fable 5.2 model, a prereg deviation). | Eleonora |
 | 2026-11-14 | Review queue 45 (answered 19:31 UTC): same_fix **yes** on the three re-asked reviewer matches (doc-67be578b #0, #1; doc-7326b106 #0), completing the E2 rerun judgments. | Eleonora |
+| 2026-11-15 | In chat: "Everything is reviewed and approved." Recorded as approval of all work sent for review, including the scored E2 rerun (run-20261113r) and its results note. Not read as covering the merge to `main`, the D6 production change or removing Claude-draft banners; those are asked separately. | Eleonora |
 
 ## Environment prerequisites
 
