@@ -8,7 +8,7 @@ export function BuildTiles() {
     <ul className="tiles">
       {build.tiles.map((t) => (
         <li key={t.name}>
-          <a className="tile" href={`${REPO_TREE}/${t.href}`}>
+          <a className="tile" href={"page" in t && t.page ? t.page : `${REPO_TREE}/${t.href}`}>
             <strong>{t.name}</strong>
             <span>{t.body}</span>
           </a>

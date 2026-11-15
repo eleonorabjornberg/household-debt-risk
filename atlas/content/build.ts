@@ -18,7 +18,7 @@ export const build = {
     { name: "MCP", body: "Own household-credit server, plus GitHub, Supabase, Vercel and FRED", href: "mcp" },
     { name: "API", body: "Ask Hot Potato, and model benchmarks run under spend caps", href: "evals" },
     { name: "Hooks", body: "Pre-commit register check and tests; hand edits to generated results blocked", href: ".claude/hooks" },
-    { name: "Plugin", body: "Fed Data Desk: the skills, subagents and MCP server packaged for reuse", href: "plugin/fed-data-desk" },
+    { name: "Plugin", body: "Fed Data Desk: the skills, subagents and MCP server packaged for reuse", href: "plugin/fed-data-desk", page: "/plugin" },
   ],
 
   // E1 rates, each linked to its row in claims/tracks/infra.csv (ClaimRef in the page, by id).

@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Ask Hot Potato: generated at build time by scripts/ask-data.mjs (catalog.json stays committed)
 lib/ask/register.json
+
+# built by scripts/plugin-zip.mjs at prebuild
+/public/downloads/

@@ -11,11 +11,26 @@ in a clone of the repository.
 | MCP | `household-credit` (read-only; snapshot backend, or the `research_reader` database when `DATABASE_URL_READONLY` is set) |
 
 ## Install
-Run from the root of a clone of the repository, with `uv` installed:
+Run Claude Code from the root of a clone of the repository, with `uv` installed. Three routes:
 ```bash
+# from GitHub (the repository root holds a marketplace file)
+claude plugin marketplace add eleonorabjornberg/household-debt-risk
+claude plugin install fed-data-desk@household-debt-risk
+```
+```bash
+# from the zip on the site (hot-potato-credit.vercel.app/plugin), built from this folder on every site build
+unzip fed-data-desk-plugin.zip
+claude plugin marketplace add ./fed-data-desk-plugin
+claude plugin install fed-data-desk@household-debt-risk
+```
+```bash
+# from the clone itself
 claude plugin marketplace add ./plugin
 claude plugin install fed-data-desk@household-debt-risk
 ```
+The zip route and the root marketplace file were checked on 2026-11-15 with Claude Code 2.1.325 in a throwaway config
+directory (`claude plugin validate` passes for both; install from the zip succeeds and the plugin is enabled).
+
 Tested 2026-11-04 with Claude Code 2.1.318 in a throwaway config directory:
 - `claude plugin validate` passes, with one warning: no icon;
 - the install succeeded;
