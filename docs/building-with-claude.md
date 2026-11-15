@@ -946,3 +946,5 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
   - A rewrite of the CSV changed every line ending. That rewrite was reverted, and the rows were appended with the file's own terminator.
 - **E4 P2 labels:** a Claude subagent is labelling the 21 flagged and 12 sampled answers offline, at her instruction. These are model labels, a disclosed deviation, and they stay UNVERIFIED.
 - Model tier: Opus coordinator; one general-purpose subagent for the labels. API cost: $0.
+- **E4 P2 labels are done.** The subagent labelled 33 answers: 1 fail (h-a5-1), 3 unclear (a4-1, a12-4, h-a11-1), 17 false positives and 12 pass. No leak was found. All are UNVERIFIED model labels.
+- **Her answers in chat:** merge to `main` (with the badge back on `main`), deploy D6 to production, keep the banners.
