@@ -1,5 +1,5 @@
 // Ask Hot Potato's per-request wiring: which limit store and which data source the route uses. Server only.
-//  * Store (d6-store (a)): Vercel KV / Upstash Redis from its env vars. Without them: an in-memory store for local
+//  * Store: Supabase counters (2026-11-15) or Vercel KV / Upstash Redis, from their env vars. Without them: an in-memory store for local
 //    dev only; on Vercel the gate already refuses (503), and this throws rather than fall back.
 //  * Data (d6-data (b)): read-only mart reads through Supabase's API with the publishable key when the site's public
 //    Supabase URL and key are set, cached for DATA_TTL_MS; else the committed snapshot. ASK_DATA=snapshot forces

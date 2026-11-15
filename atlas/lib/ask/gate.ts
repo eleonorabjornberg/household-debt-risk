@@ -1,4 +1,4 @@
-import { storeEnv } from "./limits";
+import { hasSharedStore } from "./limits";
 // Where Ask Hot Potato may run (PLAN D6): Vercel preview (her d6-preview, PLAN 0e0dd6c) and, since her
 // production OK of 2026-11-15, Vercel production; plus local development. On every deployment it stays off
 // until the enable flag, the API key and the shared limit store are all set in the Vercel project settings.
@@ -14,8 +14,8 @@ export function deploymentGate(env: Record<string, string | undefined> = process
     return { ok: false, status: 404, message: "Ask Hot Potato is not enabled on this deployment." };
   if (!env.HHDEBT_ANTHROPIC_API_KEY)
     return { ok: false, status: 503, message: "Ask Hot Potato is not configured (no API key)." };
-  // The shared limit store (Vercel KV / Upstash Redis, her d6-store (a)) is required on Vercel; she adds it.
-  if (onVercel && !storeEnv(env))
+  // A shared limit store (Supabase counters, her choice of 2026-11-15, or Redis) is required on Vercel.
+  if (onVercel && !hasSharedStore(env))
     return { ok: false, status: 503, message: "Ask Hot Potato is not configured (no shared limit store)." };
   return { ok: true };
 }

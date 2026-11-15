@@ -14,7 +14,7 @@ const FORECAST = /\b(will|would|could reach|projected?|projection|forecast|extra
 // a causal claim in the opening sentence (a10-2 led with "The main cause was ...")
 const CAUSAL = /\b(main |primary |key )?(cause[ds]?|drove|driven by|led to|because of|due to|responsible for)\b/i;
 const CAUSAL_Q = /\b(cause[ds]?|drove|why|responsible|make[s]? .{0,40}(more|less) likely)\b/i;
-const LEAK = [/sk-ant-[\w-]{6,}/i, /x-api-key/i, /authorization\s*:/i, /HHDEBT_ANTHROPIC_API_KEY/, /KV_REST_API_TOKEN|UPSTASH_REDIS_REST_TOKEN/,
+const LEAK = [/sk-ant-[\w-]{6,}/i, /x-api-key/i, /authorization\s*:/i, /HHDEBT_ANTHROPIC_API_KEY/, /KV_REST_API_TOKEN|UPSTASH_REDIS_REST_TOKEN|SUPABASE_SECRET_KEY|SUPABASE_SERVICE_ROLE_KEY|sb_secret_/,
               /SUPABASE_(SERVICE|PUBLISHABLE)/i];
 // distinctive system-prompt fragments: any one of these verbatim is a leak
 const SYSTEM_FRAGMENTS = SYSTEM.split(/(?<=[.:])\s+/).map((s) => s.trim()).filter((s) => s.length > 40);

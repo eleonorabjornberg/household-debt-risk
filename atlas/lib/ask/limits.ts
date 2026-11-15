@@ -1,7 +1,7 @@
 // Ask Hot Potato (PLAN D6) limits, Eleonora's d6-preview (PLAN 0e0dd6c): 5 questions per visitor per UTC day and a
 // $2/day hard stop for the whole app, enforced here, server-side, before any model call. Both need a store shared
-// across serverless instances: Vercel KV / Upstash Redis (her d6-store (a), PLAN e272d09). MemoryStore is for tests and
-// local dev ONLY.
+// across serverless instances: Supabase counters (her choice of 2026-11-15; SupabaseStore), or Vercel KV / Upstash Redis
+// (her earlier d6-store (a), PLAN e272d09; kept as a fallback). MemoryStore is for tests and local dev ONLY.
 
 export interface Store {
   /** Add `by` to the number at `key` (creating it at 0), expire it after `ttlSeconds`, return the new value. */
@@ -42,6 +42,43 @@ export class RedisStore implements Store {
   }
 }
 
+/** Calls a Postgres function through Supabase's REST API (PostgREST /rpc). A fake implements it in tests. */
+export type RpcCall = (fn: string, args: Record<string, unknown>) => Promise<unknown>;
+
+/** Supabase counters (Eleonora, 2026-11-15; migration 20261115000000_ask_limits.sql). The functions run as
+ *  service_role only, so this needs the project's secret key, server side. */
+export class SupabaseStore implements Store {
+  constructor(private rpc: RpcCall) {}
+  async add(key: string, by: number, ttlSeconds: number): Promise<number> {
+    return Number(await this.rpc("ask_limit_add", { p_key: key, p_by: by, p_ttl_seconds: ttlSeconds }));
+  }
+  async get(key: string): Promise<number> {
+    const v = await this.rpc("ask_limit_get", { p_key: key });
+    return v === null || v === undefined ? 0 : Number(v);
+  }
+}
+
+/** The Supabase URL (the site's public one) and the server-only secret key; null when either is missing. */
+export function supabaseStoreEnv(env: Record<string, string | undefined> = process.env): { url: string; key: string } | null {
+  const url = env.SUPABASE_URL ?? env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = env.SUPABASE_SECRET_KEY ?? env.SUPABASE_SERVICE_ROLE_KEY;
+  return url && key ? { url: url.replace(/\/+$/, ""), key } : null;
+}
+
+export function supabaseRpc(cfg: { url: string; key: string }, fetchImpl: typeof fetch = fetch): RpcCall {
+  return async (fn, args) => {
+    const headers: Record<string, string> = { apikey: cfg.key, "content-type": "application/json" };
+    if (cfg.key.startsWith("eyJ")) headers.authorization = `Bearer ${cfg.key}`; // legacy JWT service_role key
+    const res = await fetchImpl(`${cfg.url}/rest/v1/rpc/${fn}`, { method: "POST", headers, body: JSON.stringify(args), cache: "no-store" });
+    if (!res.ok) throw new Error(`limit store error ${res.status}`); // never echo the key or the response body
+    return res.json();
+  };
+}
+
+/** True when either shared limit store (Supabase or Redis) is configured. */
+export const hasSharedStore = (env: Record<string, string | undefined> = process.env) =>
+  !!(supabaseStoreEnv(env) || storeEnv(env));
+
 /** The REST URL and token the Vercel KV or Upstash integration sets; null when either is missing (the gate then refuses). */
 export function storeEnv(env: Record<string, string | undefined> = process.env): { url: string; token: string } | null {
   const url = env.KV_REST_API_URL ?? env.UPSTASH_REDIS_REST_URL;
@@ -50,6 +87,8 @@ export function storeEnv(env: Record<string, string | undefined> = process.env):
 }
 
 export async function storeFromEnv(env: Record<string, string | undefined> = process.env): Promise<Store | null> {
+  const sb = supabaseStoreEnv(env);
+  if (sb) return new SupabaseStore(supabaseRpc(sb));
   const cfg = storeEnv(env);
   if (!cfg) return null;
   const { Redis } = await import("@upstash/redis");

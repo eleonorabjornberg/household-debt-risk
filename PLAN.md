@@ -284,6 +284,7 @@ Each kind of artifact has one obvious home, so the repo link alone shows the cod
 | 2026-11-15 | Card answers (AskUserQuestion in chat): **merge** `claude/sweet-gates-avwrcs` into `main` and point the README badge back at `main`; **deploy D6 (Ask Hot Potato) to production**; **keep** the Claude-draft banners. | Eleonora |
 | 2026-11-15 | Force-push `main` to the submission branch (`02515b2` → `9aae39a`, with lease), since the 2026-11-09 email scrub left the two with no common history. The old SHAs remain reachable through PR #1 until GitHub Support removes them. | Eleonora |
 | 2026-11-15 | D6 limit store: keep Vercel KV / Upstash (her d6-store (a)), not Supabase; she adds the production variables after the Fable 5.2 judge-lens review. | Eleonora |
+| 2026-11-15 | D6 limit store switched to Supabase (her words: "Fuck this, can we use supabase please", after finding the Upstash store expensive); replaces the KV choice above. Counters live in a private table behind two service-role-only functions (migration `20261115000000_ask_limits.sql`); she applies the migration in the Supabase SQL editor and adds `SUPABASE_SECRET_KEY` in Vercel. | Eleonora |
 
 ## Environment prerequisites
 

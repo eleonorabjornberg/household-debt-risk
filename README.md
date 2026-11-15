@@ -148,7 +148,7 @@ Local database:
 ```bash
 service postgresql start
 sudo -u postgres createdb hhdebt
-sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql -f supabase/migrations/20261027010000_mart_dim_views.sql -f supabase/migrations/20261103000000_research_reader.sql
+sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql -f supabase/migrations/20261027010000_mart_dim_views.sql -f supabase/migrations/20261103000000_research_reader.sql -f supabase/migrations/20261115000000_ask_limits.sql
 export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/hhdebt
 ```
 `.github/workflows/refresh.yml` runs the pipeline and tests quarterly (the 20th of Mar/Jun/Sep/Dec, after each Z.1 release) and on demand, and uploads the snapshots as a build artifact. It needs the `DATABASE_URL` secret (and optionally `FRED_API_KEY`).

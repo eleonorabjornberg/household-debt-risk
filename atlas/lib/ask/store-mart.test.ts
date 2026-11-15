@@ -5,7 +5,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadEnv } from "./env";
 import { deploymentGate } from "./gate";
-import { Limiter, LimitError, RedisStore, storeEnv, storeFromEnv, type RedisLike } from "./limits";
+import { Limiter, LimitError, RedisStore, SupabaseStore, hasSharedStore, storeEnv, storeFromEnv, supabaseRpc, supabaseStoreEnv, type RedisLike } from "./limits";
 import { MART_TABLES, martEnv, readMartTable, type MartClient } from "./mart";
 import { askEnv, askStore, martConfig, resetDataCache, DATA_TTL_MS } from "./runtime";
 import { TOOLS, type Env, type Row } from "./tools";
@@ -48,6 +48,53 @@ describe("RedisStore (d6-store (a), fake client)", () => {
     const s = await askStore({});
     expect(s.constructor.name).toBe("MemoryStore");
     expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "preview", NEXT_PUBLIC_ASK_ENABLED: "1", HHDEBT_ANTHROPIC_API_KEY: "x" })).toMatchObject({ ok: false, status: 503 });
+  });
+});
+
+describe("SupabaseStore (her choice of 2026-11-15, fake RPC)", () => {
+  // Mirrors the SQL functions in supabase/migrations/20261115000000_ask_limits.sql (expiry is not modelled here).
+  function fakeRpc() {
+    const m = new Map<string, number>(); const calls: string[] = [];
+    const rpc = async (fn: string, a: Record<string, unknown>) => {
+      calls.push(fn);
+      if (fn === "ask_limit_add") { const v = (m.get(a.p_key as string) ?? 0) + (a.p_by as number); m.set(a.p_key as string, v); return String(v); }
+      if (fn === "ask_limit_get") return m.has(a.p_key as string) ? String(m.get(a.p_key as string)) : 0;
+      throw new Error("unknown fn");
+    };
+    return { rpc, calls };
+  }
+
+  it("enforces both limits through the RPC functions", async () => {
+    const f = fakeRpc();
+    const lim = new Limiter(new SupabaseStore(f.rpc), () => new Date("2026-11-15T12:00:00Z"));
+    for (let i = 1; i <= 5; i++) await expect(lim.admitVisitor("v")).resolves.toBe(i);
+    await expect(lim.admitVisitor("v")).rejects.toMatchObject({ code: "visitor_daily_limit" });
+    await lim.record(1.5);
+    expect(await lim.spentToday()).toBeCloseTo(1.5, 9);
+    await expect(lim.guard(0.6)).rejects.toMatchObject({ code: "app_daily_budget" });
+    expect(new Set(f.calls)).toEqual(new Set(["ask_limit_add", "ask_limit_get"]));
+  });
+
+  it("needs the URL and the server secret key; the publishable key alone is not enough", async () => {
+    expect(supabaseStoreEnv({ NEXT_PUBLIC_SUPABASE_URL: "https://p.supabase.co/", SUPABASE_SECRET_KEY: "k" })).toEqual({ url: "https://p.supabase.co", key: "k" });
+    expect(supabaseStoreEnv({ NEXT_PUBLIC_SUPABASE_URL: "https://p", NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "pub" })).toBeNull();
+    expect(hasSharedStore({ NEXT_PUBLIC_SUPABASE_URL: "https://p", SUPABASE_SERVICE_ROLE_KEY: "k" })).toBe(true);
+    expect((await storeFromEnv({ NEXT_PUBLIC_SUPABASE_URL: "https://p", SUPABASE_SECRET_KEY: "k" }))?.constructor.name).toBe("SupabaseStore");
+    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "production", NEXT_PUBLIC_ASK_ENABLED: "1", HHDEBT_ANTHROPIC_API_KEY: "x",
+      NEXT_PUBLIC_SUPABASE_URL: "https://p", SUPABASE_SECRET_KEY: "k" })).toEqual({ ok: true });
+  });
+
+  it("posts to /rest/v1/rpc with the key in apikey only (Bearer only for a legacy JWT), and hides errors", async () => {
+    const seen: { url: string; headers: Record<string, string> }[] = [];
+    const ok = (async (url: string, init: RequestInit) => { seen.push({ url, headers: init.headers as Record<string, string> });
+      return new Response("3", { status: 200 }); }) as unknown as typeof fetch;
+    expect(await supabaseRpc({ url: "https://p", key: "sb_secret_x" }, ok)("ask_limit_get", { p_key: "ask:k" })).toBe(3);
+    expect(seen[0].url).toBe("https://p/rest/v1/rpc/ask_limit_get");
+    expect(seen[0].headers.apikey).toBe("sb_secret_x"); expect(seen[0].headers.authorization).toBeUndefined();
+    await supabaseRpc({ url: "https://p", key: "eyJhbGc.x.y" }, ok)("ask_limit_get", { p_key: "ask:k" });
+    expect(seen[1].headers.authorization).toBe("Bearer eyJhbGc.x.y");
+    const bad = (async () => new Response("secret detail", { status: 401 })) as unknown as typeof fetch;
+    await expect(supabaseRpc({ url: "https://p", key: "sb_secret_x" }, bad)("ask_limit_get", {})).rejects.toThrow(/^limit store error 401$/);
   });
 });
 
@@ -143,7 +190,13 @@ describe("mart source (d6-data (b), fake client)", () => {
     walk(path.join(ROOT, "lib", "ask")); walk(path.join(ROOT, "app", "api", "ask"));
     expect(files.length).toBeGreaterThan(5);
     for (const f of files) {
-      const src = readFileSync(f, "utf8");
+      let src = readFileSync(f, "utf8");
+      // One narrow exemption (Eleonora's Supabase limit store, 2026-11-15): limits.ts may call the two counter
+      // functions with the server secret key. Nothing else in Ask may name the key or the RPC helper, so the
+      // model's tools stay read-only.
+      if (path.basename(f) === "limits.ts")
+        src = src.replace(/this\.rpc\("ask_limit_(add|get)"/g, "").replace(/SUPABASE_SERVICE_ROLE_KEY/g, "");
+      else expect(src, f).not.toMatch(/SUPABASE_SECRET_KEY|supabaseRpc|SupabaseStore|ask_limit_/);
       expect(src, f).not.toMatch(/\.(insert|upsert|delete|rpc)\s*\(/);
       // .update( only as a hash update (createHash(...).update), never on a table query
       expect(src.replace(/createHash\([^)]*\)\s*\.update\(/g, ""), f).not.toMatch(/\.update\s*\(/);

@@ -46,7 +46,7 @@ Local Postgres for schema tests:
 ```bash
 service postgresql start
 sudo -u postgres createdb hhdebt
-sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql -f supabase/migrations/20261027010000_mart_dim_views.sql -f supabase/migrations/20261103000000_research_reader.sql
+sudo -u postgres psql -d hhdebt -f supabase/local_shim.sql -f supabase/migrations/20261027000000_init.sql -f supabase/migrations/20261027010000_mart_dim_views.sql -f supabase/migrations/20261103000000_research_reader.sql -f supabase/migrations/20261115000000_ask_limits.sql
 ```
 
 ## Database roles
