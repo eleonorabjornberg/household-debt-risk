@@ -19,7 +19,8 @@
   --rule: #1f6fe0; /* rules and borders: royal blue (R1, Eleonora: "I hate black"; navy is for text only) */
   --line: var(--rule);
   --solid: #1f6fe0; /* filled non-text UI: tags, active toggles, the public bar */
-  --ask: #d81b71; /* Ask Hot Potato: the trailer's magenta, deep enough for white text (4.87:1) */
+  --home: #00874c; /* the home page and its explorer: vivid green, white text 4.6:1 (Eleonora, 2026-11-15) */
+  --ask: #c4168a; /* Ask Hot Potato: fuchsia, cooler than the trailer magenta so it stands apart from the orange shadows (hue 320 vs 20; white text 5.48:1) */
   --wash: #ffe8f1;
   --accent: #e5267a;
   --pile-0: #9a2fb8;
@@ -381,3 +382,25 @@ h3, h4 { font-family: var(--font-text), system-ui, sans-serif; }
 .btn--primary, .btn--play { border-color: var(--accent); }
 .chip[aria-pressed="true"] { border-color: var(--accent); }
 .ask-page { min-height: 0; padding-bottom: var(--s12); }
+
+/* ---------- Page colour themes (Eleonora, 2026-11-15): Home green, Ask magenta, Built with Claude blue ----------
+   Everything that belongs to the home page (Play, the date chips, the scrubber, the lens toggle, the kicker, the
+   Hot Potato link) wears --home; every link to a page wears that page's colour. */
+.btn--home, .btn--play { background: var(--home); color: var(--paper); border-color: var(--home); font-size: 19px; }
+.btn--home:hover, .btn--play:hover { background: var(--home); color: var(--paper); filter: brightness(0.92); }
+.chip[aria-pressed="true"] { background: var(--home); border-color: var(--home); color: var(--paper); }
+.chips-home .chip:hover, .chapters .chip:hover { background: #e3f4ea; }
+.chapters .chip[aria-pressed="true"]:hover { background: var(--home); }
+.lens button[aria-pressed="true"] { background: var(--home); }
+.lens { border-color: var(--home); }
+.lens button + button { border-left-color: var(--home); }
+.scrub__track input::-webkit-slider-thumb { background: var(--home); }
+.scrub__track input::-moz-range-thumb { background: var(--home); }
+.hero .tag { background: var(--home); }
+.topbar__brand.nav--home { background: var(--home); color: var(--paper); padding: 6px 12px; box-shadow: 3px 3px 0 var(--shadow-c); }
+.topbar__brand.nav--home:hover { background: var(--home); color: var(--paper); filter: brightness(0.92); }
+.topbar__brand.nav--home[aria-current="page"] { box-shadow: 3px 3px 0 var(--sun); }
+/* Ask-coloured things always cast a yellow shadow, never orange, so the fuchsia never sits against orange. */
+.btn--ask, .topbar__nav a.nav--ask { box-shadow: 4px 4px 0 var(--sun); }
+.topbar__nav a.nav--ask { box-shadow: 3px 3px 0 var(--sun); }
+.btn--ask:active { box-shadow: none; }

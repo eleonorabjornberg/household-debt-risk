@@ -15,7 +15,7 @@ export function TopBar() {
   return (
     <nav className="topbar" aria-label="Site">
       <div className="wrap topbar__row">
-        <Link href="/" className="topbar__brand" aria-current={path === "/" ? "page" : undefined}>Hot Potato</Link>
+        <Link href="/" className="topbar__brand nav--home" aria-current={path === "/" ? "page" : undefined}>Hot Potato</Link>
         <div className="topbar__nav">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} className={`nav--${l.tone}`} aria-current={path === l.href || path.startsWith(`${l.href}/`) ? "page" : undefined}>{l.label}</Link>

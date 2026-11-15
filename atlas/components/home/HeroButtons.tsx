@@ -9,7 +9,7 @@ export function HeroButtons() {
     <div className="hero__buttons">
       <a
         href="#explore"
-        className="btn btn--primary btn--icon-play"
+        className="btn btn--home btn--icon-play"
         onClick={(e) => {
           e.preventDefault();
           const el = document.getElementById("explore");
