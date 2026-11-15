@@ -1,9 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { DraftBanner } from "@/components/pages/DraftBanner";
 
 // /appendix (R1, 2026-11-15): the documentation pages, one line and one link each. The routes themselves are unchanged
-// and keep their own draft banners. This page's lines are a Claude draft.
+// unchanged.
 export const metadata: Metadata = {
   title: "Appendix · Hot Potato",
   description: "The dashboard, scenarios, research, methods and sources behind Hot Potato.",
@@ -20,7 +19,6 @@ const PAGES = [
 export default function AppendixPage() {
   return (
     <main className="pg">
-      <DraftBanner testId="appendix-draft-banner" />
       <header className="pg-col">
         <p className="tag">Appendix</p>
         <h1>Appendix</h1>

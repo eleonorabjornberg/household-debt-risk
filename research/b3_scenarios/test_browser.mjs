@@ -80,7 +80,9 @@ async function main() {
 
     // 5. banner
     await page.goto(base);
-    check(await page.getByTestId("b3-draft-banner").isVisible(), "Claude-draft banner visible");
+    // Hot Potato (atlas) dropped its page banners on 2026-11-15 after Eleonora reviewed the site; web/ keeps its banner.
+    if (site === "atlas") check(await page.getByTestId("b3-draft-banner").count() === 0, "no Claude-draft banner (approved 2026-11-15)");
+    else check(await page.getByTestId("b3-draft-banner").isVisible(), "Claude-draft banner visible");
 
     // 1. fixed cases
     for (const c of cases) {

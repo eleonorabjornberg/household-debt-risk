@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { DraftBanner } from "@/components/pages/DraftBanner";
 import { REPO_TREE } from "@/content/build";
 import { site } from "@/content/story";
 
 // /plugin (R1, 2026-11-15: Eleonora asked for the plugin to be easy to get). Download, install, what's inside. The zip is
-// built from plugin/ by scripts/plugin-zip.mjs on every build. Claude-draft copy, under a banner until she approves it.
+// built from plugin/ by scripts/plugin-zip.mjs on every build. Copy approved by Eleonora (review round 46).
 export const metadata: Metadata = {
   title: "Fed Data Desk plugin · Hot Potato",
   description: "Download the Fed Data Desk Claude Code plugin: skills, reviewer subagents and the household-credit MCP server.",
@@ -38,7 +37,6 @@ export default function PluginPage() {
     <main>
       <section className="band band--build band--page" aria-labelledby="plugin-h">
         <div className="wrap">
-          <DraftBanner testId="plugin-draft-banner" />
           <h1 id="plugin-h" className="page-h">Fed Data Desk</h1>
           <p className="band__lede">The Claude Code plugin behind this site: the skills, reviewer subagents and MCP server, packaged for reuse.</p>
           <div className="hero__buttons">

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DraftBanner } from "@/components/pages/DraftBanner";
 import { PotatoPerson } from "@/components/Potato";
 import { Suspense } from "react";
 import Link from "next/link";
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
 export default function ScenariosPage() {
   return (
     <main className="pg">
-      <DraftBanner testId="b3-draft-banner" />
       <header>
         <div className="pg-col">
           <p className="tag">Scenarios</p>

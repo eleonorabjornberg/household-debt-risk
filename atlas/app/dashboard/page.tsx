@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DraftBanner } from "@/components/pages/DraftBanner";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { Dashboard } from "@/components/dashboard/Dashboard";
@@ -36,7 +35,6 @@ export default async function DashboardPage() {
 
   return (
     <main className="pg">
-      <DraftBanner testId="dash-draft-banner" />
       <header>
         <div className="pg-col">
           <p className="tag">Dashboard</p>
