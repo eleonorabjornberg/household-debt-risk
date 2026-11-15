@@ -85,6 +85,11 @@
 .pg .segmented { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .pg .segmented__label { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
 .pg .segmented__opts { display: inline-flex; flex-wrap: wrap; border: 2px solid var(--ink); }
+/* Many long options: an even grid that fills the row, no ragged gaps (Eleonora, 2026-11-15). 2px gaps on ink draw the rules. */
+.pg .segmented:has(.segmented__opts--grid) { display: grid; gap: 8px; }
+.pg .segmented__opts--grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 2px; background: var(--ink); width: 100%; }
+.pg .segmented__opts--grid .segmented__opt { text-align: left; padding: 10px 14px; }
+.pg .segmented__opts--grid .segmented__opt + .segmented__opt { border-left: 0; }
 .pg .segmented__opt { font: inherit; font-size: 14px; background: var(--paper); color: var(--ink); border: 0; padding: 6px 12px; cursor: pointer; }
 .pg .segmented__opt + .segmented__opt { border-left: 2px solid var(--ink); }
 .pg .segmented__opt[aria-checked="true"] { background: var(--ink); color: var(--paper); }
@@ -163,12 +168,12 @@
 .topbar__nav a:nth-child(5n+4):hover { background: var(--pile-1); }
 .topbar__nav a:nth-child(5n+5):hover { background: var(--pile-2); }
 
-/* page backdrop: a band of pink halftone dots on flat peach under the header */
+/* page backdrop: a band of pink halftone dots on white under the header (peach fill cut: Eleonora, 2026-11-15) */
 main.pg { position: relative; }
 main.pg::before {
   content: ""; position: absolute; inset: 0 calc(50% - 50vw) auto; /* exactly to the viewport edges; -50vw made every page scroll sideways */ height: 340px; z-index: -1; pointer-events: none;
   /* the dots are a pattern (radial-gradient is only how CSS draws a dot); the fill is flat */
-  background: radial-gradient(circle, rgba(229, 38, 122, 0.22) 1.4px, transparent 1.6px) 0 0 / 14px 14px, var(--peach);
+  background: radial-gradient(circle, rgba(229, 38, 122, 0.22) 1.4px, transparent 1.6px) 0 0 / 14px 14px, var(--paper);
 }
 .pg .tag { background: var(--accent); color: var(--paper); transform: rotate(-2deg); box-shadow: 3px 3px 0 var(--ink); }
 .pg h1 {

@@ -24,7 +24,7 @@ export function Segmented<T extends string>({
   return (
     <div className="segmented" role="radiogroup" aria-labelledby={`${id}-label`}>
       <span className="segmented__label" id={`${id}-label`}>{label}</span>
-      <div className="segmented__opts">
+      <div className={options.length > 3 ? "segmented__opts segmented__opts--grid" : "segmented__opts"}>
         {options.map((o) => (
           <button
             key={o.value}

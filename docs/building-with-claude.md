@@ -985,3 +985,7 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 
 ### 2026-11-15, coordinator: dashboard holder figures on one line
 - Eleonora asked for the six holder figures on /dashboard to stand on one line. Claude changed `atlas/app/pages.css`: each figure is now a two-row grid (figure bottom-aligned in a 110px row, label top-aligned below), so the figures share a baseline and the labels share a top line. Checked by screenshot at 1280px. CSS only, no numbers changed. Opus 5.5, no spend.
+
+### 2026-11-15, coordinator: scenario picker fills the row; white page band
+- Eleonora caught ragged whitespace in the /scenarios picker: four long options wrapped in an inline box that left empty space beside them. Claude made pickers with four or more options an even grid (two columns on desktop, one on phones) that fills the full width; short toggles are unchanged (`atlas/components/pages/charts/parts.tsx`, `atlas/app/pages.css`).
+- Eleonora caught a beige page. The home page itself renders white in the dev build; the beige was the peach fill under the pink dots at the top of every inner page. Claude changed that fill to white and kept the dots. CSS only, no numbers changed. Opus 5.5, no spend.
