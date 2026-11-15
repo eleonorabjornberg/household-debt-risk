@@ -166,3 +166,25 @@ def test_placebo_sampling_is_uniform_over_sets():
     _, counts = np.unique(pick, axis=0, return_counts=True)
     assert len(counts) == 10
     assert np.abs(counts / N - 0.1).max() < 0.004  # about 6 standard errors
+
+
+# ---- (i) public-copy checks -------------------------------------------------------------------
+def test_public_copy_checks_wiring_and_failures_are_reported():
+    df, groups, public = _synthetic_full()
+    for sid in run.EXTRA_Z1_IDS:
+        df[sid] = 1.0
+    res = run.compute(df, groups, public)
+    wk = pd.Series(1.0, index=res.index)
+    dpi = pd.Series(1.0, index=res.index)
+    out = run.check_public_copy(df, res, groups, public, wshomcb=wk, dspi=dpi, nyfed=None)
+    assert [c.id for c in out] == [f"I{i}" for i in range(1, 63)]
+    # constant data: every Z.1/FRED check must FAIL (nothing adjusted to pass); NY Fed absent -> NOT RUN, never PASS
+    assert all(c.status == "FAIL" for c in out[:42])
+    assert all(c.status == "NOT RUN" for c in out[42:])
+    reg = {r["claim_id"]: r for f in [REGISTER, *sorted((REGISTER.parent / "tracks").glob("*.csv"))]
+           for r in csv.DictReader(f.open(newline="", encoding="utf-8"))}
+    for c in out:
+        cid = c.note.split(";")[0].removeprefix("register ").strip()
+        assert cid in reg, cid
+        spellings = [d.strip() for d in reg[cid]["display"].split("|")]
+        assert any(sp in c.expected for sp in spellings), (c.id, c.expected, spellings)

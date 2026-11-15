@@ -10,8 +10,8 @@ recomputes everything from components. No number is changed by this suite; it on
 | Zip file | `FRB_Z1_csv.zip` (64,219,006 bytes) |
 | Zip SHA-256 | `83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06` |
 | Source URL | https://www.federalreserve.gov/releases/z1/data/FRB_Z1_csv.zip |
-| Run timestamp (UTC) | 2026-11-07 16:57:23 |
-| Result | 136 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
+| Run timestamp (UTC) | 2026-11-15 18:55:23 |
+| Result | 198 PASS, 0 FAIL, 2 WARN, 1 NOT RUN |
 
 ## Results
 
@@ -47,7 +47,7 @@ recomputes everything from components. No number is changed by this suite; it on
 | C8 | **PASS** | 2026Q2 public share of consumer credit | 31.3% | 31.35% | rounded as published |  |
 | C9 | **PASS** | 'The 2007-11 jump never reversed': min share 2012Q1..latest | >= 2011Q4 level (i); also report vs 2007Q4 (ii) | min 49.92% in 2012Q1; vs 2011Q4 49.22% (+0.70 pp); vs 2007Q4 36.12% (+13.80 pp) | none (strict) | (i) holds: share never fell below its 2011Q4 level after 2011Q4 |
 | D1 | **PASS** | web/public/data/public_share.json vs recomputation, every quarter (299 rows) | max abs diff within tol; same quarter set | scope_total_musd $0.000M; public_musd $0.000M; public_share 4.98e-11; public_share_mortgage 4.99e-11; public_share_cc 4.99e-11 | 1e-6 shares, $1M levels |  |
-| D2 | **NOT RUN** | mart.public_share (database) vs recomputation | match | ConnectionTimeout | 1e-6 shares, $1M levels | could not query database: connection timeout expired Multiple connection attempts failed. All failures were: - host: 'aws-0-us-east-1.pooler.supab |
+| D2 | **NOT RUN** | mart.public_share (database) vs recomputation | match | OperationalError | 1e-6 shares, $1M levels | could not query database: failed to resolve host 'aws-0-us-east-1.pooler.supabase.com': [Errno -2] Name or service not known |
 | E1 | **PASS** | 1968Q1: revolving credit (FL153166100) starts | zero before, > 0 from 1968Q1 | first positive 1968Q1 ($1,439M) | exact |  |
 | E2 | **PASS** | 1977Q1: revolving reclassification visible in cc-type shares | \|robust z\| > 6 in a cc type | FL153166205 -7.06 pp of cc, z=-16.4 | z>6 & >=1.0pp |  |
 | E3 | **PASS** | 2006Q1: student loans (FL153166220) split out of other non-revolving | first positive 2006Q1 | first positive 2006Q1 ($480,967M); other non-revolving -407,678M q/q | exact | student loans are zero before; inside other non-revolving |
@@ -84,6 +84,68 @@ recomputes everything from components. No number is changed by this suite; it on
 | H21 | **PASS** | Public share 1989Q4 | 32.7% | 32.728% | as displayed | register share_1989_atlas |
 | H22 | **PASS** | Public share 2006Q4 | 33.8% | 33.754% | as displayed | register share_2006_atlas |
 | H23 | **PASS** | Placebo pool: overlapping 16-quarter windows by start quarter | 282 (1952Q1-2022Q2) | 282 (1952Q1-2022Q2) | as displayed | register placebo_pool_windows; pool stated in the atlas copy (copy-placebo (a)) |
+| I1 | **PASS** | Public holdings growth 2007Q4-2011Q4, nominal | 29% | 29.307% | as displayed | register gfc_public_growth_pct |
+| I2 | **PASS** | Public holdings change 2007Q4-2011Q4, nominal $T | $1.40T | $1.3957T | as displayed | register gfc_public_growth_usd |
+| I3 | **PASS** | Private holdings fall 2007Q4-2011Q4, nominal | 24.6% | 24.586% | as displayed | register gfc_private_shrink_pct |
+| I4 | **PASS** | Private holdings fall 2007Q4-2011Q4, nominal $T | $2.07T | $2.0712T | as displayed | register gfc_private_shrink_usd |
+| I5 | **PASS** | Private-securitization share of scope, change 2007Q4-2011Q4 | fell 12.5 pp | -12.480 pp | as displayed | register gfc_private_label_share_pp |
+| I6 | **PASS** | Public share change 1999Q4-2007Q4 | −5.0 pts | -4.959 pp | as displayed | register pre_gfc_decline_1999_2007_pp |
+| I7 | **PASS** | Part of the 2007Q4-2011Q4 jump not explained by public growth (private held fixed) | half private retreat (fraction rounds to 0.5) | 0.5334 (jump 13.11 pp, public-only counterfactual 6.11 pp) | as displayed | register gfc_half_private_retreat; 'about half' read as 0.45 <= x < 0.55 |
+| I8 | **PASS** | NBER-peak 16q windows above the median non-crisis window | 5 of 11 | 5 of 11 (other-window median +2.50 pp) | as displayed | register ratchet_crises_above_median |
+| I9 | **PASS** | GSE & agency-pool share of scope, change 1979Q4-1989Q4 | +18.8 pp | +18.827 pp | as displayed | register gse_1980s_pp |
+| I10 | **PASS** | Public share change 2001Q1-2005Q1 | −3.8 pts | -3.814 pp | as displayed | register dotcom_delta_pp |
+| I11 | **PASS** | Public share 2001Q1 | 40.6% | 40.565% | as displayed | register public_share_2001q1 |
+| I12 | **PASS** | Public share 2005Q1 | 36.8% | 36.751% | as displayed | register public_share_2005q1 |
+| I13 | **PASS** | Public share 1973Q4 | 7.2% | 7.201% | as displayed | register public_share_1973q4 |
+| I14 | **PASS** | Public share 1977Q4 | 11.3% | 11.290% | as displayed | register public_share_1977q4 |
+| I15 | **PASS** | Public share 1981Q3 | 16.3% | 16.265% | as displayed | register public_share_1981q3 |
+| I16 | **PASS** | Public share 1985Q3 | 24.6% | 24.600% | as displayed | register public_share_1985q3 |
+| I17 | **PASS** | Public share 1990Q3 | 34.5% | 34.536% | as displayed | register public_share_1990q3 |
+| I18 | **PASS** | Public share 1994Q3 | 41.6% | 41.562% | as displayed | register public_share_1994q3 |
+| I19 | **PASS** | Largest public-share move from a policy-shock quarter to 2026Q2 | less than 1 point (0.42) | 2020Q1: +0.418 pp; 2023Q4: +0.134 pp; 2025Q2: -0.243 pp | as displayed | register shocks_max_pp |
+| I20 | **PASS** | Mortgages / scope 2026Q2 | 73.2% (73%) | 73.188% | as displayed | register mortgage_share_of_scope_2026q2 |
+| I21 | **PASS** | Home coverage minimum, all quarters | 1.85× in 2012Q1 | 1.8520× in 2012Q1 (from 1945Q4) | as displayed | register home_coverage_low |
+| I22 | **PASS** | Equity cushion 1 - 1/coverage 2026Q2 | 72% | 71.929% | as displayed | register home_cushion |
+| I23 | **PASS** | Public mortgages / public holdings 2026Q2 | 85% | 85.093% | as displayed | register public_book_home_backed |
+| I24 | **PASS** | Public consumer credit / public holdings 2007Q4 | 2.4% | 2.429% | as displayed | register student_in_public_book_2007q4; public consumer credit = federal student loans (FL313066220) + Sallie Mae as GSE (zero since 2004) |
+| I25 | **PASS** | Public consumer credit / public holdings 2026Q2 | 14.9% | 14.907% | as displayed | register student_in_public_book_2026q2; public consumer credit = federal student loans (FL313066220) + Sallie Mae as GSE (zero since 2004) |
+| I26 | **PASS** | Household mortgages change 2026Q1-2026Q2, NSA $B | +$150B | +150.37 $B | as displayed | register z1_mortgage_change |
+| I27 | **PASS** | Scope change 2026Q1-2026Q2, NSA $B | +$199B | +198.53 $B | as displayed | register z1_scope_change |
+| I28 | **PASS** | Scope / total household liabilities 2026Q2 | 87% | 87.279% | as displayed | register scope_share_of_liabilities |
+| I29 | **PASS** | 1 - scope / total household liabilities 2026Q2 | 13% | 12.721% | as displayed | register out_of_scope_share |
+| I30 | **PASS** | Shapley: public growth's part of the 2007Q4-2011Q4 jump | 6.2 pp | 6.2453 pp | as displayed | register a1_public_growth_pp |
+| I31 | **PASS** | Shapley: private change's part of the 2007Q4-2011Q4 jump | 6.9 pp | 6.8602 pp | as displayed | register a1_private_change_pp |
+| I32 | **PASS** | Shapley: Fannie Mae + Freddie Mac (pro rata within public side) | 1.2 pp | 1.2456 pp | as displayed | register a1_ff_pp; cells FL403065110 FL413065143 FL403065120 FL413065123, apportioned to households |
+| I33 | **PASS** | Scope change 2025Q2-2026Q2, $B | +$533B | +532.693 $B | as displayed | register dash_scope_dy |
+| I34 | **PASS** | Public share change 2026Q1-2026Q2 | −0.2 pp | -0.2085 pp | as displayed | register dash_public_share_dq |
+| I35 | **PASS** | Public share change 2025Q2-2026Q2 | −0.2 pp | -0.2434 pp | as displayed | register dash_public_share_dy |
+| I36 | **PASS** | Home coverage change 2026Q1-2026Q2 | +0.04× | +0.0426× | as displayed | register dash_home_cov_dq |
+| I37 | **PASS** | Home coverage change 2025Q2-2026Q2 | −0.02× | -0.0192× | as displayed | register dash_home_cov_dy |
+| I38 | **PASS** | Fed-held MBS / scope, peak quarter | 16.4% in 2022Q1 | 16.371% in 2022Q1 | as displayed | register fed_mbs_peak_share; FRED WSHOMCB latest fredgraph.csv; rate risk, not credit risk |
+| I39 | **PASS** | Fed-held MBS at the peak-share quarter, $T | $2.72T | $2.7153T (2022Q1) | as displayed | register fed_mbs_peak_usd |
+| I40 | **PASS** | Fed-held MBS / scope 2026Q2 | 10.3% | 10.272% | as displayed | register fed_mbs_now_share |
+| I41 | **PASS** | Scope / disposable income (DSPI, quarterly mean) 2026Q2 | 80% | 79.686% | as displayed | register debt_to_income_2026q2; FRED DSPI latest fredgraph.csv (registered vintage fred:2026-10-27; DSPI revises) |
+| I42 | **PASS** | Scope / disposable income (DSPI, quarterly mean) 2007Q4 | 124% | 124.377% | as displayed | register debt_to_income_2007q4; FRED DSPI latest fredgraph.csv (registered vintage fred:2026-10-27; DSPI revises) |
+| I43 | **PASS** | NY Fed total household debt 2026Q2, sum of six loan types | $18.77T | $18.7705T (workbook total column $18.7705T) | as displayed | register nyfed_total_2026q2; NY Fed Consumer Credit Panel, not Z.1 |
+| I44 | **PASS** | NY Fed mortgage balance change 2026Q1-2026Q2, $B | −$74B | -74.00 $B | as displayed | register nyfed_mortgage_change |
+| I45 | **PASS** | NY Fed new serious delinquency, mortgage, 2026Q2 (% of balance, annualized) | 1.52% | 1.5200% | as displayed | register dash_trans_mortgage |
+| I46 | **PASS** | NY Fed new serious delinquency, mortgage, change 2026-03 to 2026-06 | +0.04 pp | +0.0400 pp | as displayed | register dash_trans_mortgage_dq |
+| I47 | **PASS** | NY Fed new serious delinquency, mortgage, change 2025-06 to 2026-06 | +0.23 pp | +0.2300 pp | as displayed | register dash_trans_mortgage_dy |
+| I48 | **PASS** | NY Fed new serious delinquency, heloc, 2026Q2 (% of balance, annualized) | 1.15% | 1.1500% | as displayed | register dash_trans_heloc |
+| I49 | **PASS** | NY Fed new serious delinquency, heloc, change 2026-03 to 2026-06 | 0.00 pp | +0.0000 pp | as displayed | register dash_trans_heloc_dq |
+| I50 | **PASS** | NY Fed new serious delinquency, heloc, change 2025-06 to 2026-06 | 0.00 pp | +0.0000 pp | as displayed | register dash_trans_heloc_dy |
+| I51 | **PASS** | NY Fed new serious delinquency, auto, 2026Q2 (% of balance, annualized) | 3.00% | 3.0000% | as displayed | register dash_trans_auto |
+| I52 | **PASS** | NY Fed new serious delinquency, auto, change 2026-03 to 2026-06 | +0.03 pp | +0.0300 pp | as displayed | register dash_trans_auto_dq |
+| I53 | **PASS** | NY Fed new serious delinquency, auto, change 2025-06 to 2026-06 | +0.07 pp | +0.0700 pp | as displayed | register dash_trans_auto_dy |
+| I54 | **PASS** | NY Fed new serious delinquency, credit_card, 2026Q2 (% of balance, annualized) | 6.97% | 6.9700% | as displayed | register dash_trans_credit_card |
+| I55 | **PASS** | NY Fed new serious delinquency, credit_card, change 2026-03 to 2026-06 | −0.13 pp | -0.1300 pp | as displayed | register dash_trans_credit_card_dq |
+| I56 | **PASS** | NY Fed new serious delinquency, credit_card, change 2025-06 to 2026-06 | +0.04 pp | +0.0400 pp | as displayed | register dash_trans_credit_card_dy |
+| I57 | **PASS** | NY Fed new serious delinquency, student, 2026Q2 (% of balance, annualized) | 7.83% | 7.8300% | as displayed | register dash_trans_student |
+| I58 | **PASS** | NY Fed new serious delinquency, student, change 2026-03 to 2026-06 | −3.03 pp | -3.0300 pp | as displayed | register dash_trans_student_dq |
+| I59 | **PASS** | NY Fed new serious delinquency, student, change 2025-06 to 2026-06 | −5.05 pp | -5.0500 pp | as displayed | register dash_trans_student_dy |
+| I60 | **PASS** | NY Fed new serious delinquency, other, 2026Q2 (% of balance, annualized) | 5.19% | 5.1900% | as displayed | register dash_trans_other |
+| I61 | **PASS** | NY Fed new serious delinquency, other, change 2026-03 to 2026-06 | +0.03 pp | +0.0300 pp | as displayed | register dash_trans_other_dq |
+| I62 | **PASS** | NY Fed new serious delinquency, other, change 2025-06 to 2026-06 | −0.23 pp | -0.2300 pp | as displayed | register dash_trans_other_dy |
 | E1-q101 | **PASS** | E1 gold q101 (PS/L): raw vs snapshot | 0.405376779 | 0.405376779 | 5e-05 |  |
 | E1-q103 | **PASS** | E1 gold q103 (PS/L): raw vs snapshot | 0.1795060273 | 0.1795060273 | 5e-05 |  |
 | E1-q104 | **PASS** | E1 gold q104 (PS/L): raw vs snapshot | 13.186611 | 13.186611 | 0.001 |  |
@@ -177,6 +239,10 @@ recomputes everything from components. No number is changed by this suite; it on
   small series). Flags at the four known break quarters are listed as explained; all others are WARN, never FAIL.
   Gaps are missing quarters between 1952Q1 and the latest quarter in any catalog Z.1 series.
 * (f) previous vintage: see section below.
+* (h) Hot Potato (atlas/) numbers and (i) other public-copy numbers (README, web/, atlas/): each check recomputes one
+  claims-register row from the raw Z.1 zip, raw FRED fredgraph.csv files (CPIAUCSL, WSHOMCB last weekly value in the
+  quarter, DSPI quarterly mean) and the raw NY Fed HHD_C_Report workbook, never from analysis or site output, and
+  compares at the precision the copy displays. The note names the register row.
 
 ## Unexplained jumps (WARN)
 

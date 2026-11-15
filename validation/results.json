@@ -6,11 +6,25 @@
     "zip_bytes": 64219006,
     "sha256": "83b8eded0bc7f9b74c0269ef503a863cee88312460fd7eef076284b98fc28c06",
     "cpi_csv": "CPIAUCSL.csv",
-    "cpi_sha256": "8556b710094027fa4724641d48be620cc37c04abfa15a0c496378cf1146c1549",
-    "cpi_retrieved_utc": "2026-11-07 16:31",
+    "cpi_sha256": "c9be2d4909ffd28d91f07df5d113151b0fe7ba602144ee6fd453d3bc8426efde",
+    "cpi_retrieved_utc": "2026-11-15 18:53",
+    "fred_extra": {
+      "WSHOMCB": {
+        "sha256": "552c42714672392d989254ba3372e16ac6054668e227ec223179c7f16f82819f",
+        "last_obs": "2026-11-11"
+      },
+      "DSPI": {
+        "sha256": "0c318cfad30510757fa983fc3b7b17e955fc7bbfd52341dc9c28fdae584939bf",
+        "last_obs": "2026-09-01"
+      }
+    },
+    "nyfed_xlsx": {
+      "name": "HHD_C_Report_2026Q2.xlsx",
+      "sha256": "ddfba16b87e187848ed591a1283f310188e7bdeebe5cf409b70a35b058d99237"
+    },
     "cpi_base_quarter": "2026Q3",
-    "cpi_last_obs": "2026-09-01",
-    "run_at": "2026-11-07 16:57:23"
+    "cpi_last_obs": "2026-10-01",
+    "run_at": "2026-11-15 18:55:23"
   },
   "checks": [
     {
@@ -287,10 +301,10 @@
       "id": "D2",
       "description": "mart.public_share (database) vs recomputation",
       "expected": "match",
-      "observed": "ConnectionTimeout",
+      "observed": "OperationalError",
       "tolerance": "1e-6 shares, $1M levels",
       "status": "NOT RUN",
-      "note": "could not query database: connection timeout expired\nMultiple connection attempts failed. All failures were:\n- host: 'aws-0-us-east-1.pooler.supab"
+      "note": "could not query database: failed to resolve host 'aws-0-us-east-1.pooler.supabase.com': [Errno -2] Name or service not known"
     },
     {
       "id": "E1",
@@ -615,6 +629,564 @@
       "tolerance": "as displayed",
       "status": "PASS",
       "note": "register placebo_pool_windows; pool stated in the atlas copy (copy-placebo (a))"
+    },
+    {
+      "id": "I1",
+      "description": "Public holdings growth 2007Q4-2011Q4, nominal",
+      "expected": "29%",
+      "observed": "29.307%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_public_growth_pct"
+    },
+    {
+      "id": "I2",
+      "description": "Public holdings change 2007Q4-2011Q4, nominal $T",
+      "expected": "$1.40T",
+      "observed": "$1.3957T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_public_growth_usd"
+    },
+    {
+      "id": "I3",
+      "description": "Private holdings fall 2007Q4-2011Q4, nominal",
+      "expected": "24.6%",
+      "observed": "24.586%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_private_shrink_pct"
+    },
+    {
+      "id": "I4",
+      "description": "Private holdings fall 2007Q4-2011Q4, nominal $T",
+      "expected": "$2.07T",
+      "observed": "$2.0712T",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_private_shrink_usd"
+    },
+    {
+      "id": "I5",
+      "description": "Private-securitization share of scope, change 2007Q4-2011Q4",
+      "expected": "fell 12.5 pp",
+      "observed": "-12.480 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_private_label_share_pp"
+    },
+    {
+      "id": "I6",
+      "description": "Public share change 1999Q4-2007Q4",
+      "expected": "\u22125.0 pts",
+      "observed": "-4.959 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register pre_gfc_decline_1999_2007_pp"
+    },
+    {
+      "id": "I7",
+      "description": "Part of the 2007Q4-2011Q4 jump not explained by public growth (private held fixed)",
+      "expected": "half private retreat (fraction rounds to 0.5)",
+      "observed": "0.5334 (jump 13.11 pp, public-only counterfactual 6.11 pp)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gfc_half_private_retreat; 'about half' read as 0.45 <= x < 0.55"
+    },
+    {
+      "id": "I8",
+      "description": "NBER-peak 16q windows above the median non-crisis window",
+      "expected": "5 of 11",
+      "observed": "5 of 11 (other-window median +2.50 pp)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register ratchet_crises_above_median"
+    },
+    {
+      "id": "I9",
+      "description": "GSE & agency-pool share of scope, change 1979Q4-1989Q4",
+      "expected": "+18.8 pp",
+      "observed": "+18.827 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register gse_1980s_pp"
+    },
+    {
+      "id": "I10",
+      "description": "Public share change 2001Q1-2005Q1",
+      "expected": "\u22123.8 pts",
+      "observed": "-3.814 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dotcom_delta_pp"
+    },
+    {
+      "id": "I11",
+      "description": "Public share 2001Q1",
+      "expected": "40.6%",
+      "observed": "40.565%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_2001q1"
+    },
+    {
+      "id": "I12",
+      "description": "Public share 2005Q1",
+      "expected": "36.8%",
+      "observed": "36.751%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_2005q1"
+    },
+    {
+      "id": "I13",
+      "description": "Public share 1973Q4",
+      "expected": "7.2%",
+      "observed": "7.201%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_1973q4"
+    },
+    {
+      "id": "I14",
+      "description": "Public share 1977Q4",
+      "expected": "11.3%",
+      "observed": "11.290%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_1977q4"
+    },
+    {
+      "id": "I15",
+      "description": "Public share 1981Q3",
+      "expected": "16.3%",
+      "observed": "16.265%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_1981q3"
+    },
+    {
+      "id": "I16",
+      "description": "Public share 1985Q3",
+      "expected": "24.6%",
+      "observed": "24.600%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_1985q3"
+    },
+    {
+      "id": "I17",
+      "description": "Public share 1990Q3",
+      "expected": "34.5%",
+      "observed": "34.536%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_1990q3"
+    },
+    {
+      "id": "I18",
+      "description": "Public share 1994Q3",
+      "expected": "41.6%",
+      "observed": "41.562%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_share_1994q3"
+    },
+    {
+      "id": "I19",
+      "description": "Largest public-share move from a policy-shock quarter to 2026Q2",
+      "expected": "less than 1 point (0.42)",
+      "observed": "2020Q1: +0.418 pp; 2023Q4: +0.134 pp; 2025Q2: -0.243 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register shocks_max_pp"
+    },
+    {
+      "id": "I20",
+      "description": "Mortgages / scope 2026Q2",
+      "expected": "73.2% (73%)",
+      "observed": "73.188%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register mortgage_share_of_scope_2026q2"
+    },
+    {
+      "id": "I21",
+      "description": "Home coverage minimum, all quarters",
+      "expected": "1.85\u00d7 in 2012Q1",
+      "observed": "1.8520\u00d7 in 2012Q1 (from 1945Q4)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register home_coverage_low"
+    },
+    {
+      "id": "I22",
+      "description": "Equity cushion 1 - 1/coverage 2026Q2",
+      "expected": "72%",
+      "observed": "71.929%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register home_cushion"
+    },
+    {
+      "id": "I23",
+      "description": "Public mortgages / public holdings 2026Q2",
+      "expected": "85%",
+      "observed": "85.093%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register public_book_home_backed"
+    },
+    {
+      "id": "I24",
+      "description": "Public consumer credit / public holdings 2007Q4",
+      "expected": "2.4%",
+      "observed": "2.429%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register student_in_public_book_2007q4; public consumer credit = federal student loans (FL313066220) + Sallie Mae as GSE (zero since 2004)"
+    },
+    {
+      "id": "I25",
+      "description": "Public consumer credit / public holdings 2026Q2",
+      "expected": "14.9%",
+      "observed": "14.907%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register student_in_public_book_2026q2; public consumer credit = federal student loans (FL313066220) + Sallie Mae as GSE (zero since 2004)"
+    },
+    {
+      "id": "I26",
+      "description": "Household mortgages change 2026Q1-2026Q2, NSA $B",
+      "expected": "+$150B",
+      "observed": "+150.37 $B",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register z1_mortgage_change"
+    },
+    {
+      "id": "I27",
+      "description": "Scope change 2026Q1-2026Q2, NSA $B",
+      "expected": "+$199B",
+      "observed": "+198.53 $B",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register z1_scope_change"
+    },
+    {
+      "id": "I28",
+      "description": "Scope / total household liabilities 2026Q2",
+      "expected": "87%",
+      "observed": "87.279%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register scope_share_of_liabilities"
+    },
+    {
+      "id": "I29",
+      "description": "1 - scope / total household liabilities 2026Q2",
+      "expected": "13%",
+      "observed": "12.721%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register out_of_scope_share"
+    },
+    {
+      "id": "I30",
+      "description": "Shapley: public growth's part of the 2007Q4-2011Q4 jump",
+      "expected": "6.2 pp",
+      "observed": "6.2453 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register a1_public_growth_pp"
+    },
+    {
+      "id": "I31",
+      "description": "Shapley: private change's part of the 2007Q4-2011Q4 jump",
+      "expected": "6.9 pp",
+      "observed": "6.8602 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register a1_private_change_pp"
+    },
+    {
+      "id": "I32",
+      "description": "Shapley: Fannie Mae + Freddie Mac (pro rata within public side)",
+      "expected": "1.2 pp",
+      "observed": "1.2456 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register a1_ff_pp; cells FL403065110 FL413065143 FL403065120 FL413065123, apportioned to households"
+    },
+    {
+      "id": "I33",
+      "description": "Scope change 2025Q2-2026Q2, $B",
+      "expected": "+$533B",
+      "observed": "+532.693 $B",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_scope_dy"
+    },
+    {
+      "id": "I34",
+      "description": "Public share change 2026Q1-2026Q2",
+      "expected": "\u22120.2 pp",
+      "observed": "-0.2085 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_public_share_dq"
+    },
+    {
+      "id": "I35",
+      "description": "Public share change 2025Q2-2026Q2",
+      "expected": "\u22120.2 pp",
+      "observed": "-0.2434 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_public_share_dy"
+    },
+    {
+      "id": "I36",
+      "description": "Home coverage change 2026Q1-2026Q2",
+      "expected": "+0.04\u00d7",
+      "observed": "+0.0426\u00d7",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_home_cov_dq"
+    },
+    {
+      "id": "I37",
+      "description": "Home coverage change 2025Q2-2026Q2",
+      "expected": "\u22120.02\u00d7",
+      "observed": "-0.0192\u00d7",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_home_cov_dy"
+    },
+    {
+      "id": "I38",
+      "description": "Fed-held MBS / scope, peak quarter",
+      "expected": "16.4% in 2022Q1",
+      "observed": "16.371% in 2022Q1",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register fed_mbs_peak_share; FRED WSHOMCB latest fredgraph.csv; rate risk, not credit risk"
+    },
+    {
+      "id": "I39",
+      "description": "Fed-held MBS at the peak-share quarter, $T",
+      "expected": "$2.72T",
+      "observed": "$2.7153T (2022Q1)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register fed_mbs_peak_usd"
+    },
+    {
+      "id": "I40",
+      "description": "Fed-held MBS / scope 2026Q2",
+      "expected": "10.3%",
+      "observed": "10.272%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register fed_mbs_now_share"
+    },
+    {
+      "id": "I41",
+      "description": "Scope / disposable income (DSPI, quarterly mean) 2026Q2",
+      "expected": "80%",
+      "observed": "79.686%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register debt_to_income_2026q2; FRED DSPI latest fredgraph.csv (registered vintage fred:2026-10-27; DSPI revises)"
+    },
+    {
+      "id": "I42",
+      "description": "Scope / disposable income (DSPI, quarterly mean) 2007Q4",
+      "expected": "124%",
+      "observed": "124.377%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register debt_to_income_2007q4; FRED DSPI latest fredgraph.csv (registered vintage fred:2026-10-27; DSPI revises)"
+    },
+    {
+      "id": "I43",
+      "description": "NY Fed total household debt 2026Q2, sum of six loan types",
+      "expected": "$18.77T",
+      "observed": "$18.7705T (workbook total column $18.7705T)",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register nyfed_total_2026q2; NY Fed Consumer Credit Panel, not Z.1"
+    },
+    {
+      "id": "I44",
+      "description": "NY Fed mortgage balance change 2026Q1-2026Q2, $B",
+      "expected": "\u2212$74B",
+      "observed": "-74.00 $B",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register nyfed_mortgage_change"
+    },
+    {
+      "id": "I45",
+      "description": "NY Fed new serious delinquency, mortgage, 2026Q2 (% of balance, annualized)",
+      "expected": "1.52%",
+      "observed": "1.5200%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_mortgage"
+    },
+    {
+      "id": "I46",
+      "description": "NY Fed new serious delinquency, mortgage, change 2026-03 to 2026-06",
+      "expected": "+0.04 pp",
+      "observed": "+0.0400 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_mortgage_dq"
+    },
+    {
+      "id": "I47",
+      "description": "NY Fed new serious delinquency, mortgage, change 2025-06 to 2026-06",
+      "expected": "+0.23 pp",
+      "observed": "+0.2300 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_mortgage_dy"
+    },
+    {
+      "id": "I48",
+      "description": "NY Fed new serious delinquency, heloc, 2026Q2 (% of balance, annualized)",
+      "expected": "1.15%",
+      "observed": "1.1500%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_heloc"
+    },
+    {
+      "id": "I49",
+      "description": "NY Fed new serious delinquency, heloc, change 2026-03 to 2026-06",
+      "expected": "0.00 pp",
+      "observed": "+0.0000 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_heloc_dq"
+    },
+    {
+      "id": "I50",
+      "description": "NY Fed new serious delinquency, heloc, change 2025-06 to 2026-06",
+      "expected": "0.00 pp",
+      "observed": "+0.0000 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_heloc_dy"
+    },
+    {
+      "id": "I51",
+      "description": "NY Fed new serious delinquency, auto, 2026Q2 (% of balance, annualized)",
+      "expected": "3.00%",
+      "observed": "3.0000%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_auto"
+    },
+    {
+      "id": "I52",
+      "description": "NY Fed new serious delinquency, auto, change 2026-03 to 2026-06",
+      "expected": "+0.03 pp",
+      "observed": "+0.0300 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_auto_dq"
+    },
+    {
+      "id": "I53",
+      "description": "NY Fed new serious delinquency, auto, change 2025-06 to 2026-06",
+      "expected": "+0.07 pp",
+      "observed": "+0.0700 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_auto_dy"
+    },
+    {
+      "id": "I54",
+      "description": "NY Fed new serious delinquency, credit_card, 2026Q2 (% of balance, annualized)",
+      "expected": "6.97%",
+      "observed": "6.9700%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_credit_card"
+    },
+    {
+      "id": "I55",
+      "description": "NY Fed new serious delinquency, credit_card, change 2026-03 to 2026-06",
+      "expected": "\u22120.13 pp",
+      "observed": "-0.1300 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_credit_card_dq"
+    },
+    {
+      "id": "I56",
+      "description": "NY Fed new serious delinquency, credit_card, change 2025-06 to 2026-06",
+      "expected": "+0.04 pp",
+      "observed": "+0.0400 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_credit_card_dy"
+    },
+    {
+      "id": "I57",
+      "description": "NY Fed new serious delinquency, student, 2026Q2 (% of balance, annualized)",
+      "expected": "7.83%",
+      "observed": "7.8300%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_student"
+    },
+    {
+      "id": "I58",
+      "description": "NY Fed new serious delinquency, student, change 2026-03 to 2026-06",
+      "expected": "\u22123.03 pp",
+      "observed": "-3.0300 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_student_dq"
+    },
+    {
+      "id": "I59",
+      "description": "NY Fed new serious delinquency, student, change 2025-06 to 2026-06",
+      "expected": "\u22125.05 pp",
+      "observed": "-5.0500 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_student_dy"
+    },
+    {
+      "id": "I60",
+      "description": "NY Fed new serious delinquency, other, 2026Q2 (% of balance, annualized)",
+      "expected": "5.19%",
+      "observed": "5.1900%",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_other"
+    },
+    {
+      "id": "I61",
+      "description": "NY Fed new serious delinquency, other, change 2026-03 to 2026-06",
+      "expected": "+0.03 pp",
+      "observed": "+0.0300 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_other_dq"
+    },
+    {
+      "id": "I62",
+      "description": "NY Fed new serious delinquency, other, change 2025-06 to 2026-06",
+      "expected": "\u22120.23 pp",
+      "observed": "-0.2300 pp",
+      "tolerance": "as displayed",
+      "status": "PASS",
+      "note": "register dash_trans_other_dy"
     },
     {
       "id": "E1-q101",
@@ -2020,7 +2592,7 @@
     "https://www.federalreserve.gov/releases/z1/20260611/z1_csv_files.zip -> HTTP 200 application/x-zip-compressed"
   ],
   "summary": {
-    "PASS": 136,
+    "PASS": 198,
     "FAIL": 0,
     "WARN": 2,
     "NOT RUN": 1

@@ -302,6 +302,8 @@ def rounds_to(x: float, nd: int, expected: float) -> bool:
     Tie convention: half away from zero. Python's format and JS toFixed can differ at exact binary ties
     (e.g. 3.565); no H value is within 0.001 display units of a tie except H10 (56.249%, 0.001 pp below one),
     which the register notes as revision-sensitive."""
+    if not math.isfinite(x):
+        return False
     q = 10 ** nd
     return math.floor(abs(x) * q + 0.5) * (1 if x >= 0 else -1) == round(expected * q)
 
@@ -393,6 +395,246 @@ def check_hotpotato(df, res, cpi_q, groups, public):
         rounds_to(plL, 0, 681))
     order = {f"H{i}": i for i in range(1, 24)}
     return sorted(out, key=lambda c: order.get(c.id, 0))
+
+
+# ----------------------------------------------------------------------------------------------
+# (i) Public-copy numbers (README, web/, atlas/) that had no independent check yet
+# Same rules as (h): every number is recomputed from the raw Z.1 zip, raw FRED csv files (fredgraph.csv)
+# and the raw NY Fed HHD_C_Report workbook, never from analysis/results.json, analysis/tables/*,
+# research/*/results.json, web/public/data/* or atlas/public/data/*, and never through hhdebt. Compared at
+# the precision the copy displays; a FAIL is reported with its gap, nothing is adjusted to pass.
+# ----------------------------------------------------------------------------------------------
+FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}"
+SHOCK_QS = ["2020Q1", "2023Q4", "2025Q2"]  # CARES Act, 2023 repayment restart, 2025 collections (story copy)
+# A1 public cells for Fannie Mae and Freddie Mac (portfolio + pools; FAS 166/167 moved pools 41 -> 40 in 2010Q1)
+FF_IDS = ["FL403065110", "FL413065143", "FL403065120", "FL413065123"]
+EXTRA_Z1_IDS = FF_IDS
+NY_TYPES = ["mortgage", "heloc", "auto", "credit_card", "student", "other"]
+
+
+def um(txt: str) -> str:
+    """Signed display as the sites print it: U+2212 minus, and no sign on zero."""
+    return txt.replace("+0.00 ", "0.00 ").replace("-", "\u2212")
+
+
+def ensure_fred(sid: str) -> Path | None:
+    """Latest fredgraph.csv for sid (cached in data/validation/). None if unavailable -> checks NOT RUN."""
+    dest = DATA_DIR / f"{sid}.csv"
+    if dest.exists():
+        return dest
+    try:
+        import requests
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        print(f"downloading {FRED_URL.format(sid=sid)} ...", file=sys.stderr)
+        r = requests.get(FRED_URL.format(sid=sid), timeout=60)
+        r.raise_for_status()
+        dest.write_bytes(r.content)
+        return dest
+    except Exception as e:
+        print(f"FRED {sid} unavailable: {e}", file=sys.stderr)
+        return None
+
+
+def fred_quarterly(path: Path, how: str) -> pd.Series:
+    m = pd.read_csv(path)
+    m.columns = ["date", "v"]
+    m["date"] = pd.to_datetime(m["date"])
+    m["v"] = pd.to_numeric(m["v"], errors="coerce")
+    m = m.dropna().set_index("date")["v"]
+    g = m.groupby(m.index.to_period("Q"))
+    out = g.last() if how == "last" else g.mean()
+    out.index = out.index.to_timestamp(how="end").normalize()
+    return out
+
+
+def nyfed_raw(path: Path) -> tuple[dict, dict]:
+    """(balance $B incl. the workbook's own 'total' column, transition %) keyed by (date, loan_type)."""
+    import openpyxl
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    bal = e1_gold._read_table(e1_gold._sheet_by_title(wb, r"^total debt balance and its composition"),
+                              {**e1_gold.BAL_COLS, "total": "total"}, 1000.0)
+    tr = e1_gold._read_table(e1_gold._sheet_by_title(wb, r"^new seriously delinquent\*? balances by loan type"),
+                             e1_gold.TRANS_COLS, 1.0)
+    return bal, tr
+
+
+def check_public_copy(df, res, groups, public, wshomcb=None, dspi=None, nyfed=None):
+    out = []
+    T = qend
+    s = res["share"]
+    L = res.index[-1]
+    P, Y = L - pd.offsets.QuarterEnd(1), L - pd.offsets.QuarterEnd(4)
+    g0, g1 = T("2007Q4"), T("2011Q4")
+    pub, scope = res["public"], res["scope"]
+    priv = scope - pub
+
+    def add(cid, claim_id, desc, expected, observed, ok, note="", tol="as displayed"):
+        out.append(Check(cid, desc, expected, observed, tol, "PASS" if ok else "FAIL",
+                         f"register {claim_id}" + (f"; {note}" if note else "")))
+
+    def not_run(cid, claim_id, desc, expected, why):
+        out.append(Check(cid, desc, expected, "-", "as displayed", "NOT RUN", f"register {claim_id}; {why}"))
+
+    # -- GFC window, nominal dollars -------------------------------------------------------------
+    v = (pub[g1] / pub[g0] - 1) * 100
+    add("I1", "gfc_public_growth_pct", "Public holdings growth 2007Q4-2011Q4, nominal", "29%", f"{v:.3f}%", rounds_to(v, 0, 29))
+    v = (pub[g1] - pub[g0]) / 1e6
+    add("I2", "gfc_public_growth_usd", "Public holdings change 2007Q4-2011Q4, nominal $T", "$1.40T", f"${v:.4f}T", rounds_to(v, 2, 1.40))
+    v = (1 - priv[g1] / priv[g0]) * 100
+    add("I3", "gfc_private_shrink_pct", "Private holdings fall 2007Q4-2011Q4, nominal", "24.6%", f"{v:.3f}%", rounds_to(v, 1, 24.6))
+    v = (priv[g0] - priv[g1]) / 1e6
+    add("I4", "gfc_private_shrink_usd", "Private holdings fall 2007Q4-2011Q4, nominal $T", "$2.07T", f"${v:.4f}T", rounds_to(v, 2, 2.07))
+    pl = private_label(df, groups) / scope
+    v = (pl[g1] - pl[g0]) * 100
+    add("I5", "gfc_private_label_share_pp", "Private-securitization share of scope, change 2007Q4-2011Q4",
+        "fell 12.5 pp", f"{v:+.3f} pp", v < 0 and rounds_to(-v, 1, 12.5))
+    v = (s[g0] - s[T("1999Q4")]) * 100
+    add("I6", "pre_gfc_decline_1999_2007_pp", "Public share change 1999Q4-2007Q4", "\u22125.0 pts", f"{v:+.3f} pp", rounds_to(v, 1, -5.0))
+    jump = s[g1] - s[g0]
+    cf = pub[g1] / (pub[g1] + priv[g0])  # public grows, private held at 2007Q4
+    frac = 1 - (cf - s[g0]) / jump
+    add("I7", "gfc_half_private_retreat", "Part of the 2007Q4-2011Q4 jump not explained by public growth (private held fixed)",
+        "half private retreat (fraction rounds to 0.5)", f"{frac:.4f} (jump {jump*100:.2f} pp, public-only counterfactual {(cf-s[g0])*100:.2f} pp)",
+        rounds_to(frac, 1, 0.5), "'about half' read as 0.45 <= x < 0.55")
+
+    # -- ratchet sign test, 16-quarter windows ---------------------------------------------------
+    sq = s[s.index >= FIRST_Q]
+    d16 = (sq.shift(-16) - sq).dropna()
+    peaks = [T(x) for x in NBER_PEAKS if T(x) in d16.index]
+    med = d16.loc[d16.index.difference(peaks)].median()
+    beat = int((d16.loc[peaks] > med).sum())
+    add("I8", "ratchet_crises_above_median", "NBER-peak 16q windows above the median non-crisis window",
+        "5 of 11", f"{beat} of {len(peaks)} (other-window median {med*100:+.2f} pp)", beat == 5 and len(peaks) == 11)
+    gse_m = [x["id"] for x in groups["mort_holders"] if x["risk_bucket"] == "gse_agency"]
+    gse_c = [x["id"] for x in groups["cc_holders"] if x["risk_bucket"] == "gse_agency"]
+    gse = (df[gse_m].sum(axis=1) / df["FL893065105"] * df["FL153165105"] + df[gse_c].sum(axis=1)) / scope
+    v = (gse[T("1989Q4")] - gse[T("1979Q4")]) * 100
+    add("I9", "gse_1980s_pp", "GSE & agency-pool share of scope, change 1979Q4-1989Q4", "+18.8 pp", f"{v:+.3f} pp", rounds_to(v, 1, 18.8))
+    v = d16[T("2001Q1")] * 100
+    add("I10", "dotcom_delta_pp", "Public share change 2001Q1-2005Q1", "\u22123.8 pts", f"{v:+.3f} pp", rounds_to(v, 1, -3.8))
+    for cid, cl, qq, exp in [("I11", "public_share_2001q1", "2001Q1", 40.6), ("I12", "public_share_2005q1", "2005Q1", 36.8),
+                             ("I13", "public_share_1973q4", "1973Q4", 7.2), ("I14", "public_share_1977q4", "1977Q4", 11.3),
+                             ("I15", "public_share_1981q3", "1981Q3", 16.3), ("I16", "public_share_1985q3", "1985Q3", 24.6),
+                             ("I17", "public_share_1990q3", "1990Q3", 34.5), ("I18", "public_share_1994q3", "1994Q3", 41.6)]:
+        v = s[T(qq)] * 100
+        add(cid, cl, f"Public share {qq}", f"{exp:.1f}%", f"{v:.3f}%", rounds_to(v, 1, exp))
+    dd = {x: (s[L] - s[T(x)]) * 100 for x in SHOCK_QS}
+    mx = max(abs(x) for x in dd.values())
+    add("I19", "shocks_max_pp", f"Largest public-share move from a policy-shock quarter to {q(L)}", "less than 1 point (0.42)",
+        "; ".join(f"{k}: {x:+.3f} pp" for k, x in dd.items()), mx < 1.0 and rounds_to(mx, 2, 0.42))
+
+    # -- composition and collateral, latest quarter ---------------------------------------------
+    v = res["mort"][L] / scope[L] * 100
+    add("I20", "mortgage_share_of_scope_2026q2", f"Mortgages / scope {q(L)}", "73.2% (73%)", f"{v:.3f}%",
+        rounds_to(v, 1, 73.2) and rounds_to(v, 0, 73))
+    cov = (df["FL155035015"] / df["FL153165105"]).dropna()
+    add("I21", "home_coverage_low", "Home coverage minimum, all quarters", "1.85× in 2012Q1",
+        f"{cov.min():.4f}× in {q(cov.idxmin())} (from {q(cov.index[0])})", rounds_to(cov.min(), 2, 1.85) and q(cov.idxmin()) == "2012Q1")
+    v = (1 - 1 / cov[L]) * 100
+    add("I22", "home_cushion", f"Equity cushion 1 - 1/coverage {q(L)}", "72%", f"{v:.3f}%", rounds_to(v, 0, 72))
+    v = res["pub_mort"][L] / pub[L] * 100
+    add("I23", "public_book_home_backed", f"Public mortgages / public holdings {q(L)}", "85%", f"{v:.3f}%", rounds_to(v, 0, 85))
+    for cid, cl, t, exp in [("I24", "student_in_public_book_2007q4", g0, 2.4), ("I25", "student_in_public_book_2026q2", L, 14.9)]:
+        v = res["pub_cc"][t] / pub[t] * 100
+        add(cid, cl, f"Public consumer credit / public holdings {q(t)}", f"{exp:.1f}%", f"{v:.3f}%", rounds_to(v, 1, exp),
+            "public consumer credit = federal student loans (FL313066220) + Sallie Mae as GSE (zero since 2004)")
+    v = (res["mort"][L] - res["mort"][P]) / 1e3
+    add("I26", "z1_mortgage_change", f"Household mortgages change {q(P)}-{q(L)}, NSA $B", "+$150B", f"{v:+.2f} $B", rounds_to(v, 0, 150))
+    v = (scope[L] - scope[P]) / 1e3
+    add("I27", "z1_scope_change", f"Scope change {q(P)}-{q(L)}, NSA $B", "+$199B", f"{v:+.2f} $B", rounds_to(v, 0, 199))
+    v = scope[L] / df["FL154190005"][L] * 100
+    add("I28", "scope_share_of_liabilities", f"Scope / total household liabilities {q(L)}", "87%", f"{v:.3f}%", rounds_to(v, 0, 87))
+    add("I29", "out_of_scope_share", f"1 - scope / total household liabilities {q(L)}", "13%", f"{100 - v:.3f}%", rounds_to(100 - v, 0, 13))
+
+    # -- A1 Shapley split of the 2007Q4-2011Q4 jump (method: research/a1_gfc_decomposition/README.md) --
+    f = lambda a, b: a / (a + b)  # noqa: E731
+    c_pub = 0.5 * ((f(pub[g1], priv[g0]) - f(pub[g0], priv[g0])) + (f(pub[g1], priv[g1]) - f(pub[g0], priv[g1])))
+    c_priv = (f(pub[g1], priv[g1]) - f(pub[g0], priv[g0])) - c_pub
+    add("I30", "a1_public_growth_pp", "Shapley: public growth's part of the 2007Q4-2011Q4 jump", "6.2 pp", f"{c_pub*100:.4f} pp",
+        rounds_to(c_pub * 100, 1, 6.2))
+    add("I31", "a1_private_change_pp", "Shapley: private change's part of the 2007Q4-2011Q4 jump", "6.9 pp", f"{c_priv*100:.4f} pp",
+        rounds_to(c_priv * 100, 1, 6.9))
+    ff = df[FF_IDS].sum(axis=1) / df["FL893065105"] * df["FL153165105"]
+    v = c_pub * (ff[g1] - ff[g0]) / (pub[g1] - pub[g0]) * 100
+    add("I32", "a1_ff_pp", "Shapley: Fannie Mae + Freddie Mac (pro rata within public side)", "1.2 pp", f"{v:.4f} pp",
+        rounds_to(v, 1, 1.2), "cells " + " ".join(FF_IDS) + ", apportioned to households")
+
+    # -- atlas dashboard tiles (Z.1) ---------------------------------------------------------------
+    v = (scope[L] - scope[Y]) / 1e3
+    add("I33", "dash_scope_dy", f"Scope change {q(Y)}-{q(L)}, $B", "+$533B", f"{v:+.3f} $B", rounds_to(v, 0, 533))
+    for cid, cl, t0, exp in [("I34", "dash_public_share_dq", P, -0.2), ("I35", "dash_public_share_dy", Y, -0.2)]:
+        v = (s[L] - s[t0]) * 100
+        add(cid, cl, f"Public share change {q(t0)}-{q(L)}", um(f"{exp:+.1f} pp"), f"{v:+.4f} pp", rounds_to(v, 1, exp))
+    for cid, cl, t0, exp in [("I36", "dash_home_cov_dq", P, 0.04), ("I37", "dash_home_cov_dy", Y, -0.02)]:
+        v = cov[L] - cov[t0]
+        add(cid, cl, f"Home coverage change {q(t0)}-{q(L)}", um(f"{exp:+.2f}×"), f"{v:+.4f}×", rounds_to(v, 2, exp))
+
+    # -- FRED: Fed-held MBS (WSHOMCB, last weekly obs in quarter) and disposable income (DSPI, quarterly mean) --
+    fed_ids = [("I38", "fed_mbs_peak_share", "Fed-held MBS / scope, peak quarter", "16.4% in 2022Q1"),
+               ("I39", "fed_mbs_peak_usd", "Fed-held MBS at the peak-share quarter, $T", "$2.72T"),
+               ("I40", "fed_mbs_now_share", f"Fed-held MBS / scope {q(L)}", "10.3%")]
+    if wshomcb is None:
+        for cid, cl, d, e in fed_ids:
+            not_run(cid, cl, d, e, "FRED WSHOMCB not available")
+    else:
+        fed = wshomcb[(wshomcb.index <= L) & (wshomcb > 0)]
+        sh = (fed / scope).dropna()
+        pk = sh.idxmax()
+        add("I38", "fed_mbs_peak_share", fed_ids[0][2], fed_ids[0][3], f"{sh[pk]*100:.3f}% in {q(pk)}",
+            rounds_to(sh[pk] * 100, 1, 16.4) and q(pk) == "2022Q1", "FRED WSHOMCB latest fredgraph.csv; rate risk, not credit risk")
+        add("I39", "fed_mbs_peak_usd", fed_ids[1][2], fed_ids[1][3], f"${fed[pk]/1e6:.4f}T ({q(pk)})", rounds_to(fed[pk] / 1e6, 2, 2.72))
+        v = sh.get(L, float("nan")) * 100
+        add("I40", "fed_mbs_now_share", fed_ids[2][2], fed_ids[2][3], f"{v:.3f}%", rounds_to(v, 1, 10.3) if v == v else False)
+    if dspi is None:
+        not_run("I41", "debt_to_income_2026q2", f"Scope / disposable income {q(L)}", "80%", "FRED DSPI not available")
+        not_run("I42", "debt_to_income_2007q4", "Scope / disposable income 2007Q4", "124%", "FRED DSPI not available")
+    else:
+        for cid, cl, t, exp in [("I41", "debt_to_income_2026q2", L, 80), ("I42", "debt_to_income_2007q4", g0, 124)]:
+            if t not in dspi.index:
+                not_run(cid, cl, f"Scope / disposable income {q(t)}", f"{exp}%", f"DSPI has no {q(t)} observations")
+                continue
+            v = scope[t] / 1e3 / dspi[t] * 100
+            add(cid, cl, f"Scope / disposable income (DSPI, quarterly mean) {q(t)}", f"{exp}%", f"{v:.3f}%", rounds_to(v, 0, exp),
+                "FRED DSPI latest fredgraph.csv (registered vintage fred:2026-10-27; DSPI revises)")
+
+    # -- NY Fed HHD_C_Report workbook: totals and the dashboard's transition table -----------------------
+    ny = [("I43", "nyfed_total_2026q2"), ("I44", "nyfed_mortgage_change")]
+    tr_specs = []
+    k = 45
+    for t in NY_TYPES:
+        for suffix in ("", "_dq", "_dy"):
+            tr_specs.append((f"I{k}", f"dash_trans_{t}{suffix}", t, suffix))
+            k += 1
+    TR_EXP = {"mortgage": (1.52, 0.04, 0.23), "heloc": (1.15, 0.0, 0.0), "auto": (3.00, 0.03, 0.07),
+              "credit_card": (6.97, -0.13, 0.04), "student": (7.83, -3.03, -5.05), "other": (5.19, 0.03, -0.23)}
+    if nyfed is None:
+        for (cid, cl), e in zip(ny, ["$18.77T", "\u2212$74B"]):
+            not_run(cid, cl, "NY Fed HHDC", e, "NY Fed workbook not available")
+        for cid, cl, t, sfx in tr_specs:
+            e = TR_EXP[t][("", "_dq", "_dy").index(sfx)]
+            not_run(cid, cl, f"NY Fed transition {t}{sfx}", f"{e:.2f}%" if sfx == "" else um(f"{e:+.2f} pp"),
+                    "NY Fed workbook not available")
+        return out
+    bal, tr = nyfed
+    dL, dP, dY = (str(x.date()) for x in (L, P, Y))
+    tot = sum(bal[(dL, t)] for t in NY_TYPES)
+    add("I43", "nyfed_total_2026q2", f"NY Fed total household debt {q(L)}, sum of six loan types", "$18.77T",
+        f"${tot/1e3:.4f}T (workbook total column ${bal.get((dL, 'total'), float('nan'))/1e3:.4f}T)", rounds_to(tot / 1e3, 2, 18.77),
+        "NY Fed Consumer Credit Panel, not Z.1")
+    v = bal[(dL, "mortgage")] - bal[(dP, "mortgage")]
+    add("I44", "nyfed_mortgage_change", f"NY Fed mortgage balance change {q(P)}-{q(L)}, $B", "\u2212$74B", f"{v:+.2f} $B", rounds_to(v, 0, -74))
+    for cid, cl, t, sfx in tr_specs:
+        e = TR_EXP[t][("", "_dq", "_dy").index(sfx)]
+        if sfx == "":
+            v, desc, exp = tr[(dL, t)], f"NY Fed new serious delinquency, {t}, {q(L)} (% of balance, annualized)", f"{e:.2f}%"
+            obs = f"{v:.4f}%"
+        else:
+            t0 = dP if sfx == "_dq" else dY
+            v = tr[(dL, t)] - tr[(t0, t)]
+            desc, exp = f"NY Fed new serious delinquency, {t}, change {t0[:7]} to {dL[:7]}", um(f"{e:+.2f} pp")
+            obs = f"{v:+.4f} pp"
+        add(cid, cl, desc, exp, obs, rounds_to(v, 2, e))
+    return out
 
 
 # ----------------------------------------------------------------------------------------------
@@ -754,6 +996,10 @@ recomputes everything from components. No number is changed by this suite; it on
   small series). Flags at the four known break quarters are listed as explained; all others are WARN, never FAIL.
   Gaps are missing quarters between 1952Q1 and the latest quarter in any catalog Z.1 series.
 * (f) previous vintage: see section below.
+* (h) Hot Potato (atlas/) numbers and (i) other public-copy numbers (README, web/, atlas/): each check recomputes one
+  claims-register row from the raw Z.1 zip, raw FRED fredgraph.csv files (CPIAUCSL, WSHOMCB last weekly value in the
+  quarter, DSPI quarterly mean) and the raw NY Fed HHD_C_Report workbook, never from analysis or site output, and
+  compares at the precision the copy displays. The note names the register row.
 
 ## Unexplained jumps (WARN)
 
@@ -823,10 +1069,11 @@ def main(argv=None) -> int:
     zip_path = ensure_zip(args.z1_zip)
     cat, rows, public, groups = load_catalog()
     ids = [s["id"] for s in rows]
+    load_ids = ids + [x for x in EXTRA_Z1_IDS if x not in ids]
     ts, _ = zparse.zip_member_info(zip_path)
     sha = zparse.sha256_file(zip_path)
     print(f"parsing {zip_path.name} ...", file=sys.stderr)
-    df = to_frame(zparse.load_z1_zip(zip_path, ids))
+    df = to_frame(zparse.load_z1_zip(zip_path, load_ids))
     res = compute(df, groups, public)
     res_q = res[res.index >= FIRST_Q]
 
@@ -846,12 +1093,21 @@ def main(argv=None) -> int:
     checks += f_checks
     cpi_path = ensure_cpi(args.cpi_csv)
     checks += check_hotpotato(df, res, cpi_quarterly(cpi_path), groups, public)
+    wk_path, dpi_path = ensure_fred("WSHOMCB"), ensure_fred("DSPI")
+    ny_path = Path(args.nyfed_xlsx) if args.nyfed_xlsx else e1_gold.ensure_nyfed()
+    checks += check_public_copy(df, res, groups, public,
+                                wshomcb=fred_quarterly(wk_path, "last") if wk_path else None,
+                                dspi=fred_quarterly(dpi_path, "mean") if dpi_path else None,
+                                nyfed=nyfed_raw(ny_path) if ny_path else None)
     checks += e1_gold.run_checks(df, cat, groups, res, Check, Path(args.nyfed_xlsx) if args.nyfed_xlsx else None)
 
     meta = {"vintage": ts.strftime("%Y-%m-%d %H:%M"), "latest": q(df.index[-1]), "zip_name": zip_path.name,
             "zip_bytes": zip_path.stat().st_size, "sha256": sha,
             "cpi_csv": cpi_path.name, "cpi_sha256": zparse.sha256_file(cpi_path),
             "cpi_retrieved_utc": datetime.fromtimestamp(cpi_path.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d %H:%M"),
+            "fred_extra": {p.stem: {"sha256": zparse.sha256_file(p), "last_obs": str(pd.read_csv(p).iloc[-1, 0])}
+                           for p in (wk_path, dpi_path) if p},
+            "nyfed_xlsx": {"name": ny_path.name, "sha256": zparse.sha256_file(ny_path)} if ny_path else None,
             "cpi_base_quarter": CPI_BASE_Q, "cpi_last_obs": str(pd.read_csv(cpi_path).iloc[-1, 0]),
             "run_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")}
     table = render_table(checks)

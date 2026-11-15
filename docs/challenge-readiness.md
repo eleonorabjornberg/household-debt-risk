@@ -24,7 +24,7 @@
 | Skills (7) | chart-from-sql, claim-check, decision-cards, preregister, research-memo, source-provenance, z1-release-update | `.claude/skills/` |
 | Subagents (6) | analyst, editor, prompt-archivist, quant-reviewer, register-keeper, skeptic | `.claude/agents/` |
 | MCP server | household-credit MCP (read-only DB tools) | `mcp/household-credit-mcp/` |
-| API app | "Ask Hot Potato" (D6): tool use against the database, cited queries | `atlas/app/api/ask/route.ts`, `atlas/lib/ask/`; production allowed since 2026-11-15, **off until its Vercel variables are set** (limit counters in Supabase since 2026-11-15) |
+| API app | "Ask Hot Potato" (D6): tool use against the database, cited queries | `atlas/app/api/ask/route.ts`, `atlas/lib/ask/`; live in production since 2026-11-15 (limit counters in Supabase; one test question answered and one out-of-scope question declined) |
 | API benchmark | E1 question-to-SQL, Haiku vs Sonnet vs Opus | `evals/e1_sql_benchmark/` |
 | Hooks | pre-commit register check + offline tests; block hand edits to `results.json` | `.claude/settings.json`, `.claude/hooks/` |
 | Multi-session orchestration | coordinator + infra/markets/analysis track sessions, decision docket and review queue artifacts | `tracks/`, `docs/decision-cards.html`, `docs/review-queue.html` |
