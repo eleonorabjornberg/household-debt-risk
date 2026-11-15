@@ -21,6 +21,6 @@ def test_needs_approval():
 
 
 def test_refuses_an_approval_without_the_c3_errors_row():
-    # 432fed0 approved the first (joint) opening only; it has no c3-errors row.
+    # d2fed5d (on main; same change as the earlier local 432fed0) approved the first (joint) opening only; it has no c3-errors row.
     with pytest.raises(SystemExit, match="c3-errors"):
-        hfr.check_approval("432fed0")
+        hfr.check_approval("d2fed5d")
