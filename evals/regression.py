@@ -6,9 +6,12 @@
 An eval needs rerunning when anything it measures has changed: the reviewer prompts (.claude/agents/*.md),
 their model tier (agent frontmatter), the error catalogue or the planting and scoring code. `status` hashes
 those inputs into a fingerprint and compares it with the fingerprint stored on the eval's last result line
-(results.jsonl, appended only). E1 (question-to-SQL) is not built yet: it needs Eleonora's cost approval run,
-so it is reported as NOT BUILT, never as passing. E2 runs need the frozen pre-registration and a human scoring
-pass, so `status` says what to run; it does not start reviewers itself.
+(results.jsonl, appended only). E1 (question-to-SQL) runs cost API money and need Eleonora's spend approval;
+its last run (run-2026-11-05b) predates fingerprinting, so its fingerprint is reconstructed from the files as
+committed with that run's analysis (`backfill`, read from git, never from today's files). E2 runs need the
+frozen pre-registration and a human scoring pass. `status` says what to run; it never starts an eval itself.
+
+    uv run --project pipeline python evals/regression.py backfill E1 <commit>   # append a git-reconstructed fingerprint
 """
 from __future__ import annotations
 
@@ -38,15 +41,22 @@ EVALS = {
 }
 
 
-def fingerprint(inputs: list[str], root: Path = ROOT) -> dict:
-    parts = {}
-    for rel in inputs:
+def _read(rel: str, root: Path, commit: str | None) -> bytes | None:
+    if commit is None:
         p = root / rel
-        parts[rel] = hashlib.sha256(p.read_bytes()).hexdigest()[:16] if p.exists() else "missing"
-    models = {}
+        return p.read_bytes() if p.exists() else None
+    r = subprocess.run(["git", "-C", str(root), "show", f"{commit}:{rel}"], capture_output=True)
+    return r.stdout if r.returncode == 0 else None
+
+
+def fingerprint(inputs: list[str], root: Path = ROOT, commit: str | None = None) -> dict:
+    """Hash the inputs as they are now, or as committed at `commit` (for runs that predate fingerprinting)."""
+    parts, models = {}, {}
     for rel in inputs:
-        if rel.startswith(".claude/agents/") and (root / rel).exists():
-            m = re.search(r"^model:\s*(\S+)", (root / rel).read_text(), re.M)
+        data = _read(rel, root, commit)
+        parts[rel] = hashlib.sha256(data).hexdigest()[:16] if data is not None else "missing"
+        if rel.startswith(".claude/agents/") and data is not None:
+            m = re.search(r"^model:\s*(\S+)", data.decode(), re.M)
             models[Path(rel).stem] = m.group(1) if m else "inherit"
     digest = hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()[:16]
     return {"digest": digest, "files": parts, "models": models}
@@ -79,6 +89,8 @@ def status(root: Path = ROOT) -> list[dict]:
             state, why = "RERUN NEEDED", "changed since last run: " + ", ".join(changed)
         else:
             state, why = "UP TO DATE", f"last run {last.get('scored_at')}"
+        if last and last.get("fingerprint_source"):
+            why += f" (fingerprint {last['fingerprint_source']})"
         out.append({"eval": name, "state": state, "why": why, "fingerprint": fp})
     return out
 
@@ -113,7 +125,25 @@ def chart(root: Path = ROOT) -> str:
     return f"wrote {out_dir / 'e2_recall_over_time'}.png/.svg"
 
 
+def backfill(name: str, commit: str, root: Path = ROOT) -> dict:
+    """Append a copy of the eval's last result line with the inputs' fingerprint as committed at `commit`."""
+    ev = EVALS[name]
+    last = last_result(ev["results"])
+    if last is None or last.get("fingerprint"):
+        raise SystemExit(f"{name}: nothing to backfill (no result, or the last one is already fingerprinted)")
+    sha = subprocess.run(["git", "-C", str(root), "rev-parse", "--short", commit], capture_output=True,
+                         text=True, check=True).stdout.strip()
+    line = {**last, "fingerprint": fingerprint(ev["inputs"], root, sha),
+            "fingerprint_source": f"reconstructed from git {sha}, the commit holding this run's analysis"}
+    with ev["results"].open("a") as f:
+        f.write(json.dumps(line) + "\n")
+    return line
+
+
 def main(argv: list[str]) -> int:
+    if len(argv) == 4 and argv[1] == "backfill":
+        print(backfill(argv[2], argv[3])["fingerprint"]["digest"])
+        return 0
     if len(argv) == 2 and argv[1] == "status":
         for s in status():
             print(f"{s['eval']}: {s['state']}: {s['why']}")

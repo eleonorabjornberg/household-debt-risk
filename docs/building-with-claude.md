@@ -935,3 +935,14 @@ Cost and token counts are recorded only where they can be measured. Otherwise th
 ## 2026-11-15 (coordinator): approval recorded
 - Eleonora in chat: "Everything is reviewed and approved." Recorded in PLAN "Decisions taken" as approval of all work sent for review, including the scored E2 rerun. The merge to `main`, the D6 production change and the Claude-draft banners are asked separately, since a general approval does not name them.
 - Model tier: main model. Cost not measured.
+
+## 2026-11-15 (coordinator): E1 wired into E3, E2 register rows, E4 P2 labels started
+
+- Her instruction in chat: "Wire it, give labels and register rows."
+- **E3.** `evals/regression.py` gained `backfill`: it rebuilds a missing input fingerprint from git, as the files stood at a named commit, never from today's files. For E1 that commit is af0da48, the one holding run-2026-11-05b's analysis. The digest is 3eb6229608617710. Status now reads E2 UP TO DATE and E1 RERUN NEEDED: analyst.md, e1-prereg.md and run_e1.py changed after the run. The docstring was stale ("E1 is not built yet") and is fixed. There is one new offline test; `evals/test_regression.py` passes (4 tests). No API spend and no E1 rerun.
+- **Register.** Four rows, all UNVERIFIED: e2_r13r_skeptic_recall, _quant_recall, _false_alarms and _baseline_recall. They are traced to results.jsonl (scored_at 2026-11-14T19:33:16+00:00) and baseline/scoring.csv.
+- **Errors caught by Claude (the register check):**
+  - The first draft rows used displays that did not appear verbatim on the cited lines, and a vintage the checker rejects. Both were fixed.
+  - A rewrite of the CSV changed every line ending. That rewrite was reverted, and the rows were appended with the file's own terminator.
+- **E4 P2 labels:** a Claude subagent is labelling the 21 flagged and 12 sampled answers offline, at her instruction. These are model labels, a disclosed deviation, and they stay UNVERIFIED.
+- Model tier: Opus coordinator; one general-purpose subagent for the labels. API cost: $0.

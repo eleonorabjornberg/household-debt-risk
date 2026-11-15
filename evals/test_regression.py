@@ -42,3 +42,19 @@ def test_status_never_run_then_up_to_date_then_rerun(tmp_path, monkeypatch):
 def test_chart_without_results_says_so(tmp_path, monkeypatch):
     monkeypatch.setitem(reg.EVALS, "E2", {"results": tmp_path / "none.jsonl", "inputs": [], "run": "x"})
     assert reg.chart(tmp_path).startswith("no E2 results yet")
+
+
+def test_backfill_reads_inputs_from_git_not_today(tmp_path, monkeypatch):
+    import subprocess
+    root = _root(tmp_path)
+    git = lambda *a: subprocess.run(["git", "-C", str(root), *a], check=True, capture_output=True)
+    git("init", "-q"); git("add", "."); git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "run")
+    old = reg.fingerprint([".claude/agents/skeptic.md"], root)
+    (root / ".claude/agents/skeptic.md").write_text("---\nmodel: opus\n---\nchanged after the run\n")
+    res = root / "e1.jsonl"
+    res.write_text(json.dumps({"run": "r", "scored_at": "2026-11-05", "fingerprint": None}) + "\n")
+    monkeypatch.setitem(reg.EVALS, "E1", {"results": res, "inputs": [".claude/agents/skeptic.md"], "run": "x"})
+    line = reg.backfill("E1", "HEAD", root)
+    assert line["fingerprint"]["digest"] == old["digest"] and line["run"] == "r"
+    s = next(s for s in reg.status(root) if s["eval"] == "E1")
+    assert s["state"] == "RERUN NEEDED" and "reconstructed from git" in s["why"]
