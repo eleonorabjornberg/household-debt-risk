@@ -13,7 +13,7 @@ How US household debt has been reshaped by economic crises since the 1950s. The 
 
 **What we found** (full write-up in [`analysis/findings.md`](analysis/findings.md)):
 
-> **Claude draft.** The findings summary below was written by Claude for Eleonora to review and rewrite. It is not her text yet.
+
 
 - **Most US household debt now sits on public balance sheets.** The public share of household mortgages and consumer credit rose from 3.2% in 1952 to **56.4% in 2026Q2** ($10.77T of $19.10T). "Public" means the federal government, GSEs and agency pools, and state & local governments.
 - **But crises mostly didn't put it there.** We started from the thesis that each crisis ratchets the share up. The data does not support that as a general pattern: a placebo test finds no detectable excess in shifts after crises over ordinary periods (p ≈ 0.30, low power), drawing from the 282 overlapping 16-quarter windows, 1952Q1–2022Q2. The long climb is a slow structural build-out of the GSEs, +18.8 pp in the 1980s alone.
@@ -72,7 +72,7 @@ Not built yet (see PLAN.md): `paper/`, the working paper (F6).
 | API app | [`atlas/app/api/ask/`](atlas/app/api/ask/), [`atlas/lib/ask/`](atlas/lib/ask/) | "Ask Hot Potato": Claude with tool use over the data, every answer citing its query and vintage, with rate limits and a daily cost stop |
 | Evals | [`evals/README.md`](evals/README.md) | Benchmarks of the tooling itself, with pre-registrations frozen before any result ([`docs/decisions/`](docs/decisions/)) |
 
-Analysis text Claude wrote carries a "Claude draft" banner. The design, the decisions (listed in `PLAN.md`, "Decisions taken") and the final write-up are Eleonora's.
+Claude drafted the analysis text and Eleonora reviewed and approved it (2026-11-15). The design, the decisions (listed in `PLAN.md`, "Decisions taken") and the validation are hers.
 
 ## How to reproduce the numbers
 
