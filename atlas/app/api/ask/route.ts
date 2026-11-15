@@ -1,5 +1,5 @@
 // POST /api/ask {question} -> {answer, refused, reason_code, sources}. Ask Hot Potato (PLAN D6).
-// Gated to preview deployments and local dev (lib/ask/gate.ts); limits in lib/ask/limits.ts; store and data source in
+// Gated to preview and production deployments (production per her OK, 2026-11-15) and local dev (lib/ask/gate.ts); limits in lib/ask/limits.ts; store and data source in
 // lib/ask/runtime.ts; loop in lib/ask/agent.ts.
 import { createHash } from "node:crypto";
 import Anthropic from "@anthropic-ai/sdk";

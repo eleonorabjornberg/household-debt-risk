@@ -1,4 +1,4 @@
-// Ask Hot Potato may run on preview deployments and in local dev only (her d6-preview; production needs her OK).
+// Ask Hot Potato may run on preview and (her OK, 2026-11-15) production deployments, and in local dev.
 import { describe, expect, it } from "vitest";
 import { deploymentGate } from "./gate";
 
@@ -6,8 +6,17 @@ const READY = { NEXT_PUBLIC_ASK_ENABLED: "1", HHDEBT_ANTHROPIC_API_KEY: "test-no
                 KV_REST_API_URL: "https://example.invalid", KV_REST_API_TOKEN: "test-not-a-token" } as Record<string, string | undefined>;
 
 describe("deploymentGate", () => {
-  it("refuses Vercel production even when everything else is configured", () => {
-    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "production", ...READY })).toMatchObject({ ok: false, status: 404 });
+  it("allows a fully configured Vercel production, and refuses it without the flag, key or store", () => {
+    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "production", ...READY })).toEqual({ ok: true });
+    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "production", ...READY, NEXT_PUBLIC_ASK_ENABLED: undefined }))
+      .toMatchObject({ ok: false, status: 404 });
+    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "production", ...READY, HHDEBT_ANTHROPIC_API_KEY: undefined }))
+      .toMatchObject({ ok: false, status: 503 });
+    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "production", ...READY, KV_REST_API_URL: undefined }))
+      .toMatchObject({ ok: false, status: 503 });
+  });
+  it("refuses other Vercel environments", () => {
+    expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "development", ...READY })).toMatchObject({ ok: false, status: 404 });
   });
   it("refuses a preview without a shared limit store, and without a key", () => {
     expect(deploymentGate({ VERCEL: "1", VERCEL_ENV: "preview", ...READY, KV_REST_API_URL: undefined }))
