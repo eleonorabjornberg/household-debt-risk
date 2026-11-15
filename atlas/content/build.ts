@@ -15,7 +15,26 @@ export const build = {
     { name: "Subagents", body: "skeptic, quant-reviewer, editor, register-keeper, analyst", href: ".claude/agents" },
     { name: "MCP", body: "Own household-credit server, plus GitHub, Supabase, Vercel and FRED", href: "mcp" },
     { name: "API", body: "Ask Hot Potato, and model benchmarks run under spend caps", href: "evals" },
+    { name: "Hooks", body: "Pre-commit register check and tests; hand edits to generated results blocked", href: ".claude/hooks" },
+    { name: "Plugin", body: "Fed Data Desk: the skills, subagents and MCP server packaged for reuse", href: "plugin/fed-data-desk" },
   ],
+
+  // E1 rates, each linked to its row in claims/tracks/infra.csv (ClaimRef in the page, by id).
+  evals: {
+    lede: "The tools were tested against pre-registrations written before any result existed.",
+    e1: {
+      caption: "E1, question to SQL (2026-11-05): share correct, three runs per question.",
+      rows: [
+        { model: "Opus", answer: { id: "e1_h1_opus_rate", text: "91.7%" }, refuse: { id: "e1_h3_opus_rate", text: "91.7%" } },
+        { model: "Sonnet", answer: { id: "e1_h1_sonnet_rate", text: "96.1%" }, refuse: { id: "e1_h3_sonnet_rate", text: "68.3%" } },
+        { model: "Haiku", answer: { id: "e1_h1_haiku_rate", text: "92.8%" }, refuse: { id: "e1_h3_haiku_rate", text: "40.0%" } },
+      ],
+    },
+    notes: [
+      "E2, planted errors: the skeptic and quant-reviewer subagents caught every planted error in the rerun. A plain baseline also found every planted data error, so the test cannot separate the prompts from the model.",
+      "E4, red team: attacks on Ask Hot Potato before and after its guardrails; no secret or system-prompt text leaked.",
+    ],
+  },
 
   stack: [
     { name: "GitHub", body: "Code, history, CI and the quarterly refresh." },
@@ -44,7 +63,7 @@ export const build = {
       loop: "Each Z.1 release reruns the chain as a pull request.",
       steps: [
         { who: "Data", name: "Sources", body: "Z.1, FRED, NY Fed, each checked free first." },
-        { who: "Code", name: "Pipeline", body: "Python package hhdebt: extract, transform, load, export. More than 40 automated tests." },
+        { who: "Code", name: "Pipeline", body: "Python package hhdebt: extract, transform, load, export. More than 600 automated tests across the repository." },
         { who: "Data", name: "Warehouse", body: "Raw, core, mart." },
         { who: "Code", name: "Analysis", body: "Pre-registered; every number registered." },
         { who: "Gate", name: "Preview", body: "Every branch builds a preview." },

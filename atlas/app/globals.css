@@ -280,3 +280,9 @@ h1, h2 { font-family: var(--font-display), Georgia, serif; font-weight: 800; let
 /* Hot-potato figures on the home page (Eleonora's idea, 2026-11-11). */
 .meaning__fig { display: flex; gap: 14px; align-items: flex-end; min-height: 120px; margin-top: 14px; }
 .step__fig { display: flex; gap: 10px; align-items: flex-end; margin-top: 12px; }
+
+/* How it was built: E1 results table */
+.pg-table { border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; margin: 16px 0; width: 100%; max-width: 560px; }
+.pg-table caption { text-align: left; font-size: 13px; padding-bottom: 8px; }
+.pg-table th, .pg-table td { padding: 6px 10px; border-bottom: 1px solid var(--ink); text-align: right; }
+.pg-table th:first-child { text-align: left; }

@@ -725,6 +725,168 @@
    "exact": []
   },
   {
+   "id": "e1_h1_haiku_rate",
+   "claim": "E1 H1: Haiku 5.5 rate 92.8% (180 answers, 60 questions), pre-registered test, verdict supported.",
+   "display": [
+    "92.8%"
+   ],
+   "value": "0.9278",
+   "unit": "share",
+   "period": "E1 run 2026-11-05",
+   "locations": [
+    "atlas/content/build.ts:30"
+   ],
+   "computation": "evals/e1_sql_benchmark/analyze_e1.py -> run-2026-11-05b/analysis.json (bootstrap, seed 20261104)",
+   "series": [],
+   "vintage": "z1:2026-09-11 nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "E1 benchmark result (Claude draft note).",
+   "register": "claims/tracks/infra.csv",
+   "anchors": [
+    "e1_h1_haiku_rate",
+    "e1_h3_haiku_rate"
+   ],
+   "exact": [
+    "92.8%"
+   ]
+  },
+  {
+   "id": "e1_h1_opus_rate",
+   "claim": "E1 H1: Opus 5.5 rate 91.7% (180 answers, 60 questions), pre-registered test, verdict supported.",
+   "display": [
+    "91.7%"
+   ],
+   "value": "0.9167",
+   "unit": "share",
+   "period": "E1 run 2026-11-05",
+   "locations": [
+    "atlas/content/build.ts:28"
+   ],
+   "computation": "evals/e1_sql_benchmark/analyze_e1.py -> run-2026-11-05b/analysis.json (bootstrap, seed 20261104)",
+   "series": [],
+   "vintage": "z1:2026-09-11 nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "E1 benchmark result (Claude draft note).",
+   "register": "claims/tracks/infra.csv",
+   "anchors": [
+    "e1_h1_opus_rate",
+    "e1_h3_opus_rate"
+   ],
+   "exact": [
+    "91.7%"
+   ]
+  },
+  {
+   "id": "e1_h1_sonnet_rate",
+   "claim": "E1 H1: Sonnet 5.5 rate 96.1% (180 answers, 60 questions), pre-registered test, verdict supported.",
+   "display": [
+    "96.1%"
+   ],
+   "value": "0.9611",
+   "unit": "share",
+   "period": "E1 run 2026-11-05",
+   "locations": [
+    "atlas/content/build.ts:29"
+   ],
+   "computation": "evals/e1_sql_benchmark/analyze_e1.py -> run-2026-11-05b/analysis.json (bootstrap, seed 20261104)",
+   "series": [],
+   "vintage": "z1:2026-09-11 nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "E1 benchmark result (Claude draft note).",
+   "register": "claims/tracks/infra.csv",
+   "anchors": [
+    "e1_h1_sonnet_rate",
+    "e1_h3_sonnet_rate"
+   ],
+   "exact": [
+    "96.1%"
+   ]
+  },
+  {
+   "id": "e1_h3_haiku_rate",
+   "claim": "E1 H3: Haiku 5.5 rate 40.0% (60 answers, 20 questions), pre-registered test, verdict against.",
+   "display": [
+    "40.0%"
+   ],
+   "value": "0.4000",
+   "unit": "share",
+   "period": "E1 run 2026-11-05",
+   "locations": [
+    "atlas/content/build.ts:30"
+   ],
+   "computation": "evals/e1_sql_benchmark/analyze_e1.py -> run-2026-11-05b/analysis.json (bootstrap, seed 20261104)",
+   "series": [],
+   "vintage": "z1:2026-09-11 nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "E1 benchmark result (Claude draft note).",
+   "register": "claims/tracks/infra.csv",
+   "anchors": [
+    "e1_h1_haiku_rate",
+    "e1_h3_haiku_rate"
+   ],
+   "exact": [
+    "40.0%"
+   ]
+  },
+  {
+   "id": "e1_h3_opus_rate",
+   "claim": "E1 H3: Opus 5.5 rate 91.7% (60 answers, 20 questions), pre-registered test, verdict supported.",
+   "display": [
+    "91.7%"
+   ],
+   "value": "0.9167",
+   "unit": "share",
+   "period": "E1 run 2026-11-05",
+   "locations": [
+    "atlas/content/build.ts:28"
+   ],
+   "computation": "evals/e1_sql_benchmark/analyze_e1.py -> run-2026-11-05b/analysis.json (bootstrap, seed 20261104)",
+   "series": [],
+   "vintage": "z1:2026-09-11 nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "E1 benchmark result (Claude draft note).",
+   "register": "claims/tracks/infra.csv",
+   "anchors": [
+    "e1_h1_opus_rate",
+    "e1_h3_opus_rate"
+   ],
+   "exact": [
+    "91.7%"
+   ]
+  },
+  {
+   "id": "e1_h3_sonnet_rate",
+   "claim": "E1 H3: Sonnet 5.5 rate 68.3% (60 answers, 20 questions), pre-registered test, verdict null.",
+   "display": [
+    "68.3%"
+   ],
+   "value": "0.6833",
+   "unit": "share",
+   "period": "E1 run 2026-11-05",
+   "locations": [
+    "atlas/content/build.ts:29"
+   ],
+   "computation": "evals/e1_sql_benchmark/analyze_e1.py -> run-2026-11-05b/analysis.json (bootstrap, seed 20261104)",
+   "series": [],
+   "vintage": "z1:2026-09-11 nyfed:2026-10-27",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "E1 benchmark result (Claude draft note).",
+   "register": "claims/tracks/infra.csv",
+   "anchors": [
+    "e1_h1_sonnet_rate",
+    "e1_h3_sonnet_rate"
+   ],
+   "exact": [
+    "68.3%"
+   ]
+  },
+  {
    "id": "gfc_jump_pp",
    "claim": "The public share rose 13.1 percentage points from 2007Q4 to 2011Q4.",
    "display": [
@@ -863,32 +1025,6 @@
    "register": "claims/register.csv",
    "anchors": [
     "Holder amounts are apportioned from Z.1 holder shares; the 17 mortgage holders and 9 consumer-credit holders sum exactly to their totals."
-   ],
-   "exact": []
-  },
-  {
-   "id": "pipeline_test_count",
-   "claim": "The pipeline has more than 40 automated tests.",
-   "display": [
-    "More than 40"
-   ],
-   "value": "40",
-   "unit": "count",
-   "period": "2026-11-04",
-   "locations": [
-    "atlas/content/build.ts:47"
-   ],
-   "computation": "cd pipeline && uv run pytest --collect-only -q  (50 collected on 2026-11-04)",
-   "series": [
-    "n/a"
-   ],
-   "vintage": "n/a",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change. Not a data number: a test count, re-checked with pytest --collect-only, not by validation/run.py (2026-11-15).",
-   "register": "claims/register.csv",
-   "anchors": [
-    "Python package hhdebt: extract, transform, load, export. More than 40 automated tests."
    ],
    "exact": []
   },
@@ -1359,6 +1495,32 @@
    "register": "claims/register.csv",
    "anchors": [
     "Crisis test: no detectable rise in the public share after recession peaks (placebo p ≈ 0.30, low power)."
+   ],
+   "exact": []
+  },
+  {
+   "id": "repo_test_count",
+   "claim": "The repository has more than 600 automated tests.",
+   "display": [
+    "More than 600"
+   ],
+   "value": "600",
+   "unit": "count",
+   "period": "2026-11-15",
+   "locations": [
+    "atlas/content/build.ts:66"
+   ],
+   "computation": "make test plus atlas and web npm test: 623 collected on 2026-11-15 (pipeline 50; claims/research/validation/skills/evals/tools 309; MCP 40; atlas 193; web 31)",
+   "series": [
+    "n/a"
+   ],
+   "vintage": "n/a",
+   "validation": "UNVERIFIED",
+   "checkId": "",
+   "notes": "Threshold claim; true when registered (623). Not a data number: a test count, re-checked by collecting the suites, not by validation/run.py.",
+   "register": "claims/register.csv",
+   "anchors": [
+    "Python package hhdebt: extract, transform, load, export. More than 600 automated tests across the repository."
    ],
    "exact": []
   },

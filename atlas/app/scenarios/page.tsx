@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DraftBanner } from "@/components/pages/DraftBanner";
 import { PotatoPerson } from "@/components/Potato";
 import { Suspense } from "react";
+import Link from "next/link";
 import exposures from "@/lib/b3/exposures.json";
 import { ScenarioTool } from "@/components/scenarios/ScenarioTool";
 
@@ -43,7 +44,7 @@ export default function ScenariosPage() {
       </section>
       <section className="pg-section">
         <div>
-          <p><a href="/methods#limits">Limits of these estimates →</a> · <a href="/research/b3">Method and checks →</a></p>
+          <p><a href="/methods#limits">Limits of these estimates →</a> · <Link href="/research/b3">Method and checks →</Link></p>
         </div>
       </section>
     </main>

@@ -3,6 +3,7 @@ import { DraftBanner } from "@/components/pages/DraftBanner";
 import { build } from "@/content/build";
 import { BuildSchema } from "@/components/pages/BuildSchema";
 import { PotatoPerson } from "@/components/Potato";
+import { ClaimRef } from "@/components/claims/SourceRef";
 
 // Moved from web/app/how-it-was-built (site-visible (b), 2026-11-07: one site). Copy in content/build.ts.
 export const metadata: Metadata = {
@@ -37,6 +38,30 @@ export default function HowItWasBuiltPage() {
           <p>{build.schema.lede}</p>
           <BuildSchema workflow={build.schema.workflow} build={build.schema.build} />
           <p className="pg-caption"><a href="/methods#lineage">Each data step in detail: Methods →</a></p>
+        </div>
+      </section>
+
+      <section className="pg-section" aria-labelledby="evals">
+        <div className="pg-col">
+          <h2 id="evals">Testing the tools</h2>
+          <p>{build.evals.lede}</p>
+          <table className="pg-table">
+            <caption>{build.evals.e1.caption}</caption>
+            <thead><tr><th scope="col">Model</th><th scope="col">Answerable questions</th><th scope="col">Correct refusals</th></tr></thead>
+            <tbody>
+              {build.evals.e1.rows.map((r) => (
+                <tr key={r.model}>
+                  <th scope="row">{r.model}</th>
+                  <td><ClaimRef id={r.answer.id}>{r.answer.text}</ClaimRef></td>
+                  <td><ClaimRef id={r.refuse.id}>{r.refuse.text}</ClaimRef></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <ul className="build-steps">
+            {build.evals.notes.map((n) => <li key={n}>{n}</li>)}
+          </ul>
+          <p className="pg-caption"><a href={`${REPO}/evals`}>Pre-registrations, runs and results →</a></p>
         </div>
       </section>
 
