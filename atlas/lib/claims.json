@@ -160,8 +160,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I36",
    "notes": "Dashboard tile.",
    "register": "claims/register.csv",
    "anchors": [
@@ -187,8 +187,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I37",
    "notes": "Dashboard tile.",
    "register": "claims/register.csv",
    "anchors": [
@@ -221,8 +221,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I34",
    "notes": "Dashboard tile.",
    "register": "claims/register.csv",
    "anchors": [
@@ -255,8 +255,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I35",
    "notes": "Dashboard tile.",
    "register": "claims/register.csv",
    "anchors": [
@@ -283,8 +283,8 @@
     "FL153166000"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I33",
    "notes": "Dashboard tile, nominal, not seasonally adjusted.",
    "register": "claims/register.csv",
    "anchors": [
@@ -309,8 +309,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I51",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -333,8 +333,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I52",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -357,8 +357,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I53",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -381,8 +381,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I54",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -405,8 +405,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I55",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -429,8 +429,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I56",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -453,8 +453,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I48",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -477,8 +477,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I49",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -501,8 +501,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I50",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -525,8 +525,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I45",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -549,8 +549,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I46",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -573,8 +573,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I47",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -597,8 +597,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I60",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -621,8 +621,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I61",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -645,8 +645,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I62",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -669,8 +669,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I57",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published. Distorted by re-reporting after collections resumed in May 2025.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -693,8 +693,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I58",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published. Distorted by re-reporting after collections resumed in May 2025.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -717,8 +717,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I59",
    "notes": "NY Fed HHDC, % of balance transitioning into 90+ days delinquent, annualized as published. Distorted by re-reporting after collections resumed in May 2025.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -822,7 +822,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H11",
-   "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
+   "notes": "Independently recomputed by validation check H11 (3.5624x; PASS). Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
    "register": "claims/register.csv",
    "anchors": [
     "A holder loses only what the collateral fails to cover, and homes are worth 3.56× the mortgages against them.",
@@ -885,7 +885,7 @@
    "vintage": "n/a",
    "validation": "UNVERIFIED",
    "checkId": "",
-   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change.",
+   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change. Not a data number: a test count, re-checked with pytest --collect-only, not by validation/run.py (2026-11-15).",
    "register": "claims/register.csv",
    "anchors": [
     "Python package hhdebt: extract, transform, load, export. More than 40 automated tests."
@@ -1381,8 +1381,8 @@
     "FL154190005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I28",
    "notes": "Findings.md intro (outside the Headline findings section) prints 87.3%.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1627,8 +1627,8 @@
     "FL154104015"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I27",
    "notes": "Corrected 2026-11-04 from $198B: the change is $198.53B, which rounds to $199B. findings.md prints +$198.5B (consistent).",
    "register": "claims/register.csv",
    "anchors": [

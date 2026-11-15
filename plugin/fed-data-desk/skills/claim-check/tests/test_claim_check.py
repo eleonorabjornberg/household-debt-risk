@@ -174,3 +174,16 @@ def test_never_writes(ctx):
     before = {p: p.read_bytes() for p in ctx.root.rglob("*") if p.is_file()}
     cc.main(["--root", str(ctx.root), "56.4% and 60.0% and 61.2%"])
     assert before == {p: p.read_bytes() for p in ctx.root.rglob("*") if p.is_file()}
+
+
+def test_pvalue_ignores_confidence_level(tmp_path):
+    # regression (judge review 2026-11-15): "MC 99% interval" was read as the value, giving a false MISMATCH
+    (tmp_path / "claims").mkdir(); (tmp_path / "validation").mkdir()
+    with (tmp_path / "claims" / "register.csv").open("w", newline="") as f:
+        w = csv.DictWriter(f, COLS); w.writeheader()
+        w.writerow(row("pval", "p ≈ 0.30", "0.3025", "pvalue", "H6", "H6", "PASS"))
+    checks = [{"id": "H6", "description": "placebo", "status": "PASS",
+               "observed": "p = 0.3004 (MC 99% interval 0.2986-0.3023, 400,000 draws)"}]
+    (tmp_path / "validation" / "results.json").write_text(json.dumps({"checks": checks}))
+    it = v1(cc.Ctx(root=tmp_path), "placebo p ≈ 0.30")
+    assert it["verdict"] == "MATCH", it

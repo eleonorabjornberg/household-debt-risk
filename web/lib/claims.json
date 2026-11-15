@@ -33,8 +33,8 @@
     "FL893065105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I32",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -76,8 +76,8 @@
     "FL893065105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I31",
    "notes": "Different split from findings.md counterfactual (6.1 pp with private held fixed); both about half.",
    "register": "claims/register.csv",
    "anchors": [
@@ -119,8 +119,8 @@
     "FL893065105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I30",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -193,9 +193,9 @@
     "DSPI"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "",
+   "validation": "PASS",
+   "checkId": "I42",
+   "notes": "I42 uses the latest FRED DSPI fredgraph.csv at run time, not the pinned fred:2026-10-27 vintage; DSPI revises.",
    "register": "claims/register.csv",
    "anchors": [
     "Households are also less stretched than before the last crash. Mortgage and consumer debt is about",
@@ -225,9 +225,9 @@
     "DSPI"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "",
+   "validation": "PASS",
+   "checkId": "I41",
+   "notes": "I41 uses the latest FRED DSPI fredgraph.csv at run time, not the pinned fred:2026-10-27 vintage; DSPI revises.",
    "register": "claims/register.csv",
    "anchors": [
     "Households are also less stretched than before the last crash. Mortgage and consumer debt is about",
@@ -267,8 +267,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I10",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -300,8 +300,8 @@
     "FL154104015"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I40",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -334,9 +334,9 @@
     "FL154104015"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "Rate (duration) risk, not credit risk; sits inside the public share. Findings: 'Fed MBS at 16.4% → 10.3%' was cross-checked to the mart, no validation check yet.",
+   "validation": "PASS",
+   "checkId": "I38",
+   "notes": "Rate (duration) risk, not credit risk; sits inside the public share. Findings: 'Fed MBS at 16.4% → 10.3%' was cross-checked to the mart; I38 recomputes from FRED WSHOMCB (last weekly value in quarter) / FL154104015.",
    "register": "claims/register.csv",
    "anchors": [
     "At its peak the Fed owned about one dollar in six of all household mortgage and consumer debt, as a bondholder exposed to interest rates, not as a lender exposed to defaults. Its agency mortgage-backed securities reached",
@@ -366,8 +366,8 @@
     "WSHOMCB"
    ],
    "vintage": "z1:2026-09-11 fred:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I39",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -406,9 +406,9 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
-   "notes": "No digits in the copy; registered because it is a quantitative claim. 7.0 of 13.1 pp = 53%.",
+   "validation": "PASS",
+   "checkId": "I7",
+   "notes": "No digits in the copy; registered because it is a quantitative claim. 7.0 of 13.1 pp = 53%. I7 reads 'about half' as 0.45-0.55 (0.533 with private held at 2007Q4).",
    "register": "claims/register.csv",
    "anchors": [
     "The one real ratchet: +13.1 points, a little over half of it private lenders retreating, not Fannie and Freddie growing. It never reversed."
@@ -542,8 +542,8 @@
     "FL154104015"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I5",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -588,8 +588,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I3",
    "notes": "Value is the size of the fall (positive share). Same display as the README table's 1985Q3 share (nber_1981q3_t16); different claim.",
    "register": "claims/register.csv",
    "anchors": [
@@ -635,8 +635,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I4",
    "notes": "Nominal dollars.",
    "register": "claims/register.csv",
    "anchors": [
@@ -681,8 +681,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I1",
    "notes": "Nominal dollars.",
    "register": "claims/register.csv",
    "anchors": [
@@ -727,8 +727,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I2",
    "notes": "Nominal dollars; 1,395.7 $B.",
    "register": "claims/register.csv",
    "anchors": [
@@ -772,8 +772,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I9",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -806,7 +806,7 @@
    "vintage": "z1:2026-09-11",
    "validation": "PASS",
    "checkId": "H11",
-   "notes": "Findings states it was cross-checked to the mart; no check in validation/results.json yet. Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
+   "notes": "Independently recomputed by validation check H11 (3.5624x; PASS). Highest outside 2022-26 since 1960Q1 (home_cov_last_q_at_or_above_latest_before_2022).",
    "register": "claims/register.csv",
    "anchors": [
     "Household debt has not drifted away from houses. Mortgages are",
@@ -838,8 +838,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I21",
    "notes": "Findings.md line 5 also cites the low; the README does not.",
    "register": "claims/register.csv",
    "anchors": [
@@ -872,8 +872,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I22",
    "notes": "Aggregate cushion, not any borrower's.",
    "register": "claims/register.csv",
    "anchors": [
@@ -943,8 +943,8 @@
     "FL154104015"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I20",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -978,8 +978,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I44",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -1012,7 +1012,7 @@
    "vintage": "nyfed:2026-10-27",
    "validation": "UNVERIFIED",
    "checkId": "",
-   "notes": "Source: NY Fed Household Debt and Credit Report methodology; add the citation URL when this is checked.",
+   "notes": "Source: NY Fed Household Debt and Credit Report methodology; add the citation URL when this is checked. Not independently recomputable: an external description of the NY Fed Consumer Credit Panel, not a computed number (2026-11-15, no validation check possible).",
    "register": "claims/register.csv",
    "anchors": [
     "They measure different things. The New York Fed series comes from a 5% sample of individual credit reports. Z.1 is built from lenders' balance sheets and counts nonprofits as households. Neither is wrong; a single quarter's direction is not something to build a story on.",
@@ -1039,8 +1039,8 @@
     "NYFED_HHDC"
    ],
    "vintage": "nyfed:2026-10-27",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I43",
    "notes": "NY Fed Consumer Credit Panel, not Z.1; the copy says so.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1070,8 +1070,8 @@
     "FL154190005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I29",
    "notes": "12.7% rounds to 13%.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1100,7 +1100,7 @@
    "vintage": "n/a",
    "validation": "UNVERIFIED",
    "checkId": "",
-   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change.",
+   "notes": "Threshold claim; true when registered (50 collected). Re-check when tests change. Not a data number: a test count, re-checked with pytest --collect-only, not by validation/run.py (2026-11-15).",
    "register": "claims/register.csv",
    "anchors": [
     "A Python package (hhdebt, managed with uv) downloads the sources, checks that every holder adds up to its published total, and builds the analysis tables. More than 40 automated tests."
@@ -1171,8 +1171,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I6",
    "notes": "A different window from the findings' 5.7 pp (16 quarters before the 2007Q4 peak); the two are not interchangeable.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1211,8 +1211,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I23",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -1296,8 +1296,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I11",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [],
@@ -1330,8 +1330,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I12",
    "notes": "36.7507% before rounding.",
    "register": "claims/register.csv",
    "anchors": [],
@@ -1727,8 +1727,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I8",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -1800,8 +1800,8 @@
     "FL154190005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I28",
    "notes": "Findings.md intro (outside the Headline findings section) prints 87.3%.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1876,8 +1876,8 @@
     "FL403066005"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I19",
    "notes": "Bound, not a point value: shocks are +0.42, +0.13 and -0.24 pp.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1908,8 +1908,8 @@
     "FL153166220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I24",
    "notes": "Computed as the consumer-credit part of the public book, which is almost entirely student loans.",
    "register": "claims/register.csv",
    "anchors": [
@@ -1944,8 +1944,8 @@
     "FL153166220"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I25",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -2039,8 +2039,8 @@
     "FL153165105"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I26",
    "notes": "",
    "register": "claims/register.csv",
    "anchors": [
@@ -2073,8 +2073,8 @@
     "FL154104015"
    ],
    "vintage": "z1:2026-09-11",
-   "validation": "UNVERIFIED",
-   "checkId": "",
+   "validation": "PASS",
+   "checkId": "I27",
    "notes": "Corrected 2026-11-04 from $198B: the change is $198.53B, which rounds to $199B. findings.md prints +$198.5B (consistent).",
    "register": "claims/register.csv",
    "anchors": [
